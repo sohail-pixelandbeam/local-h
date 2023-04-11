@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "487434580657",
+    "project_id": "local-happinezz",
+    "storage_bucket": "local-happinezz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487434580657:android:a703837f5c89e882ebe890",
+        "android_client_info": {
+          "package_name": "com.localhappinez"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "487434580657-v6tl91pe246cc6b1ehlgisir6kds3si1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAosZV-NtmLn3in9ovL2B6-9HtRr0sRyyo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "487434580657-v6tl91pe246cc6b1ehlgisir6kds3si1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

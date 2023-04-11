@@ -1,0 +1,160 @@
+import React, { useContext, useState } from 'react'
+import { StyleSheet, ScrollView, View, Text, TouchableOpacity, Image, StatusBar } from 'react-native'
+import DropdownAlert from 'react-native-dropdownalert';
+import { goBack, navigate } from '../../../../Navigations';
+import { BackIcon, HeartWhiteIcon } from '../../../components/Svgs'
+import { fonts } from '../../../constants/fonts'
+import { Context } from '../../../Context/DataContext';
+import Loader from '../../../utils/Loader';
+
+
+var alertRef;
+const AllWishList = () => {
+
+    const [loading, setLoading] = useState(false);
+
+    const { state } = useContext(Context);
+
+    return (
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
+
+            <DropdownAlert ref={(ref) => alertRef = ref} />
+            {loading && <Loader />}
+            <StatusBar
+                backgroundColor={'white'}
+                barStyle={"dark-content"}
+            />
+
+            <View style={{ width: "85%", alignSelf: 'center' }}>
+                <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', justifyContent: 'space-between', marginTop: 20 }}>
+                    <TouchableOpacity
+                        onPress={() => goBack()}
+                        style={{ padding: 10 }}>
+                        <BackIcon color="#5B4DBC" />
+                    </TouchableOpacity>
+                    <Image
+                        source={{ uri: state.profileData?.profileImage }}
+                        style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
+                    />
+                </View>
+
+                <View style={{ marginTop: 20, }}>
+                    <Text style={[{ fontFamily: fonts.PRe, fontSize: 21, color: '#000000' }]}>Summer Plans</Text>
+                    <Text style={[{ fontFamily: fonts.PRe, fontSize: 21, color: '#FFA183',lineHeight:24 }]}>Wishlist</Text>
+                </View>
+            </View>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: 200 }} >
+                <View style={{ width: "85%", alignSelf: 'center', }}>
+
+
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', justifyContent: 'space-between', marginTop: 20 }}>
+
+                        {
+                            [{ img: require('../../../assets/bg_color.png'), title: "Maintenance of Olive Trees", distance: "5 Miles Away" }, { img: require('../../../assets/bg_color-2.png'), title: "Help to make sanitation pads for school girls", distance: 'Dusseldorf, Germany' }]
+                                .map((item, index) => (
+                                    <TouchableOpacity
+                                        key={index}
+                                        onPress={() => navigate('BookingStack')}
+                                        style={{ width: "48%", }}>
+                                        <Image
+                                            source={item.img}
+                                            style={styles.listImg}
+                                        />
+                                        <TouchableOpacity style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
+                                            <HeartWhiteIcon />
+                                        </TouchableOpacity>
+                                        <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
+                                            {
+                                                [1, 2, 3, 4, 5].map((v, i) => (
+                                                    <View style={i == 4 ? styles.ratingCircleInActive : styles.ratingCircleActive}></View>
+                                                ))
+                                            }
+                                            <Text style={styles.ratingsText}>34 Ratings</Text>
+                                        </View>
+                                        <Text style={styles.listTile}>{item.title}</Text>
+                                        <Text style={styles.distanceText}>{item.distance}</Text>
+                                    </TouchableOpacity>
+                                ))
+                        }
+
+
+
+
+
+                    </View>
+                </View>
+
+                <View style={{ width: "85%", alignSelf: 'center', }}>
+                    <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20, justifyContent: 'space-between' }}>
+                        <Text style={styles.headingText}>Happening Nearby</Text>
+                        <TouchableOpacity style={{ padding: 10 }} >
+                            <Text style={styles.seeAll}>See all</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', justifyContent: 'space-between' }}>
+
+                        {
+                            [
+                                { img: require('../../../assets/bg_color.png'), title: "Maintenance of Olive Trees", distance: "5 Miles Away" },
+                                { img: require('../../../assets/bg_color-2.png'), title: "Help to make sanitation pads for school girls", distance: 'Dusseldorf, Germany' }
+                            ]
+                                .map((item, index) => (
+                                    <View style={{ width: "48%", }}>
+                                        <Image
+                                            source={item.img}
+                                            style={styles.listImg}
+                                        />
+                                        <TouchableOpacity style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
+                                            <HeartWhiteIcon />
+                                        </TouchableOpacity>
+                                        <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
+                                            {
+                                                [1, 2, 3, 4, 5].map((v, i) => (
+                                                    <View style={i == 4 ? styles.ratingCircleInActive : styles.ratingCircleActive}></View>
+                                                ))
+                                            }
+                                            <Text style={styles.ratingsText}>34 Ratings</Text>
+                                        </View>
+                                        <Text style={styles.listTile}>{item.title}</Text>
+                                        <Text style={styles.distanceText}>{item.distance}</Text>
+                                    </View>
+                                ))
+                        }
+
+
+
+
+
+
+                    </View>
+                </View>
+            </ScrollView>
+        </View>
+    )
+}
+
+const styles = StyleSheet.create({
+    listImg: {
+        width: "100%", height: 231, borderRadius: 25, resizeMode: 'stretch'
+    },
+    ratingCircleActive: {
+        width: 7, height: 7, backgroundColor: '#f4327f', borderRadius: 7 / 2, marginLeft: 3
+    },
+    ratingCircleInActive: {
+        width: 7, height: 7, backgroundColor: 'rgba(244, 50, 127, 0.4)', borderRadius: 7 / 2, marginLeft: 3
+    },
+    ratingsText: {
+        color: '#5d5760', fontFamily: fonts.PMe, fontSize: 7, marginLeft: 5
+    },
+    listTile: {
+        color: '#5d5760', fontFamily: fonts.PMe, fontSize: 13,
+    },
+    distanceText: {
+        textShadowColor: 'rgba(0, 0, 0, 0.25)', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 10, color: '#5d5760', fontFamily: fonts.PMe, fontSize: 6, letterSpacing: 0.3,
+    },
+})
+
+export default AllWishList

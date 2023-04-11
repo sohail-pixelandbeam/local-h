@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <!-- PUSH NOTIFICATIONS PERMISSIONS -->
+    <uses-permission android:name="android.permission.VIBRATE" /> 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- PUSH NOTIFICATIONS PERMISSIONS -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
+
+
+    <application
+        android:usesCleartextTraffic="true"
+        tools:targetApi="28"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="true" />
+         <!-- MAPS -->
+      <meta-data 
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyCBRIKQu3tgtuEIhUAkIRy1N8pHu_wFYBk"/>
+
+    </application>
+</manifest>
+
+
+
+

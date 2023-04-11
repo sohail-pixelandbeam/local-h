@@ -1,0 +1,504 @@
+import React, { useContext, useEffect, useState } from 'react'
+import { SafeAreaView, StatusBar, View, Image, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList, Platform, } from 'react-native'
+
+
+import { Context } from '../../Context/DataContext';
+import { retrieveItem, storeItem, useForceUpdate } from '../../utils/functions'
+import Loader from '../../utils/Loader'
+import DropdownAlert from 'react-native-dropdownalert'
+import { acolors } from '../../constants/colors';
+import { fonts } from '../../constants/fonts';
+import { navigate, navigateFromStack } from '../../../Navigations';
+import { changeLoggedIn } from '../../../Common';
+import { ArrowForward, DonationIcon, EditPencilIcon, HappeningLocationIconSmall, InfoIcon, LocationIcon, NextIcon, RecursionIcon, SettingsIcon } from '../../components/Svgs';
+import AlertMsg from '../../common/AlertMsg';
+import { apiRequest } from '../../utils/apiCalls';
+import ProfileTab from './ProfileTab';
+import { ReviewedHappening } from '../../components/NotificationCards';
+import { AddedPhotosTimeLine, EditBioSkillsTimeLine, LiveHappeningTimeLine, ReviewedHappeningTimeLine, SubmitHappeningTimeLine, UpdatedPhotoTimeLine } from '../../components/TimeLineCards';
+import { RefreshControl } from 'react-native';
+
+
+
+var alertRef;
+
+const Profile = () => {
+
+    const { state, setHappeningData } = useContext(Context)
+    const [loading, setLoading] = useState(false);
+    const [selectedTab, setSelectedTab] = useState('Profile');
+
+    const [bookingStatusAlert, setBookingStatusAlert] = useState(false)
+    const [bookingStatusAlertMsg, setBookingStatusAlertMsg] = useState('');
+
+    const [myHostings, setMyHostings] = useState([]);
+
+    const [confirmSignOut, setConfirmSignOut] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+    const [myBookings, setMyBookings] = useState([]);
+    const [profileData, setProfileData] = useState({});
+
+    // "Timeline",
+    const tabs = ["Profile",  "My Hostings", "Bookings",];
+    const happeningStatuses = ["underReview", "approved", "rejected", "cancelled"];
+    const happeningStatusesText = {
+        underReview: {
+            status: "Under Review",
+            text: "view details"
+        },
+        approved: {
+            status: "approved"
+        },
+        rejected: {
+            status: "Rejected"
+        },
+        cancelled: {
+            status: "Cancelled"
+        }
+
+    }
+
+
+
+    async function getMyHostings(refreshing = false) {
+        !refreshing && setLoading(true);
+        // console.log('getMyHosting/' + state.userData._id)
+        apiRequest('', 'getMyHosting/', 'GET')
+            .then(data => {
+                console.log('myHostings', data.data);
+                setLoading(false);
+                setRefreshing(false);
+                if (data.status) {
+                    setMyHostings(data.data)
+                }
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            })
+    };
+
+    async function getProfileDetails(refreshing = false) {
+        !refreshing && setLoading(true);
+        // console.log('getMyHosting/' + state.userData._id)
+        apiRequest('', 'getUserDetails', 'GET')
+            .then(data => {
+                setLoading(false);
+                if (data.status) {
+                    setProfileData(data.data)
+                }
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            })
+    };
+    async function getMyBookings(refreshing = false) {
+        !refreshing && setLoading(true);
+        // console.log('getMyHosting/' + state.userData._id)
+        apiRequest('', 'getUserBookingDetails', 'GET')
+            .then(data => {
+                console.log('getUserBookingDetails', data);
+                setLoading(false);
+                setRefreshing(false);
+                if (data.status) {
+                    setMyBookings(data.data)
+                }
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            })
+    };
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        getMyHostings(true)
+        // wait(2000).then(() => setRefreshing(false));
+    }, []);
+
+    useEffect(() => {
+        getProfileDetails();
+        getMyHostings();
+    }, []);
+
+
+    const BookingsTab = () => (
+        <>
+            {/* <TouchableOpacity
+                onPress={() => navigateFromStack('BookingStack', 'RecursionDates')}
+                style={{ flexDirection: 'row', marginTop: 15, alignItems: 'center' }} >
+                <View style={{ backgroundColor: '#9086D0', height: 15, alignItems: 'center', justifyContent: 'center', borderRadius: 20, width: 30, }}>
+                    <RecursionIcon />
+                </View>
+                <Text style={{ marginLeft: 5, fontFamily: fonts.PSBo, fontSize: 8, color: '#5B4DBC', textDecorationLine: 'underline' }}>View all recursions</Text>
+            </TouchableOpacity> */}
+            {
+                // [{ status: 'Confirmed' }, { status: 'Pending' }, { status: 'Cancelled' },
+                // { status: 'awaiting 4 fellows' }, { status: 'Rejected' }, { status: 'Cancellation request pending' }]
+                myBookings?.map((v, i) => {
+                    return (
+                        <View
+                            key={i}
+                            style={styles.bookingCard}>
+                            <View style={{ flexDirection: 'row', width: "100%", }}>
+                                <View style={{ width: "50%" }}>
+                                    <Text style={styles.bookingDate}>Tue, 29 Mar - {v?.happeningOnLocation ? "On Location" : "Online"}</Text>
+                                    <Text style={styles.bookingTime}>{v.startTime} - {v.endTime}</Text>
+                                    <Image
+                                        // style={{width:40,height:40,borderRadius:20}}
+                                        source={require('../../static_assets/peopleJoinedImages.png')}
+                                    />
+                                    <Text style={styles.peopleWhoJoinedText}>Akram, Ton, Vamsi and 4 others</Text>
+                                    <Text style={styles.seeAll}>See all</Text>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            switch (v.status) {
+                                                case 'Confirmed':
+                                                    navigateFromStack('BookingStack', 'ConfirmHappeningStatus')
+                                                    return;
+                                                case 'pending':
+                                                    setBookingStatusAlertMsg('The host needs to approve your join request for the booking. ')
+                                                    break
+                                                case 'awaiting 4 fellows':
+                                                    navigateFromStack('BookingStack', 'AwaitingFellows')
+                                                    return
+                                                case 'Rejected':
+                                                    setBookingStatusAlertMsg('The host has rejected your request for joining. ')
+                                                    break
+                                                case 'Cancellation request pending':
+                                                    setBookingStatusAlertMsg('Your cancellation request is under review.')
+                                                    break
+                                                case 'Cancelled':
+                                                    setBookingStatusAlertMsg('This booking has been cancelled by you.')
+                                                    break
+                                                default: break
+
+                                            }
+                                            setBookingStatusAlert(true)
+
+                                        }}
+
+                                        style={[styles.bookingStatusContainer, v.status !== 'Confirmed' && { borderColor: '#E53535' }]}>
+                                        <Text style={[styles.bookingStatus, v.status !== 'Confirmed' && { color: '#E53535' }]}>{v.status}</Text>
+                                        {v.status !== 'approved' ?
+                                            <InfoIcon color="#E53535" />
+
+                                            :
+                                            <Text style={[styles.bookingStatus, { textDecorationLine: 'underline' }]}>Get meet details</Text>
+                                        }
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{ width: "49%", marginLeft: 10 }}>
+                                    <Image
+                                        source={require('../../static_assets/FeaturedImage.png')}
+                                        style={{ width: "100%", height: 103, borderRadius: 21, }}
+                                    />
+                                    <Text style={[styles.bookingTitle, { width: "90%" }]}>Restore coral reefs in open sea</Text>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <Image
+                                            style={{ width: 33, height: 33, borderRadius: 33 / 2, marginRight: 10 }}
+                                            source={require('../../static_assets/profileImg.png')}
+                                        />
+                                        <Text style={styles.hostedBy}>Hosted by{"\n"}Sanne de Wit</Text>
+                                    </View>
+                                </View>
+
+                            </View>
+
+                        </View>
+                    )
+
+                })
+            }
+
+        </>
+    );
+
+    const HostingTab = () => (
+        <>
+            <FlatList
+                data={myHostings}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+                numColumns={2}
+                columnWrapperStyle={{ justifyContent: 'space-between' }}
+                contentContainerStyle={{ paddingBottom: 500 }}
+                renderItem={({ item, index }) => {
+                    // item.startingDate
+                    // console.log('item==',item)
+                    return (
+                        <TouchableOpacity
+                            onPress={() => {
+                                item.status == 'cancelled' ? navigateFromStack('BookingStack', 'MyHappeningDetails', { params: 'cancelled' }) :
+                                    navigateFromStack('BookingStack', 'AllBookings', item)
+                            }}
+                            style={{ width: "48%", marginTop: 20, }}>
+                            <View>
+                                <Image
+                                    // source={require('../../static_assets/content.png')}
+                                    source={item.addPhotosOfYourHappening ? { uri: item.addPhotosOfYourHappening[0] } : require('../../static_assets/content.png')}
+                                    style={{ width: '100%', height: 230, borderRadius: 10, }}
+                                />
+                                <View style={[styles.shadow, { position: 'absolute', bottom: 10, width: "85%", alignSelf: 'center', borderRadius: 20, backgroundColor: '#675AC1', }
+                                    // , index == 2 && { backgroundColor: '#FFA183' }, item == 'cancelled' && { backgroundColor: '#D94A55' }
+                                ]}
+                                >
+                                    {
+                                        item.status == 'underReview' &&
+                                        <View style={{ height: 40, justifyContent: 'center' }}>
+                                            <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: 'white', marginLeft: 10, }}>
+                                                {happeningStatusesText[item.status].status}
+                                                {/* {index == 2 ? "Live" : item == 'cancelled' ? "Cancelled" : "starts on 23 june"} */}
+                                            </Text>
+                                        </View>
+                                    }
+                                    <View style={[{ flexDirection: 'row', height: 35, alignItems: 'center', justifyContent: 'space-evenly', backgroundColor: 'white', borderRadius: 20, }, item == 'underReview' && { borderWidth: 3, borderColor: '#B9B1F0' }]}>
+                                        <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: '#675AC1', textTransform: 'capitalize' }}>
+                                            {item.status}
+                                            {/* {index == 3 || 2 ? "view details" : index == 0 ? "under review" : "2 new requests"} */}
+                                        </Text>
+                                        {/* {index != 0 && <NextIcon />} */}
+                                    </View>
+                                </View>
+                            </View>
+                            <Text style={{ fontFamily: fonts.PMe, fontSize: 11, color: '#5D5760', marginTop: 10 }}>{item.happeningTitle}</Text>
+                            {/* <TouchableOpacity
+                                style={{ position: 'absolute', top: -15, right: -5, overflow: 'visible', width: 44, height: 44, borderRadius: 44 / 2, backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#707070', alignItems: 'center', justifyContent: 'center' }}
+                            >
+                                <EditPencilIcon />
+
+                            </TouchableOpacity> */}
+                        </TouchableOpacity>
+                    )
+                }}
+
+            />
+        </>
+    )
+
+
+
+    return (
+        <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1, }}>
+            <StatusBar
+                barStyle={"dark-content"}
+                backgroundColor={"white"}
+            />
+            {loading && <Loader />}
+            <AlertMsg
+                heading={bookingStatusAlertMsg}
+                desc=""
+                renderBtn={false}
+                // descStyle={{ lineHeight: 22, color: '#5D5760', fontFamily: fonts.PSBo }}
+                btnTitle="Done"
+                state={bookingStatusAlert}
+                onBackdropPress={() => setBookingStatusAlert(false)}
+                onPress={() => setBookingStatusAlert(false)}
+                containerStyle={{ paddingHorizontal: 25, paddingBottom: 10, paddingTop: 10 }}
+            />
+            <AlertMsg
+                heading={"Do you really want to sign out ?"}
+                desc=""
+                renderBtn={false}
+                // descStyle={{ lineHeight: 22, color: '#5D5760', fontFamily: fonts.PSBo }}
+                btnTitle="Done"
+                state={confirmSignOut}
+                onBackdropPress={() => setConfirmSignOut(false)}
+                onPress={() => setConfirmSignOut(false)}
+                containerStyle={{ paddingHorizontal: 25, paddingBottom: 50, paddingTop: 20 }}
+                children={(
+                    <View style={{ flexDirection: 'row', width: "100%", marginTop: 0, justifyContent: 'space-between' }}>
+                        <TouchableOpacity
+                            style={[styles.popupBtn]}
+                            onPress={() => setConfirmSignOut(false)}
+                        >
+                            <Text style={styles.popupBtnTitle}>{"No, I’ll stay"}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.popupBtn, { borderWidth: 1, borderColor: '#5B4DBC', backgroundColor: 'white' }]}
+                            onPress={() => {
+                                storeItem('login_data', '');
+                                storeItem('profile_data', '');
+                                changeLoggedIn.changeNow(2);
+                            }}
+                        >
+                            <Text style={[styles.popupBtnTitle, { color: '#5B4DBC' }]}>{"Sign out"}</Text>
+                        </TouchableOpacity>
+
+                    </View>
+                )
+                }
+            />
+
+
+            <View>
+                <Image
+                    style={{ width: 115, height: 115, borderRadius: 115 / 2, borderWidth: 5, borderColor: acolors.primary, alignSelf: 'center', marginTop: 20 }}
+                    source={{ uri: profileData?.userId?.profileImage }}
+                />
+                {/* <TouchableOpacity
+                    onPress={() => navigate('SettingsScreen')}
+                    style={{ position: 'absolute', top: 20, right: 20, alignItems: 'center' }}>
+                    <SettingsIcon />
+                    <Text style={{ fontFamily: fonts.PRe, fontSize: 10, color: '#000000', marginTop: 2 }}>Settings</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigate('DonationAmount')}
+                    style={{ position: 'absolute', top: 20, left: 20, alignItems: 'center' }}>
+                    <DonationIcon />
+                    <Text style={{ fontFamily: fonts.PRe, fontSize: 10, color: '#000000', marginTop: 2 }}>Donate</Text>
+                </TouchableOpacity> */}
+            </View>
+            {profileData?.userId?.address !== "Not Provided" && <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 20 }}>
+                <HappeningLocationIconSmall width={11} height={14} />
+                <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5 }}>{profileData?.userId?.address} AMSTERDAM, NETHERLANDS</Text>
+            </View>
+            }
+            <Text style={[styles.headingText, { marginTop: 5, alignSelf: 'center' }]}>{state?.userData?.userName}</Text>
+            <View style={{ width: "90%", alignSelf: 'center', marginTop: 10 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                    <ScrollView horizontal={true}>
+                        {
+                            tabs.map((v, i) => {
+                                return (
+                                    <TouchableOpacity
+                                        style={{ marginBottom: 5, marginLeft: 15 }}
+                                        onPress={() => {
+                                            v == "My Hostings" && getMyHostings();
+                                            v == "Bookings" && getMyBookings();
+                                            setSelectedTab(v)
+
+                                        }}
+                                        key={i}
+                                    >
+                                        <Text style={[selectedTab == v ? styles.selectedTabText : styles.unSelectedTabText]} >{v}</Text>
+                                        {selectedTab == v && <View style={{ marginTop: 5, width: 20, backgroundColor: '#5B4DBC', height: 3, borderRadius: 10, }}></View>}
+                                    </TouchableOpacity>
+                                )
+                            })
+                        }
+                    </ScrollView>
+                </View>
+
+
+                {
+                    selectedTab == "Bookings" &&
+                    <ScrollView contentContainerStyle={{ paddingBottom: 500 }} >
+                        <BookingsTab />
+                    </ScrollView>
+                }
+
+                {
+                    selectedTab == "My Hostings" &&
+                    <HostingTab />
+                }
+                {
+                    selectedTab == "Profile" &&
+                    <ScrollView contentContainerStyle={{ paddingBottom: 500 }}>
+                        <ProfileTab data={profileData} />
+                    </ScrollView>
+                }
+                {
+                    selectedTab == 'Timeline' &&
+                    <ScrollView contentContainerStyle={{ paddingBottom: 400 }} showsVerticalScrollIndicator={false} >
+                        <View style={{ position: 'absolute', left: 20, top: 0, width: 4, height: "100%", backgroundColor: "rgba(34,34,34,0.15)", borderRadius: 2 }} />
+                        <ReviewedHappeningTimeLine key={"Reviewed a Happening"} cardTitle="Reviewed a Happening" title="Fishing Line Cleanup" reviewText="Awesome Experience !" reviewDesc="Nunc justo eros, vehicula vel vehicula ut, lacinia a erat. Nam fringilla eros..." />
+                        <SubmitHappeningTimeLine containerStyle={{ marginTop: 15 }} />
+                        <AddedPhotosTimeLine containerStyle={{ marginTop: 15 }} />
+                        <EditBioSkillsTimeLine key={"Edited her bio"} title="Edited her bio" desc={"Nunc justo eros, vehicula vel vehicula ut, lacinia a erat. Nam fringilla eros..."} containerStyle={{ marginTop: 15 }} />
+                        <EditBioSkillsTimeLine key={"Edited her Skills"} title="Edited her Skills" desc={"Painting, Designing, Driving Diving"} containerStyle={{ marginTop: 15 }} />
+                        <ReviewedHappeningTimeLine key={"ReceivedReview"} containerStyle={{ marginTop: 15 }} cardTitle="Received a review" title="Restore coral reefs in open sea" reviewText="Wonderful Host!" reviewDesc="Nunc justo eros, vehicula vel vehicula ut, lacinia a erat. Nam fringilla eros..." />
+                        <ReviewedHappeningTimeLine key={"Reviewed"} containerStyle={{ marginTop: 15 }} cardTitle="Reviewed" title="Akram" reviewText="Wonderful Host!" reviewDesc="Nunc justo eros, vehicula vel vehicula ut, lacinia a erat. Nam fringilla eros..." />
+                        <ReviewedHappeningTimeLine key={"Reviewed by"} containerStyle={{ marginTop: 15 }} cardTitle="Reviewed by" title="Akram" reviewText="Wonderful Host!" reviewDesc="Nunc justo eros, vehicula vel vehicula ut, lacinia a erat. Nam fringilla eros..." />
+                        <LiveHappeningTimeLine key={1} containerStyle={{ marginTop: 15 }} cardTitle="Has a Live Happening at Dubai" title="Restore coral reefs in open sea" />
+                        <LiveHappeningTimeLine key={2} containerStyle={{ marginTop: 15 }} cardTitle="is Live in Akram’s Happening in London" title="Restore coral reefs in open sea" />
+                        <UpdatedPhotoTimeLine containerStyle={{ marginTop: 15 }} cardTitle="is Live in Akram’s Happening in London" title="Restore coral reefs in open sea" />
+                    </ScrollView>
+                }
+
+            </View>
+            <View style={{ position: 'absolute', bottom: Platform.OS == 'ios' ? 80 : 50, paddingTop: 10, backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-between', width: "100%", paddingHorizontal: 20, elevation: 5, alignItems: 'center', paddingBottom: 10, shadowOffset: { width: 1, height: 1 } }}>
+                <TouchableOpacity onPress={() => setConfirmSignOut(true)}>
+                    <Text style={styles.signOut}>Sign Out</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigate('ThingsConsider')}
+                    style={styles.submitHappeningBtn}>
+                    <Text style={styles.submitHappeningText}>+ Submit a Happening</Text>
+                </TouchableOpacity>
+            </View>
+
+        </SafeAreaView >
+    )
+}
+
+
+const styles = StyleSheet.create({
+    headingText: {
+        color: '#FFA183', fontFamily: fonts.PBo, fontSize: 30,
+    },
+    selectedTabText: {
+        fontFamily: fonts.PSBo, fontSize: 14, color: '#5B4DBC'
+    },
+    unSelectedTabText: {
+        fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760',
+    },
+    bookingCard: {
+        width: "101%", marginTop: 20, elevation: 5, backgroundColor: 'white', padding: 10, shadowColor: 'rgba(0,0,0,0.6)', shadowOpacity: 0.5,
+    },
+    bookingDate: {
+        fontFamily: fonts.PSBo, fontSize: 10, color: '#5B4DBC'
+    },
+    bookingTime: {
+        color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 18
+    },
+    peopleWhoJoinedText: {
+        color: '#484658', fontSize: 10, fontFamily: fonts.PSBo, marginTop: 10
+    },
+    seeAll: {
+        color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 12, textDecorationLine: 'underline'
+    },
+    bookingStatusContainer: {
+        height: 29, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 10,
+        borderWidth: 1, borderColor: '#5B4DBC', borderRadius: 25, marginTop: 10
+    },
+    bookingStatus: {
+        color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 8
+    },
+    bookingTitle: {
+        color: '#4F4E50', fontFamily: fonts.PBo, fontSize: 10, marginTop: 10,
+    },
+    hostedBy: {
+        color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 9,
+    },
+    signOut: {
+        color: '#5D5760', fontFamily: fonts.PRe, fontSize: 14,
+    },
+    submitHappeningBtn: {
+        width: "50%", height: 47, borderRadius: 20, backgroundColor: '#5B4DBC', alignItems: 'center', justifyContent: 'center',
+    },
+    submitHappeningText: {
+        color: '#FFFFFF', fontFamily: fonts.PSBo, fontSize: 13,
+    },
+    shadow: {
+        shadowColor: 'rgba(0, 0, 0, 0.8)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 0, shadowOpacity: 0, elevation: 5,
+        backgroundColor: 'white'
+    },
+    popupBtn: {
+        width: "49%", height: 29, borderRadius: 20, backgroundColor: '#5b4dbc',
+        alignItems: 'center', justifyContent: 'center'
+    },
+    popupBtnTitle: {
+        color: '#ffffff', fontFamily: fonts.PSBo, fontSize: 9,
+    },
+
+
+
+
+})
+export default Profile
