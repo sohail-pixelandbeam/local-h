@@ -8,7 +8,7 @@ import { fonts } from '../../../../constants/fonts'
 import { useForceUpdate } from '../../../../utils/functions'
 
 
-const SuccessfullySubmitted = () => {
+const SuccessfullySubmitted = (props) => {
     return (
         <View style={{ flex: 1, backgroundColor: '#35208E' }}>
             <StatusBar
@@ -17,18 +17,20 @@ const SuccessfullySubmitted = () => {
             />
             <View style={{ width: "85%", alignSelf: 'center' }}>
                 <Image
-                    style={{ alignSelf: 'center',marginTop:20 }}
+                    style={{ alignSelf: 'center', marginTop: 20 }}
                     source={require('../../../../assets/NY_done.png')}
                 />
-                <ScrollView contentContainerStyle={{paddingBottom:150}}>
-                    <Text style={{ fontSize: 29, color: 'white', fontFamily: fonts.PBo, marginTop: 50 }}>Your Happening{"\n"}is Succesfully{"\n"}Submitted.</Text>
+                <ScrollView contentContainerStyle={{ paddingBottom: 150 }}>
+                    <Text style={{ fontSize: 29, color: 'white', fontFamily: fonts.PBo, marginTop: 50 }}>Your happening{"\n"}is succesfully{"\n"}submitted.</Text>
                     <Text style={{ fontSize: 29, color: '#A69FD9', fontFamily: fonts.PBo, marginTop: 10 }}>It will be live after{"\n"}our review.</Text>
-                    <Text style={{ fontSize: 14, color: '#A69FD9', fontFamily: fonts.PMe }}>Please keep an eye on  your mailbox{"\n"}or notifications</Text>
+                    <Text style={{ fontSize: 14, color: '#A69FD9', fontFamily: fonts.PMe }}>Please keep an eye on your mailbox{"\n"}or notifications</Text>
                 </ScrollView>
             </View>
 
             <TouchableOpacity
-                onPress={() => navigate('BottomTabs')}
+                onPress={() => props.navigation.replace('BottomTabs', {
+                    screen: 'Profilee'
+                })}
                 activeOpacity={0.9}
                 style={styles.agreeBtn}>
                 <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}></Text>

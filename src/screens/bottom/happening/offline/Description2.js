@@ -8,18 +8,18 @@ import { BackIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERC
 import { acolors } from '../../../../constants/colors'
 import { fonts } from '../../../../constants/fonts'
 import { getHOLPreviousScreen, useForceUpdate } from '../../../../utils/functions'
+import { happeningStyles } from '../styles'
 
 
 const Description2 = (props) => {
 
     const forceUpdate = useForceUpdate();
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            // navigate('Description1');
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
 
@@ -32,14 +32,14 @@ const Description2 = (props) => {
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"Key Tips for\nthe Description "}
+                heading={"Key tips for\nthe description "}
                 desc={"Key tips to consider while giving a title to the happening ."}
             // headerStyle={{ paddingBottom: 30 }}
             />
             <View style={styles.contentContainer}>
 
-                <ScrollView contentContainerStyle={{ paddingBottom: 400 }} >
-                    <Text style={{ color: '#2A2A2A', fontSize: 15, fontFamily: fonts.MBo, marginTop: 20 }}>Here are some good recommendations </Text>
+                <ScrollView contentContainerStyle={{ paddingBottom: 240 }} >
+                    <Text style={[happeningStyles.happeningTitle2, { marginTop: 20 }]}>Here are some good recommendations </Text>
                     <FlatList
                         data={[
                             { img: require('../../../../static_assets/pic6.png'), title: 'Restore coral reefs in open sea' },
@@ -63,7 +63,7 @@ const Description2 = (props) => {
                         )}
                     />
 
-                    <Text style={{ fontSize: 12, color: '#7B7B7B', fontFamily: fonts.MRe, lineHeight: 15, marginTop: 10 }}>Bring the science of reefs to life and do your part to rescue threatened and endangered ecosystems and species. Perfect for families, single divers, vacationers, school groups, and more! As reefs around the world face the threat of die-off, you can make a measurable difference to help out degraded reefs and endangered species. Not only will you make a positive impact on Bonaire’s reefs, but you will also even have fun and learn new skills in the process!</Text>
+                    <Text style={{ fontSize: 12, color: '#7B7B7B', fontFamily: fonts.MRe, lineHeight: 15, marginTop: 20 }}>Bring the science of reefs to life and do your part to rescue threatened and endangered ecosystems and species. Perfect for families, single divers, vacationers, school groups, and more! As reefs around the world face the threat of die-off, you can make a measurable difference to help out degraded reefs and endangered species. Not only will you make a positive impact on Bonaire’s reefs, but you will also even have fun and learn new skills in the process!</Text>
                     <View style={{ height: 145, width: "100%", marginTop: 30 }}>
                         <Image
                             style={{ width: "100%", height: "100%", borderRadius: 21 }}
@@ -74,9 +74,10 @@ const Description2 = (props) => {
                             source={require('../../../../static_assets/mask1.png')}
                         />
                         <View style={{ position: 'absolute', bottom: 15, left: 10, width: "45%" }}>
-                            <Text style={{ fontFamily: fonts.MSBo, fontSize: 15, color: '#FFFFFF' }}>{"Fight Food Waste With Local Communities"}</Text>
+                            <Text style={{ fontFamily: fonts.MSBo, fontSize: 15, color: '#FFFFFF' }}>{"Fight food waste with local communities"}</Text>
                         </View>
                     </View>
+                    <Text style={{ fontSize: 12, color: '#7B7B7B', fontFamily: fonts.MRe, lineHeight: 15, marginTop: 10 }}>Do you, too, think food waste is unnecessary? Then come and assist in gathering unused fruits, veggies, and beverages to distribute them to those who still need them. Make people happy, get to know the locals, and avoid throwing away delicious food. Working side by side with local people, you will select the goods that are still good and place them in boxes. We request at least a half-day of your time, while more is always appreciated. Please feel free to bring more friends too.</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 50 }}>
                         <TouchableOpacity style={{
                             width: 23, height: 23, borderRadius: 23 / 2, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center',
@@ -84,7 +85,7 @@ const Description2 = (props) => {
                         }}>
                             <TickIcon width={8} heigh={6} />
                         </TouchableOpacity>
-                        <Text style={{ fontSize: 9, color: '#2A2A2A', fontFamily: fonts.MBo, marginLeft: 10 }}>No offensive text and all the titles are checked by our team</Text>
+                        <Text style={{ fontSize: 10, color: '#2A2A2A', fontFamily: fonts.MBo, marginLeft: 20 }}>No offensive text and all the titles are checked by our team</Text>
                     </View>
 
 

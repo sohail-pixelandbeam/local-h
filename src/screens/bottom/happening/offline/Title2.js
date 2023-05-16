@@ -14,12 +14,11 @@ const Title2 = () => {
 
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            // navigate('Title1');
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -28,7 +27,7 @@ const Title2 = () => {
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"Key Tips for\nthe Title "}
+                heading={"Key tips for\nthe title "}
                 desc={"Key tips to consider while giving a title to the happening ."}
             // headerStyle={{ paddingBottom: 30 }}
             />

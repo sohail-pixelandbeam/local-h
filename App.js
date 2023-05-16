@@ -67,6 +67,7 @@ import ProfilePublicView from './src/screens/bottom/ProfilePublicView';
 import DonationAmount from './src/screens/bottom/Donation.js/DonationAmount';
 import DonationPaymentMethod from './src/screens/bottom/Donation.js/DonationPaymentMethod';
 import DonationComplete from './src/screens/bottom/Donation.js/DonationComplete';
+import EditProfile from './src/screens/bottom/EditProfile';
 
 
 
@@ -140,7 +141,7 @@ const HappeningStack = () => (
     initialRouteName="Home"
   >
     <Stack.Screen name="Profile" component={Profile} />
-    
+
     <Stack.Screen name="ViewAllReviews" component={ViewAllReviews} />
     <Stack.Screen name="ThingsConsider" component={ThingsConsider} />
     <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
@@ -282,7 +283,8 @@ function App() {
   function checkLoggedIn() {
 
     retrieveItem("login_data").then((data) => {
-      if (data) {
+      console.log('data',data)
+      if (data && (data?.isVerified || data?.isVerify == true )) {
         setLoggedIn(1)
       }
       else {
@@ -365,6 +367,7 @@ function App() {
             <Stack.Screen name="DonationAmount" component={DonationAmount} />
             <Stack.Screen name="DonationPaymentMethod" component={DonationPaymentMethod} />
             <Stack.Screen name="DonationComplete" component={DonationComplete} />
+            <Stack.Screen name="EditProfile" component={EditProfile} />
           </Stack.Navigator>
         }
 

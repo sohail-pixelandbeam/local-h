@@ -22,11 +22,11 @@ const CC4 = (props) => {
     const { state, setHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
     function next() {
@@ -78,7 +78,7 @@ const CC4 = (props) => {
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"Technical Skills and Requirements"}
+                heading={"Technical skills and requirements"}
                 headerStyle={{ paddingBottom: 30 }}
             />
             <View style={styles.contentContainer}>

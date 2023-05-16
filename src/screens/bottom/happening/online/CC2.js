@@ -14,11 +14,11 @@ import { fonts } from '../../../../constants/fonts'
 const CC2 = (props) => {
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
     return (

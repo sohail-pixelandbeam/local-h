@@ -11,6 +11,7 @@ import { storeItem, useForceUpdate } from '../../../../utils/functions'
 import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import { useFocusEffect } from '@react-navigation/native'
+import { happeningStyles } from '../styles'
 
 
 const GroupSizeHappeningL = () => {
@@ -22,21 +23,21 @@ const GroupSizeHappeningL = () => {
 
     const conditionArr = [
         {
-            title: "1 - 15 fellows", desc: "Connect with fellows through online meet software like Zoom, Teams etc. ", no: 15,
+            title: "1 - 15 fellows", desc: "For happenings where 1-15 fellows can work simultaneously", no: 15,
         },
         {
-            title: "16 Fellows and more", desc: "Connect with fellows in a geographical location", no: 16,
+            title: "16 Fellows and more", desc: "For happenings where more than 16 fellows can work simultaneously", no: 16,
         },
     ];
 
-    useFocusEffect(React.useCallback(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            console.log('returning')
-            goBack();
-            return false;
-        })
-    }, [],
-    ))
+    // useFocusEffect(React.useCallback(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         console.log('returning')
+    //         goBack();
+    //         return false;
+    //     })
+    // }, [],
+    // ))
 
     function next(fellow) {
         const obj = {
@@ -58,7 +59,7 @@ const GroupSizeHappeningL = () => {
             />
             <HappeningHeader
                 // imageUrl={require('../../../../assets/thingsConsiderHeaderImg.png')}
-                heading={"Group size happening on location"}
+                heading={"Group size of happening on location"}
                 desc={"How many fellows can attend at the same moment?"}
             />
 
@@ -72,21 +73,17 @@ const GroupSizeHappeningL = () => {
                                 onPress={() => next(item.no)}
                                 style={styles.content}>
                                 <View style={{ width: "100%", flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <View>
-                                        <Text style={{ fontFamily: fonts.MBo, fontSize: 12, color: '#2A2A2A' }}>{item.title}</Text>
-                                        <Text style={{ fontFamily: fonts.MRe, fontSize: 8, color: '#828282', marginTop: 5 }}>Between 1 and 15 fellows can work simultaneously. </Text>
+                                    <View style={{ width: "80%" }}>
+                                        <Text style={happeningStyles.happeningTitle2}>{item.title}</Text>
+                                        <Text style={happeningStyles.happeningDesc}>{item.desc}</Text>
                                     </View>
                                     <NextIcon />
                                 </View>
                                 <Image
-                                    style={{ width: "100%", height: 89, borderRadius: 16, marginTop: 20 }}
+                                    style={{ width: "100%", height: 89, borderRadius: 16, marginTop: 20, }}
                                     source={index == 0 ? require('../../../../static_assets/pic1.png') : require('../../../../assets/16Fellows.png')}
                                 />
-
-
-
                             </TouchableOpacity>
-
 
                         )
                     }}

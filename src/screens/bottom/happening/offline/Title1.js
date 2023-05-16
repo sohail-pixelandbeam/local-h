@@ -14,6 +14,7 @@ import { Context } from '../../../../Context/DataContext'
 import { getHOLPreviousScreen, storeItem, useForceUpdate } from '../../../../utils/functions'
 import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
+import TipsButton from '../../../../components/TipsButton'
 
 
 var alertRef;
@@ -23,18 +24,15 @@ const Title1 = (props) => {
     const { state, setLocationHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState(false);
+    const [titleWords, setTitleWords] = useState(0);
     const forceUpdate = useForceUpdate();
 
     function next() {
 
-        if (title == "") {
-            alertRef.alertWithType('error', "Error", "Please enter title");
+        if (title.length < 30) {
+            alertRef.alertWithType('error', "Error", "Title must contain min 30 characters");
             return;
         }
-        // if (title.length < 60) {
-        //     alertRef.alertWithType('error', "Error", "Title must contain 60 words");
-        //     return;
-        // }
         const obj = {
             ...state.locationHappeningDraft,
             happeningTitle: title
@@ -44,12 +42,21 @@ const Title1 = (props) => {
         navigate('Description1')
     }
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            // navigate('HappeningTheme');
-            return true;
-        })
-    }, []);
+    function getTitleWordsCount(text) {
+        if (text == "") {
+            setTitleWords(0)
+            return;
+        }
+        let count = text.trim().split(/\s+/).length
+        console.log(count);
+        setTitleWords(count)
+    }
+
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -64,24 +71,28 @@ const Title1 = (props) => {
             />
             <View style={styles.contentContainer}>
                 <ScrollView>
-
-                    <TextInput
-                        placeholder='Enter the title min 60 words'
-                        textAlignVertical='top'
-                        multiline={true}
-                        onChangeText={setTitle}
-                        placeholderTextColor={"#2A2A2A"}
-                        style={{
-                            width: "100%", height: 160, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1, marginTop: 50,
-                            fontSize: 14, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 15,
-                        }}
-                    />
-                    <TouchableOpacity
-                        onPress={() => navigate('Title2')}
-                        style={[styles.tipsBtn]}
-                    >
-                        <Text style={styles.topsBtnTitle}>{"Tips"}</Text>
-                    </TouchableOpacity>
+                    <View>
+                        <TextInput
+                            placeholder='Enter the title between 30-40 characters'
+                            maxLength={40}
+                            textAlignVertical='top'
+                            multiline={true}
+                            onChangeText={(v) => {
+                                getTitleWordsCount(v);
+                                setTitle(v)
+                            }}
+                            placeholderTextColor={"#2A2A2A"}
+                            style={{
+                                width: "100%", height: 160, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1, marginTop: 50,
+                                fontSize: 14, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 15,
+                            }}
+                        />
+                        <Text style={{ color: '#2A2A2A', fontSize: 14, fontFamily: fonts.PRe, position: 'absolute', bottom: 5, left: 10 }}>{title.length ?? 0}/40</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Text></Text>
+                        <TipsButton onPress={() => navigate('Title2')} />
+                    </View>
                 </ScrollView>
 
             </View>

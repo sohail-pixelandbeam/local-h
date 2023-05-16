@@ -26,11 +26,7 @@ const HappeningAccessibilty = (props) => {
         { id: 5, title: "Sign Language" },
     ];
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
+    
 
 
 

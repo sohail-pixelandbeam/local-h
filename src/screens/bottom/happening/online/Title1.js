@@ -13,6 +13,7 @@ import { storeItem, useForceUpdate } from '../../../../utils/functions'
 import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import HappeningStep from '../../../../common/HappeningStep'
+import TipsButton from '../../../../components/TipsButton'
 
 var alertRef;
 
@@ -21,24 +22,19 @@ const Title1 = (props) => {
 
     const { state, setHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
-    const [title, setTitle] = useState(false);
+    const [title, setTitle] = useState(state?.happeningDraft?.happeningTitle ?? '');
+    const [titleWords, setTitleWords] = useState(0);
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
+
 
 
     function next() {
 
-        if(title == ""){
-            alertRef.alertWithType('error',"Error","Please enter title");
-            return;
-        }
-        if(title.length <60){
-            alertRef.alertWithType('error',"Error","Title must contain 60 words");
+        // console.log('title.length', title.length)
+        // return;
+        if (title.length < 30 || title == '') {
+            alertRef.alertWithType('error', "Error", "Title must contain 30 characters");
             return;
         }
         const obj = {
@@ -48,6 +44,19 @@ const Title1 = (props) => {
         setHappeningData(obj);
         navigate('Description1')
     }
+
+    function getTitleWordsCount(text) {
+        if (text == "") {
+            setTitleWords(0)
+            return;
+        }
+        let count = text.trim().split(/\s+/).length
+        setTitleWords(count)
+    }
+
+    React.useEffect(() => {
+        getTitleWordsCount(state?.happeningDraft?.happeningTitle ?? '')
+    }, [])
 
 
     return (
@@ -63,29 +72,33 @@ const Title1 = (props) => {
             />
             <View style={styles.contentContainer}>
                 <ScrollView>
-
-                    <TextInput
-                        onChangeText={setTitle}
-                        placeholder='Enter the title min 60 words'
-                        textAlignVertical='top'
-                        multiline={true}
-                        placeholderTextColor={"#2A2A2A"}
-                        style={{
-                            width: "100%", height: 160, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1, marginTop: 50,
-                            fontSize: 14, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 15,
-                        }}
-                    />
-                    <TouchableOpacity
-                        onPress={() => navigate('Title2')}
-                        style={[styles.tipsBtn]}
-                    >
-                        <Text style={styles.topsBtnTitle}>{"Tips"}</Text>
-                    </TouchableOpacity>
+                    <View>
+                        <TextInput
+                            placeholder='Enter the title between 30-40 characters'
+                            maxLength={40}
+                            textAlignVertical='top'
+                            multiline={true}
+                            onChangeText={(v) => {
+                                getTitleWordsCount(v);
+                                setTitle(v)
+                            }}
+                            placeholderTextColor={"#2A2A2A"}
+                            style={{
+                                width: "100%", height: 160, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1, marginTop: 50,
+                                fontSize: 14, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 15,
+                            }}
+                        />
+                        <Text style={{ color: '#2A2A2A', fontSize: 14, fontFamily: fonts.PRe, position: 'absolute', bottom: 5, left: 10 }}>{title.length ?? 0}/40</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Text style={{ color: titleWords >= 20 ? 'green' : 'red', fontSize: 15, fontFamily: fonts.PMe }}></Text>
+                        <TipsButton onPress={() => navigate('Title2')} />
+                    </View>
                 </ScrollView>
 
             </View>
             <HappeningStep
-                nextText = {"Next"}
+                nextText={"Next"}
                 onPress={() => next()}
                 step={props?.route?.params?.step}
             />

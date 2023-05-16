@@ -11,6 +11,7 @@ MERGED from [:react-native-date-picker] /Users/applemachub/Mughees/Projects/open
 MERGED from [:react-native-device-info] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-device-info/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-document-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-document-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-gesture-handler] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-gesture-handler/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-9:12
+MERGED from [:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-21:12
 MERGED from [:react-native-maps] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-maps/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-pager-view] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-pager-view/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-push-notification] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-push-notification/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-9:12
@@ -52,6 +53,7 @@ MERGED from [com.facebook.soloader:soloader:0.10.4] /Users/applemachub/.gradle/c
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/applemachub/.gradle/caches/transforms-3/55fa011e88d758cfd5b8246fa4919892/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/applemachub/.gradle/caches/transforms-3/771656216da139197624a6a3abb614f4/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.core:core-ktx:1.6.0] /Users/applemachub/.gradle/caches/transforms-3/e9e3f6992fa799e60f0cb887983616d2/transformed/jetified-core-ktx-1.6.0/AndroidManifest.xml:2:1-9:12
+MERGED from [androidx.exifinterface:exifinterface:1.3.3] /Users/applemachub/.gradle/caches/transforms-3/a01d5a23f155d548efa57f4f9d6149a8/transformed/exifinterface-1.3.3/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] /Users/applemachub/.gradle/caches/transforms-3/111d5d3b221d477f30303c8b92e15b15/transformed/jetified-viewpager2-1.0.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /Users/applemachub/.gradle/caches/transforms-3/244346fe87f989703e07a1faa8fdee61/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/applemachub/.gradle/caches/transforms-3/c88e6c477fc4c8cf98f481666fa0823c/transformed/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
@@ -171,10 +173,16 @@ uses-permission#android.permission.ACCESS_COARSE_LOCATION
 ADDED from /Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:9:5-80
 	android:name
 		ADDED from /Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:9:22-78
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:10:5-80
+	android:name
+		ADDED from /Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:10:22-78
 application
 ADDED from /Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:12:5-66:19
 MERGED from [:react-native-community_datetimepicker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/@react-native-community/datetimepicker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:9:5-20
 MERGED from [:react-native-community_datetimepicker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/@react-native-community/datetimepicker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:9:5-20
+MERGED from [:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:9:5-19:19
+MERGED from [:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:9:5-19:19
 MERGED from [com.facebook.react:react-native:0.70.5] /Users/applemachub/.gradle/caches/transforms-3/f350d5f4dfaf7578f3183b022a8af836/transformed/jetified-react-native-0.70.5-release/AndroidManifest.xml:9:5-20
 MERGED from [com.facebook.react:react-native:0.70.5] /Users/applemachub/.gradle/caches/transforms-3/f350d5f4dfaf7578f3183b022a8af836/transformed/jetified-react-native-0.70.5-release/AndroidManifest.xml:9:5-20
 MERGED from [com.google.firebase:firebase-analytics:21.2.0] /Users/applemachub/.gradle/caches/transforms-3/3c7bb22fa7d0996397237cf9d91664c2/transformed/jetified-firebase-analytics-21.2.0/AndroidManifest.xml:7:5-20
@@ -365,6 +373,8 @@ MERGED from [:react-native-document-picker] /Users/applemachub/Mughees/Projects/
 MERGED from [:react-native-document-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-document-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-gesture-handler] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-gesture-handler/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-gesture-handler] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-gesture-handler/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-maps] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-maps/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-maps] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-maps/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-pager-view] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-pager-view/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-7:41
@@ -447,6 +457,8 @@ MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/applemachub/.gradl
 MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/applemachub/.gradle/caches/transforms-3/771656216da139197624a6a3abb614f4/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.core:core-ktx:1.6.0] /Users/applemachub/.gradle/caches/transforms-3/e9e3f6992fa799e60f0cb887983616d2/transformed/jetified-core-ktx-1.6.0/AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.core:core-ktx:1.6.0] /Users/applemachub/.gradle/caches/transforms-3/e9e3f6992fa799e60f0cb887983616d2/transformed/jetified-core-ktx-1.6.0/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.3] /Users/applemachub/.gradle/caches/transforms-3/a01d5a23f155d548efa57f4f9d6149a8/transformed/exifinterface-1.3.3/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.3] /Users/applemachub/.gradle/caches/transforms-3/a01d5a23f155d548efa57f4f9d6149a8/transformed/exifinterface-1.3.3/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] /Users/applemachub/.gradle/caches/transforms-3/111d5d3b221d477f30303c8b92e15b15/transformed/jetified-viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] /Users/applemachub/.gradle/caches/transforms-3/111d5d3b221d477f30303c8b92e15b15/transformed/jetified-viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /Users/applemachub/.gradle/caches/transforms-3/244346fe87f989703e07a1faa8fdee61/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml:20:5-22:41
@@ -581,6 +593,22 @@ INJECTED from /Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/
 		INJECTED from /Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml
 		ADDED from /Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml
 		INJECTED from /Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml
+provider#com.imagepicker.ImagePickerProvider
+ADDED from [:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:10:9-18:20
+	android:grantUriPermissions
+		ADDED from [:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:14:13-47
+	android:authorities
+		ADDED from [:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:12:13-71
+	android:exported
+		ADDED from [:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:13:13-37
+	android:name
+		ADDED from [:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:11:13-63
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from [:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:15:13-17:70
+	android:resource
+		ADDED from [:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:17:17-67
+	android:name
+		ADDED from [:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:16:17-67
 uses-permission#android.permission.ACCESS_NETWORK_STATE
 ADDED from [com.google.firebase:firebase-messaging:23.1.0] /Users/applemachub/.gradle/caches/transforms-3/a2bc4a7f01ee2b43e7938bb5f3f2a627/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.8] /Users/applemachub/.gradle/caches/transforms-3/db1428798f80c37830bd99f22be9c97c/transformed/jetified-transport-backend-cct-3.1.8/AndroidManifest.xml:24:5-79

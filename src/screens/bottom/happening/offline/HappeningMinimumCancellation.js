@@ -1,7 +1,7 @@
 // CC STANDS FOR CODE OF CONDUCT
 
 import React, { useContext, useState } from 'react'
-import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, ScrollView, TextInput, Platform, BackHandler } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, ScrollView, TextInput, Platform, BackHandler, SafeAreaView } from 'react-native'
 import ReactNativeModal from 'react-native-modal'
 import { navigate } from '../../../../../Navigations'
 import HappeningHeader from '../../../../common/HappeningHeader'
@@ -32,19 +32,18 @@ const HappeningMinimumCancellation = (props) => {
     const [yOffset, setYOffset] = useState();// SETTING MODAL POSITION FOR DOESNOT REPEAT PICKER
     const [pickerModal, setPickerModal] = useState(false);
 
-    const [minimumCancellationPeriod, setMinimumCancellationPeriod] = useState('');
+    const [minimumCancellationPeriod, setMinimumCancellationPeriod] = useState('Hours');
     const [minCancellationTime, setMinCancellationTime] = useState('');
 
-    const repeatOptions = ["Minutes", "Hours", "Day", "Months"];
+    const repeatOptions = ["Hours ", "Days"];
 
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            // navigate('HappeningLanguages1');
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
     function next() {
@@ -75,7 +74,7 @@ const HappeningMinimumCancellation = (props) => {
             isVisible={pickerModal}
             onBackdropPress={() => setPickerModal(false)}
         >
-            <View style={{ marginTop: yOffset, marginLeft: xOffset, backgroundColor: '#35208E', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, width: "56%" }}>
+            <View style={{ marginTop: yOffset-50, marginLeft: xOffset+80, backgroundColor: '#35208E', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, width: "40%" }}>
                 {
                     repeatOptions.map((v, i) => {
                         return (
@@ -105,16 +104,16 @@ const HappeningMinimumCancellation = (props) => {
 
 
     return (
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
 
             <StatusBar
                 backgroundColor={acolors.primary}
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"Minimum cancellation period?"}
+                heading={"Cancellation period"}
                 desc={"Until when can the fellow cancel"}
-            // headerStyle={{ paddingBottom: 30 }}
+                headerStyle={{ paddingTop: 40 }}
             />
             <View style={styles.contentContainer}>
                 <ScrollView contentContainerStyle={{ paddingBottom: 350 }}>
@@ -123,7 +122,7 @@ const HappeningMinimumCancellation = (props) => {
                             <TextInput
                                 onChangeText={setMinCancellationTime}
                                 keyboardType='number-pad'
-                                placeholder='4'
+                                // placeholder='4'
                                 placeholderTextColor={"rgba(0,0,0,0.5)"}
                                 style={styles.textInput}
                                 textAlign='center'
@@ -137,8 +136,8 @@ const HappeningMinimumCancellation = (props) => {
                                             setXOffset(px + 1)
                                         }
                                         else {
-                                            setYOffset(py - 300)
-                                            setXOffset(px - 50)
+                                            setYOffset(py - 400)
+                                            setXOffset(px - 100)
                                         }
 
                                     })
@@ -166,7 +165,7 @@ const HappeningMinimumCancellation = (props) => {
             <DropdownAlert ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 
-        </View>
+        </SafeAreaView>
     )
 }
 

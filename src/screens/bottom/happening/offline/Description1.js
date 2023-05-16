@@ -13,6 +13,7 @@ import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import HappeningStep from '../../../../common/HappeningStep'
 import { BackHandler } from 'react-native'
+import TipsButton from '../../../../components/TipsButton'
 
 
 var alertRef;
@@ -23,18 +24,17 @@ const Description1 = (props) => {
     const forceUpdate = useForceUpdate();
     const { state, setLocationHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
-    const [description, setDescription] = useState('this is the long description of happening. description must contain at least 150 words. description i am creating is on local happinezz.this is the long description of happening. description must contain at least 150 words. description i am creating is on local happinezz.this is the long description of happening. description must contain at least 150 words. description i am creating is on local happinezz');
+    const [description, setDescription] = useState('');
+    const [titleWords, setTitleWords] = useState(0);
+
 
     function next() {
 
-        if (description == "") {
-            alertRef.alertWithType('error', "Error", "Please enter description");
+        if (titleWords < 100 || titleWords > 300) {
+            alertRef.alertWithType('error', "Error", "Please enter a description between 100-300 words");
             return;
         }
-        if (description.length < 150) {
-            alertRef.alertWithType('error', "Error", "Description must contain atleast 150 words");
-            return;
-        }
+
 
         const obj = {
             ...state.locationHappeningDraft,
@@ -44,13 +44,16 @@ const Description1 = (props) => {
         navigate('Images1')
     }
 
+    function getTitleWordsCount(text) {
+        if (text == "") {
+            setTitleWords(0)
+            return;
+        }
+        let count = text.trim().split(/\s+/).length
+        setTitleWords(count)
+    }
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            // navigate('Title2');
-            return true;
-        })
-    }, []);
+
 
 
 
@@ -67,25 +70,32 @@ const Description1 = (props) => {
             />
             <View style={styles.contentContainer}>
                 <ScrollView>
+                    <View>
 
-                    <TextInput
-                        onChangeText={setDescription}
-                        placeholder='Describe what your happening is about min 150 words'
-                        maxLength={150}
-                        textAlignVertical='top'
-                        multiline={true}
-                        placeholderTextColor={"#2A2A2A"}
-                        style={{
-                            width: "100%", height: 160, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1, marginTop: 50,
-                            fontSize: 12, color: "#2A2A2A", fontFamily: fonts.MRe, paddingHorizontal: 15,
-                        }}
-                    />
-                    <TouchableOpacity
-                        style={[styles.tipsBtn]}
+                        <TextInput
+                            onChangeText={(v) => {
+                                getTitleWordsCount(v)
+                                setDescription(v)
+                            }}
+                            placeholder='Describe your happening in about min 100-300 words'
+                            // maxLength={300}
+                            textAlignVertical='top'
+                            multiline={true}
+                            placeholderTextColor={"#2A2A2A"}
+                            style={{
+                                width: "100%", height: 160, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1, marginTop: 50,
+                                fontSize: 12, color: "#2A2A2A", fontFamily: fonts.MRe, paddingHorizontal: 15,
+                            }}
+                        />
+                        <View style={{ position: 'absolute', bottom: 5, right: 10, backgroundColor: 'white', }}>
+                            <Text style={{ color: '#2A2A2A', fontSize: 14, fontFamily: fonts.PRe, backgroundColor: 'white' }}>{titleWords ?? 0}/300</Text>
+                        </View>
+
+
+                    </View>
+                    <TipsButton
                         onPress={() => navigate('Description2')}
-                    >
-                        <Text style={styles.topsBtnTitle}>{"Tips"}</Text>
-                    </TouchableOpacity>
+                    />
                 </ScrollView>
 
             </View>

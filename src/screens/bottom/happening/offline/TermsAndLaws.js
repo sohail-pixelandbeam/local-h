@@ -45,11 +45,7 @@ const TermsAndLaws = (props) => {
     ];
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
+    
 
 
     function addRemoveTermsLaws(v) {
@@ -88,8 +84,10 @@ const TermsAndLaws = (props) => {
         // reqObj.UserId = loginData?._id;
         // reqObj.userProfileId = profileData?._id;
         reqObj.happeningOnLocation = true;
-        reqObj.happeningAccessibility = "nothing"
-        console.log(reqObj);
+        reqObj.happeningAccessibility = "nothing";
+        reqObj.fellowMustComeAlone = true;
+        // reqObj.daysOfWeek = null;
+        // console.log(reqObj.daysOfWeek);
 
         apiRequest(reqObj, 'createHappeningOnLocation')
             .then(data => {

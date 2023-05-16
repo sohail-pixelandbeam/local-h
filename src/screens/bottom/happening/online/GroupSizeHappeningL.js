@@ -21,14 +21,14 @@ const GroupSizeHappeningL = () => {
     const [loading, setLoading] = useState(false);
 
 
-    useFocusEffect(React.useCallback(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            console.log('returning')
-            goBack();
-            return false;
-        })
-    }, [],
-    ))
+    // useFocusEffect(React.useCallback(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         console.log('returning')
+    //         goBack();
+    //         return false;
+    //     })
+    // }, [],
+    // ))
 
 
     function next(fellow) {

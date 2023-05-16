@@ -38,6 +38,7 @@
     <orderEntry type="module" module-name="eventapp.react-native-device-info.main" scope="TEST" />
     <orderEntry type="module" module-name="eventapp.react-native-document-picker.main" scope="TEST" />
     <orderEntry type="module" module-name="eventapp.react-native-gesture-handler.main" scope="TEST" />
+    <orderEntry type="module" module-name="eventapp.react-native-image-picker.main" scope="TEST" />
     <orderEntry type="module" module-name="eventapp.react-native-maps.main" scope="TEST" />
     <orderEntry type="module" module-name="eventapp.react-native-pager-view.main" scope="TEST" />
     <orderEntry type="module" module-name="eventapp.react-native-push-notification.main" scope="TEST" />

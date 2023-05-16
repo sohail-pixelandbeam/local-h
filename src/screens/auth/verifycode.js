@@ -36,9 +36,8 @@ const Verifycode = (props) => {
         };
 
 
-        apiRequest(reqObj, 'verfiyOtpSent')
+        apiRequest(reqObj, 'auth/verfiyOtpSent')
             .then(data => {
-                console.log('data', data)
                 setLoading(false);
                 if (data.status) {
                     retrieveItem('login_data')
@@ -46,6 +45,7 @@ const Verifycode = (props) => {
                             let data1 = data;
                             alertRef.alertWithType("success", "Success", "Success");
                             data1.isVerify = true;
+                            console.log('------data1',data1)
                             storeItem('login_data', data1);
                             setTimeout(() => {
                                 changeLoggedIn.changeNow(1);

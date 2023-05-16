@@ -23,8 +23,8 @@ const HappeningLanguages = (props) => {
     const forceUpdate = useForceUpdate();
     const { state, setLocationHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
-    const [language, setLanguage] = useState('English');
-    const [selectedLanguages, setSelectedLanguages] = useState(['English']);
+    const [language, setLanguage] = useState('');
+    const [selectedLanguages, setSelectedLanguages] = useState([]);
 
     const [languages, setLanguages] = useState(state?.happeningSubmissionData?.languages);
     const [languagesTemp, setLanguageTemp] = useState(state?.happeningSubmissionData?.languages);
@@ -33,12 +33,11 @@ const HappeningLanguages = (props) => {
 
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            // navigate('Duration1');
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
     function addRemoveLanguage(v) {
@@ -67,10 +66,11 @@ const HappeningLanguages = (props) => {
         const obj = {
             ...state.locationHappeningDraft,
             languageSpokenAtHappening: selectedLanguages,
+            languageForYourHappening: selectedLanguages
         }
         console.log('this is o', obj)
         setLocationHappeningData(obj);
-        navigate('HappeningLanguages1')
+        navigate('HappeningSkills')
         // navigate('Description1')
     }
 
@@ -83,12 +83,12 @@ const HappeningLanguages = (props) => {
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"languages spoken at happening?"}
+                heading={"Languages spoken at happening?"}
                 desc={"The language that is used to communicate with the fellow"}
             // headerStyle={{ paddingBottom: 30 }}
             />
             <View style={styles.contentContainer}>
-                <ScrollView>
+            <ScrollView contentContainerStyle={{paddingBottom:260}} showsVerticalScrollIndicator={false} >
 
                     <TextInput
                         placeholder='Search for a language'

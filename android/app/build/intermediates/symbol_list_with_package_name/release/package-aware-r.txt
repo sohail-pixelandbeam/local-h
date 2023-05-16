@@ -1422,7 +1422,7 @@ drawable abc_textfield_search_material
 drawable abc_vector_test
 drawable amu_bubble_mask
 drawable amu_bubble_shadow
-drawable assets_icon1
+drawable assets_loader
 drawable autofill_inline_suggestion_chip_background
 drawable avd_hide_password
 drawable avd_show_password
@@ -1523,23 +1523,6 @@ drawable src_assets_happeningrejected
 drawable src_assets_ny_done
 drawable src_assets_page_img
 drawable src_assets_paypalpay
-drawable src_assets_sdgscreenimages_image12
-drawable src_assets_sdgscreenimages_image30
-drawable src_assets_sdgscreenimages_image31
-drawable src_assets_sdgscreenimages_image32
-drawable src_assets_sdgscreenimages_image33
-drawable src_assets_sdgscreenimages_image34
-drawable src_assets_sdgscreenimages_image35
-drawable src_assets_sdgscreenimages_image36
-drawable src_assets_sdgscreenimages_image37
-drawable src_assets_sdgscreenimages_image38
-drawable src_assets_sdgscreenimages_image39
-drawable src_assets_sdgscreenimages_image40
-drawable src_assets_sdgscreenimages_image41
-drawable src_assets_sdgscreenimages_image42
-drawable src_assets_sdgscreenimages_image43
-drawable src_assets_sdgscreenimages_image44
-drawable src_assets_sdgscreenimages_image45
 drawable src_assets_shakehandheart
 drawable src_assets_signinmask
 drawable src_assets_success
@@ -1552,7 +1535,6 @@ drawable src_static_assets_cc3
 drawable src_static_assets_cc4
 drawable src_static_assets_content
 drawable src_static_assets_featuredimage
-drawable src_static_assets_fish
 drawable src_static_assets_image
 drawable src_static_assets_keytipsimages
 drawable src_static_assets_map
@@ -2504,8 +2486,6 @@ style CalendarDatePickerStyle
 style CardView
 style CardView_Dark
 style CardView_Light
-style ClockTimePickerDialog
-style ClockTimePickerStyle
 style DatePickerBaseTheme
 style DatePickerTheme
 style DialogAnimationFade
@@ -2573,8 +2553,10 @@ style ShapeAppearanceOverlay_MaterialComponents_TextInputLayout_FilledBox
 style ShapeAppearanceOverlay_TopLeftCut
 style ShapeAppearanceOverlay_TopRightDifferentCornerSize
 style SpinnerDatePickerDialog
+style SpinnerDatePickerDialogBase
 style SpinnerDatePickerStyle
 style SpinnerTimePickerDialog
+style SpinnerTimePickerDialogBase
 style SpinnerTimePickerStyle
 style Test_ShapeAppearanceOverlay_MaterialComponents_MaterialCalendar_Day
 style Test_Theme_MaterialComponents_MaterialCalendar
@@ -3087,6 +3069,7 @@ styleable View android_theme android_focusable paddingEnd paddingStart theme
 styleable ViewBackgroundHelper android_background backgroundTint backgroundTintMode
 styleable ViewPager2 android_orientation
 styleable ViewStubCompat android_id android_layout android_inflatedId
+xml imagepicker_provider_paths
 xml rn_dev_preferences
 xml standalone_badge
 xml standalone_badge_gravity_bottom_end

@@ -10,7 +10,7 @@ import { FbIcon, InstaIcon, LinkedinIcon, TickIcon } from '../../components/Svgs
 import Svg, { ClipPath, Defs, Path } from 'react-native-svg';
 import Loader from '../../utils/Loader';
 import DropdownAlert from 'react-native-dropdownalert';
-import { navigate } from '../../../Navigations';
+import { goBack, navigate } from '../../../Navigations';
 import { storeItem, validateEmail } from '../../utils/functions';
 import { apiRequest } from '../../utils/apiCalls';
 
@@ -65,16 +65,17 @@ const Signup = ({ navigation }) => {
         const reqObj = {
             firstName: firstName,
             lastName: lastName,
-            userEmail: e, 
+            userEmail: e,
             // userName: username, 
             userPassword: password, agreeButton: agree
         };
 
-        apiRequest(reqObj, 'userSignUp')
+        apiRequest(reqObj, 'auth/userSignUp')
             .then(data => {
-                console.log(data)
+                console.log('data====',data)
                 if (data.status) {
                     alertRef.alertWithType('success', "Success", "Signup Successfully")
+                    data.isVerify = false
                     storeItem('login_data', data);
                     setTimeout(() => {
                         navigate('Verifycode', data);
@@ -96,7 +97,8 @@ const Signup = ({ navigation }) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: "#35208e" }}>
-
+            {loading && <Loader />}
+            <DropdownAlert ref={(ref) => alertRef = ref} />
             <View style={{
                 marginTop: 20,
                 flexDirection: 'row',
@@ -104,7 +106,7 @@ const Signup = ({ navigation }) => {
                 justifyContent: 'space-between',
                 margin: 20,
             }}>
-                <TouchableOpacity onPress={() => navigation.navigate('BottomTabs')}>
+                <TouchableOpacity onPress={() => goBack()}>
                     <Image
                         style={{ width: 10, height: 20 }}
                         source={require('../../assets/button_back.png')}
@@ -230,8 +232,7 @@ const Signup = ({ navigation }) => {
                 </View>
             </ScrollView >
 
-            {loading && <Loader />}
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+
 
         </View >
     )
@@ -319,8 +320,8 @@ const styles = StyleSheet.create({
     },
     checkboxContainer: {
         flexDirection: "row",
-        marginTop: 30,
-        marginBottom: 10
+        marginTop: 0,
+        marginBottom: 30
 
     },
     checkbox: {
@@ -333,7 +334,6 @@ const styles = StyleSheet.create({
     label: {
         margin: 8,
         fontFamily: fonts.PRe,
-
         color: 'white'
     },
 

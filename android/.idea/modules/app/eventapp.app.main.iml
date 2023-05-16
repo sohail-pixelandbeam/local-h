@@ -56,6 +56,7 @@
     <orderEntry type="module" module-name="eventapp.react-native-device-info.main" />
     <orderEntry type="module" module-name="eventapp.react-native-document-picker.main" />
     <orderEntry type="module" module-name="eventapp.react-native-gesture-handler.main" />
+    <orderEntry type="module" module-name="eventapp.react-native-image-picker.main" />
     <orderEntry type="module" module-name="eventapp.react-native-maps.main" />
     <orderEntry type="module" module-name="eventapp.react-native-pager-view.main" />
     <orderEntry type="module" module-name="eventapp.react-native-push-notification.main" />
@@ -71,8 +72,8 @@
     <orderEntry type="library" name="Gradle: com.facebook.fbjni:fbjni-java-only:0.2.2" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:4.9.2" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okio:okio:2.9.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.21" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.21" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" name="Gradle: com.facebook.infer.annotation:infer-annotation:0.18.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" level="project" />

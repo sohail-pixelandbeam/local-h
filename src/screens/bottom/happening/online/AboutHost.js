@@ -22,20 +22,15 @@ const AboutHost = (props) => {
     const { state, setHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
     const [makeYouBest, setMakesYouBest] = useState('');
+    const [titleWords, setTitleWords] = useState(0);
 
 
-
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
-
+   
 
     function next() {
 
-        if (makeYouBest == "") {
-            alertRef.alertWithType('error', "Error", "Please fill in the field");
+        if (titleWords < 75 || titleWords > 150) {
+            alertRef.alertWithType('error', "Error", "Please enter a description between 100-300 words");
             return;
         }
         const obj = {
@@ -47,6 +42,16 @@ const AboutHost = (props) => {
     }
 
 
+    function getTitleWordsCount(text) {
+        if (text == "") {
+            setTitleWords(0)
+            return;
+        }
+        let count = text.trim().split(/\s+/).length
+        setTitleWords(count)
+    }
+
+
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <StatusBar
@@ -54,7 +59,7 @@ const AboutHost = (props) => {
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"What makes you Ideal to host this Happening?"}
+                heading={"What makes you ideal to host this happening?"}
                 desc={"Tell fellows about yourself."}
             // headerStyle={{ paddingBottom: 30 }}
             />
@@ -62,9 +67,11 @@ const AboutHost = (props) => {
                 <ScrollView>
                     <View>
                         <TextInput
-                            onChangeText={setMakesYouBest}
+                            onChangeText={(v) => {
+                                setMakesYouBest(v)
+                                getTitleWordsCount(v);
+                            }}
                             placeholder='What makes you the best person to host this happening?'
-                            maxLength={150}
                             textAlignVertical='top'
                             multiline={true}
                             placeholderTextColor={"#2A2A2A"}
@@ -73,7 +80,7 @@ const AboutHost = (props) => {
                                 fontSize: 12, color: "#2A2A2A", fontFamily: fonts.MRe, paddingHorizontal: 15,
                             }}
                         />
-                        <Text style={{ position: 'absolute', bottom: 12, left: 20, fontSize: 12, color: "#2A2A2A", fontFamily: fonts.MRe, }}>0/150 words</Text>
+                        <Text style={{ position: 'absolute', bottom: 12, left: 20, fontSize: 12, color: "#2A2A2A", fontFamily: fonts.MRe, }}>{titleWords}/150 words</Text>
                     </View>
                 </ScrollView>
 

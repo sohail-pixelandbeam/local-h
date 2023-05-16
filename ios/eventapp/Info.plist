@@ -47,6 +47,8 @@
 	<string>To see nearby happenings you should give location access</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>To see nearby happenings you should give location access</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Local Happinez aims to create significant social and environmental impact in 2026 by activating fellows to help positively impact projects (happenings) worldwide. The Local Happinez App allows the hosts to tell more about their projects and to give context by uploading photos from their photo library.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-Black.ttf</string>

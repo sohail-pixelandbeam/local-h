@@ -5,7 +5,7 @@ import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, S
 import { navigate } from '../../../../../Navigations'
 import HappeningHeader from '../../../../common/HappeningHeader'
 import HappeningStep from '../../../../common/HappeningStep'
-import { BackIcon, DrinksIcon, FoodIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, PIcon, RELIABLENONPROFITS, SUPPORTICON, TickIcon, ToiletIcon, WELFAREICON, WifiIcon } from '../../../../components/Svgs'
+import { BackIcon, DrinksIcon, FoodIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, PetsIcon, PIcon, RELIABLENONPROFITS, SUPPORTICON, TickIcon, ToiletIcon, WELFAREICON, WifiIcon } from '../../../../components/Svgs'
 import { acolors } from '../../../../constants/colors'
 import { fonts } from '../../../../constants/fonts'
 import { Context } from '../../../../Context/DataContext'
@@ -27,19 +27,19 @@ const HappeningFacilites = (props) => {
     const [facilitesArr, setFacilitiesArr] = useState([
         { title: "WI-FI", icon: WifiIcon },
         { title: "Parking", icon: PIcon },
-        { title: "Drinks", icon: DrinksIcon },
-        { title: "Food", icon: FoodIcon },
-        { title: "Toilet", icon: ToiletIcon }
+        // { title: "Drinks", icon: DrinksIcon },
+        // { title: "Food", icon: FoodIcon },
+        { title: "Toilet", icon: ToiletIcon },
+        { title: "Pets", icon: PetsIcon },
     ])
 
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            // navigate('HappeningLanguages1');
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
     function addRemoveFacilities(v) {
@@ -63,7 +63,7 @@ const HappeningFacilites = (props) => {
     function next() {
         const obj = {
             ...state.locationHappeningDraft,
-            whatAreTheFacilitiesAtYourHappening: selectedFacilties,
+            Facilities: selectedFacilties,
             iAmNotProvideAnyFacility: !providingFacilities,
         };
         setLocationHappeningData(obj);
@@ -99,14 +99,14 @@ const HappeningFacilites = (props) => {
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"What are the facilities at your Happening?"}
+                heading={"What are the facilities at your happening?"}
                 desc={"facilites offered and some requirements for the happening."}
             // headerStyle={{ paddingBottom: 30 }}
             />
             <View style={styles.contentContainer}>
                 <ScrollView contentContainerStyle={{ paddingBottom: 150 }} >
                     <View style={{ width: '90%', alignSelf: 'center', marginTop: 20 }}>
-                        <View style={{ flexDirection: 'row', width: "100%", flexWrap: 'wrap', marginTop: 10, marginLeft: -20 }}>
+                        <View style={{ flexDirection: 'row', width: "60%", flexWrap: 'wrap', marginTop: 10, marginLeft: -20, alignSelf: 'center', justifyContent: 'space-between' }}>
                             {
                                 facilitesArr?.map((v, i) => {
                                     let Icon = v?.icon

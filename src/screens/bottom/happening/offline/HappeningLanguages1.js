@@ -29,12 +29,11 @@ const HappeningLanguages1 = (props) => {
     const [languages, setLanguages] = useState(state?.happeningSubmissionData?.languages);
     const [languagesTemp, setLanguageTemp] = useState(state?.happeningSubmissionData?.languages);
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            // navigate('HappeningLanguages');
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
     function addRemoveLanguage(v) {

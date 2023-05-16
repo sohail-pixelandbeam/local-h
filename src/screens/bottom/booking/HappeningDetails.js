@@ -18,7 +18,8 @@ const HappeningDetails = (props) => {
 
 
     let item = props.route.params?.params ?? props.route.params ?? null;
-    const languageForYourHappening = item?.languageForYourHappening?.toString();
+    // console.log('item', item)
+    const languageForYourHappening = item?.languageSpokenAtHappening?.toString();
     const { width: screenWidth } = Dimensions.get("window");
     const ref = React.useRef();
 
@@ -44,10 +45,11 @@ const HappeningDetails = (props) => {
         apiRequest('', 'getHappningDetails/' + item?._id, "GET")
             .then(data => {
                 setLoading(false);
-                console.log('here is the data', data.data)
+                console.log('here is the dataasd', data.data)
                 if (data.status) {
                     // let startTime = data.data?.startTime;
                     // let endTime = data.data?.endTime;
+                    console.log(data.data.userProfileId)
                     setHappeningDetails(data.data);
                     // console.log(data.data[1].addSkills)
                 }
@@ -148,21 +150,25 @@ const HappeningDetails = (props) => {
                     <View style={{ width: '85%', alignSelf: 'center' }}>
                         <View style={{ flexDirection: 'row', width: "100%", marginTop: 15 }}>
                             <Text style={[styles.title, { width: "80%" }]}>{happeningDetails?.happeningTitle}</Text>
-                            <Image
+                            {/* <Image
                                 source={require('../../../static_assets/fish.png')}
-                            />
+                            /> */}
                         </View>
+                        {
+                            happeningDetails?.conformHappeningLocation &&
 
-                        <View style={{ flexDirection: 'row', width: "50%", justifyContent: 'space-between' }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <HappeningLocationIconSmall style={{ marginBottom: 5 }} />
-                                <Text style={[styles.regulareText, { marginLeft: 3 }]}>{happeningDetails?.conformHappeningLocation}</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ flexDirection: 'row', width: "50%", justifyContent: 'space-between' }}>
+                                <View style={{ flexDirection: 'row', }}>
+                                    <HappeningLocationIconSmall width={12} height={18} style={{ marginTop: 5 }} />
+                                    <Text numberOfLines={2} style={[styles.regulareText, { marginLeft: 5 }]}>{happeningDetails?.conformHappeningLocation}</Text>
+                                </View>
+
+                                {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <RattingStartIcon style={{ marginBottom: 5 }} />
                                 <Text style={[styles.regulareText, { marginLeft: 3 }]}>5.0</Text>
+                            </View> */}
                             </View>
-                        </View>
+                        }
 
                         <View style={[styles.sepearatorHorizontal, { marginTop: 20 }]} />
 
@@ -218,7 +224,7 @@ const HappeningDetails = (props) => {
                         </View>
                         <View style={styles.spaceBetweenView}>
                             <Text style={styles.headingText}>Skills Required</Text>
-                            <Text style={styles.textRed}>{happeningDetails?.addSkill?.toString()}</Text>
+                            <Text style={styles.textRed}>{happeningDetails?.addSkill?.length ? happeningDetails?.addSkill?.toString() : "No skills required"}</Text>
                         </View>
                         <View style={styles.spaceBetweenView}>
                             <Text style={styles.headingText}>Minimum Age</Text>
@@ -228,6 +234,11 @@ const HappeningDetails = (props) => {
                             <Text style={styles.headingText}>Languages </Text>
                             <Text style={styles.textRed}>{languageForYourHappening}</Text>
                         </View>
+                        <View style={styles.spaceBetweenView}>
+                            <Text style={styles.headingText}>Happening type</Text>
+                            <Text style={styles.textRed}>{happeningDetails?.happeningOnline ? "Online" : "On location"}</Text>
+                        </View>
+
 
                         <View style={[styles.sepearatorHorizontal, { marginTop: 15 }]} />
 
@@ -323,7 +334,9 @@ const HappeningDetails = (props) => {
 
                         <TouchableOpacity
                             onPress={() => {
-                                navigate('ProfilePublicView',)
+                                navigate('ProfilePublicView', {
+                                    data: happeningDetails
+                                })
                                 // navigateFromStack('', 'HappeningStack', 'ProfilePublicView')
                             }}
                             style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
@@ -333,11 +346,11 @@ const HappeningDetails = (props) => {
                             // source={require('../../../static_assets/profileImg.png')}
                             />
                             <View>
-                                <Text style={styles.headingText}>About the Host{"\n"}{happeningDetails?.userProfileId?.firstName}</Text>
+                                <Text style={styles.headingText}>About the Host{"\n"}{happeningDetails?.userProfileId?.userId?.firstName + " " + happeningDetails?.userProfileId?.userId?.lastName}</Text>
                             </View>
                         </TouchableOpacity>
 
-                        <Text style={[styles.regulareText, { marginTop: 10 }]}>{happeningDetails?.userProfileId?.userId?.bio}</Text>
+                        <Text style={[styles.regulareText, { marginTop: 10 }]}>{happeningDetails?.userProfileId?.bio}</Text>
 
                         <Text style={[styles.headingText, { marginTop: 15 }]}>Photos & Videos</Text>
 
@@ -563,10 +576,10 @@ const styles = StyleSheet.create({
         color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 16
     },
     xxSmallText: {
-        color: '#766BC3', fontFamily: fonts.PRe, fontSize: 8
+        color: '#5B4DBC', fontFamily: fonts.PRe, fontSize: 10
     },
     xxSmallSemiBoldText: {
-        color: '#766BC3', fontFamily: fonts.PSBo, fontSize: 8
+        color: '#766BC3', fontFamily: fonts.PSBo, fontSize: 10
     },
     textRed: {
         color: '#BC4D85', fontFamily: fonts.PSBo, fontSize: 11
@@ -575,7 +588,7 @@ const styles = StyleSheet.create({
         width: "100%", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10
     },
     happeningDetilsInfo1: {
-        width: "100%", backgroundColor: 'rgba(238,238,238,0.4)', borderRadius: 10, padding: 10, opacity: 0.7,
+        width: "100%", backgroundColor: 'rgba(238,238,238,0.4)', borderRadius: 10, padding: 10,
         flexDirection: 'row', justifyContent: 'space-around',
     },
     sepearatorVertical: {

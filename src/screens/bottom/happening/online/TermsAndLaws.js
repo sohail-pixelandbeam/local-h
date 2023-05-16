@@ -38,11 +38,7 @@ const TermsAndLaws = (props) => {
 
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
+    
 
 
     function addRemoveTermsLaws(v) {

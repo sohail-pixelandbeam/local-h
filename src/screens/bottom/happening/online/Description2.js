@@ -12,11 +12,7 @@ import { fonts } from '../../../../constants/fonts'
 const Description2 = (props) => {
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
+
 
 
     return (
@@ -26,13 +22,13 @@ const Description2 = (props) => {
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"Key Tips for\nthe Description "}
+                heading={"Key tips for\nthe description "}
                 desc={"Key tips to consider while giving a title to the happening ."}
             // headerStyle={{ paddingBottom: 30 }}
             />
             <View style={styles.contentContainer}>
 
-                <ScrollView contentContainerStyle={{ paddingBottom: 400 }} >
+                <ScrollView contentContainerStyle={{ paddingBottom: 240 }} >
                     <Text style={{ color: '#2A2A2A', fontSize: 15, fontFamily: fonts.MBo, marginTop: 20 }}>Here are some good recommendations </Text>
                     <FlatList
                         data={[
@@ -57,7 +53,7 @@ const Description2 = (props) => {
                         )}
                     />
 
-                    <Text style={{ fontSize: 12, color: '#7B7B7B', fontFamily: fonts.MRe, lineHeight: 15, marginTop: 10 }}>Bring the science of reefs to life and do your part to rescue threatened and endangered ecosystems and species. Perfect for families, single divers, vacationers, school groups, and more! As reefs around the world face the threat of die-off, you can make a measurable difference to help out degraded reefs and endangered species. Not only will you make a positive impact on Bonaire’s reefs, but you will also even have fun and learn new skills in the process!</Text>
+                    <Text style={{ fontSize: 12, color: '#7B7B7B', fontFamily: fonts.MRe, lineHeight: 15, marginTop: 20 }}>Bring the science of reefs to life and do your part to rescue threatened and endangered ecosystems and species. Perfect for families, single divers, vacationers, school groups, and more! As reefs around the world face the threat of die-off, you can make a measurable difference to help out degraded reefs and endangered species. Not only will you make a positive impact on Bonaire’s reefs, but you will also even have fun and learn new skills in the process!</Text>
                     <View style={{ height: 145, width: "100%", marginTop: 30 }}>
                         <Image
                             style={{ width: "100%", height: "100%", borderRadius: 21 }}
@@ -68,7 +64,7 @@ const Description2 = (props) => {
                             source={require('../../../../static_assets/mask1.png')}
                         />
                         <View style={{ position: 'absolute', bottom: 15, left: 10, width: "45%" }}>
-                            <Text style={{ fontFamily: fonts.MSBo, fontSize: 15, color: '#FFFFFF' }}>{"Fight Food Waste With Local Communities"}</Text>
+                            <Text style={{ fontFamily: fonts.MSBo, fontSize: 15, color: '#FFFFFF' }}>{"Fight food waste with local communities"}</Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 50 }}>
@@ -78,7 +74,7 @@ const Description2 = (props) => {
                         }}>
                             <TickIcon width={8} heigh={6} />
                         </TouchableOpacity>
-                        <Text style={{ fontSize: 9, color: '#2A2A2A', fontFamily: fonts.MBo, marginLeft: 10 }}>No offensive text and all the titles are checked by our team</Text>
+                        <Text style={{ fontSize: 9, color: '#2A2A2A', fontFamily: fonts.MBo, marginLeft: 20 }}>No offensive text and all the titles are checked by our team</Text>
                     </View>
 
 

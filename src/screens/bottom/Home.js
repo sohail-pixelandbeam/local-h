@@ -3,7 +3,7 @@ import {
     StyleSheet, View, Text, TouchableOpacity, Image,
     TextInput, FlatList, ScrollView, StatusBar, SafeAreaView, Platform, Switch, RefreshControl, Keyboard
 } from 'react-native'
-import { BackIcon, CrossIcon, FilterIcon, HeartWhiteIcon, PlusIcon, SearchIcon, TickIcon, TickIconWhite } from '../../components/Svgs'
+import { BackIcon, CrossIcon, EditPencilIcon, FilterIcon, HeartWhiteIcon, PlusIcon, SearchIcon, TickIcon, TickIconWhite } from '../../components/Svgs'
 import { fonts } from '../../constants/fonts';
 import { acolors } from '../../constants/colors';
 import Modal from "react-native-modal";
@@ -28,7 +28,7 @@ const Home = () => {
 
 
     const forceUpdate = useForceUpdate();
-    const { state, setUserGlobal, userProfileData } = useContext(Context)
+    const { state, setUserGlobal, userProfileData,setHappeningSubmissionDataGlobal } = useContext(Context)
     const [loading, setLoading] = useState(false);
     const [modalLoading, setModalLoading] = useState(false);
     const [popup1, setPopup1] = useState(false);
@@ -94,15 +94,43 @@ const Home = () => {
     const [bio, setBio] = useState('');
 
     const [allHappenings, setAllHappenings] = useState([]);
+    const [bioCount, setBioCount] = useState(0);
+
+    console.log('state.happeningSubmissionData?.happeningTheme',state.happeningSubmissionData?.happeningTheme)
 
 
+    async function getHappeningSubmissionData(refresh = false) {
 
+        setLoading(true);
+        apiRequest('', 'getHappeningSubmissionData', "GET")
+            .then(data => {
+                console.log('dataaaa', data)
+                setLoading(false);
+                if (data.status) {
+                    setHappeningSubmissionDataGlobal(data.data)
+                }
+            })
+            .catch(err => {
+                console.log('errorr', err)
+                setLoading(false)
+            })
+    }
+
+
+    function getBioWordCount(text) {
+        if (text == "") {
+            setBioCount(0)
+            return;
+        }
+        let count = text.trim().split(/\s+/).length
+        console.log(count);
+        setBioCount(count)
+    }
 
     async function getHappeningDataFromServer(refresh = false) {
 
         if (!refresh) setLoading(true);
         // const userLocation = await getUserLocation();
-
         // const reqObj = { latitude: userLocation?.latitude, longitude: userLocation?.longitude, };
         // console.log('reqObj', reqObj)
         apiRequest('', 'showAllhappning', "GET")
@@ -110,7 +138,8 @@ const Home = () => {
                 setLoading(false);
                 setRefreshing(false)
                 if (data.status) {
-                    setAllHappenings(data.data);
+                    let data1 = data?.data
+                    setAllHappenings(data1?.reverse());
                     // setHappeningTodayData(data.today);
                     // setHappeningNearbyData(data.nearHappenings)
                 }
@@ -121,8 +150,6 @@ const Home = () => {
                 setLoading(false)
             })
     }
-
-
 
     function makeStaticArrays() {
         let arr = [];
@@ -149,11 +176,13 @@ const Home = () => {
 
     }
 
+
     async function uploadPic() {
         const res = await uploadSingleFile();
         setProfilePic(res);
 
     }
+
 
     function doMakeKnownLanguages() {
         let arr = languageKnownArr;
@@ -162,6 +191,7 @@ const Home = () => {
         setLanguageKnown('');
         forceUpdate();
     }
+
 
     function doSpliceLanguageKnown(v) {
         let arr = languageKnownArr;
@@ -180,6 +210,7 @@ const Home = () => {
         forceUpdate();
     }
 
+
     function doSpliceSkills(v) {
         let arr = skillsArr;
         let foundIndex = arr.indexOf(v);
@@ -187,6 +218,7 @@ const Home = () => {
         setSkillsArr(arr);
         forceUpdate();
     }
+
 
     async function doUploadProfileData() {
         try {
@@ -214,10 +246,11 @@ const Home = () => {
                 bio: bio,
                 // }
             }
+            console.log('reqObj', reqObj)
             for (let key in reqObj) {
                 data.append(key, reqObj[key]);
             }
-            let url = urls.API + "profileAndTimeline";
+            let url = urls.API + "profile/create-profile";
             setModalLoading(true)
             fetch(url, {
                 method: 'POST',
@@ -230,6 +263,8 @@ const Home = () => {
                 .then(data => data.json())
                 // .then(data => data.text())
                 .then(data => {
+                    console.log('data===', data)
+                    console.log('status ===', data.status)
                     setModalLoading(false)
                     if (data.status) {
                         storeItem('profile_data', data.data)
@@ -252,6 +287,7 @@ const Home = () => {
         }
     }
 
+
     async function saveTempProfileDataToLocal(key, value) {
 
         let localProfileData = await retrieveItem('profile_temp_data');
@@ -270,6 +306,7 @@ const Home = () => {
 
     }
 
+
     async function checkProfileCompletionSteps() {
         setLoading(true)
         const data = await retrieveItem('profile_data')
@@ -277,13 +314,25 @@ const Home = () => {
             const data1 = await retrieveItem('profile_temp_data')
             if (data1?.popupCase) {
                 setPopup1(true);
-                setPopupCases(data1.popupCase)
+                setPopupCases(1);
             }
             else {
                 setPopup1(true);
-                setPopupCases(1)
+                setPopupCases(1);
             }
-            setLoading(false)
+            // setProfilePic(data1?.profileImage?.profileImage)
+            setBio(data1?.bio?.bio)
+            setDateOfBirth(data1?.dateOfBirth?.dateOfBirth)
+            setDateOfBirth(data1?.dateOfBirth?.dateOfBirth)
+            setPhone(data1?.phoneNumber?.phoneNumber)
+            setGender(data1?.gender)
+            setProfession(data1?.profession);
+            setLanguageKnownArr(data1?.LanguagesKnown?.LanguagesKnown ?? [])
+            setSkillsArr(data1?.addSkills?.addSkills ?? [])
+            setThemesLike(data1?.themesYouLikes?.themesYouLikes ?? [])
+
+
+            setLoading(false);
             return;
         }
         setLoading(false)
@@ -297,7 +346,8 @@ const Home = () => {
             .then(data => {
                 setLoading(false);
                 if (data.status) {
-                    setLoginData(data.data?.userId?.userId);
+                    console.log('loginData', data.data)
+                    setLoginData(data.data?.userProfile?.userId);
                 }
             })
             .catch(err => {
@@ -326,15 +376,16 @@ const Home = () => {
         let loc = await getUserLocation();
     }
 
-
+    // getLocation();
     useEffect(() => {
-        // getLocation();
+        storeItem('profile_temp_data','')
         getHappeningDataFromServer();
         makeStaticArrays();
         getLoginAndProfileDataFromLocal();
         checkProfileCompletionSteps()
         FilterHeader.showCrossBtn = true;
         getProfileDetails();
+        getHappeningSubmissionData();
     }, [])
 
 
@@ -439,8 +490,8 @@ const Home = () => {
 
     const AddPicturePopup = () => (
         <View style={[styles.popupContainer, profilePic && { height: 350, justifyContent: 'center', }]}>
-            <BackPopupBtn />
-            <CrossBtn />
+            {/* <BackPopupBtn /> */}
+            {/* <CrossBtn /> */}
             {
                 !profilePic &&
                 <>
@@ -457,12 +508,23 @@ const Home = () => {
             {
                 profilePic &&
                 <>
+
                     <Text style={[styles.popupHeading]}>You look great!</Text>
-                    <Image
-                        style={{ width: 102, height: 102, borderRadius: 102 / 2, alignSelf: 'center', marginTop: 12, borderWidth: 5, borderColor: '#ffa183' }}
-                        source={{ uri: profilePic.uri }}
-                    // require('../../static_assets/profileImg.png')
-                    />
+                    <View
+                        style={{ width: 102, height: 102, borderRadius: 102 / 2, alignSelf: 'center' }}
+
+                    >
+                        <Image
+                            style={{ width: 102, height: 102, borderRadius: 102 / 2, alignSelf: 'center', marginTop: 12, borderWidth: 5, borderColor: '#9086d0' }}
+                            source={{ uri: profilePic.uri }}
+                        // require('../../static_assets/profileImg.png')
+                        />
+                        <TouchableOpacity
+                            onPress={() => uploadPic()}
+                            style={{ position: 'absolute', right: 0, bottom: -10, alignSelf: 'center', width: 30, height: 30, borderRadius: 15, backgroundColor: '#9086d0', alignItems: 'center', justifyContent: 'center' }}>
+                            <EditPencilIcon width={12} height={20} color={'white'} />
+                        </TouchableOpacity>
+                    </View>
                 </>
             }
             <PopupButton
@@ -487,7 +549,7 @@ const Home = () => {
     const AddDateOfBirthPopup = () => (
         <View style={[styles.popupContainer, { paddingBottom: 10 }]}>
             <BackPopupBtn />
-            <CrossBtn />
+            {/* <CrossBtn /> */}
             <Text style={styles.popupHeading}>Add date of birth</Text>
             <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', justifyContent: 'space-evenly', marginTop: 20 }}>
                 <View style={[styles.shadow, styles.dateOfBirthPicker]}>
@@ -564,13 +626,13 @@ const Home = () => {
     const ThemesLikePopup = () => (
         <View style={[styles.popupContainer, { paddingBottom: 10 }]}>
             <BackPopupBtn />
-            <CrossBtn />
+            {/* <CrossBtn /> */}
             <Text style={styles.popupHeading}>Themes you like</Text>
             <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>choose min of  three themes you like</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                 {
-                    ["Business Support", "Clean Energy and Air", "Community Work", "Construction Work ", "Art", "Harvesting & Farming", "Health & Medical", "Land Conservation", "Marine Protection"]
-                        .map((v, i) => {
+                    // ["Business Support", "Clean Energy and Air", "Community Work", "Construction Work ", "Art", "Harvesting & Farming", "Health & Medical", "Land Conservation", "Marine Protection"]
+                    state.happeningSubmissionData?.happeningTheme?.map((v, i) => {
                             return (
                                 <TouchableOpacity
                                     key={i}
@@ -587,8 +649,8 @@ const Home = () => {
                                         forceUpdate();
 
                                     }}
-                                    style={[styles.themePickerContainer, { backgroundColor: themesLike.includes(v) ? "#5b4dbc" : "white" }]}>
-                                    <Text style={{ color: themesLike.includes(v) ? "white" : "#5b4dbc", fontFamily: fonts.MRe, fontSize: 8, }}>{v}</Text>
+                                    style={[styles.themePickerContainer, { backgroundColor: themesLike?.includes(v) ? "#5b4dbc" : "white" }]}>
+                                    <Text style={{ color: themesLike.includes(v) ? "white" : "#5b4dbc", fontFamily: fonts.MRe, fontSize: 8, }}>{v?.happeningThemeName}</Text>
                                 </TouchableOpacity>
                             )
                         })
@@ -750,7 +812,7 @@ const Home = () => {
                 }
             </View>
             <View style={{ width: "90%", alignSelf: 'center', marginTop: 30, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                <View style={{ width: "82%" }}>
+                <View style={{ width: "92%" }}>
                     <TextInput
                         style={styles.textbox}
                         placeholder="Search happenings, fellows"
@@ -760,14 +822,14 @@ const Home = () => {
                         <SearchIcon />
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     onPress={() => {
-                        setFilterType('All');
+                        setFilterType('Theme');
                         setFilterModal(true);
                     }}
                     style={{ marginRight: 10 }}>
                     <FilterIcon />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
             {/* <View style={{ marginLeft: "4%", flexDirection: 'row', marginTop: 20, width: "100%", marginBottom: 10 }}>
                 <FlatList
@@ -899,6 +961,7 @@ const Home = () => {
                 backdropColor="#171515"
                 backdropOpacity={0.5}
                 style={{ margin: 0, }}
+                onBackdropPress={() => Keyboard.dismiss()}
                 // onBackdropPress={() => setPopup1(!popup1)}
                 animationOut="slideOutDown"
             >
@@ -911,19 +974,26 @@ const Home = () => {
                     popupCases == 1 ?
                         <AddPicturePopup />
                         :
-                        popupCases == 2 ? <View style={[styles.popupContainer, { paddingBottom: 10 }]}>
+                        popupCases == 2 ? <View
+                            pointerEvents='box-none'
+                            style={[styles.popupContainer, { paddingBottom: 10 }]}>
                             <BackPopupBtn />
-                            <CrossBtn />
+                            {/* <CrossBtn /> */}
                             <Text style={styles.popupHeading}>Your Bio</Text>
                             <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>Share your interests, hobbies, talents, and reasons for waking up in the morning. Share a little about your life, where you live, your education, or your profession in general so that when you meet other members, they already have a feel of who you are.</Text>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+                            <View
+                                style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                                 <TextInput
                                     placeholder=''
                                     keyboardType="default"
                                     returnKeyType="done"
+                                    value={bio}
                                     // onKeyPress={() => Keyboard.dismiss()}
-                                    // multiline={true}
-                                    onChangeText={(v)=>setBio(v)}
+                                    multiline={true}
+                                    onChangeText={(v) => {
+                                        setBio(v)
+                                        getBioWordCount(v)
+                                    }}
                                     placeholderTextColor={"#7b7b7b"}
                                     textAlignVertical="top"
                                     style={{
@@ -931,13 +1001,15 @@ const Home = () => {
                                         fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10,
                                     }}
                                 />
+                                <Text style={{backgroundColor:'white', position: 'absolute', bottom: 5, right: 20, fontSize: 12, color: "#2A2A2A", fontFamily: fonts.MRe, }}>{bioCount ?? 0}/150</Text>
                             </View>
                             <PopupButton
                                 onPress={() => {
-                                    if (bio.length < 10) {
-                                        modalAlertRef.alertWithType('error', "Error", 'Please enter your bio')
+                                    if (bioCount < 50 || bioCount > 150) {
+                                        modalAlertRef.alertWithType('error', "Error", 'Bio must be min 50 to 150 words')
                                         return
                                     }
+
                                     let data = {
                                         bio: bio,
                                         nextCase: 3
@@ -959,7 +1031,7 @@ const Home = () => {
                                     popupCases == 5 ? // LINK YOUR PHONE POPUP
                                         <View style={[styles.popupContainer, { paddingBottom: 10, }]}>
                                             <BackPopupBtn />
-                                            <CrossBtn />
+                                            {/* <CrossBtn /> */}
                                             <Text style={styles.popupHeading}>Link your phone</Text>
                                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 50 }}>
                                                 <View style={{
@@ -977,6 +1049,7 @@ const Home = () => {
                                                 <TextInput
                                                     placeholder=''
                                                     autoFocus={true}
+                                                    value={phn}
                                                     onChangeText={setPhone}
                                                     keyboardType='number-pad'
                                                     placeholderTextColor={"#7b7b7b"}
@@ -998,7 +1071,7 @@ const Home = () => {
                                             /> */}
                                             <PopupButton
                                                 onPress={() => {
-                                                    if (phn.length < 10) {
+                                                    if (phn?.length < 10) {
                                                         modalAlertRef.alertWithType('error', "Error", 'Please enter a valid 10 digit phone no')
                                                         return
                                                     }
@@ -1021,7 +1094,7 @@ const Home = () => {
                                         popupCases == 6 ? // GENDER, LANGUAGES KNOWN, PROFESSION POPUP
                                             <View style={[styles.popupContainer, { paddingBottom: 10 }]}>
                                                 <BackPopupBtn />
-                                                <CrossBtn />
+                                                {/* <CrossBtn /> */}
                                                 <Text style={styles.popupHeading}>Gender</Text>
                                                 <View style={{ flexDirection: 'row', width: "100%", marginTop: 12, }}>
                                                     <TouchableOpacity
@@ -1127,7 +1200,9 @@ const Home = () => {
                                                     {
                                                         languageKnownArr.map((v, i) => {
                                                             return (
-                                                                <View style={{
+                                                                <View 
+                                                                    key={i}
+                                                                    style={{
                                                                     paddingHorizontal: 8, height: 28, borderRadius: 18, backgroundColor: '#b9b1f0', flexDirection: 'row', alignItems: 'center',
                                                                 }}>
                                                                     <Text style={{ color: '#ffffff', fontFamily: fonts.MRe, fontSize: 8, }}>{v}</Text>
@@ -1151,6 +1226,7 @@ const Home = () => {
                                                 <Text style={styles.popupHeading}>Profession</Text>
                                                 <TextInput
                                                     placeholder=''
+                                                    value={profession}
                                                     onChangeText={setProfession}
                                                     placeholderTextColor={"#7b7b7b"}
                                                     style={{
@@ -1164,7 +1240,8 @@ const Home = () => {
                                                             modalAlertRef.alertWithType('error', "Error", "Please enter atleast one language")
                                                             return;
                                                         }
-                                                        if (profession.length < 3) {
+                                                        console.log('profession===',profession)
+                                                        if (profession?.length < 3 || !profession ) {
                                                             modalAlertRef.alertWithType('error', "Error", "Please enter a valid profession")
                                                             return;
                                                         }
@@ -1193,7 +1270,7 @@ const Home = () => {
                                             popupCases == 7 ? // ADD SKILLS
                                                 <View style={[styles.popupContainer, { paddingBottom: 20 }]}>
                                                     <BackPopupBtn />
-                                                    <CrossBtn />
+                                                    {/* <CrossBtn /> */}
                                                     <Text style={styles.popupHeading}>Add skills</Text>
                                                     <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>choose the best skills and qualifications you have</Text>
                                                     <View>
@@ -1221,9 +1298,11 @@ const Home = () => {
                                                         <View style={{ flexDirection: 'row', width: "100%", marginTop: 10, flexWrap: 'wrap' }}>
                                                             {
 
-                                                                skillsArr.map((v) => {
+                                                                skillsArr.map((v,i) => {
                                                                     return (
-                                                                        <View style={{
+                                                                        <View 
+                                                                            key={i}
+                                                                            style={{
                                                                             paddingHorizontal: 8, height: 28, borderRadius: 18, backgroundColor: '#b9b1f0', flexDirection: 'row', alignItems: 'center', marginLeft: 10, marginTop: 10
                                                                         }}>
                                                                             <Text style={{ color: '#ffffff', fontFamily: fonts.MRe, fontSize: 8, }}>{v}</Text>
@@ -1273,7 +1352,7 @@ const Home = () => {
                                                     popupCases == 9 || popupCases == 10 ? // PREFERENCE POPUP
                                                         <View style={[styles.popupContainer, { paddingBottom: 10, paddingHorizontal: 20 }]} >
                                                             <BackPopupBtn />
-                                                            <CrossBtn />
+                                                            {/* <CrossBtn /> */}
                                                             <Text style={styles.popupHeading}>Preferences</Text>
                                                             <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>Set your app preferences</Text>
                                                             <View style={styles.linkSocialRowView}>
@@ -1304,6 +1383,7 @@ const Home = () => {
                                                             {/* <Text style={{ color: '#5d5760', fontFamily: fonts.PSBo, fontSize: 17, alignSelf: 'center', marginTop: 20 }}>6 Miles</Text> */}
                                                             <TextInput
                                                                 placeholder={distanceUnit}
+                                                                value={distance}
                                                                 onChangeText={setDistance}
                                                                 keyboardType='number-pad'
                                                                 placeholderTextColor={"#7b7b7b"}

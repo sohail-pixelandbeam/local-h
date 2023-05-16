@@ -44,7 +44,7 @@ const Duration1 = (props) => {
 
     const [selectedWeek, setSelectedWeek] = useState(['Tues']);
 
-    const repeatOptions = ["Repeat daily", "Repeat Weekly", "Repeat monthly", "Repeat yearly", "Custom"]
+    const repeatOptions = ["Repeat daily", "Repeat Weekly",]//"Repeat monthly", "Repeat yearly"
     const [calenderModal, setCalenderModal] = useState(false);
     const [dailyRepeatCalanderModal, setDailyRepeatCalanderModal] = useState(false);
     const [dailyEndRepeatCalanderModal, setDailyEndRepeatCalanderModal] = useState(false)
@@ -78,15 +78,22 @@ const Duration1 = (props) => {
         every: '1',
         on: [],
         end: ""
+    });
+
+    const [repeatMonthly, setRepeatMonthly] = useState({
+        startingDate: "",
+        repeat: 'Weekly',
+        every: '1',
+        on: [],
+        end: ""
     })
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            // navigate('Location1');
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
 
@@ -109,22 +116,58 @@ const Duration1 = (props) => {
         }
 
         let repeat = makeDoesNotRepeat();
+        var body = {
+            ...state.locationHappeningDraft,
+            startTime: fromTime,
+            endTime: toTime,
+            startingDate: repeat?.startingDate ?? dateOfDuration,
+            endDate: repeat?.end ?? dateOfDuration,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        }
+        if (doesNotRepeat) {
+            if (doesNotRepeat == 'Repeat daily') {
+                body.repeatEvery = repeat.every
+            }
+            else if (doesNotRepeat == 'Repeat Weekly') {
+                body.daysOfWeek = repeat.on
+            }
+        }
+        setLocationHappeningData(body);
+        navigate('HappeningLanguages');
+        return;
+
+        // const obj = {
+        //     ...state.locationHappeningDraft,
+        //     startingDate: dateOfDuration,
+        //     repeatEvery: doesNotRepeat ? repeat.repeat : false,
+        //     // every: repeat?.every,
+
+        //     endDate: dateOfDuration,
+        //     AllDay: allDay,
+        //     startTime: fromTime,
+        //     endTime: toTime,
+        //     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        // }
+
+
+
+
 
 
         const obj = {
-            ...state.locationHappeningDraft,
+            // ...state.locationHappeningDraft,
             startingDate: dateOfDuration,
-            repeat: doesNotRepeat ? repeat.repeat : false,
-            // every: repeat?.every,
-            weekDayName: repeatWeekly?.on,
+            repeatEvery: doesNotRepeat ? repeat.repeat : false,
+            every: repeat?.every,
+            daysOfWeek: repeatWeekly?.on,
             endDate: dateOfDuration,
             AllDay: allDay,
             startTime: fromTime,
             endTime: toTime,
             timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
         }
-        setLocationHappeningData(obj);
-        navigate('HappeningLanguages');
+        console.log('object ===', obj)
+
     }
 
     function makeDoesNotRepeat() {
@@ -402,7 +445,7 @@ const Duration1 = (props) => {
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                                <Text style={{ fontFamily: fonts.MSBo, fontSize: 11, color: '#241414', marginTop: 20 }}>happens everyday starting Tuesday, 1 Jan 2022 </Text>
+                                {/* <Text style={{ fontFamily: fonts.MSBo, fontSize: 11, color: '#241414', marginTop: 20 }}>happens everyday starting Tuesday, 1 Jan 2022 </Text> */}
                                 <View style={{ flexDirection: 'row' }}>
                                     <TouchableOpacity
                                         onPress={() => {
@@ -432,7 +475,7 @@ const Duration1 = (props) => {
     const RepeatMonthlyPopup = () => (
         <ReactNativeModal
             isVisible={monthlyRepeatModal}
-            onBackdropPress={() => setDNRModal(false)}
+            onBackdropPress={() => setMonthlyRepeatModal(false)}
             backdropOpacity={0.2}
 
 
@@ -457,8 +500,54 @@ const Duration1 = (props) => {
                         </View>
                     </TouchableOpacity>
                 </View>
+
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
                     <Text style={styles.pickerTitle}>Every</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={[styles.shadow, styles.pickerContainer, { marginLeft: 0, width: 60 }]}>
+                            <PrivacyPicker
+                                selected={{ title: repeatMonthly.every }}
+                                data={daysArr}
+                                onValueChange={(i, v) => {
+                                    setRepeatMonthly({
+                                        ...repeatMonthly,
+                                        every: v.title
+                                    });
+                                }}
+                            />
+                            {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <Text style={styles.pickerTitle}>1</Text>
+                                            <ArrowDown style={{ marginLeft: 5 }} />
+                                        </View> */}
+                        </View>
+                        <Text style={[styles.pickerTitle, { marginLeft: 5 }]}>Month</Text>
+                    </View>
+
+                </View>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, justifyContent: 'space-between' }}>
+                    <Text style={styles.pickerTitle}>End</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        {/* <TouchableOpacity style={[styles.shadow, styles.pickerContainer,]}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <Text style={styles.pickerTitle}>On this day</Text>
+                                                <ArrowDown style={{ marginLeft: 5 }} />
+                                            </View>
+                                        </TouchableOpacity> */}
+                        <TouchableOpacity
+                            onPress={() => setDailyEndRepeatCalanderModal(true)}
+                            style={[styles.shadow, styles.pickerContainer,]}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Text style={styles.pickerTitle}>{repeatDaily.end}</Text>
+                                <CalenderIcon style={{ marginLeft: 10 }} />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+
+                {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
+                    <Text style={styles.pickerTitle}>Days of month</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <TouchableOpacity style={[styles.shadow, styles.pickerContainer, { marginLeft: 0 }]}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -466,7 +555,7 @@ const Duration1 = (props) => {
                                 <ArrowDown style={{ marginLeft: 5 }} />
                             </View>
                         </TouchableOpacity>
-                        <Text style={[styles.pickerTitle, { marginLeft: 5 }]}>Day(s)</Text>
+                        <Text style={[styles.pickerTitle, { marginLeft: 5 }]}>Month</Text>
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 }}>
@@ -497,9 +586,9 @@ const Duration1 = (props) => {
                             <Text style={[styles.pickerTitle, { marginLeft: 10 }]}>day</Text>
                         </View>
                     </View>
-                </View>
+                </View> */}
 
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+                {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
                     <Text style={styles.pickerTitle}>End</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <TouchableOpacity style={[styles.shadow, styles.pickerContainer,]}>
@@ -508,6 +597,7 @@ const Duration1 = (props) => {
                                 <ArrowDown style={{ marginLeft: 5 }} />
                             </View>
                         </TouchableOpacity>
+
                         <TouchableOpacity style={[styles.shadow, styles.pickerContainer,]}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Text style={styles.pickerTitle}>01/01/2022</Text>
@@ -515,8 +605,8 @@ const Duration1 = (props) => {
                             </View>
                         </TouchableOpacity>
                     </View>
-                </View>
-                <Text style={{ fontFamily: fonts.MSBo, fontSize: 11, color: '#241414', marginTop: 20 }}>happens every Tuesday, 1 Jan 2022 </Text>
+                </View> */}
+                {/* <Text style={{ fontFamily: fonts.MSBo, fontSize: 11, color: '#241414', marginTop: 20 }}>happens every Tuesday, 1 Jan 2022 </Text> */}
                 <TouchableOpacity
                     onPress={() => setMonthlyRepeatModal(false)}
                     style={[styles.tipsBtn, {}]}>
@@ -684,7 +774,7 @@ const Duration1 = (props) => {
 
 
             <HappeningHeader
-                heading={"When is this Happening?"}
+                heading={"When is this happening?"}
                 desc={"select the duration and the date of the happening."}
             // headerStyle={{ paddingBottom: 30 }}
             />
@@ -717,7 +807,8 @@ const Duration1 = (props) => {
                             </View>
                         </TouchableOpacity>
                     </View>
-                    {/* <View style={{ flexDirection: 'row', marginTop: 10 }}>
+
+                    <View style={{ flexDirection: 'row', marginTop: 10 }}>
                         <TouchableOpacity
                             ref={view => setDNRPosition(view)}
                             onPress={() => {
@@ -727,8 +818,8 @@ const Duration1 = (props) => {
                                         setXOffset(px + 1)
                                     }
                                     else {
-                                        setYOffset(fy + 50)
-                                        setXOffset(px)
+                                        setYOffset(fy - 50)
+                                        setXOffset(px - 10)
                                     }
 
                                 })
@@ -740,7 +831,7 @@ const Duration1 = (props) => {
                             <Text style={styles.pickerTitle}>{doesNotRepeat ? doesNotRepeat : "Does not repeat"}</Text>
                             <ArrowDown style={{ marginLeft: 5 }} />
                         </TouchableOpacity>
-                        <View style={{ flexDirection: 'row', marginLeft: 20, alignItems: 'center' }}>
+                        {/* <View style={{ flexDirection: 'row', marginLeft: 20, alignItems: 'center' }}>
                             <Text style={[styles.pickerTitle, { marginRight: 10 }]}>All day</Text>
                             <Switch
                                 trackColor={{ false: "#767577", true: "rgba(0,0,0,0.5)" }}
@@ -750,23 +841,25 @@ const Duration1 = (props) => {
                                 // thumbColor={"#fffffff"}
                                 ios_backgroundColor="#3e3e3e"
                             />
-                        </View>
+                        </View> */}
 
-                    </View> */}
-                    <TextInput
+                    </View>
+
+
+                    {/* <TextInput
                         placeholder='Message before starting happening'
                         placeholderTextColor={acolors.grey}
                         onChangeText={setMessageBeforeHappeningStarting}
                         textAlignVertical="top"
                         multiline={true}
                         style={[{ width: "85%", height: 59, borderWidth: 0.5, borderColor: acolors.grey, borderRadius: 12, marginTop: 10, paddingHorizontal: 10, fontSize: 12, color: acolors.grey, fontFamily: fonts.PRe, marginHorizontal: 3 }]}
-                    />
-                    <TouchableOpacity
+                    /> */}
+                    {/* <TouchableOpacity
                         style={[styles.shadow, styles.pickerContainer, { marginLeft: 0, paddingHorizontal: 15, marginTop: 15 }]}>
                         <NotifIcon style={{ marginRight: 5 }} />
                         <Text style={styles.pickerTitle}>15 mins before starting</Text>
                         <ArrowDown style={{ marginLeft: 5 }} />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
 
                 </ScrollView>
@@ -857,7 +950,7 @@ const Duration1 = (props) => {
                                             </View>
                                         </View>
                                     </View>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
+                                    {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
                                         <Text style={styles.pickerTitle}>Every</Text>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <View style={[styles.shadow, styles.pickerContainer, { marginLeft: 0, width: 60 }]}>
@@ -874,7 +967,7 @@ const Duration1 = (props) => {
                                             </View>
                                             <Text style={[styles.pickerTitle, { marginLeft: 5 }]}>Day(s)</Text>
                                         </View>
-                                    </View>
+                                    </View> */}
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 }}>
                                         <Text style={styles.pickerTitle}>On</Text>
                                         {
@@ -909,7 +1002,7 @@ const Duration1 = (props) => {
                                             </TouchableOpacity>
                                         </View>
                                     </View>
-                                    <Text style={{ fontFamily: fonts.MSBo, fontSize: 11, color: '#241414', marginTop: 20 }}>happens every Tuesday, 1 Jan 2022 </Text>
+                                    {/* <Text style={{ fontFamily: fonts.MSBo, fontSize: 11, color: '#241414', marginTop: 20 }}>happens every Tuesday, 1 Jan 2022 </Text> */}
                                     <View style={{ flexDirection: 'row' }}>
                                         <TouchableOpacity
                                             onPress={() => {

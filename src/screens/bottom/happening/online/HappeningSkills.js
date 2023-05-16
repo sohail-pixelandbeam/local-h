@@ -29,9 +29,9 @@ const HappeningSkills = (props) => {
 
     const [selectedFacilties, setSelectedFacilties] = useState(['Drinks']);
     const [providingFacilities, setProvidingFacilities] = useState(true);
-    const [selectedSkils, setSelectedSkils] = useState('');
+    const [selectedSkils, setSelectedSkils] = useState(state?.happeningDraft?.skillLevel ?? '');
 
-    const [skillsArr, setSkillsArr] = useState([]); // TO SEND IT TO SERVER
+    const [skillsArr, setSkillsArr] = useState(state?.happeningDraft?.addSkill ?? []); // TO SEND IT TO SERVER
     const [skill, setSkill] = useState(''); // FOR INPUT
 
     const facilitesArr = [
@@ -42,11 +42,7 @@ const HappeningSkills = (props) => {
         { title: "Toilet", icon: ToiletIcon }
     ]
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
+
 
 
     function doMakeSkills() {
@@ -125,7 +121,7 @@ const HappeningSkills = (props) => {
             />
 
             <HappeningHeader
-                heading={"Skills Required to join your Happening"}
+                heading={"Skills required to join your happening"}
                 desc={"skill set of the fellows to join your happening."}
             // headerStyle={{ paddingBottom: 30 }}
             />
@@ -183,7 +179,7 @@ const HappeningSkills = (props) => {
 
 
 
-                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>Add a Skill </Text>
+                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>Add a skill level </Text>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15 }}>
                             <TouchableOpacity
                                 onPress={() => setSelectedSkils('Beginner')}
@@ -202,7 +198,7 @@ const HappeningSkills = (props) => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         onPress={() => {
                             setProvidingFacilities(!providingFacilities)
                             if (providingFacilities) setSkillsArr([]);
@@ -214,7 +210,7 @@ const HappeningSkills = (props) => {
                             {!providingFacilities && <TickIcon />}
                         </View>
                         <Text style={{ marginLeft: 10, fontFamily: fonts.MBo, fontSize: 14, color: '#7B7B7B' }}>This Happening doesn’t require any Skills</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </ScrollView>
 
             </View>

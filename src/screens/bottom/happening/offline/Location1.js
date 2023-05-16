@@ -1,7 +1,7 @@
 
 import Geolocation from '@react-native-community/geolocation'
 import React, { useContext, useEffect, useState } from 'react'
-import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, ScrollView, TextInput, PermissionsAndroid, Alert, Dimensions, BackHandler } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, ScrollView, TextInput, PermissionsAndroid, Alert, Dimensions, BackHandler, Platform } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import ReactNativeModal from 'react-native-modal'
@@ -49,21 +49,45 @@ const Location1 = (props) => {
 
     const requestLocationPermission = async () => {
 
-        const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            {
-                title: 'Location Access Required',
-                message: 'This App needs to Access your event location',
-                buttonNeutral: "Ask Me Later",
-                buttonNegative: "Cancel",
-                buttonPositive: "OK"
-            },
-        );
+        var granted;
+        if (Platform.OS == 'ios') {
+            Geolocation.requestAuthorization()
+            return 'granted';
+        }
+
+        else {
+            granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    title: 'Location Access Required',
+                    message: 'This App needs to Access your event location',
+                    buttonNeutral: "Ask Me Later",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK"
+                },
+            );
+        }
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             return 'granted';
         } else {
             return 'denied';
         }
+
+        // const granted = await PermissionsAndroid.request(
+        //     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        //     {
+        //         title: 'Location Access Required',
+        //         message: 'This App needs to Access your event location',
+        //         buttonNeutral: "Ask Me Later",
+        //         buttonNegative: "Cancel",
+        //         buttonPositive: "OK"
+        //     },
+        // );
+        // if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        //     return 'granted';
+        // } else {
+        //     return 'denied';
+        // }
 
 
     }
@@ -97,12 +121,11 @@ const Location1 = (props) => {
     }
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            // navigate('AboutHost');
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
 
@@ -176,10 +199,10 @@ const Location1 = (props) => {
 
     function next() {
 
-        if (locationDescription == '') {
-            alertRef.alertWithType('error', 'Error', "Please enter happening location description")
-            return;
-        }
+        // if (locationDescription == '') {
+        //     alertRef.alertWithType('error', 'Error', "Please enter happening location description")
+        //     return;
+        // }
         if (!userCoords?.latitude) {
             alertRef.alertWithType('error', 'Error', 'Please enter or select happening location')
             return;
@@ -193,7 +216,7 @@ const Location1 = (props) => {
             ...state.locationHappeningDraft,
             enterALocation: userAddress.address,
             conformHappeningLocation: userAddress.address,
-            discribeTheLocaltion: locationDescription,
+            // discribeTheLocaltion: locationDescription,
             location: {
                 type: "Point",
                 coordinates: [userCoords.latitude, userCoords.longitude]
@@ -311,7 +334,7 @@ const Location1 = (props) => {
                                                 setUserCoords(region)
                                             }}
                                             region={userCoords}
-                                            provider={PROVIDER_GOOGLE}
+                                            provider={Platform.OS == 'android'&& PROVIDER_GOOGLE}
                                             style={{ width: '100%', height: '100%' }}
                                         >
                                             <Marker
@@ -336,7 +359,7 @@ const Location1 = (props) => {
                                         <GooglePlacesAutocomplete
                                             // ref={map}
                                             placeholder={'Search'}
-                                            placeholderTextColor="#111"
+                                            placeholderTextColor="black"
                                             minLength={2} // minimum length of text to search
                                             autoFocus={false}
                                             returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
@@ -373,6 +396,7 @@ const Location1 = (props) => {
                                                 predefinedPlacesDescription: { color: 'black' },
                                                 container: { width: viewportWidth, alignSelf: "center", zIndex: 55555 }
                                             }}
+                                            textInput={{ color: 'black' }}
                                             // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
                                             // currentLocationLabel="Current location"
                                             nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
@@ -444,11 +468,11 @@ const Location1 = (props) => {
             <View style={styles.contentContainer}>
                 <ScrollView style={{ flex: 1, }} contentContainerStyle={{ paddingBottom: 100, }} >
 
-                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 15, color: '#2A2A2A' }}>Describe the location</Text>
-                    <Text style={{ fontFamily: fonts.PRe, fontSize: 11, color: '#828282', marginTop: 5 }}>Get fellows excited about the location of the happening.</Text>
+                    {/* <Text style={{ fontFamily: fonts.PSBo, fontSize: 15, color: '#2A2A2A' }}>Describe the location</Text> */}
+                    {/* <Text style={{ fontFamily: fonts.PRe, fontSize: 11, color: '#828282', marginTop: 5 }}>Get fellows excited about the location of the happening.</Text> */}
 
                     <View>
-                        <TextInput
+                        {/* <TextInput
                             onChangeText={setLocationDescription}
                             placeholder=''
                             textAlignVertical='top'
@@ -458,12 +482,12 @@ const Location1 = (props) => {
                                 width: "100%", height: 75, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1, marginTop: 10,
                                 fontSize: 12, color: "#2A2A2A", fontFamily: fonts.PRe, paddingHorizontal: 15,
                             }}
-                        />
+                        /> */}
                     </View>
                     <TouchableOpacity
                         onPress={() => handleUserLocation()}
                         style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                        <LocationIcon />
+                        <LocationIcon width={10} height={16} />
                         <Text style={{ fontFamily: fonts.PSBo, fontSize: 15, color: '#35208E', textDecorationLine: 'underline', marginLeft: 5 }}>Use my location <Text style={{ textDecorationLine: 'none' }}>or</Text></Text>
                     </TouchableOpacity>
                     <View>
@@ -531,10 +555,10 @@ const Location1 = (props) => {
                 nextText={"Next"}
                 onPress={() => {
 
-                    if (locationDescription == '') {
-                        alertRef.alertWithType('error', 'Error', "Please enter happening location description")
-                        return;
-                    }
+                    // if (locationDescription == '') {
+                    //     alertRef.alertWithType('error', 'Error', "Please enter happening location description")
+                    //     return;
+                    // }
                     if (!userCoords?.latitude) {
                         alertRef.alertWithType('error', 'Error', 'Please enter or select happening location')
                         return;

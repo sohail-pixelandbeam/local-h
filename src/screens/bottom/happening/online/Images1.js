@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, ScrollView, TextInput, BackHandler } from 'react-native'
 import { navigate } from '../../../../../Navigations'
 import HappeningHeader from '../../../../common/HappeningHeader'
-import { BackIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, RELIABLENONPROFITS, SUPPORTICON, TickIcon, WELFAREICON } from '../../../../components/Svgs'
+import { BackIcon, CrossIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, RELIABLENONPROFITS, SUPPORTICON, TickIcon, WELFAREICON } from '../../../../components/Svgs'
 import { acolors } from '../../../../constants/colors'
 import { fonts } from '../../../../constants/fonts'
 import { uploadMultipleFiles } from '../../../../utils/functions';
@@ -14,6 +14,7 @@ import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import HappeningStep from '../../../../common/HappeningStep'
 import { urls } from '../../../../utils/Api_urls'
+import TipsButton from '../../../../components/TipsButton'
 
 
 
@@ -24,14 +25,10 @@ const Images1 = (props) => {
 
     const { state, setHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
-    const [media, setMedia] = useState([]);
+    const [media, setMedia] = useState(state?.happeningDraft?.addPhotosOfYourHappening ?? []);
+    const forceUpdate = useForceUpdate();
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
 
 
 
@@ -43,49 +40,56 @@ const Images1 = (props) => {
 
     function next() {
 
-        setLoading(true);
-        if (media.length == 0) {
-            alertRef.alertWithType('error', "Error", "Please upload atleast one image/video");
+        if (media.length == 0 || media.length < 6) {
+            alertRef.alertWithType('error', "Error", "Please upload minimum 6 images");
             return;
         }
-        let formData = new FormData();
-        for (let key in media) {
-            formData.append('file[]', media[key]);
-        }
-        const url = urls.API + "imageUpload"
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                Accept: 'multipart/form-data',
-                'Content-Type': 'multipart/form-data',
-            },
-            body: formData
-        })
-            .then(data => data.json())
-            .then(data => {
-                console.log('data----', data);
-                setLoading(false)
-                if (data.status) {
-                    const obj = {
-                        ...state.happeningDraft,
-                        addPhotosOfYourHappening: data?.data
+        try {
+            setLoading(true);
+            let formData = new FormData();
+            for (let key in media) {
+                formData.append('file[]', media[key]);
+            }
+            const url = urls.API + "imageUpload"
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    Accept: 'multipart/form-data',
+                    'Content-Type': 'multipart/form-data',
+                },
+                body: formData
+            })
+                .then(data => data.json())
+                .then(data => {
+                    console.log('data----', data);
+                    setLoading(false)
+                    if (data.status) {
+                        const obj = {
+                            ...state.happeningDraft,
+                            addPhotosOfYourHappening: data?.data
+                        }
+                        setHappeningData(obj);
+                        // navigate('AboutHost');
+                        navigate('Duration1');
                     }
-                    setHappeningData(obj);
-                    navigate('AboutHost');
-                }
-                else {
-                    alertRef.alertWithType('error', "Error", data.message);
-                }
+                    else {
+                        alertRef.alertWithType('error', "Error", data.message);
+                    }
 
-            })
-            .catch(err => {
-                setLoading(false)
-                alertRef.alertWithType('error', "Error", urls.error);
-            })
-
+                })
+                .catch(err => {
+                    console.log('err', err)
+                    setLoading(false)
+                    alertRef.alertWithType('error', "Error", urls.error);
+                })
+        }
+        catch (err) {
+            console.log('err', err)
+        }
 
 
     }
+
 
 
 
@@ -96,8 +100,8 @@ const Images1 = (props) => {
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"Add media to your Happening"}
-                desc={"upload photos and videos describing your happening."}
+                heading={"Add media to your happening"}
+                desc={"upload photos describing your happening."}
             // headerStyle={{ paddingBottom: 30 }}
             />
             <View style={styles.contentContainer}>
@@ -108,7 +112,9 @@ const Images1 = (props) => {
                         style={styles.addPicCircle}>
                         <Text style={{ fontSize: 50, color: '#241414', fontFamily: fonts.MRe }}>+</Text>
                     </TouchableOpacity>
-                    <Text style={{ fontFamily: fonts.MRe, fontSize: 12, color: '#241414', marginTop: 20, alignSelf: 'center' }}>Upload</Text>
+                    <Text style={{ fontFamily: fonts.MRe, fontSize: 12, color: '#241414', marginTop: 20, alignSelf: 'center' }}>Upload min of 6 and max of 8 images</Text>
+
+
                     <View style={{ width: "85%", alignSelf: 'center', paddingHorizontal: 20, paddingVertical: 10, flexDirection: 'row', flexWrap: 'wrap', backgroundColor: "#F5F5F5", borderRadius: 15, marginTop: 30 }}>
                         {
                             media?.map((v, i) => {
@@ -122,20 +128,29 @@ const Images1 = (props) => {
                                             style={{ width: "100%", height: "100%", borderRadius: 16, }}
                                             source={{ uri: v.uri }}
                                         />
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                let arr = media;
+                                                let index = media?.indexOf(v)
+                                                arr.splice(index, 1)
+                                                setMedia(arr)
+                                                forceUpdate();
+
+                                            }}
+                                            style={{ position: 'absolute', right: -5, top: -10, backgroundColor: 'white', width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}>
+                                            <CrossIcon />
+                                        </TouchableOpacity>
                                     </View>
                                 )
                             })
                         }
                     </View>
+                    <Text style={{ fontFamily: fonts.MRe, fontSize: 11, textAlign: 'center', color: '#241414', marginTop: 15, alignSelf: 'center' }}>uploading images might take a while depending{"\n"}on your internet connection. Please stay with us</Text>
 
 
-                    <TouchableOpacity
-                        onPressIn={() => navigate('Images2')}
-                        style={[styles.tipsBtn]}
-                        onPress={() => { }}
-                    >
-                        <Text style={styles.topsBtnTitle}>{"Tips"}</Text>
-                    </TouchableOpacity>
+                    <TipsButton
+                        onPress={() => navigate('Images2')}
+                    />
                 </ScrollView>
 
             </View>

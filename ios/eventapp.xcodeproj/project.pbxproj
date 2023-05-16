@@ -28,6 +28,7 @@
 		5473F6C3B59247809896AFE0 /* OFL 2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5855EF5DE7794602B5861303 /* OFL 2.txt */; };
 		58F8E8654819402585EF308A /* Montserrat-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B21A49213244CCF8EB89689 /* Montserrat-ExtraLight.ttf */; };
 		5C74255F20E84E229E134172 /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4BA7BC042AB14C3DB39EA900 /* Poppins-BlackItalic.ttf */; };
+		69B0172301AAAC4C4A3A6580 /* libPods-eventapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21406A9F895B96726F2B283B /* libPods-eventapp.a */; };
 		727422519343440EB8828227 /* Montserrat-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84444A5A13F492CBF8E8773 /* Montserrat-ExtraLightItalic.ttf */; };
 		7914B7163FCE459697BADACC /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EC5BFA6258E4B768BD2BEBB /* Poppins-Bold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -37,14 +38,14 @@
 		8CAB0B695FDF45A9A254AB7B /* Montserrat-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E61B4989AE484F7CBFC2E978 /* Montserrat-ExtraBoldItalic.ttf */; };
 		8FE5DA37A85E47D594C0850E /* Montserrat-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E03510FE786D40B38FAD6958 /* Montserrat-SemiBoldItalic.ttf */; };
 		916137392934B89C0032963D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 916137382934B89C0032963D /* GoogleService-Info.plist */; };
+		919353EC29BFD547008563B0 /* splash_screen.png in Resources */ = {isa = PBXBuildFile; fileRef = 919353EB29BFD546008563B0 /* splash_screen.png */; };
 		95A62A659CBD493B9E1D7322 /* Montserrat-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C8505D5BFCB47868E1501F8 /* Montserrat-MediumItalic.ttf */; };
+		A16D4CD2187DB2D9F1C473AA /* libPods-eventapp-eventappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 083FC2A1BAA6F5831D74AD7A /* libPods-eventapp-eventappTests.a */; };
 		AA8A58E4553243728F32067C /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D4DBA922D1B48DB98BF9517 /* Poppins-LightItalic.ttf */; };
 		AF1284BBDA944366B40DAB29 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88D3056251474586A144C4CD /* Poppins-Medium.ttf */; };
-		B437563531219B2CD2F76F9A /* libPods-eventapp-eventappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4292CE54DAFFAE5663708A62 /* libPods-eventapp-eventappTests.a */; };
 		B50BFC5BEA0042EA8366F8A6 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E35ABB2805774EA88CBE3BE1 /* Poppins-SemiBold.ttf */; };
 		B5BC031916B84C10BF97CE63 /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A1E8B64237C14CE586357C7A /* Montserrat-Light.ttf */; };
 		B70111AEC1B342E6A3519DD4 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 826BD0F1A56E4097AAFCD162 /* Poppins-Black.ttf */; };
-		BC6B3DC41FD2BB08238EEC4C /* libPods-eventapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7141042EFA5155F7145D97EB /* libPods-eventapp.a */; };
 		BEC0DC733F284D3796D79783 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B026B2061AF2486F97489FC3 /* Poppins-Regular.ttf */; };
 		D1F4A1BE46F74E82AEE98446 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7002558AE8EF47B6B94723E8 /* Montserrat-Bold.ttf */; };
 		D32A8C3E575C4BA7B90F2DC8 /* Poppins-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2E879F693254FBF8BCF34FA /* Poppins-Italic.ttf */; };
@@ -71,6 +72,8 @@
 		00E356F21AD99517003FC87E /* eventappTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = eventappTests.m; sourceTree = "<group>"; };
 		01F70A7A0F1645028291B181 /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-MediumItalic.ttf"; path = "../assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
 		07A3F79967304BB3A8834154 /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BoldItalic.ttf"; path = "../assets/fonts/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
+		083FC2A1BAA6F5831D74AD7A /* libPods-eventapp-eventappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eventapp-eventappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0F5E5F3F3984F81E96407D5E /* Pods-eventapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eventapp.debug.xcconfig"; path = "Target Support Files/Pods-eventapp/Pods-eventapp.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* eventapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eventapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = eventapp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = eventapp/AppDelegate.mm; sourceTree = "<group>"; };
@@ -78,11 +81,10 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = eventapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = eventapp/main.m; sourceTree = "<group>"; };
 		1A4BF6B1EA774FD1893A9037 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
-		2E23F5FBE7C5F7A637E2D596 /* Pods-eventapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eventapp.debug.xcconfig"; path = "Target Support Files/Pods-eventapp/Pods-eventapp.debug.xcconfig"; sourceTree = "<group>"; };
+		21406A9F895B96726F2B283B /* libPods-eventapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eventapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2329BCAA2F8F764C02A9BCC7 /* Pods-eventapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eventapp.release.xcconfig"; path = "Target Support Files/Pods-eventapp/Pods-eventapp.release.xcconfig"; sourceTree = "<group>"; };
 		2F30F52A50504838827F1437 /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraBold.ttf"; path = "../assets/fonts/Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
 		3633A8B415354338A7B8C1F1 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ThinItalic.ttf"; path = "../assets/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
-		3E64E2BFFB0D0B64447EAD8B /* Pods-eventapp-eventappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eventapp-eventappTests.debug.xcconfig"; path = "Target Support Files/Pods-eventapp-eventappTests/Pods-eventapp-eventappTests.debug.xcconfig"; sourceTree = "<group>"; };
-		4292CE54DAFFAE5663708A62 /* libPods-eventapp-eventappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eventapp-eventappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BA7BC042AB14C3DB39EA900 /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BlackItalic.ttf"; path = "../assets/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
 		4C8505D5BFCB47868E1501F8 /* Montserrat-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-MediumItalic.ttf"; path = "../assets/fonts/Montserrat-MediumItalic.ttf"; sourceTree = "<group>"; };
 		4EC5BFA6258E4B768BD2BEBB /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
@@ -90,7 +92,6 @@
 		5B60A3B4238D4673A5046A1B /* Montserrat-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ThinItalic.ttf"; path = "../assets/fonts/Montserrat-ThinItalic.ttf"; sourceTree = "<group>"; };
 		6B54CA9F749647C1B0B9644C /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../assets/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
 		7002558AE8EF47B6B94723E8 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
-		7141042EFA5155F7145D97EB /* libPods-eventapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eventapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		80A11B6DB5EB499182299368 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = eventapp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		826BD0F1A56E4097AAFCD162 /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; };
@@ -101,12 +102,12 @@
 		8CA2E929A2E54B3AA409F2C2 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Medium.ttf"; path = "../assets/fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		907865B4440943B38E8248FF /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
 		916137382934B89C0032963D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		919353EB29BFD546008563B0 /* splash_screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash_screen.png; path = eventapp/splash_screen.png; sourceTree = "<group>"; };
 		92B264778C024C8A99BDCDCA /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
+		94C0FB7B22C219EF24B7656B /* Pods-eventapp-eventappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eventapp-eventappTests.release.xcconfig"; path = "Target Support Files/Pods-eventapp-eventappTests/Pods-eventapp-eventappTests.release.xcconfig"; sourceTree = "<group>"; };
 		95C961C5A75441FB83A4DA0B /* Poppins-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBoldItalic.ttf"; path = "../assets/fonts/Poppins-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		9D4DBA922D1B48DB98BF9517 /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
-		A1B62AB45F1DCAF28207F8D5 /* Pods-eventapp-eventappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eventapp-eventappTests.release.xcconfig"; path = "Target Support Files/Pods-eventapp-eventappTests/Pods-eventapp-eventappTests.release.xcconfig"; sourceTree = "<group>"; };
 		A1E8B64237C14CE586357C7A /* Montserrat-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Light.ttf"; path = "../assets/fonts/Montserrat-Light.ttf"; sourceTree = "<group>"; };
-		A97014127220C56F30F2E9E7 /* Pods-eventapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eventapp.release.xcconfig"; path = "Target Support Files/Pods-eventapp/Pods-eventapp.release.xcconfig"; sourceTree = "<group>"; };
 		B026B2061AF2486F97489FC3 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		C2E879F693254FBF8BCF34FA /* Poppins-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Italic.ttf"; path = "../assets/fonts/Poppins-Italic.ttf"; sourceTree = "<group>"; };
 		C3850FDED7354DB194381378 /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLightItalic.ttf"; path = "../assets/fonts/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
@@ -120,6 +121,7 @@
 		EDE95452315A4E3AA17F9A05 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		EFE445A57BC34DAF883BD103 /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Thin.ttf"; path = "../assets/fonts/Montserrat-Thin.ttf"; sourceTree = "<group>"; };
 		F0A2EDB661D94888A4E223FF /* Montserrat-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Italic.ttf"; path = "../assets/fonts/Montserrat-Italic.ttf"; sourceTree = "<group>"; };
+		F14354BAF628B80D745AFBF8 /* Pods-eventapp-eventappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eventapp-eventappTests.debug.xcconfig"; path = "Target Support Files/Pods-eventapp-eventappTests/Pods-eventapp-eventappTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F4CDE81086A54BA6B42269CE /* OFL.txt */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = OFL.txt; path = ../assets/fonts/OFL.txt; sourceTree = "<group>"; };
 		F84444A5A13F492CBF8E8773 /* Montserrat-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraLightItalic.ttf"; path = "../assets/fonts/Montserrat-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -129,7 +131,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B437563531219B2CD2F76F9A /* libPods-eventapp-eventappTests.a in Frameworks */,
+				A16D4CD2187DB2D9F1C473AA /* libPods-eventapp-eventappTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,7 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC6B3DC41FD2BB08238EEC4C /* libPods-eventapp.a in Frameworks */,
+				69B0172301AAAC4C4A3A6580 /* libPods-eventapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,6 +172,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
+				919353EB29BFD546008563B0 /* splash_screen.png */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = eventapp;
@@ -179,8 +182,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				7141042EFA5155F7145D97EB /* libPods-eventapp.a */,
-				4292CE54DAFFAE5663708A62 /* libPods-eventapp-eventappTests.a */,
+				21406A9F895B96726F2B283B /* libPods-eventapp.a */,
+				083FC2A1BAA6F5831D74AD7A /* libPods-eventapp-eventappTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -220,10 +223,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				2E23F5FBE7C5F7A637E2D596 /* Pods-eventapp.debug.xcconfig */,
-				A97014127220C56F30F2E9E7 /* Pods-eventapp.release.xcconfig */,
-				3E64E2BFFB0D0B64447EAD8B /* Pods-eventapp-eventappTests.debug.xcconfig */,
-				A1B62AB45F1DCAF28207F8D5 /* Pods-eventapp-eventappTests.release.xcconfig */,
+				0F5E5F3F3984F81E96407D5E /* Pods-eventapp.debug.xcconfig */,
+				2329BCAA2F8F764C02A9BCC7 /* Pods-eventapp.release.xcconfig */,
+				F14354BAF628B80D745AFBF8 /* Pods-eventapp-eventappTests.debug.xcconfig */,
+				94C0FB7B22C219EF24B7656B /* Pods-eventapp-eventappTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -280,11 +283,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "eventappTests" */;
 			buildPhases = (
-				5C9B38816E19975AFDFB0006 /* [CP] Check Pods Manifest.lock */,
+				B42A8995E2503AD5D41C8C3E /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				A374012145C36D71C25B61CC /* [CP] Copy Pods Resources */,
+				D225C3AB476AEBAFD92FAFA2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -300,13 +303,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "eventapp" */;
 			buildPhases = (
-				A113123D3973E73BD56D84CB /* [CP] Check Pods Manifest.lock */,
+				448178B8C8A5D327EA363789 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				12C50AFF089FEABE33B565B3 /* [CP] Copy Pods Resources */,
+				D0FECF99640DE510A3899DD7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -385,6 +388,7 @@
 				8FE5DA37A85E47D594C0850E /* Montserrat-SemiBoldItalic.ttf in Resources */,
 				03F4F782222A463E88D90AA3 /* Montserrat-Thin.ttf in Resources */,
 				15390F5E951442BE922D20AE /* Montserrat-ThinItalic.ttf in Resources */,
+				919353EC29BFD547008563B0 /* splash_screen.png in Resources */,
 				B70111AEC1B342E6A3519DD4 /* Poppins-Black.ttf in Resources */,
 				5C74255F20E84E229E134172 /* Poppins-BlackItalic.ttf in Resources */,
 				7914B7163FCE459697BADACC /* Poppins-Bold.ttf in Resources */,
@@ -428,46 +432,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		12C50AFF089FEABE33B565B3 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-eventapp/Pods-eventapp-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-eventapp/Pods-eventapp-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-eventapp/Pods-eventapp-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5C9B38816E19975AFDFB0006 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-eventapp-eventappTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A113123D3973E73BD56D84CB /* [CP] Check Pods Manifest.lock */ = {
+		448178B8C8A5D327EA363789 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -489,7 +454,46 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A374012145C36D71C25B61CC /* [CP] Copy Pods Resources */ = {
+		B42A8995E2503AD5D41C8C3E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-eventapp-eventappTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D0FECF99640DE510A3899DD7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-eventapp/Pods-eventapp-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-eventapp/Pods-eventapp-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-eventapp/Pods-eventapp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D225C3AB476AEBAFD92FAFA2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -558,7 +562,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3E64E2BFFB0D0B64447EAD8B /* Pods-eventapp-eventappTests.debug.xcconfig */;
+			baseConfigurationReference = F14354BAF628B80D745AFBF8 /* Pods-eventapp-eventappTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -585,7 +589,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A1B62AB45F1DCAF28207F8D5 /* Pods-eventapp-eventappTests.release.xcconfig */;
+			baseConfigurationReference = 94C0FB7B22C219EF24B7656B /* Pods-eventapp-eventappTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -609,21 +613,23 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2E23F5FBE7C5F7A637E2D596 /* Pods-eventapp.debug.xcconfig */;
+			baseConfigurationReference = 0F5E5F3F3984F81E96407D5E /* Pods-eventapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = GG9Y7SZ7Y4;
+				CURRENT_PROJECT_VERSION = 8;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = GG9Y7SZ7Y4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = eventapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.2;
+				MARKETING_VERSION = 0.4.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -631,7 +637,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.localhappinez;
 				PRODUCT_NAME = eventapp;
-				PROVISIONING_PROFILE_SPECIFIER = LocalHappinezProv;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = LocalHappinezProv;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -640,20 +647,23 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A97014127220C56F30F2E9E7 /* Pods-eventapp.release.xcconfig */;
+			baseConfigurationReference = 2329BCAA2F8F764C02A9BCC7 /* Pods-eventapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = GG9Y7SZ7Y4;
+				CURRENT_PROJECT_VERSION = 8;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = GG9Y7SZ7Y4;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = eventapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.2;
+				MARKETING_VERSION = 0.4.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -661,7 +671,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.localhappinez;
 				PRODUCT_NAME = eventapp;
-				PROVISIONING_PROFILE_SPECIFIER = LocalHappinezProv;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = LocalHappinezProv;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

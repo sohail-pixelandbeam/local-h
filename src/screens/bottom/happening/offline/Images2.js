@@ -13,12 +13,11 @@ const Images2 = () => {
 
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            // navigate('Images1');
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
     return (
@@ -28,7 +27,7 @@ const Images2 = () => {
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"Key Tips for the Images"}
+                heading={"Key tips for the images"}
                 desc={"Key tips to consider while uploading the pictures."}
             // headerStyle={{ paddingBottom: 30 }}
             />
@@ -36,7 +35,7 @@ const Images2 = () => {
                 <ScrollView contentContainerStyle={{ paddingBottom: 350 }}>
 
                     <Image
-                        style={{ alignSelf: 'center' }}
+                        style={{ alignSelf: 'center',marginLeft:15 }}
                         source={require('../../../../static_assets/keyTipsImages.png')}
                     />
 
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         backgroundColor: '#FDFDFD',
         width: "100%", borderTopRightRadius: 30, borderTopLeftRadius: 30,
-        marginTop: -30, paddingTop: 20, paddingHorizontal: 25
+        marginTop: -30, paddingTop: 20, alignItems:'center'
     },
     content: {
         width: "100%", paddingHorizontal: 10, paddingVertical: 15, alignItems: 'center',

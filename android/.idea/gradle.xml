@@ -30,6 +30,7 @@
             <option value="$PROJECT_DIR$/../node_modules/react-native-document-picker/android" />
             <option value="$PROJECT_DIR$/../node_modules/react-native-gesture-handler/android" />
             <option value="$PROJECT_DIR$/../node_modules/react-native-gradle-plugin" />
+            <option value="$PROJECT_DIR$/../node_modules/react-native-image-picker/android" />
             <option value="$PROJECT_DIR$/../node_modules/react-native-maps/android" />
             <option value="$PROJECT_DIR$/../node_modules/react-native-pager-view/android" />
             <option value="$PROJECT_DIR$/../node_modules/react-native-push-notification/android" />

@@ -7,6 +7,7 @@ import { urls } from './Api_urls';
 import Geolocation from '@react-native-community/geolocation';
 import { navigate } from '../../Navigations';
 import { useRoute } from '@react-navigation/native';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 
 
@@ -117,13 +118,33 @@ export function formatDate(dateObj) {
   }
 }
 
+function generateRandomKey(uri) {
+  let shortUrl = uri.substring(uri.length - 4, uri.length - 10);
+  const randomNum = Math.floor(Math.random() * Math.pow(10, 15));
+  const keyString = randomNum.toString().padStart(15, '0') + shortUrl;
+  return keyString;
+}
 
 export async function uploadSingleFile() {
   try {
-    const result = await DocumentPicker.pickSingle({
-      type: [DocumentPicker.types.images],
-    });
-    return result;
+    const result = await launchImageLibrary({
+      mediaType: 'photo',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+
+    })
+    let res = result.assets[0];
+    let type = res?.type.split('/');
+    const photo = {
+      uri: res.uri,
+      type: res.type,
+      name: generateRandomKey(res.uri) + "." + type[1]
+      // name: generateRandomKey+type[1]},
+    };
+
+    return photo;
     // setGallaryUploadedImgs(results)
   } catch (err) {
     if (DocumentPicker.isCancel(err)) {
@@ -136,18 +157,30 @@ export async function uploadSingleFile() {
   }
 }
 
-export async function uploadMultipleFiles(fileType = 'images') {
+export async function uploadMultipleFiles(fileType = 'photo') {
   try {
-    const results = await DocumentPicker.pickMultiple({
-      type: [DocumentPicker.types[fileType]],
-    });
+    let results = await launchImageLibrary({
+      selectionLimit: 8,
+      mediaType: 'photo'
+    })
+    results = results.assets;
+    // await DocumentPicker.pickMultiple({
+    //   type: Platform.OS == 'ios' ? '*/*' : [DocumentPicker.types[fileType]],
+    // });
     var selectedFiles = [];
-    var i = 0;
+    var type;
+    let i = 0;
     for (const res of results) {
-      selectedFiles[i] = res
+      type = res?.type.split('/');
+      selectedFiles.push({
+        uri: res.uri,
+        type: res.type,
+        name: generateRandomKey(res.uri) + i + "." + type[1]
+      })
       i++;
     }
-    return results;
+    console.log('these are resasadas', selectedFiles);
+    return selectedFiles;
     // setGallaryUploadedImgs(results)
   } catch (err) {
     if (DocumentPicker.isCancel(err)) {
@@ -234,7 +267,44 @@ export async function getUserLocation() {
 export function getHOLPreviousScreen(currentScreenName) {
   let findIndex = hOLcomponentsName?.indexOf(currentScreenName)
   return hOLcomponentsName[findIndex - 1]
-
-
 }
 
+
+
+// export async function uploadMultipleFiles(fileType = 'photo') {
+//   try {
+//     let results = await DocumentPicker.pickMultiple({
+//       type: Platform.OS == 'ios' ? '*/*' : ['images'],
+//     });
+//     //  await launchImageLibrary({
+//     //   selectionLimit: 8,
+//     //   mediaType: 'photo'
+//     // })
+//     // results = results.assets;
+
+//     // var selectedFiles = [];
+//     // var type;
+//     // let i = 0;
+//     // for (const res of results) {
+//     //   type = res?.type.split('/');
+//     //   selectedFiles.push({
+//     //     uri: res.uri,
+//     //     type: res.type,
+//     //     name: 'photo' + i + "." + type[1]
+//     //   })
+//     //   i++;
+//     // }
+//     // console.log('these are resasadas', selectedFiles);
+//     return results;
+//     selectedFiles;
+//     // setGallaryUploadedImgs(results)
+//   } catch (err) {
+//     if (DocumentPicker.isCancel(err)) {
+//     } else {
+//       return {
+//         errror: "Unknown Error: " + JSON.stringify(err)
+//       }
+
+//     }
+//   }
+// }

@@ -1,37 +1,41 @@
 // CC STANDS FOR CODE OF CONDUCT
 
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, ScrollView, TextInput, BackHandler } from 'react-native'
 import { navigate } from '../../../../../Navigations'
 import HappeningHeader from '../../../../common/HappeningHeader'
+import HappeningStep from '../../../../common/HappeningStep'
 import { BackIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, RELIABLENONPROFITS, SUPPORTICON, TickIcon, WELFAREICON } from '../../../../components/Svgs'
 import { acolors } from '../../../../constants/colors'
 import { fonts } from '../../../../constants/fonts'
+import { Context } from '../../../../Context/DataContext'
 import { useForceUpdate } from '../../../../utils/functions'
 
 
-const HappeningAccessibilty = () => {
+const HappeningAccessibilty = (props) => {
 
 
     const forceUpdate = useForceUpdate();
 
     const [selectedAccessiblities, setSelectedAccessiblities] = useState([0]);
-    const accessiblitiesArr = [
-        { id: 0, title: "Accessible by Wheel Chair" },
-        { id: 1, title: "Difficult surface (muddy, rocky etc)" },
-        { id: 2, title: "Accesssible only by foot" },
-        { id: 3, title: "Accesssible only by Motorized Vehicles", },
-        { id: 4, title: "Accessible by visually impaired", },
-        { id: 5, title: "Sign Language" },
-    ];
+    const { state, setLocationHappeningData } = useContext(Context)
+
+    const accessiblitiesArr = state.happeningSubmissionData?.happeningAccessibility ?? []
+    //  [
+    //     { id: 0, title: "Accessible by Wheel Chair" },
+    //     { id: 1, title: "Difficult surface (muddy, rocky etc)" },
+    //     { id: 2, title: "Accesssible only by foot" },
+    //     { id: 3, title: "Accesssible only by Motorized Vehicles", },
+    //     { id: 4, title: "Accessible by visually impaired", },
+    //     { id: 5, title: "Sign Language" },
+    // ];
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            // navigate('HappeningLanguages1');
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
     function addRemoveLanguage(v) {
@@ -48,6 +52,16 @@ const HappeningAccessibilty = () => {
         forceUpdate();
 
 
+    }
+
+    function next() {
+        const obj = {
+            ...state.locationHappeningDraft,
+            happeningAccessibility: selectedAccessiblities
+        }
+
+        setLocationHappeningData(obj);
+        navigate('FellowsGetBack')
     }
 
 
@@ -70,17 +84,18 @@ const HappeningAccessibilty = () => {
                             marginBottom: 10, paddingBottom: 25
                         }}>
                             {
-                                accessiblitiesArr.map((v, i) => {
+                                accessiblitiesArr?.map((v, i) => {
                                     return (
                                         <TouchableOpacity
-                                            onPress={() => addRemoveLanguage(v.id)}
+                                            key={i}
+                                            onPress={() => addRemoveLanguage(v.happeningAccessibilityName)}
                                             style={styles.themePickerContainer}>
                                             <View style={{ width: "80%" }}>
-                                                <Text style={styles.themeText}>{v.title}</Text>
+                                                <Text style={styles.themeText}>{v.happeningAccessibilityName}</Text>
                                             </View>
 
                                             <View style={styles.languagePickerCircle}>
-                                                {selectedAccessiblities.includes(v.id) && <TickIcon width={17} height={12} />}
+                                                {selectedAccessiblities.includes(v.happeningAccessibilityName) && <TickIcon width={17} height={12} />}
                                             </View>
                                         </TouchableOpacity>
                                     )
@@ -91,16 +106,11 @@ const HappeningAccessibilty = () => {
                 </ScrollView>
 
             </View>
-            <TouchableOpacity
-                onPress={() => navigate('FellowsGetBack')}
-                activeOpacity={0.9}
-                style={styles.agreeBtn}>
-                <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Step 4/15</Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Next</Text>
-                    <NextIcon style={{ marginLeft: 10 }} />
-                </View>
-            </TouchableOpacity>
+            <HappeningStep
+                nextText={"Next"}
+                onPress={() => next()}
+                step={props?.route?.params?.step}
+            />
         </View>
     )
 }
@@ -156,7 +166,7 @@ const styles = StyleSheet.create({
     },
     languagePickerCircle: {
         width: 37, height: 37, borderRadius: 37 / 2,
-        shadowColor: 'rgba(0, 0, 0, 0.09)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
+        shadowColor: 'rgba(0, 0, 0, 0.3)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
         alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff', elevation: 5
     },
     subData: {

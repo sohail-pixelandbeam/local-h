@@ -59,7 +59,7 @@ const Start = ({ navigation }) => {
                         <Text style={styles.text_2}>Sign Up</Text>
                     </TouchableOpacity>
                     <Text></Text>
-                    <Text style={styles.text_3} onPress={() => navigation.navigate('Signin')}>I’ll do this later</Text>
+                    {/* <Text style={styles.text_3} onPress={() => navigation.navigate('Signin')}>I’ll do this later</Text> */}
                 </View>
 
                 <Text></Text>

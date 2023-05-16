@@ -1,20 +1,24 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { TouchableOpacity, View, Text, ScrollView, StyleSheet } from 'react-native'
 import Modal from 'react-native-modal'
 import { CrossIcon, TickIcon } from '../components/Svgs'
 import { fonts } from '../constants/fonts'
+import { Context } from '../Context/DataContext'
 import { useForceUpdate } from '../utils/functions'
 
 
 
-const HappeningFilterModal = ({ filterType, isVisible,setIsVisible }) => {
+const HappeningFilterModal = ({ filterType, isVisible, setIsVisible }) => {
 
 
     const forceUpdate = useForceUpdate();
+    const { state } = useContext(Context);
     const [filterModal, setFilterModal] = useState(false);
     // const [filterType, setFilterType] = useState('');
     const [filterTheme, setFilterTheme] = useState('Art & cultural projects');
-    const [filterThemesArr, setFilterThemesArr] = useState(['Art & cultural projects', 'Business Support', 'Clean Energy & Air', 'Community Work', 'Disaster Relief', 'Education']);
+    console.log('state.happeningSubmissionData?.happeningTheme', state.happeningSubmissionData?.happeningTheme)
+    const [filterThemesArr, setFilterThemesArr] = useState(state.happeningSubmissionData?.happeningTheme ?? [])
+    // ['Art & cultural projects', 'Business Support', 'Clean Energy & Air', 'Community Work', 'Disaster Relief', 'Education']);
 
 
     const FilterHeader = (props) => (
@@ -60,7 +64,7 @@ const HappeningFilterModal = ({ filterType, isVisible,setIsVisible }) => {
                                                 <View style={{
                                                     marginHorizontal: 2,
                                                     elevation: 5, backgroundColor: 'white', borderTopRightRadius: 10, borderRadius: 10, padding: 15,
-                                                    shadowColor: 'rgba(0,0,0,0.5)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
+                                                    shadowColor: 'rgba(0,0,0,0.2)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
                                                     marginBottom: 10, paddingBottom: 25
                                                 }}>
                                                     <ScrollView >
@@ -74,8 +78,8 @@ const HappeningFilterModal = ({ filterType, isVisible,setIsVisible }) => {
                                                                         }}
                                                                         style={styles.filterThemePickerContainer}>
                                                                         <View>
-                                                                            <Text style={styles.themeText}>{v}</Text>
-                                                                            <Text style={styles.subData}>sub data</Text>
+                                                                            <Text style={styles.themeText}>{v?.happeningThemeName}</Text>
+                                                                            {/* <Text style={styles.subData}>sub data</Text> */}
                                                                         </View>
 
                                                                         <View style={styles.languagePickerCircle}>
@@ -98,11 +102,11 @@ const HappeningFilterModal = ({ filterType, isVisible,setIsVisible }) => {
                         <>
                             <FilterHeader showCrossBtn={true} title={filterType} />
                             <View style={{
-                                elevation: 5, backgroundColor: 'white', borderTopRightRadius: 10, borderRadius: 10, padding: 15,
-                                shadowColor: 'rgba(0,0,0,0.5)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
-                                marginBottom: 10, paddingBottom: 25
+                                elevation: 5, backgroundColor: 'white', borderTopRightRadius: 10, borderRadius: 10, padding: 15, paddingBottom: 5,
+                                shadowColor: 'rgba(0,0,0,0.2)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.1,
+                                marginBottom: 10, paddingBottom: 25, marginTop: 10
                             }}>
-                                <ScrollView contentContainerStyle={{ paddingBottom: 10, }}>
+                                <ScrollView contentContainerStyle={{ paddingBottom: 20, }} showsVerticalScrollIndicator={false} >
                                     {
                                         filterThemesArr?.map((v, i) => {
                                             return (
@@ -111,14 +115,16 @@ const HappeningFilterModal = ({ filterType, isVisible,setIsVisible }) => {
                                                         setFilterTheme(v)
                                                         forceUpdate();
                                                     }}
-                                                    style={styles.filterThemePickerContainer}>
+                                                    style={[styles.filterThemePickerContainer,]}>
                                                     <View>
-                                                        <Text style={styles.themeText}>{v}</Text>
-                                                        <Text style={styles.subData}>sub data</Text>
+                                                        <Text style={styles.themeText}>{v?.filterThemesArr}</Text>
+                                                        {/* <Text style={styles.subData}>sub data</Text> */}
                                                     </View>
 
                                                     <View style={styles.languagePickerCircle}>
-                                                        {filterTheme == v && <TickIcon width={17} height={12} />}
+                                                        {/* {filterTheme == v &&  */}
+                                                        <TickIcon width={17} height={12} />
+                                                        {/* } */}
                                                     </View>
                                                 </TouchableOpacity>
                                             )
@@ -144,7 +150,7 @@ const styles = StyleSheet.create({
     },
 
     filterThemePickerContainer: {
-        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 14,
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 14, paddingRight: 3,
         // shadowColor: 'rgba(0,0,0,0.3)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
         elevation: 2
     },
@@ -156,7 +162,7 @@ const styles = StyleSheet.create({
     },
     languagePickerCircle: {
         width: 37, height: 37, borderRadius: 37 / 2,
-        shadowColor: 'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
+        shadowColor: 'rgba(0, 0, 0, 0.2)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
         alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff', elevation: 5
     },
     languagePickerContainer: {

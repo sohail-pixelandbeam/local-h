@@ -31,11 +31,11 @@ const HappeningGroup = (props) => {
     const [fellowMustComeAlone, setFellowMustComeAlone] = useState(false);
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
     function next() {
@@ -52,10 +52,15 @@ const HappeningGroup = (props) => {
             alertRef.alertWithType('error', "Error", "Please enter maximum people allowed at a given time");
             return;
         }
-        if (maxPeopleThatAFellowCanBring == "" && !fellowMustComeAlone) {
-            alertRef.alertWithType('error', "Error", "Please enter maximum people that fellow can bring");
+
+        if (minPeopleRequiredForTheHappenig > maxPeopleAllowedAtAGivenTime) {
+            alertRef.alertWithType('error', "Error", "Min fellows required should not be greater than max fellows required");
             return;
         }
+        // if (maxPeopleThatAFellowCanBring == "" && !fellowMustComeAlone) {
+        //     alertRef.alertWithType('error', "Error", "Please enter maximum people that fellow can bring");
+        //     return;
+        // }
 
         const obj = {
             ...state.locationHappeningDraft,
@@ -67,7 +72,8 @@ const HappeningGroup = (props) => {
         }
 
         setLocationHappeningData(obj);
-        navigate('FellowsGetBack');
+        navigate('HappeningAccessibilty')
+        // navigate('FellowsGetBack');
     }
 
 
@@ -81,7 +87,7 @@ const HappeningGroup = (props) => {
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"Maximum people that can work at the same time?"}
+                heading={"Amount of people that can work at the same time?"}
                 desc={"can more than one fellow attend this happening"}
             // headerStyle={{ paddingBottom: 30 }}
             />
@@ -89,7 +95,7 @@ const HappeningGroup = (props) => {
                 <ScrollView contentContainerStyle={{ paddingBottom: 350 }}>
                     <View style={{ width: '90%', alignSelf: 'center', marginTop: 20 }}>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.title}>Min Age to Participate</Text>
+                            <Text style={styles.title}>Min age to participate</Text>
                             <TextInput
                                 onChangeText={setMinAgeToParticipate}
                                 keyboardType='number-pad'
@@ -100,7 +106,7 @@ const HappeningGroup = (props) => {
                             />
                         </View>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.title}>Min people required{"\n"}for the happening</Text>
+                            <Text style={styles.title}>Min people required{"\n"}at a given time</Text>
                             <TextInput
                                 onChangeText={setMinPeopleRequiredForTheHappenig}
                                 keyboardType='number-pad'
@@ -110,9 +116,9 @@ const HappeningGroup = (props) => {
                                 textAlign='center'
                             />
                         </View>
-                        <Text style={styles.msgText}>*The Happening will be cancelled if the min people haven’t{"\n"}joined</Text>
+                        <Text style={styles.msgText}>*The Happening will be cancelled if the min people{"\n"}haven’t joined</Text>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.title}>Max people allowed{"\n"}at a given time.</Text>
+                            <Text style={styles.title}>Max people allowed{"\n"}at a given time</Text>
                             <TextInput
                                 onChangeText={setMaxPeopleAllowedAtAGivenTime}
                                 keyboardType='number-pad'
@@ -122,9 +128,9 @@ const HappeningGroup = (props) => {
                                 textAlign='center'
                             />
                         </View>
-                        <Text style={styles.msgText}>* Individuals less than the age of 12 do not count in{"\n"}Maxmimum number</Text>
+                        <Text style={styles.msgText}>* Individuals less than the age of 18 do not count in{"\n"}Maxmimum number</Text>
 
-                        <View style={styles.inputContainer}>
+                        {/* <View style={styles.inputContainer}>
                             <Text style={styles.title}>Max people that a{"\n"}fellow can bring.</Text>
                             <TextInput
                                 ref={(ref) => textInputRef = ref}
@@ -134,9 +140,9 @@ const HappeningGroup = (props) => {
                                 style={styles.textInput}
                                 textAlign='center'
                             />
-                        </View>
+                        </View> */}
 
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             onPress={() => {
                                 setFellowMustComeAlone(!fellowMustComeAlone);
                                 textInputRef.clear();
@@ -147,7 +153,7 @@ const HappeningGroup = (props) => {
                                 {fellowMustComeAlone && <TickIcon />}
                             </View>
                             <Text style={{ marginLeft: 10, fontFamily: fonts.MBo, fontSize: 14, color: '#7B7B7B' }}>Fellow must come alone</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                     </View>
 

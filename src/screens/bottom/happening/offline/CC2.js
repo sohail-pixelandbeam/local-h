@@ -11,15 +11,15 @@ import { fonts } from '../../../../constants/fonts'
 import { getHOLPreviousScreen, useForceUpdate } from '../../../../utils/functions'
 
 
-const CC2 = () => {
+const CC2 = (props) => {
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            navigate('CC1');
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         navigate('CC1');
+    //         return true;
+    //     })
+    // }, []);
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -61,7 +61,7 @@ const CC2 = () => {
                 onPress={() => navigate('CC3')}
                 activeOpacity={0.9}
                 style={styles.agreeBtn}>
-                <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Step 1/15</Text>
+                <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Step {props.route.params?.step}/15</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Next</Text>
                     <NextIcon style={{ marginLeft: 10 }} />

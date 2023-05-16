@@ -24,17 +24,13 @@ const HappeningLanguages = (props) => {
     const forceUpdate = useForceUpdate();
     const { state, setHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
-    const [language, setLanguage] = useState('English');
-    const [selectedLanguages, setSelectedLanguages] = useState(['English'])
+    const [language, setLanguage] = useState('');
+    const [selectedLanguages, setSelectedLanguages] = useState([])
 
     const [languages, setLanguages] = useState(state?.happeningSubmissionData?.languages);
     const [languagesTemp, setLanguageTemp] = useState(state?.happeningSubmissionData?.languages);
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
+
 
 
     function addRemoveLanguage(v) {
@@ -65,9 +61,11 @@ const HappeningLanguages = (props) => {
         const obj = {
             ...state.happeningDraft,
             languageSpokenAtHappening: selectedLanguages,
+            languageForYourHappening: selectedLanguages
         }
         setHappeningData(obj);
-        navigate('HappeningLanguages1')
+        navigate('HappeningSkills')
+        // navigate('HappeningLanguages1')
         // navigate('Description1')
     }
 
@@ -85,7 +83,7 @@ const HappeningLanguages = (props) => {
             // headerStyle={{ paddingBottom: 30 }}
             />
             <View style={styles.contentContainer}>
-                <ScrollView>
+                <ScrollView contentContainerStyle={{paddingBottom:260}} showsVerticalScrollIndicator={false} >
                     <TextInput
                         placeholder='Search for a language'
                         placeholderTextColor={"#7b7b7b"}
@@ -106,7 +104,7 @@ const HappeningLanguages = (props) => {
                     <View style={{ width: '90%', alignSelf: 'center', marginTop: 20 }}>
                         <View style={{
                             elevation: 2, backgroundColor: 'white', borderTopRightRadius: 10, borderTopLeftRadius: 10, padding: 15,
-                            shadowColor: 'rgba(0,0,0,0.3)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
+                            shadowColor: 'rgba(0,0,0,0.3)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.1,
                             marginBottom: 10, paddingBottom: 25
                         }}>
                             {
@@ -196,7 +194,7 @@ const styles = StyleSheet.create({
     },
     languagePickerCircle: {
         width: 37, height: 37, borderRadius: 37 / 2,
-        shadowColor: 'rgba(0,0,0,0.5)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.2,
+        shadowColor: 'rgba(0,0,0,0.3)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.1,
         alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff', elevation: 5
     },
     subData: {

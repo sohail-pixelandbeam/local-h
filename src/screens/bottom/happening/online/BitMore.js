@@ -29,11 +29,11 @@ const BitMore = (props) => {
 
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
     function next() {
@@ -46,10 +46,10 @@ const BitMore = (props) => {
             alertRef.alertWithType('error', "Error", "Please enter `How will you communicate with fellows` ")
             return;
         }
-        if (onlineMeetingLink == "") {
-            alertRef.alertWithType('error', "Error", "Please enter meeting link ")
-            return;
-        }
+        // if (onlineMeetingLink == "") {
+        //     alertRef.alertWithType('error', "Error", "Please enter meeting link ")
+        //     return;
+        // }
         const obj = {
             ...state.happeningDraft,
             howWillYouCommunicateWithFellows: communicateWithUs,
@@ -90,7 +90,10 @@ const BitMore = (props) => {
                                 marginTop: 10
                             }]}
                         />
-                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 12 }}>Meeting Link</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
+                            <Text style={{ fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 12 }}>Meeting Link</Text>
+                            <Text style={{ fontFamily: fonts.MRe, color: '#2A2A2A', fontSize: 12 }}>(Optional) </Text>
+                        </View>
                         <TextInput
                             placeholder=''
                             onChangeText={setOnlineMeetingLink}

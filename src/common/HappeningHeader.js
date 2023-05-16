@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     },
     heading: {
         fontFamily: fonts.PBo, fontSize: 29, color: "#FFFFFF", marginTop: 10,
-        lineHeight: 43
+        lineHeight: 43,
     },
     desc: {
         fontFamily: fonts.MRe, fontSize: 10, color: '#FFFFFF', marginTop: 10, lineHeight: 15

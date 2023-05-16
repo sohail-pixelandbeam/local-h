@@ -8,23 +8,25 @@ import { fonts } from '../../constants/fonts';
 const ProfileTab = (props) => {
 
     const [tabs, setTabs] = useState('host');
-    const item = props.data
-
+    const item = props.data;
+    const photos = Array.isArray(item?.userHappeningPhotos) ? item?.userHappeningPhotos[0]?.addPhotosOfYourHappening ?? [] : [];
     return (
         <View style={{ flex: 1, }}>
 
-            <View style={[styles.shadow, { backgroundColor: 'white', width: "100%", borderRadius: 12, paddingHorizontal: 10, paddingTop: 10, paddingBottom: 20, marginTop: 10, height: 300 }]}>
+            <View style={[styles.shadow, { backgroundColor: 'white', width: "100%", borderRadius: 12, paddingHorizontal: 10, paddingTop: 10, paddingBottom: 20, marginTop: 10, }]}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: "100%" }}>
                     <Text style={[styles.aboutHeading, { marginTop: 0 }]}>Bio</Text>
-                    <Text style={{ fontFamily: fonts.PBo, fontSize: 15, color: '#5A4CBA', textDecorationLine: 'underline' }}>Edit</Text>
+                    <TouchableOpacity onPress={() => props?.onPressEdit() }>
+                        <Text style={{ fontFamily: fonts.PBo, fontSize: 15, color: '#5A4CBA', textDecorationLine: 'underline' }}>Edit</Text>
+                    </TouchableOpacity>
                 </View>
-                <Text style={styles.aboutDesc}>{item?.userId?.bio}</Text>
+                <Text style={styles.aboutDesc}>{item?.userProfile?.bio}</Text>
                 <Text style={styles.aboutHeading}>Skills</Text>
-                <Text style={styles.aboutDesc}>{item?.userId?.addSkills?.toString()}</Text>
+                <Text style={styles.aboutDesc}>{item?.userProfile?.addSkills?.toString()}</Text>
                 <Text style={styles.aboutHeading}>Works as</Text>
-                <Text style={styles.aboutDesc}>{item?.userId?.profession}</Text>
+                <Text style={styles.aboutDesc}>{item?.userProfile?.profession}</Text>
                 <Text style={styles.aboutHeading}>Languages Known</Text>
-                <Text style={styles.aboutDesc}>{item?.userId?.language?.toString()}</Text>
+                <Text style={styles.aboutDesc}>{item?.userProfile?.LanguagesKnown?.toString()}</Text>
             </View>
             {/* <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between' }}>
                 <Text style={styles.heading}>Reviews</Text>
@@ -99,15 +101,15 @@ const ProfileTab = (props) => {
                 <View style={{ width: "60%", flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
                     {
                         // [require('../../static_assets/p2.png'), require('../../static_assets/p3.png'), require('../../static_assets/p3.png'), require('../../static_assets/p2.png')].
-                            item?.userId?.userHappeningPhotos?.map((v, i) => {
-                                return (
-                                    <Image
-                                        key={i}
-                                        style={{ width: "40%", marginLeft: 5, height: 120, aspectRatio: 2 / 2, marginTop: 10, borderRadius: 10 }}
-                                        source={{ uri: v }}
-                                    />
-                                )
-                            })
+                        photos?.map((v, i) => {
+                            return (
+                                <Image
+                                    key={i}
+                                    style={{ width: "40%", marginLeft: 5, height: 120, aspectRatio: 2 / 2, marginTop: 10, borderRadius: 10 }}
+                                    source={{ uri: v }}
+                                />
+                            )
+                        })
 
                     }
                 </View>
@@ -127,14 +129,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     aboutHeading: {
-        fontFamily: fonts.PBo, fontSize: 15, color: '#242221', marginTop: 10
+        fontFamily: fonts.PBo, fontSize: 15, color: '#ffa183', marginTop: 10
     },
     aboutDesc: {
         fontFamily: fonts.PRe, fontSize: 11, color: '#5D5760', lineHeight: 25
     },
     heading: {
-        fontFamily: fonts.PSBo, fontSize: 16, color: '#5B4DBC', marginTop: 10
+        fontFamily: fonts.PSBo, fontSize: 16, color: '#ffa183', marginTop: 10
     }
 })
 
 export default ProfileTab
+

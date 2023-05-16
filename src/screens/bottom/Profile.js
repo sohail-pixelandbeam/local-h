@@ -3,7 +3,7 @@ import { SafeAreaView, StatusBar, View, Image, Text, StyleSheet, TouchableOpacit
 
 
 import { Context } from '../../Context/DataContext';
-import { retrieveItem, storeItem, useForceUpdate } from '../../utils/functions'
+import { months, retrieveItem, storeItem, uploadSingleFile, useForceUpdate } from '../../utils/functions'
 import Loader from '../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import { acolors } from '../../constants/colors';
@@ -17,6 +17,8 @@ import ProfileTab from './ProfileTab';
 import { ReviewedHappening } from '../../components/NotificationCards';
 import { AddedPhotosTimeLine, EditBioSkillsTimeLine, LiveHappeningTimeLine, ReviewedHappeningTimeLine, SubmitHappeningTimeLine, UpdatedPhotoTimeLine } from '../../components/TimeLineCards';
 import { RefreshControl } from 'react-native';
+import EditProfile from './EditProfile';
+import { urls } from '../../utils/Api_urls';
 
 
 
@@ -38,8 +40,12 @@ const Profile = () => {
     const [myBookings, setMyBookings] = useState([]);
     const [profileData, setProfileData] = useState({});
 
+    const [isEditProfile, setEditProfile] = useState(false);
+    const [profilePic, setProfilePic] = useState(''); // WHEN EDITING THE PROFILE
+
+
     // "Timeline",
-    const tabs = ["Profile",  "My Hostings", "Bookings",];
+    const tabs = ["Profile", "My Hostings", "Bookings",];
     const happeningStatuses = ["underReview", "approved", "rejected", "cancelled"];
     const happeningStatusesText = {
         underReview: {
@@ -54,6 +60,86 @@ const Profile = () => {
         },
         cancelled: {
             status: "Cancelled"
+        }
+
+    }
+
+
+    async function uploadPic() {
+        const res = await uploadSingleFile();
+        setProfilePic(res);
+        console.log('res====', res)
+
+    }
+
+
+    function makeFromToMonthDate(item) {
+
+        let startingDate = item?.startingDate;
+        let endingDate = item?.endDate;
+        let getMonth = endingDate?.substring(5, 7);
+        if (getMonth && getMonth[0] == 0) { getMonth = months[getMonth[1] - 1] } else getMonth = months[getMonth - 1];
+        if (startingDate && endingDate) return startingDate?.substring(startingDate?.length, startingDate?.length - 2) + " " + getMonth;
+        else return "12-25\n Dec";
+    }
+
+
+    async function doEditProfile(v) {
+
+
+        try {
+            setLoading(true)
+            const loginData = await retrieveItem('login_data');
+            var data = new FormData();
+
+            const reqObj = {
+                token: loginData?.token,
+                bio: v.bio,
+                LanguagesKnown: v.languageKnown,
+                profession: v.profession,
+                addSkills: v.skills,
+                profileImage: profilePic
+            }
+
+
+            if (!reqObj.profileImage) delete reqObj.profileImage;
+            console.log('reqObj========asdasd', reqObj.profileImage);
+            for (let key in reqObj) {
+                data.append(key, reqObj[key]);
+            }
+            let url = urls.API + "updateProfile";
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    Accept: 'multipart/form-data',
+                    'Content-Type': 'multipart/form-data',
+                },
+                body: data
+            })
+                .then(data => data.json())
+                // .then(data => data.text())
+                .then(data => {
+                    console.log('data i get=====', data)
+                    setLoading(false)
+                    if (data.status) {
+                        // alertRef.alertWithType('success', 'Success', 'Profile Updated')
+                        setEditProfile(false)
+                        getProfileDetails();
+                        storeItem('profile_data', data.data)
+                    }
+                    else {
+                        alertRef.alertWithType('error', "Error", data.message)
+                    }
+                })
+                .catch(error => {
+                    console.log('error', error)
+                    alertRef.alertWithType('error', urls.error_title, urls.error)
+                    setLoading(false)
+                })
+        }
+        catch (err) {
+            console.log('errpr', err)
+            setLoading(false)
         }
 
     }
@@ -83,9 +169,11 @@ const Profile = () => {
         // console.log('getMyHosting/' + state.userData._id)
         apiRequest('', 'getUserDetails', 'GET')
             .then(data => {
+                console.log('userDetails is', data)
                 setLoading(false);
                 if (data.status) {
                     setProfileData(data.data)
+                    console.log('userDetails isiaa', data?.data?.userProfile)
                 }
             })
             .catch(err => {
@@ -117,9 +205,17 @@ const Profile = () => {
         // wait(2000).then(() => setRefreshing(false));
     }, []);
 
+    async function getLocationByIp() {
+        let publicIp = await fetch('https://api.ipify.org/?format=json')
+        publicIp = await publicIp.json();
+        console.log('this is the ip', publicIp.ip)
+    }
+
     useEffect(() => {
+        console.log('setProfileData', profileData)
         getProfileDetails();
         getMyHostings();
+        // getLocationByIp();
     }, []);
 
 
@@ -233,6 +329,8 @@ const Profile = () => {
                     // console.log('item==',item)
                     return (
                         <TouchableOpacity
+                            activeOpacity={1}
+                            disabled={true}
                             onPress={() => {
                                 item.status == 'cancelled' ? navigateFromStack('BookingStack', 'MyHappeningDetails', { params: 'cancelled' }) :
                                     navigateFromStack('BookingStack', 'AllBookings', item)
@@ -248,16 +346,8 @@ const Profile = () => {
                                     // , index == 2 && { backgroundColor: '#FFA183' }, item == 'cancelled' && { backgroundColor: '#D94A55' }
                                 ]}
                                 >
-                                    {
-                                        item.status == 'underReview' &&
-                                        <View style={{ height: 40, justifyContent: 'center' }}>
-                                            <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: 'white', marginLeft: 10, }}>
-                                                {happeningStatusesText[item.status].status}
-                                                {/* {index == 2 ? "Live" : item == 'cancelled' ? "Cancelled" : "starts on 23 june"} */}
-                                            </Text>
-                                        </View>
-                                    }
-                                    <View style={[{ flexDirection: 'row', height: 35, alignItems: 'center', justifyContent: 'space-evenly', backgroundColor: 'white', borderRadius: 20, }, item == 'underReview' && { borderWidth: 3, borderColor: '#B9B1F0' }]}>
+
+                                    <View style={[{ flexDirection: 'row', height: 35, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: 20, }, item == 'underReview' && { borderWidth: 3, borderColor: '#B9B1F0' }]}>
                                         <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: '#675AC1', textTransform: 'capitalize' }}>
                                             {item.status}
                                             {/* {index == 3 || 2 ? "view details" : index == 0 ? "under review" : "2 new requests"} */}
@@ -267,12 +357,16 @@ const Profile = () => {
                                 </View>
                             </View>
                             <Text style={{ fontFamily: fonts.PMe, fontSize: 11, color: '#5D5760', marginTop: 10 }}>{item.happeningTitle}</Text>
-                            {/* <TouchableOpacity
-                                style={{ position: 'absolute', top: -15, right: -5, overflow: 'visible', width: 44, height: 44, borderRadius: 44 / 2, backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#707070', alignItems: 'center', justifyContent: 'center' }}
+                            <View
+                                style={{ position: 'absolute', top: 8, right: 8,width:100, overflow: 'visible', paddingHorizontal: 10, height: 30, borderRadius: 15, backgroundColor: '#FFFFFF', borderColor: '#707070', alignItems: 'center', justifyContent: 'center' }}
                             >
-                                <EditPencilIcon />
+                                <Text style={{ fontFamily: fonts.PMe, fontSize: 12, color: acolors.btnSecondry, textTransform: 'capitalize' }}>
+                                    {makeFromToMonthDate(item)}
+                                    {/* {index == 3 || 2 ? "view details" : index == 0 ? "under review" : "2 new requests"} */}
+                                </Text>
+                                {/* <EditPencilIcon /> */}
 
-                            </TouchableOpacity> */}
+                            </View>
                         </TouchableOpacity>
                     )
                 }}
@@ -290,6 +384,9 @@ const Profile = () => {
                 backgroundColor={"white"}
             />
             {loading && <Loader />}
+
+
+
             <AlertMsg
                 heading={bookingStatusAlertMsg}
                 desc=""
@@ -336,11 +433,24 @@ const Profile = () => {
             />
 
 
-            <View>
+            <View
+                style={{ width: 115, height: 115, alignSelf: 'center' }}
+            >
                 <Image
                     style={{ width: 115, height: 115, borderRadius: 115 / 2, borderWidth: 5, borderColor: acolors.primary, alignSelf: 'center', marginTop: 20 }}
-                    source={{ uri: profileData?.userId?.profileImage }}
+                    source={{ uri: isEditProfile == true && profilePic?.uri ? profilePic.uri : profileData?.userProfile?.profileImage }}
+                // source={{ uri: profilePic.uri ?? profileData?.userProfile?.profileImage }}
                 />
+                {isEditProfile &&
+                    <TouchableOpacity
+                        disabled={!isEditProfile}
+                        onPress={() => uploadPic()}
+                        style={{ position: 'absolute', right: 0, bottom: -10, alignSelf: 'center', width: 30, height: 30, borderRadius: 15, backgroundColor: '#9086d0', alignItems: 'center', justifyContent: 'center' }}>
+                        <EditPencilIcon width={12} height={20} color={'white'} />
+                    </TouchableOpacity>
+
+                }
+
                 {/* <TouchableOpacity
                     onPress={() => navigate('SettingsScreen')}
                     style={{ position: 'absolute', top: 20, right: 20, alignItems: 'center' }}>
@@ -354,36 +464,49 @@ const Profile = () => {
                     <Text style={{ fontFamily: fonts.PRe, fontSize: 10, color: '#000000', marginTop: 2 }}>Donate</Text>
                 </TouchableOpacity> */}
             </View>
-            {profileData?.userId?.address !== "Not Provided" && <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 20 }}>
+            {
+                isEditProfile &&
+
+                <TouchableOpacity
+                    onPress={() => setEditProfile(false)}
+                    style={{ position: 'absolute', top: 20, right: 20, alignItems: 'center' }}>
+                    <Text style={{ fontFamily: fonts.PMe, fontSize: 14, color: '#000000', marginTop: 2 }}>Cancel</Text>
+                </TouchableOpacity>
+            }
+            {profileData?.userProfile?.address !== "Not Provided" && <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 20 }}>
                 <HappeningLocationIconSmall width={11} height={14} />
-                <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5 }}>{profileData?.userId?.address} AMSTERDAM, NETHERLANDS</Text>
+                <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5, }}>{profileData?.userProfile?.address} AMSTERDAM, NETHERLANDS</Text>
             </View>
             }
-            <Text style={[styles.headingText, { marginTop: 5, alignSelf: 'center' }]}>{state?.userData?.userName}</Text>
+            <Text style={[styles.headingText, { marginTop: 5, alignSelf: 'center', marginTop: 20 }]}>{profileData?.userProfile?.userId?.firstName.concat(' ' + profileData?.userProfile?.userId?.lastName)}</Text>
             <View style={{ width: "90%", alignSelf: 'center', marginTop: 10 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    <ScrollView horizontal={true}>
-                        {
-                            tabs.map((v, i) => {
-                                return (
-                                    <TouchableOpacity
-                                        style={{ marginBottom: 5, marginLeft: 15 }}
-                                        onPress={() => {
-                                            v == "My Hostings" && getMyHostings();
-                                            v == "Bookings" && getMyBookings();
-                                            setSelectedTab(v)
+                {
+                    !isEditProfile &&
 
-                                        }}
-                                        key={i}
-                                    >
-                                        <Text style={[selectedTab == v ? styles.selectedTabText : styles.unSelectedTabText]} >{v}</Text>
-                                        {selectedTab == v && <View style={{ marginTop: 5, width: 20, backgroundColor: '#5B4DBC', height: 3, borderRadius: 10, }}></View>}
-                                    </TouchableOpacity>
-                                )
-                            })
-                        }
-                    </ScrollView>
-                </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                        <ScrollView horizontal={true}>
+                            {
+                                tabs.map((v, i) => {
+                                    return (
+                                        <TouchableOpacity
+                                            style={{ marginBottom: 5, marginLeft: 15 }}
+                                            onPress={() => {
+                                                v == "My Hostings" && getMyHostings();
+                                                v == "Bookings" && getMyBookings();
+                                                setSelectedTab(v)
+
+                                            }}
+                                            key={i}
+                                        >
+                                            <Text style={[selectedTab == v ? styles.selectedTabText : styles.unSelectedTabText]} >{v}</Text>
+                                            {selectedTab == v && <View style={{ marginTop: 5, width: 20, backgroundColor: '#5B4DBC', height: 3, borderRadius: 10, }}></View>}
+                                        </TouchableOpacity>
+                                    )
+                                })
+                            }
+                        </ScrollView>
+                    </View>
+                }
 
 
                 {
@@ -399,8 +522,12 @@ const Profile = () => {
                 }
                 {
                     selectedTab == "Profile" &&
-                    <ScrollView contentContainerStyle={{ paddingBottom: 500 }}>
-                        <ProfileTab data={profileData} />
+                    <ScrollView contentContainerStyle={{ paddingBottom: isEditProfile ? 400 : 500 }} showsVerticalScrollIndicator={false} >
+                        {isEditProfile ? <EditProfile
+                            alert={(val1, val2, val3) => alertRef.alertWithType(val1, val2, val3)}
+                            data={profileData}
+                            onPressEdit={(obj) => doEditProfile(obj)}
+                        /> : <ProfileTab data={profileData} onPressEdit={() => setEditProfile(true)} />}
                     </ScrollView>
                 }
                 {
@@ -423,17 +550,25 @@ const Profile = () => {
 
             </View>
             <View style={{ position: 'absolute', bottom: Platform.OS == 'ios' ? 80 : 50, paddingTop: 10, backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-between', width: "100%", paddingHorizontal: 20, elevation: 5, alignItems: 'center', paddingBottom: 10, shadowOffset: { width: 1, height: 1 } }}>
-                <TouchableOpacity onPress={() => setConfirmSignOut(true)}>
-                    <Text style={styles.signOut}>Sign Out</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => navigate('ThingsConsider')}
-                    style={styles.submitHappeningBtn}>
-                    <Text style={styles.submitHappeningText}>+ Submit a Happening</Text>
-                </TouchableOpacity>
+                {
+                    !isEditProfile &&
+                    <>
+                        <TouchableOpacity onPress={() => setConfirmSignOut(true)}>
+                            <Text style={styles.signOut}>Sign Out</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => navigate('ThingsConsider')}
+                            style={styles.submitHappeningBtn}>
+                            <Text style={styles.submitHappeningText}>+ Submit a Happening</Text>
+                        </TouchableOpacity>
+
+                    </>
+                }
             </View>
 
-        </SafeAreaView >
+
+            <DropdownAlert ref={(ref) => alertRef = ref} />
+        </SafeAreaView>
     )
 }
 

@@ -52,7 +52,7 @@ const Signin = ({ navigation }) => {
         };
 
 
-        apiRequest(reqObj, 'userSignIn')
+        apiRequest(reqObj, 'auth/userSignIn')
             .then(data => {
                 setLoading(false);
                 if (data.status) {
@@ -83,12 +83,8 @@ const Signin = ({ navigation }) => {
         <View style={{ flex: 1, backgroundColor: "#35208e" }}>
             <Image
                 source={require('../../assets/signinMask.png')}
-
                 style={{
-                    width: "100%",
-                    resizeMode: 'contain',
-                    position: 'absolute',
-                    bottom: 0,
+                    width: "100%", resizeMode: 'contain', position: 'absolute', bottom: 0,
                     // height: 350,
                     // resizeMode: 'cover'
                 }} />

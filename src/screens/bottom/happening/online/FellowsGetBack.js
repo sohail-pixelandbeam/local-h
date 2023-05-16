@@ -26,22 +26,18 @@ const FellowsGetBack = (props) => {
     const [loading, setLoading] = useState(false);
 
     const [whatWillYouProvide, setWhatWillYouProvide] = useState('');
-    const [whatFellowsGet, setWhatFellowsGet] = useState('');
+    const [whatFellowsGet, setWhatFellowsGet] = useState(state.happeningDraft?.whatFellowsGet ?? '');
 
+    
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
 
 
     function next() {
 
-        if (whatWillYouProvide == "") {
-            alertRef.alertWithType('error', "Error", "Please enter what will you provide");
-            return;
-        }
+        // if (whatWillYouProvide == "") {
+        //     alertRef.alertWithType('error', "Error", "Please enter what will you provide");
+        //     return;
+        // }
         if (whatFellowsGet == "") {
             alertRef.alertWithType('error', "Error", "Please enter what fellows get back");
             return;
@@ -66,16 +62,21 @@ const FellowsGetBack = (props) => {
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"What will the Fellows get back?"}
-                desc={"What will you priovide by the end of the happening"}
+                heading={"What will you\nprovide"}
+                desc=""
+            // desc={"What will you priovide by the end of the happening"}
             // headerStyle={{ paddingBottom: 30 }}
             />
             <View style={styles.contentContainer}>
                 <ScrollView contentContainerStyle={{ paddingBottom: 150 }} >
                     <View style={{ width: '90%', alignSelf: 'center', marginTop: 20 }}>
-                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>What will you provide</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
+                            <Text style={{ fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>Necessities for your happening </Text>
+                            <Text style={{ fontFamily: fonts.MRe, color: '#2A2A2A', fontSize: 12 }}>(Optional) </Text>
+                        </View>
                         <TextInput
                             onChangeText={setWhatWillYouProvide}
+                            value={whatWillYouProvide}
                             placeholder='eg- driving, scuba diving, IT '
                             placeholderTextColor={"#A5A2A2"}
                             textAlignVertical="top"
@@ -86,9 +87,10 @@ const FellowsGetBack = (props) => {
                                 marginTop: 10
                             }}
                         />
-                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>What fellows get</Text>
+                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>What will fellows get in return</Text>
                         <TextInput
                             onChangeText={setWhatFellowsGet}
+                            value={whatFellowsGet}
                             placeholder='Eg- Good food enjoying the indian culture, Great Marine life experience. '
                             placeholderTextColor={"#A5A2A2"}
                             textAlignVertical="top"

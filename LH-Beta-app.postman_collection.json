@@ -1,0 +1,232 @@
+{
+	"info": {
+		"_postman_id": "dcce67d9-e2f3-40cb-a5ac-38165e9c9245",
+		"name": "LH-Beta-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "userSignUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\":\"Abhishek kumar\",\r\n    \"userEmail\":\"boxazoke@lyricspad.net\",\r\n    \"userPassword\":\"Abhishek@000A\",\r\n    \"agreeButton\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{live}}/userSignUp"
+					},
+					"response": []
+				},
+				{
+					"name": "verifyOtp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"otp\":\"534546\",\r\n    \"id\":\"63c8fe7e0fb641507c637aec\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL_Live}}/verfiyOtpSent"
+					},
+					"response": []
+				},
+				{
+					"name": "userSignIn",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userEmail\":\"boxazoke@lyricspad.net\",\r\n    \"userPassword\":\"Abhishek@000A\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL_Live}}/userSignIn"
+					},
+					"response": []
+				},
+				{
+					"name": "forgetPasswordOtpSend",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userEmail\":\"boxazoke@lyricspad.net\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL_Live}}/forgotPassword"
+					},
+					"response": []
+				},
+				{
+					"name": "forgetPasswordOtpVerify",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"otpVerify\":\"276255\",\r\n    \"id\": \"63c8feb40fb641507c637af4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL_Live}}/OTPVerifie"
+					},
+					"response": []
+				},
+				{
+					"name": "changeNewPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\":\"Aman@123A\",\r\n    \"confirmPassword\": \"Aman@123A\",\r\n    \"id\": \"63c8feb40fb641507c637af4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL_Live}}/changePassword"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile And Timeline",
+			"item": [
+				{
+					"name": "profileAndTimeLine",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "language",
+									"value": "English",
+									"type": "text"
+								},
+								{
+									"key": "profileImage",
+									"type": "file",
+									"src": "/C:/Users/HP/Pictures/Ankit photo.jpeg"
+								},
+								{
+									"key": "dateOfBirth",
+									"value": "04-01-2001",
+									"type": "default"
+								},
+								{
+									"key": "phoneNumber",
+									"value": "7324821534",
+									"type": "default"
+								},
+								{
+									"key": "Gender",
+									"value": "Male",
+									"type": "default"
+								},
+								{
+									"key": "LanguagesKnown",
+									"value": "Hindi",
+									"type": "default"
+								},
+								{
+									"key": "profession",
+									"value": "IT",
+									"type": "default"
+								},
+								{
+									"key": "id",
+									"value": "63c8fe7e0fb641507c637aec",
+									"type": "default"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/profileAndTimeLine"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Happening",
+			"item": [
+				{
+					"name": "Submit Happening",
+					"item": [
+						{
+							"name": "Online Happening",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"UserId\": \"63c8fe7e0fb641507c637aec\",\r\n    \"userProfileId\": \"63c8fe7e0fb641507c637aec\",\r\n    \"AgreeAndContinue\": true,\r\n    \"happeningOnline\": true,\r\n    \"fellowsOneToFifteen\": 15,\r\n    \"haveYouHostedOnlineMeetingsBefore\": \"No\",\r\n    \"technicalSkillsAndRequirements\": \"this filed\",\r\n    \"howWillYouCommunicateWithFellows\": \"Internet\",\r\n    \"onlineMeetingLink\": \"https://meet.google.com/pmb-kkdn-iwa\",\r\n    \"whatDoTheFellowsNeedToBringToJoinThisOnlineHappening\": \"Leptop\",\r\n    \"themeOfYourHappening\": [\r\n        \"Software engineer\"\r\n    ],\r\n    \"happeningTitle\": \"Developer\",\r\n    \"DiscribeOfYourHappening\": \"We will create an application for food delivery\",\r\n    \"addPhotosOfYourHappening\": [\r\n        \"https://images.pexels.com/photos/9123030/pexels-photo-9123030.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load\",\r\n        \"https://images.pexels.com/photos/9123030/pexels-photo-9123030.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load\"\r\n    ],\r\n    \"whatMakesYouIdealTohostThisHappening\": \"Need to work\",\r\n    \"timeZone\": \"Asia/Kolkata\",\r\n    \"startTime\": \"05:00\",\r\n    \"endTime\": \"09:00\",\r\n    \"startingDate\": \"2022-12-26\",\r\n    \"endDate\": \"2022-12-26\",\r\n    \"languageSpokenAtHappening\": [\r\n        \"Hindi\",\r\n        \"English\",\r\n        \"Purtgal\"\r\n    ],\r\n    \"languageForYourHappening\": [\r\n        \"Dutch\",\r\n        \"french\"\r\n    ],\r\n    \"addSkill\": [\r\n        \"Nodejs\",\r\n        \"Javascript\"\r\n    ],\r\n    \"skillLevel\": \"advanced\",\r\n    \"minAgeToParticipate\": 20,\r\n    \"minPeopleRequiredForTheHappenig\": 14,\r\n    \"maxPeopleAllowedAtAGivenTime\": 12,\r\n    \"maxPeopleThatAFellowCanBring\": 5,\r\n    \"fellowMustComeAlone\": false,\r\n    \"whatWillYouProvide\": \"Nasta de raha hu me\",\r\n    \"whatFellowsGet\": \"Thak kar jayege kuchh nhi milega\",\r\n    \"numberCancellationPeriod\": 5,\r\n    \"string\": \"month\",\r\n    \"whatSDGIsThisHappeningLinkedTo\": [\r\n        \"https://elearning.fao.org/pluginfile.php/524314/course/section/3018/SDG641.png?time=1602066431686\",\r\n        \"https://elearning.fao.org/pluginfile.php/485938/badges/badgeimage/70/f3\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{live}}/createHappeningOnline"
+							},
+							"response": []
+						},
+						{
+							"name": "On Location Happening",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"UserId\": \"63c8fe7e0fb641507c637aec\",\r\n    \"userProfileId\": \"63c8fe7e0fb641507c637aec\",\r\n    \"AgreeAndContinue\": true,\r\n    \"happeningOnLocation\": true,\r\n    \"fellowsOneToFifteen\": 15,\r\n    \"whatDoTheFellowsNeedToBringToJoinThisOnlineHappening\": \"Leptop\",\r\n    \"themeOfYourHappening\": [\r\n        \"Art & cultural projects\"\r\n    ],\r\n    \"happeningTitle\": \"happening Title\",\r\n    \"DiscribeOfYourHappening\": \"Discribe Of YourHappening\",\r\n    \"discribeTheLocaltion\": \"discribe The Localtion\",\r\n    \"enterALocation\": \"Chhatauna\",\r\n    \"latitude\": \"23.310650\",\r\n    \"longitude\": \"86.965538\",\r\n    \"conformHappeningLocation\": \"Chhatauna\",\r\n    \"addPhotosOfYourHappening\": [\r\n        \"https://images.pexels.com/photos/9786312/pexels-photo-9786312.jpeg?auto=compress&cs=tinysrgb&w=1600\",\r\n        \"https://images.pexels.com/photos/9786304/pexels-photo-9786304.jpeg?auto=compress&cs=tinysrgb&w=1600\",\r\n        \"https://images.pexels.com/photos/9786318/pexels-photo-9786318.jpeg?auto=compress&cs=tinysrgb&w=1600\",\r\n        \"https://images.pexels.com/photos/9786312/pexels-photo-9786312.jpeg?auto=compress&cs=tinysrgb&w=1600\"\r\n    ],\r\n    \"whatMakesYouIdealTohostThisHappening\": \"Need to work\",\r\n    \"timeZone\": \"Aisa/Kolkata\",\r\n    \"startTime\": \"06:00\",\r\n    \"endTime\": \"08:00\",\r\n    \"startingDate\": \"2022-12-05\",\r\n    \"endDate\": \"2022-12-05\",\r\n    \"languageSpokenAtHappening\": [\r\n        \"Hindi\",\r\n        \"English\",\r\n        \"Purtgal\"\r\n    ],\r\n    \"languageForYourHappening\": [\r\n        \"Dutch\",\r\n        \"french\"\r\n    ],\r\n    \"facitlity\": [\r\n        \"wi-fi\",\r\n        \"food\",\r\n        \"parking\"\r\n    ],\r\n    \"whatAreTheFacilitiesAtYourHappening\": [\r\n        \"toilet\",\r\n        \"Drinks\"\r\n    ],\r\n    \"happeningAccessibility\": \"Nothing\",\r\n    \"addSkill\": [\r\n        \"Nodejs\",\r\n        \"Javascript\"\r\n    ],\r\n    \"skillLevel\": \"advanced\",\r\n    \"minAgeToParticipate\": 18,\r\n    \"minPeopleRequiredForTheHappenig\": 15,\r\n    \"maxPeopleAllowedAtAGivenTime\": 2,\r\n    \"maxPeopleThatAFellowCanBring\": 2,\r\n    \"fellowMustComeAlone\": false,\r\n    \"whatWillYouProvide\": \"Nasta de raha hu me\",\r\n    \"whatFellowsGet\": \"Thak kar jayege kuchh nhi milega\",\r\n    \"numberCancellationPeriod\": 1,\r\n    \"string\": \"hours\",\r\n    \"whatSDGIsThisHappeningLinkedTo\": [\r\n        \"https://www.unoosa.org/images/ourwork/SDGs/E_SDG_goals_icons-individual-rgb-04.png\",\r\n        \"https://learning.intracen.org/pluginfile.php/164178/course/overviewfiles//SDG%206%20-%20small.png\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{local}}/createHappeningOnLocation"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

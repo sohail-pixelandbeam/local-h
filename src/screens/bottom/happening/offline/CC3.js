@@ -29,12 +29,11 @@ const CC3 = (props) => {
     const [loading, setLoading] = useState(false);
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            navigate('CC2');
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
    
 

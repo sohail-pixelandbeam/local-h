@@ -2430,8 +2430,6 @@ style CalendarDatePickerStyle
 style CardView
 style CardView_Dark
 style CardView_Light
-style ClockTimePickerDialog
-style ClockTimePickerStyle
 style DatePickerBaseTheme
 style DatePickerTheme
 style DialogAnimationFade
@@ -2499,8 +2497,10 @@ style ShapeAppearanceOverlay_MaterialComponents_TextInputLayout_FilledBox
 style ShapeAppearanceOverlay_TopLeftCut
 style ShapeAppearanceOverlay_TopRightDifferentCornerSize
 style SpinnerDatePickerDialog
+style SpinnerDatePickerDialogBase
 style SpinnerDatePickerStyle
 style SpinnerTimePickerDialog
+style SpinnerTimePickerDialogBase
 style SpinnerTimePickerStyle
 style Test_ShapeAppearanceOverlay_MaterialComponents_MaterialCalendar_Day
 style Test_Theme_MaterialComponents_MaterialCalendar
@@ -3013,6 +3013,7 @@ styleable View android_theme android_focusable paddingEnd paddingStart theme
 styleable ViewBackgroundHelper android_background backgroundTint backgroundTintMode
 styleable ViewPager2 android_orientation
 styleable ViewStubCompat android_id android_layout android_inflatedId
+xml imagepicker_provider_paths
 xml rn_dev_preferences
 xml standalone_badge
 xml standalone_badge_gravity_bottom_end

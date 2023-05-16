@@ -31,11 +31,7 @@ const HappeningLanguages1 = (props) => {
 
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
+    
 
 
 

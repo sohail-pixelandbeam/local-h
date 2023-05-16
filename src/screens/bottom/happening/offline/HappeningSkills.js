@@ -35,12 +35,11 @@ const HappeningSkills = (props) => {
     const [skill, setSkill] = useState(''); // FOR INPUT
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            // navigate('HappeningLanguages1');
-            return true;
-        })
-    }, []);
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
 
@@ -120,7 +119,7 @@ const HappeningSkills = (props) => {
             />
 
             <HappeningHeader
-                heading={"Skills Required to join your Happening"}
+                heading={"Skills required to join your happening"}
                 desc={"skill set of the fellows to join your happening."}
             // headerStyle={{ paddingBottom: 30 }}
             />
@@ -129,7 +128,7 @@ const HappeningSkills = (props) => {
             <View style={styles.contentContainer}>
                 <ScrollView>
                     <View style={{ width: '90%', alignSelf: 'center', marginTop: 20 }}>
-                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>Add a Skill </Text>
+                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>Add a skill </Text>
                         <View>
                             <TextInput
                                 placeholder=''
@@ -178,8 +177,8 @@ const HappeningSkills = (props) => {
 
 
 
-                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>Add a Skill </Text>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15 }}>
+                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14, }}>Add a skill level </Text>
+                        <View style={{ flexDirection: 'row', marginTop: 15, justifyContent: 'space-between' }}>
                             <TouchableOpacity
                                 onPress={() => setSelectedSkils('Beginner')}
                                 style={{ paddingHorizontal: 15, height: 38, borderRadius: 22, alignItems: 'center', justifyContent: 'center', borderWidth: selectedSkils == 'Beginner' ? 0 : 3, borderColor: '#B9B1F0', backgroundColor: selectedSkils == 'Beginner' ? '#B9B1F0' : 'white' }}>
@@ -192,12 +191,12 @@ const HappeningSkills = (props) => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => setSelectedSkils('Pro')}
-                                style={{ paddingHorizontal: 15, height: 38, borderRadius: 22, alignItems: 'center', justifyContent: 'center', borderWidth: selectedSkils == 'Pro' ? 0 : 3, borderColor: '#B9B1F0', backgroundColor: selectedSkils == 'Pro' ? '#B9B1F0' : 'white' }}>
+                                style={{ paddingHorizontal: 15, height: 38, borderRadius: 22,  alignItems: 'center', justifyContent: 'center', borderWidth: selectedSkils == 'Pro' ? 0 : 3, borderColor: '#B9B1F0', backgroundColor: selectedSkils == 'Pro' ? '#B9B1F0' : 'white' }}>
                                 <Text style={{ color: selectedSkils == 'Pro' ? 'white' : '#222222', fontSize: 12, fontFamily: fonts.MBo }}>Pro </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         onPress={() => {
                             setProvidingFacilities(!providingFacilities)
                             if (providingFacilities) setSkillsArr([]);
@@ -205,11 +204,11 @@ const HappeningSkills = (props) => {
                             forceUpdate();
                         }}
                         style={{ flexDirection: 'row', marginTop: 20, paddingBottom: 3, alignItems: 'center', marginLeft: 12 }}>
-                        <View style={{ width: 32, height: 32, borderRadius: 32 / 2, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', elevation: 2, shadowColor: 'rgba(0,0,0,0.3)', shadowOpacity: 0.5, shadowRadius: 1, shadowOffset: { width: 1, height: 2 } }}>
+                        <View style={{ width: 32, height: 32, borderRadius: 32 / 2, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', elevation: 5, shadowColor: 'rgba(0,0,0,0.4)', shadowOpacity: 0.5, shadowRadius: 1, shadowOffset: { width: 1, height: 2 } }}>
                             {!providingFacilities && <TickIcon />}
                         </View>
-                        <Text style={{ marginLeft: 10, fontFamily: fonts.MBo, fontSize: 14, color: '#7B7B7B' }}>This Happening doesn’t require any Skills</Text>
-                    </TouchableOpacity>
+                        <Text style={{ marginLeft: 10, fontFamily: fonts.MBo, fontSize: 14, color: '#7B7B7B' }}>This Happening doesn’t require any{"\n"}skills</Text>
+                    </TouchableOpacity> */}
                 </ScrollView>
 
             </View>

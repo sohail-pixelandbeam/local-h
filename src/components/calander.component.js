@@ -15,7 +15,7 @@ const CalanderComponent = (props) => {
             minDate={props.minDate ? props.minDate : formatDate(new Date)}
             enableSwipeMonths={true}
             // markingType={'custom'}
-            disableArrowRight={true}
+            // disableArrowRight={true}
             theme={{
                 calendarBackground: acolors.primary,
 

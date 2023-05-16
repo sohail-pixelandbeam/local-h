@@ -12,12 +12,12 @@ const TypeHappening = () => {
     const conditionArr = [
         {
             Svg: HappeningLocationIcon, title: "Happening on location", desc: "Connect with fellows in a geographical location",
-            navigate : 'MainScreenL'
+            navigate: 'MainScreenL'
             // 'GroupSizeHappeningL'
         },
         {
             Svg: OnlineHappeningIcon, title: "Online Happening", desc: "Connect with fellows through online meet software like Zoom, Teams etc. ",
-            navigate : 'MainScreenO'
+            navigate: 'MainScreenO'
         },
 
 
@@ -42,10 +42,10 @@ const TypeHappening = () => {
                     renderItem={({ item, index }) => {
                         let Icon = item.Svg
                         return (
-                            <TouchableOpacity 
-                                onPress={()=>navigate(item.navigate)}
+                            <TouchableOpacity
+                                onPress={() => navigate(item.navigate)}
                                 style={styles.content}>
-                                <View style={{width:"20%"}}>
+                                <View style={{ width: "20%" }}>
                                     <Icon />
                                 </View>
                                 <View style={{ width: "70%" }}>
@@ -84,10 +84,10 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 2, height: 2 },
     },
     title: {
-        fontFamily: fonts.MBo, fontSize: 9, color: '#2A2A2A', lineHeight: 15,
+        fontFamily: fonts.MBo, fontSize: 14, color: '#2A2A2A', lineHeight: 15,
     },
     desc: {
-        color: '#161615', fontFamily: fonts.MRe, fontSize: 7
+        color: '#161615', fontFamily: fonts.MRe, fontSize: 10, marginTop: 5
     },
     agreeBtn: {
         width: "100%", position: 'absolute', bottom: 50, height: 70,

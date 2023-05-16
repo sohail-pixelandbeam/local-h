@@ -11,11 +11,7 @@ import { fonts } from '../../../../constants/fonts'
 
 const Images2 = () => {
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
+    
 
 
 
@@ -26,7 +22,7 @@ const Images2 = () => {
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"Key Tips for the Images"}
+                heading={"Key tips for the images"}
                 desc={"Key tips to consider while uploading the pictures."}
             // headerStyle={{ paddingBottom: 30 }}
             />

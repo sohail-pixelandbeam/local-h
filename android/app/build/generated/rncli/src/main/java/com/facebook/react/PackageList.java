@@ -25,6 +25,8 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.reactnativedocumentpicker.DocumentPickerPackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.RNGestureHandlerPackage;
+// react-native-image-picker
+import com.imagepicker.ImagePickerPackage;
 // react-native-maps
 import com.airbnb.android.react.maps.MapsPackage;
 // react-native-pager-view
@@ -91,6 +93,7 @@ public class PackageList {
       new RNDeviceInfo(),
       new DocumentPickerPackage(),
       new RNGestureHandlerPackage(),
+      new ImagePickerPackage(),
       new MapsPackage(),
       new PagerViewPackage(),
       new ReactNativePushNotificationPackage(),

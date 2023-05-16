@@ -26,11 +26,6 @@ const HappeningTheme = (props) => {
     const [tempThmes, setTempThemes] = useState(state.happeningSubmissionData?.happeningTheme);
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
 
 
     function next() {
@@ -58,7 +53,7 @@ const HappeningTheme = (props) => {
             />
 
             <View style={styles.contentContainer}>
-                <ScrollView>
+                <ScrollView contentContainerStyle={{ paddingBottom: 300, }} showsVerticalScrollIndicator={false} >
                     <TextInput
                         placeholder='Search for a theme'
                         placeholderTextColor={"#7b7b7b"}
@@ -79,7 +74,7 @@ const HappeningTheme = (props) => {
                     <View style={{ width: '90%', alignSelf: 'center', marginTop: 20 }}>
                         <View style={{
                             elevation: 2, backgroundColor: 'white', borderTopRightRadius: 10, borderTopLeftRadius: 10, padding: 15,
-                            shadowColor: 'rgba(0,0,0,0.3)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
+                            shadowColor: 'rgba(0,0,0,0.3)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.1,
                             marginBottom: 10, paddingBottom: 25
                         }}>
 
@@ -87,11 +82,12 @@ const HappeningTheme = (props) => {
                                 themes?.map((v, i) => {
                                     return (
                                         <TouchableOpacity
+                                            key={i}
                                             onPress={() => setTheme(v?.happeningThemeName)}
                                             style={styles.themePickerContainer}>
                                             <View>
                                                 <Text style={styles.themeText}>{v?.happeningThemeName}</Text>
-                                                <Text style={styles.subData}>sub data</Text>
+                                                {/* <Text style={styles.subData}>sub data</Text> */}
                                             </View>
 
                                             <View style={styles.languagePickerCircle}>
@@ -239,7 +235,7 @@ const styles = StyleSheet.create({
     },
     languagePickerCircle: {
         width: 37, height: 37, borderRadius: 37 / 2,
-        shadowColor: 'rgba(0,0,0,0.3)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
+        shadowColor: 'rgba(0,0,0,0.3)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.2,
         alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff', elevation: 5
     },
     subData: {

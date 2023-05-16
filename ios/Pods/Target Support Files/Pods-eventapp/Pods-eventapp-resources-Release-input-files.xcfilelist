@@ -1,5 +1,6 @@
 ${PODS_ROOT}/Target Support Files/Pods-eventapp/Pods-eventapp-resources.sh
-${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle
+${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.xcframework/ios-arm64/GoogleMaps.framework/Resources/GoogleMaps.bundle
+${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.xcframework/ios-arm64_x86_64-simulator/GoogleMaps.framework/Resources/GoogleMaps.bundle
 ${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf
 ${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf
 ${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf

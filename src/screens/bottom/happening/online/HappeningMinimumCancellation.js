@@ -32,17 +32,13 @@ const HappeningMinimumCancellation = (props) => {
     const [yOffset, setYOffset] = useState();// SETTING MODAL POSITION FOR DOESNOT REPEAT PICKER
     const [pickerModal, setPickerModal] = useState(false);
 
-    const [minimumCancellationPeriod, setMinimumCancellationPeriod] = useState('');
-    const [minCancellationTime, setMinCancellationTime] = useState('');
+    const [minimumCancellationPeriod, setMinimumCancellationPeriod] = useState('Hours');
+    const [minCancellationTime, setMinCancellationTime] = useState(state.happeningDraft?.minCancellationTime ?? '');
 
-    const repeatOptions = ["Minutes", "Hours", "Day", "Months"];
+    const repeatOptions = ["Hours", "Days",];
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            return true;
-        })
-    }, []);
+
 
 
 
@@ -76,7 +72,7 @@ const HappeningMinimumCancellation = (props) => {
 
 
         >
-            <View style={{ marginTop: yOffset, marginLeft: xOffset, backgroundColor: '#35208E', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, width: "56%" }}>
+            <View style={{ marginTop: yOffset - 50, marginLeft: xOffset + 80, backgroundColor: '#35208E', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, width: "40%" }}>
                 {
                     repeatOptions.map((v, i) => {
                         return (
@@ -113,9 +109,9 @@ const HappeningMinimumCancellation = (props) => {
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"Minimum cancellation period?"}
+                heading={"Cancellation period"}
                 desc={"Until when can the fellow cancel"}
-            // headerStyle={{ paddingBottom: 30 }}
+                headerStyle={{ paddingTop: 30 }}
             />
             <View style={styles.contentContainer}>
                 <ScrollView contentContainerStyle={{ paddingBottom: 350 }}>
@@ -124,7 +120,7 @@ const HappeningMinimumCancellation = (props) => {
                             <TextInput
                                 onChangeText={setMinCancellationTime}
                                 keyboardType='number-pad'
-                                placeholder='4'
+                                // placeholder='4'
                                 placeholderTextColor={"rgba(0,0,0,0.5)"}
                                 style={styles.textInput}
                                 textAlign='center'
@@ -138,8 +134,8 @@ const HappeningMinimumCancellation = (props) => {
                                             setXOffset(px + 1)
                                         }
                                         else {
-                                            setYOffset(py - 300)
-                                            setXOffset(px - 50)
+                                            setYOffset(py - 400)
+                                            setXOffset(px - 100)
                                         }
 
                                     })
@@ -187,7 +183,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.MBo, fontSize: 14, color: '#2A2A2A', lineHeight: 15,
     },
     textInput: {
-        width: 70, height: 37, paddingHorizontal: 5, fontSize: 14, borderWidth: 1, borderColor: '#2A2A2A', borderRadius: 10,
+        width: 70, height: 40, paddingHorizontal: 5, fontSize: 14, borderWidth: 1, borderColor: '#2A2A2A', borderRadius: 10,
         color: "#7b7b7b", fontFamily: fonts.MRe,
     },
     msgText: {
@@ -206,7 +202,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row', alignItems: 'center', width: "100%", justifyContent: 'space-between', marginTop: 15
     },
     textInput: {
-        width: 70, height: 37, paddingHorizontal: 5, fontSize: 14, borderRadius: 10, backgroundColor: '#B9B1F0',
+        width: 70, height: 40, paddingHorizontal: 5, fontSize: 14, borderRadius: 10, backgroundColor: '#B9B1F0',
         color: "#2A2A2A", fontFamily: fonts.MBo,
     },
 

@@ -3,7 +3,7 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useContext, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, ScrollView, TextInput, BackHandler } from 'react-native'
-import { navigate } from '../../../../../Navigations'
+import { goBack, navigate } from '../../../../../Navigations'
 import HappeningHeader from '../../../../common/HappeningHeader'
 import HappeningStep from '../../../../common/HappeningStep'
 import { BackIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, RELIABLENONPROFITS, SUPPORTICON, TickIcon, WELFAREICON } from '../../../../components/Svgs'
@@ -11,6 +11,7 @@ import { acolors } from '../../../../constants/colors'
 import { fonts } from '../../../../constants/fonts'
 import { Context } from '../../../../Context/DataContext'
 import { getHOLPreviousScreen, useForceUpdate } from '../../../../utils/functions'
+import { happeningStyles } from '../styles'
 
 
 const HappeningTheme = (props) => {
@@ -34,13 +35,11 @@ const HappeningTheme = (props) => {
 
     }
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            navigate('CC4');
-            return true;
-        })
-    }, []);
-
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
 
@@ -89,11 +88,12 @@ const HappeningTheme = (props) => {
                                 themes?.map((v, i) => {
                                     return (
                                         <TouchableOpacity
+                                            key={i}
                                             onPress={() => setTheme(v?.happeningThemeName)}
                                             style={styles.themePickerContainer}>
                                             <View>
-                                                <Text style={styles.themeText}>{v?.happeningThemeName}</Text>
-                                                <Text style={styles.subData}>sub data</Text>
+                                                <Text style={happeningStyles.happeningTitle2}>{v?.happeningThemeName}</Text>
+                                                {/* <Text style={styles.subData}>sub data</Text> */}
                                             </View>
 
                                             <View style={styles.languagePickerCircle}>
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     },
     languagePickerCircle: {
         width: 37, height: 37, borderRadius: 37 / 2,
-        shadowColor: 'rgba(0, 0, 0, 0.09)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
+        shadowColor: 'rgba(0, 0, 0, 0.3)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
         alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff', elevation: 5
     },
     subData: {

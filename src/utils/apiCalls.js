@@ -44,8 +44,8 @@ export async function apiRequest(body_data, url_plus, method = "POST") {
   // + "&&" + last_request;
   if (method == 'GET') url += '?' + Object.keys(body_data).map((k) => (k + '=' + encodeURIComponent(body_data[k]))).join('&');
 
-  // console.log(" I request @ " + url);
-  // console.log(body_data);
+  console.log(" I request @ " + url);
+  console.log(body_data);
   const configs = {
     method: method,
     headers: {
@@ -64,7 +64,7 @@ export async function apiRequest(body_data, url_plus, method = "POST") {
       .then((response) => response.json())
       // .then((response) => response.text())
       .then((responseJson) => {
-        // console.log(responseJson)
+        console.log(responseJson)
         return responseJson
       }).catch((error) => {
         console.log(error)

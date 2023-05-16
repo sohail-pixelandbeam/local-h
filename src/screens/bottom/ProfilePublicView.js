@@ -6,11 +6,49 @@ import { BackIcon, HappeningLocationIconSmall, RattingStartIcon, SettingsIcon } 
 import { acolors } from '../../constants/colors';
 import { fonts } from '../../constants/fonts';
 import { Context } from '../../Context/DataContext';
+import { apiRequest } from '../../utils/apiCalls';
+import { retrieveItem } from '../../utils/functions';
 
-const ProfilePublicView = () => {
+const ProfilePublicView = (props) => {
 
     const [tabs, setTabs] = useState('host');
-    const { state } = useContext(Context)
+    const { state } = useContext(Context);
+    const [profileData, setProfileData] = useState({});
+    const [loading, setLoading] = useState(false);
+
+    async function getUserToken() {
+        let token = await retrieveItem('login_data');
+        return token?.token;
+    }
+
+
+    async function getProfileDetails(refreshing = false) {
+        !refreshing && setLoading(true);
+        console.log('getMyHosting/', props.route.params?.data?.userProfileId?.userId?._id)
+        const reqObj = {
+            "userId": props.route.params?.data?.userProfileId?.userId?._id,
+            "token": await getUserToken()
+        }
+        console.log('asadasd', reqObj)
+        apiRequest(reqObj, 'publicProfile', 'POST')
+            .then(data => {
+                console.log('userDetails is', data)
+                setLoading(false);
+                if (data.status) {
+                    setProfileData(data.data)
+                    console.log('userDetails isiasdsadasdasaa', data?.data?.userProfile)
+                }
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            })
+    };
+
+    React.useEffect(() => {
+        getProfileDetails()
+    }, [])
+
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -22,7 +60,7 @@ const ProfilePublicView = () => {
                 <View>
                     <Image
                         style={{ width: 115, height: 115, borderRadius: 115 / 2, borderWidth: 5, borderColor: acolors.primary, alignSelf: 'center', marginTop: 20 }}
-                        source={{ uri: state?.profileData?.profileImage }}
+                        source={{ uri: profileData?.profileImage }}
                     />
                     <TouchableOpacity
                         onPress={() => goBack()}
@@ -30,27 +68,30 @@ const ProfilePublicView = () => {
                         <BackIcon color="#000" />
                     </TouchableOpacity>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 20 }}>
-                    <HappeningLocationIconSmall width={11} height={14} />
-                    <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5 }}>AMSTERDAM, NETHERLANDS</Text>
-                </View>
-                <Text style={[{ fontFamily: fonts.PBo, fontSize: 30, color: '#FFA183', marginTop: 5, alignSelf: 'center' }]}>{state?.userData?.userName}</Text>
-                <Text style={[{ fontFamily: fonts.PBo, fontSize: 10, color: '#7B7B7B', marginTop: 0, alignSelf: 'center' }]}>Typically replies in 30 mins</Text>
+                {
+                    profileData?.address !== 'Not Provided' &&
+                    <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 20 }}>
+                        <HappeningLocationIconSmall width={11} height={14} />
+                        <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5 }}>AMSTERDAM, NETHERLANDS</Text>
+                    </View>
+                }
+                <Text style={[{ fontFamily: fonts.PBo, fontSize: 30, color: '#FFA183', marginTop: 5, alignSelf: 'center' }]}>{profileData?.userId?.firstName + " " + profileData?.userId?.lastName}</Text>
+                {/* <Text style={[{ fontFamily: fonts.PBo, fontSize: 10, color: '#7B7B7B', marginTop: 0, alignSelf: 'center' }]}>Typically replies in 30 mins</Text> */}
 
-                <ScrollView contentContainerStyle={{paddingBottom:300}} >
-                    <View style={[styles.shadow, { backgroundColor: 'white', width: "100%", borderRadius: 12, paddingHorizontal: 10, paddingTop: 10, paddingBottom: 20, marginTop: 10, height: 300 }]}>
+                <ScrollView contentContainerStyle={{ paddingBottom: 300 }} >
+                    <View style={[styles.shadow, { backgroundColor: 'white', width: "100%", borderRadius: 12, paddingHorizontal: 10, paddingTop: 10, paddingBottom: 20, marginTop: 10,  }]}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: "100%" }}>
                             <Text style={[styles.aboutHeading, { marginTop: 0 }]}>Bio</Text>
                         </View>
-                        <Text style={styles.aboutDesc}>A enthusiastic designer who loves art, music and has a passion towards public speaking and origami</Text>
+                        <Text style={styles.aboutDesc}>{profileData?.bio}</Text>
                         <Text style={styles.aboutHeading}>Skills</Text>
-                        <Text style={styles.aboutDesc}>Diving , Drawing, Painting, Desinging</Text>
+                        <Text style={styles.aboutDesc}>{profileData?.addSkills?.toString()}</Text>
                         <Text style={styles.aboutHeading}>Works as</Text>
-                        <Text style={styles.aboutDesc}>UX designer at Jinglebells company</Text>
+                        <Text style={styles.aboutDesc}>{profileData?.profession}</Text>
                         <Text style={styles.aboutHeading}>Languages Known</Text>
-                        <Text style={styles.aboutDesc}>English, Latin, Dutch</Text>
+                        <Text style={styles.aboutDesc}>{profileData?.language?.toString()}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between' }}>
+                    {/* <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between' }}>
                         <Text style={styles.heading}>Reviews</Text>
                         <View style={{ flexDirection: 'row', width: "50%", alignSelf: 'center', backgroundColor: '#EEEEEE', borderRadius: 40 }}>
                             <TouchableOpacity
@@ -64,7 +105,7 @@ const ProfilePublicView = () => {
                                 <Text style={{ fontFamily: fonts.MSBo, fontSize: 8, color: tabs == 'fellow' ? '#FFFFFF' : '#222' }}>As Fellow</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
+                    </View> 
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <RattingStartIcon style={{ marginTop: -4 }} />
                         <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: '#F65997', marginLeft: 5 }}>4.8 </Text>
@@ -117,8 +158,8 @@ const ProfilePublicView = () => {
                             </View>
                         </View>
                     </View>
-
-                    <Text style={styles.heading}>Photos</Text>
+*/}
+                    {/* <Text style={styles.heading}>Photos</Text>
                     <View style={{ flexDirection: 'row', width: "100%" }}>
                         <View style={{ width: "60%", flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
                             {
@@ -135,7 +176,7 @@ const ProfilePublicView = () => {
 
                             }
                         </View>
-                    </View>
+                    </View> */}
                 </ScrollView>
             </View>
         </View>
@@ -152,13 +193,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     aboutHeading: {
-        fontFamily: fonts.PBo, fontSize: 15, color: '#242221', marginTop: 10
+        fontFamily: fonts.PBo, fontSize: 15, color: '#ffa183', marginTop: 10
     },
     aboutDesc: {
         fontFamily: fonts.PRe, fontSize: 11, color: '#5D5760', lineHeight: 25
     },
     heading: {
-        fontFamily: fonts.PSBo, fontSize: 16, color: '#5B4DBC', marginTop: 10
+        fontFamily: fonts.PSBo, fontSize: 16, color: '#ffa183', marginTop: 10
     }
 })
 

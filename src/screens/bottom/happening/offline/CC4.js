@@ -1,33 +1,84 @@
 // CC STANDS FOR CODE OF CONDUCT
 
-import React, { useState } from 'react'
-import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, ScrollView, BackHandler } from 'react-native'
+import React, { useContext, useState } from 'react'
+import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, TextInput, ScrollView, BackHandler } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert'
 import ReactNativeModal from 'react-native-modal'
-import { navigate } from '../../../../../Navigations'
+import Modal from 'react-native-modal'
+import { goBack, navigate } from '../../../../../Navigations'
 import HappeningHeader from '../../../../common/HappeningHeader'
-import { BackIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, RELIABLENONPROFITS, SUPPORTICON, TickIcon, WELFAREICON } from '../../../../components/Svgs'
+import { BackIcon, CrossIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, RELIABLENONPROFITS, SUPPORTICON, TickIcon, TrashIcon, WELFAREICON } from '../../../../components/Svgs'
 import { acolors } from '../../../../constants/colors'
 import { fonts } from '../../../../constants/fonts'
+import { Context } from '../../../../Context/DataContext'
+import { urls } from '../../../../utils/Api_urls'
 import { getHOLPreviousScreen, useForceUpdate } from '../../../../utils/functions'
 
 
 var alertRef;
-const CC4 = () => {
+var textInputRef;
+var modalAlertRef;
+
+const CC4 = (props) => {
 
 
     const [hostedPoint, setHostedPoint] = useState(0);
     const [errorPopup, setErrorPopup] = useState(false);
+    const [coHostInfoModal, setGetCoHostInfoModal] = useState(false)
+    const [coHostDat, setCoHostData] = useState([]);
+    const [selectedCoHost, setSelectedCoHost] = useState([]);
+    const { state, setLocationHappeningData } = useContext(Context)
+
     const forceUpdate = useForceUpdate();
 
 
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            navigate('CC3');
-            return true;
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
+
+    function search(searchWord) {
+        let url = urls.API + 'filterUserByName/' + searchWord;
+        fetch(url, {
+            method: 'GET'
         })
-    }, []);
+            .then((response) => response.json())
+            // .then((response) => response.text())
+            .then((responseJson) => {
+                setCoHostData(responseJson.data?.length ? responseJson.data : [])
+            })
+    }
+
+    function next() {
+
+        if (!selectedCoHost.length) {
+            modalAlertRef.alertWithType('error', 'Error', 'Please select any one co host')
+            return;
+        }
+        const selected = selectedCoHost[0]
+        const obj = {
+            ...state.locationHappeningDraft,
+            coHost: selected?.userId?.firstName?.concat(' ' + selected?.userId?.lastName)
+        }
+        setGetCoHostInfoModal(false);
+        console.log('obj,', obj)
+        setLocationHappeningData(obj);
+        navigate('HappeningTheme')
+
+    }
+
+
+    const PopupButton = ({ onPress, title, btnStyle }) => (
+        <TouchableOpacity
+            style={[styles.popupBtn, btnStyle]}
+            onPress={onPress}
+        >
+            <Text style={styles.popupBtnTitle}>{title ? title : "Next"}</Text>
+        </TouchableOpacity>
+    )
+
 
 
     const ErrorPopupModal = () => (
@@ -64,12 +115,12 @@ const CC4 = () => {
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            
+
             <StatusBar
                 backgroundColor={acolors.primary}
                 barStyle={"light-content"}
             />
-            
+
             <HappeningHeader
                 heading={"Presence at the location"}
                 headerStyle={{ paddingBottom: 30 }}
@@ -91,7 +142,7 @@ const CC4 = () => {
                                 <View style={styles.radioUnSelected} />}
                             <Text style={[styles.text, { marginLeft: 10 }]}>Yes, I am present at the location</Text>
                         </TouchableOpacity>
-                        {/* <TouchableOpacity
+                        <TouchableOpacity
                             onPress={() => setHostedPoint(2)}
                             style={styles.pointsView}>
                             {hostedPoint == 2 ? <View style={styles.radioSelected}>
@@ -99,7 +150,7 @@ const CC4 = () => {
                             </View> :
                                 <View style={styles.radioUnSelected} />}
                             <Text style={[styles.text, { marginLeft: 10 }]}>Yes, I am present at the location with one or more co-hosts</Text>
-                        </TouchableOpacity> */}
+                        </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => setHostedPoint(3)}
                             style={styles.pointsView}>
@@ -121,6 +172,11 @@ const CC4 = () => {
                         alertRef.alertWithType('error', "Error", "Please mark any one point")
                         return
                     }
+                    if (hostedPoint == 2) {
+                        console.log('ues')
+                        setGetCoHostInfoModal(true)
+                        return;
+                    }
                     if (hostedPoint == 3) {
                         setErrorPopup(true);
                         return;
@@ -129,7 +185,7 @@ const CC4 = () => {
                 }}
                 activeOpacity={0.9}
                 style={styles.agreeBtn}>
-                <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Step 1/15</Text>
+                <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Step {props.route.params?.step}/15</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Next</Text>
                     <NextIcon style={{ marginLeft: 10 }} />
@@ -137,7 +193,115 @@ const CC4 = () => {
             </TouchableOpacity>
             <ErrorPopupModal />
             <DropdownAlert ref={(ref) => alertRef = ref} />
-        </View>
+
+
+            <Modal
+                isVisible={coHostInfoModal}
+                avoidKeyboard={true}
+                backdropColor="#171515"
+                backdropOpacity={0.5}
+                style={{ margin: 0, }}
+                // onBackdropPress={() => setPopup1(!popup1)}
+                animationOut="slideOutDown"
+            >
+                <DropdownAlert ref={(ref) => modalAlertRef = ref} />
+
+                <View style={[styles.popupContainer, { paddingBottom: 10 }]}>
+                    {/* <BackPopupBtn /> */}
+                    {/* <CrossBtn /> */}
+                    <TouchableOpacity
+                        onPress={() => {
+                            setGetCoHostInfoModal(false)
+                        }}
+                        style={styles.crossBtn}>
+                        <CrossIcon />
+                    </TouchableOpacity>
+                    <Text style={styles.popupHeading}>Select a co-host</Text>
+                    {/* <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>Who is going to be present at the happening</Text> */}
+                    <View>
+                        <TextInput
+                            autoFocus={true}
+                            placeholder='Search for fellows to join as host'
+                            ref={(ref) => textInputRef = ref}
+                            placeholderTextColor={"#7b7b7b"}
+                            onChangeText={(v) => search(v)}
+                            style={{
+                                width: "100%", height: 47, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
+                                fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10, marginTop: 10
+                            }}
+                        />
+                        {
+                            coHostDat[0] &&
+                            <View style={{ backgroundColor: 'white', elevation: 2, borderTopRightRadius: 0, borderTopLeftRadius: 0, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 10 }}>
+                                {coHostDat?.map((v, i) => {
+                                    console.log('map===', v)
+                                    return (
+                                        <TouchableOpacity
+                                            key={i}
+                                            onPress={() => {
+                                                if (!selectedCoHost.includes(v)) setSelectedCoHost([...selectedCoHost, v])
+                                                textInputRef.clear();
+                                                setCoHostData([]);
+                                            }}
+                                            style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
+                                            <Image
+                                                style={{ width: 30, height: 30, borderRadius: 15 }}
+                                                source={{ uri: v?.profileImage }}
+                                            />
+                                            <Text style={{ color: "black", fontFamily: fonts.PRe, fontSize: 14, marginLeft: 10 }} key={i}>{v?.userId?.firstName?.concat(' ' + v?.userId?.lastName)}</Text>
+                                        </TouchableOpacity>
+                                    )
+                                })}
+                            </View>
+                        }
+                        {
+                            selectedCoHost &&
+                            <View style={{}}>
+                                {
+                                    selectedCoHost?.map((v, i) => {
+                                        return (
+                                            <TouchableOpacity
+                                                key={i}
+                                                onPress={() => {
+                                                    if (!selectedCoHost.includes(v)) setSelectedCoHost([...selectedCoHost, v])
+                                                    textInputRef.clear();
+                                                    setCoHostData([]);
+                                                }}
+                                                style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center', alignItems: 'center' }}>
+                                                <Image
+                                                    style={{ width: 30, height: 30, borderRadius: 15 }}
+                                                    source={{ uri: v?.profileImage }}
+                                                />
+                                                <Text style={{ color: "black", fontFamily: fonts.PRe, fontSize: 14, marginLeft: 10 }} key={i}>{v?.userId?.firstName?.concat(' ' + v?.userId?.lastName)}</Text>
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        let arr = selectedCoHost;
+                                                        let findIndex = arr.indexOf(selectedCoHost);
+                                                        arr.splice(findIndex, 1);
+                                                        setSelectedCoHost(arr);
+                                                        forceUpdate();
+                                                    }}
+                                                    style={{ position: 'absolute', right: 0, width: 40, height: 30, }}>
+                                                    <TrashIcon color="black" size={20} />
+                                                </TouchableOpacity>
+                                            </TouchableOpacity>
+                                        )
+                                    })
+                                }
+                            </View>
+                        }
+
+                    </View>
+                    <PopupButton
+                        onPress={() => next()}
+                        btnStyle={{ position: 'relative', marginTop: 130, alignSelf: 'flex-end' }}
+                        title="Next"
+                    />
+                </View>
+
+
+            </Modal >
+        </View >
     )
 }
 
@@ -194,6 +358,28 @@ const styles = StyleSheet.create({
         color: '#ffffff', fontFamily: fonts.PSBo, fontSize: 9,
     },
 
+
+    popupContainer: {
+        width: "80%", paddingBottom: 60,
+        borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.98)',
+        // position: 'absolute', top: 5, 
+        alignSelf: 'center', paddingHorizontal: 15
+    },
+    popupBtn: {
+        width: 91, height: 32, borderRadius: 20, backgroundColor: '#5b4dbc',
+        position: 'absolute', bottom: 15, right: 10,
+        alignItems: 'center', justifyContent: 'center'
+    },
+    popupBtnTitle: {
+        color: '#ffffff', fontFamily: fonts.PSBo, fontSize: 9,
+    },
+    popupDesc: {
+        color: '#241414', fontFamily: fonts.MRe, fontSize: 12, marginTop: Platform.OS == 'ios' ? 5 : 0
+    },
+    crossBtn: {
+        position: 'absolute', top: -20, right: -20, width: 43, height: 43, borderRadius: 43 / 2,
+        backgroundColor: 'white', elevation: 2, alignItems: 'center', justifyContent: 'center'
+    },
 
 })
 

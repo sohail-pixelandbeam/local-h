@@ -23,29 +23,40 @@ const AboutHost = (props) => {
     const [loading, setLoading] = useState(false);
     const [makeYouBest, setMakesYouBest] = useState('');
     const forceUpdate = useForceUpdate();
+    const [titleWords, setTitleWords] = useState(0);
+
 
     function next() {
 
-        if (makeYouBest == "") {
-            alertRef.alertWithType('error', "Error", "Please fill in the field");
+        if (titleWords < 50 || titleWords > 150) {
+            alertRef.alertWithType('error', "Error", "Please enter 50-150 words");
             return;
         }
         const obj = {
             ...state.locationHappeningDraft,
-            whatMakesYouIdealTohostThisHappening: makeYouBest
+            discribeTheLocaltion: makeYouBest,
+            whatMakesYouIdealTohostThisHappening: makeYouBest // REMOVE THIS
         }
         console.log('this is', obj)
         setLocationHappeningData(obj);
         navigate('Location1')
     }
 
+    function getTitleWordsCount(text) {
+        if (text == "") {
+            setTitleWords(0);
+            return;
+        }
+        let count = text.trim().split(/\s+/).length
+        setTitleWords(count)
+    }
 
-    React.useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', function () {
-            // navigate('Images2');
-            return true;
-        })
-    }, []);
+
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', function () {
+    //         return true;
+    //     })
+    // }, []);
 
 
 
@@ -58,17 +69,21 @@ const AboutHost = (props) => {
                 barStyle={"light-content"}
             />
             <HappeningHeader
-                heading={"What makes you Ideal to host this Happening?"}
-                desc={"Tell fellows about yourself."}
+                heading={"What makes your location ideal to host this happening?"}
+                desc={""}
+            // desc={"Tell fellows about yourself."}
             // headerStyle={{ paddingBottom: 30 }}
             />
             <View style={styles.contentContainer}>
                 <ScrollView>
                     <View>
                         <TextInput
-                            onChangeText={setMakesYouBest}
-                            placeholder='What makes you the best person to host this happening?'
-                            maxLength={150}
+                            onChangeText={(v) => {
+                                setMakesYouBest(v)
+                                getTitleWordsCount(v)
+                            }}
+                            placeholder='Describe your location within 10-50 words '
+                            // maxLength={50}
                             textAlignVertical='top'
                             multiline={true}
                             placeholderTextColor={"#2A2A2A"}
@@ -77,7 +92,7 @@ const AboutHost = (props) => {
                                 fontSize: 12, color: "#2A2A2A", fontFamily: fonts.MRe, paddingHorizontal: 15,
                             }}
                         />
-                        <Text style={{ position: 'absolute', bottom: 12, left: 20, fontSize: 12, color: "#2A2A2A", fontFamily: fonts.MRe, }}>0/150 words</Text>
+                        <Text style={{ position: 'absolute', bottom: 12, right: 20, fontSize: 12, color: "#2A2A2A", fontFamily: fonts.MRe, backgroundColor: 'white', width: 40, alignItems: 'center' }}>{titleWords ?? 0}/150</Text>
                     </View>
                 </ScrollView>
 
