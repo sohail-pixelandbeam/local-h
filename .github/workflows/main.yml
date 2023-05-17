@@ -1,42 +1,30 @@
-name: Continuous Integration - Testing
-  
+name: Continuous Deployment - IOS - Publish to TestFlight
 on:
-  pull_request:
-    branches: [ "main" ]
-
+  push:
+    branches:
+      - master
 jobs:
-  
-  test-coverage:
-    runs-on: ubuntu-latest
+  deploy:
+    name: Deploying to Testflight
+    runs-on: macOS-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Run tests
-        run: |
-          npm run test-coverage
-
-      - name: Jest Coverage Comment
-        uses: MishaKav/jest-coverage-comment@main
-        with:
-          coverage-summary-path: ./coverage/coverage-summary.json
-          title: Test Coverage
-          summary-title: LH-Backend Coverage Report
-          badge-title: Coverage
-          hide-comment: false
-          create-new-comment: false
-          hide-summary: false
-
-      - name: Jest Output file
-        continue-on-error: true
-        run: npm run test-output
-        
-      - name: Process jest results with default
-        if: always()
-        # You may also reference just the major or major.minor version
-        uses: im-open/process-jest-test-results@v2.1.3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          results-file: 'jest-results.json'
+      - name: Checkout repository
+        uses: actions/checkout@v1
+      - name: Install gpg
+        run: brew install gnupg
+      - name: Setup provisioning profile
+        env:
+          IOS_KEYS: ${{ secrets.IOS_KEYS }}
+        run: ./.github/secrets/decrypt_secrets.sh
+      - name: Archiving project
+        env:
+          PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+        run: ./.github/scripts/archive_app.sh
+      - name: Exporting .ipa
+        run: ./.github/scripts/export_ipa.sh
+      - name: Publishing app
+        if: success()
+        env:
+          APPLEID_USERNAME: ${{ secrets.APPLEID_USERNAME }}
+          APPLEID_PASSWORD: ${{ secrets.APPLEID_PASSWORD }}
+        run: ./.github/scripts/publish_testflight.sh
