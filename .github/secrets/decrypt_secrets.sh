@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eo pipefail
 
-gpg --quiet --batch --yes --decrypt --passphrase="$IOS_KEYS" --output ./.github/secrets/localhappinez_provisioning_profile.mobileprovision ./.github/secrets/match_AppStore_comtiagosantocalculatorIOS.mobileprovision.gpg
+gpg --quiet --batch --yes --decrypt --passphrase="$IOS_KEYS" --output ./.github/secrets/localhappinez_provisioning_profile.mobileprovision ./.github/secrets/localhappinez_provisioning_profile.mobileprovision.gpg
 gpg --quiet --batch --yes --decrypt --passphrase="$IOS_KEYS" --output ./.github/secrets/CertificateSigningRequest.certSigningRequest ./.github/secrets/CertificateSigningRequest.certSigningRequest.gpg
 
 mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
