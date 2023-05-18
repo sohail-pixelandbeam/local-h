@@ -2,9 +2,9 @@
 
 set -eo pipefail
 
-xcodebuild -workspace Calculator.xcworkspace \
-            -scheme Calculator\ iOS \
+xcodebuild -workspace ./ios/eventapp.xcworkspace \
+            -scheme eventapp\ iOS \
             -sdk iphoneos \
             -configuration AppStoreDistribution \
-            -archivePath $PWD/build/Calculator.xcarchive \
+            -archivePath $PWD/build/eventapp.xcarchive \
             clean archive | xcpretty
