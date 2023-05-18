@@ -14,7 +14,7 @@ security default-keychain -s build.keychain
 security import ./.github/secrets/LH-SelfSignedCertificate.p12 -t agg -k ~/Library/Keychains/build.keychain -P "$IOS_KEYS" -A
 
 security list-keychains -s ~/Library/Keychains/build.keychain
-#security default-keychain -s ~/Library/Keychains/build.keychain
+security default-keychain -s ~/Library/Keychains/build.keychain
 #security unlock-keychain -p "lh-1234" ~/Library/Keychains/build.keychain
 
 #security set-key-partition-list -S apple-tool:,apple: -s -k "" ~/Library/Keychains/build.keychain
