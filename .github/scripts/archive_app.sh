@@ -3,7 +3,7 @@
 set -eo pipefail
 
 xcodebuild -workspace ./ios/eventapp.xcworkspace \
-            -scheme eventapp\ iOS \
+            -scheme eventapp\
             -sdk iphoneos \
             -configuration AppStoreDistribution \
             -archivePath $PWD/build/eventapp.xcarchive \
