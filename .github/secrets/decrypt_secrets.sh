@@ -1,20 +1,19 @@
 #!/bin/sh
 set -eo pipefail
 
-gpg --quiet --batch --yes --decrypt --passphrase="$IOS_KEYS" --output ./.github/secrets/localhappinez_provisioning_profile.mobileprovision ./.github/secrets/localhappinez_provisioning_profile.mobileprovision.gpg
-gpg --quiet --batch --yes --decrypt --passphrase="$IOS_KEYS" --output ./.github/secrets/ios_distribution.cer ./.github/secrets/ios_distribution.cer.gpg
+gpg --quiet --batch --yes --decrypt --passphrase="$IOS_KEYS" --output ./.github/secrets/lhprovisioningprofile.mobileprovision ./.github/secrets/lhprovisioningprofile.mobileprovision.gpg
+gpg --quiet --batch --yes --decrypt --passphrase="$IOS_KEYS" --output ./.github/secrets/LH-SelfSignedCertificate.p12 ./.github/secrets/LH-SelfSignedCertificate.p12.gpg
 
 mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
 
-cp ./.github/secrets/localhappinez_provisioning_profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/localhappinez_provisioning_profile.mobileprovision
+cp ./.github/secrets/lhprovisioningprofile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/lhprovisioningprofile.mobileprovision
 
 
 security create-keychain -p "" build.keychain
-security import ./.github/secrets/ios_distribution.cer -t agg -k ~/Library/Keychains/build.keychain -P "" -A
+security import ./.github/secrets/LH-SelfSignedCertificate.p12 -t agg -k ~/Library/Keychains/build.keychain -P "" -A
 
 security list-keychains -s ~/Library/Keychains/build.keychain
 security default-keychain -s ~/Library/Keychains/build.keychain
 security unlock-keychain -p "" ~/Library/Keychains/build.keychain
 
 security set-key-partition-list -S apple-tool:,apple: -s -k "" ~/Library/Keychains/build.keychain
-view raw
