@@ -36,7 +36,7 @@ const ReviewJoining = (props) => {
             "happeningId": params?._id,
             "youngsters": params?.youngsters?.length ? params?.youngsters : undefined,
             // "profileAndTimeline": state.profileData?._id,
-            "timeZone": Intl.DateTimeFormat().resolvedOptions().timeZone,
+            "timeZone": params?.timeZone,
             "startTime": params?.startTime,
             "endTime": params?.endTime,
             "startingDate": params?.startingDate,
@@ -45,7 +45,7 @@ const ReviewJoining = (props) => {
             "childrens": params?.childrens > 0 ? params?.childrens : undefined,
         }
         setLoading(true);
-        apiRequest(reqObj, 'fellowBookingSingleDate')
+        apiRequest(reqObj, 'booking/fellowBookingSingleDate')
             .then(data => {
                 setLoading(false)
                 console.log('data===', data)

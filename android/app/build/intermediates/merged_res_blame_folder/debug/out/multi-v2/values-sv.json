@@ -55,23 +55,6 @@
                     }
                 },
                 {
-                    "source": "/Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-date-picker/android/build/intermediates/packaged_res/debug/values-sv/values-sv.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,111,171,227,286,330,391,439,499,551,597",
-                        "endColumns": "55,59,55,58,43,60,47,59,51,45,56",
-                        "endOffsets": "106,166,222,281,325,386,434,494,546,592,649"
-                    },
-                    "to": {
-                        "startLines": "29,48,49,50,51,52,53,54,55,58,59",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "2778,5040,5100,5156,5215,5259,5320,5368,5428,5661,5707",
-                        "endColumns": "55,59,55,58,43,60,47,59,51,45,56",
-                        "endOffsets": "2829,5095,5151,5210,5254,5315,5363,5423,5475,5702,5759"
-                    }
-                },
-                {
                     "source": "/Users/applemachub/.gradle/caches/transforms-3/c1c2bbd87bdcfc2f546c717fb238d3c1/transformed/jetified-play-services-basement-18.1.0/res/values-sv/values.xml",
                     "from": {
                         "startLines": "4",
@@ -86,6 +69,23 @@
                         "startOffsets": "3828",
                         "endColumns": "147",
                         "endOffsets": "3971"
+                    }
+                },
+                {
+                    "source": "/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/node_modules/react-native-date-picker/android/build/intermediates/packaged_res/debug/values-sv/values-sv.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,111,171,227,286,330,391,439,499,551,597",
+                        "endColumns": "55,59,55,58,43,60,47,59,51,45,56",
+                        "endOffsets": "106,166,222,281,325,386,434,494,546,592,649"
+                    },
+                    "to": {
+                        "startLines": "29,48,49,50,51,52,53,54,55,58,59",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "2778,5040,5100,5156,5215,5259,5320,5368,5428,5661,5707",
+                        "endColumns": "55,59,55,58,43,60,47,59,51,45,56",
+                        "endOffsets": "2829,5095,5151,5210,5254,5315,5363,5423,5475,5702,5759"
                     }
                 }
             ]

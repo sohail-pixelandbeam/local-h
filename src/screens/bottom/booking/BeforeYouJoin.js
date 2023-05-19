@@ -48,7 +48,7 @@ const BeforeYouJoin = (props) => {
                     data: props.route.params?.data
                 })}
                 showStep={false}
-                containerStyle={{ alignItems: 'flex-end', flexDirection: 'column', justifyContent: 'center' }}
+                // containerStyle={{ alignItems: 'flex-end', flexDirection: 'column', justifyContent: 'center' }}
             // nextText = {"Next"}
             />
 

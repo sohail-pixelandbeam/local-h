@@ -59,7 +59,7 @@ const HappeningDetails = (props) => {
             })
     }
 
-    function makeFromToMonthDate() {
+    function makeFromToMonthDate() {    
 
         let startingDate = happeningDetails?.startingDate;
         let endingDate = happeningDetails?.endDate;
@@ -409,7 +409,7 @@ const HappeningDetails = (props) => {
                             </View>
                         </View> */}
                         <TouchableOpacity
-                            disabled
+                            // disabled
                             onPress={() => navigate('BeforeYouJoin', {
                                 data: happeningDetails
                             })} //SelectDate

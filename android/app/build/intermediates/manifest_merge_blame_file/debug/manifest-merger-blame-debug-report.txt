@@ -9,27 +9,27 @@
 9        android:targetSdkVersion="31" />
 10
 11    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-11-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/debug/AndroidManifest.xml:5:6-78
-11-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/debug/AndroidManifest.xml:5:23-76
+11-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/debug/AndroidManifest.xml:5:6-78
+11-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/debug/AndroidManifest.xml:5:23-76
 12    <!-- PUSH NOTIFICATIONS PERMISSIONS -->
 13    <uses-permission android:name="android.permission.VIBRATE" />
-13-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:6:5-66
-13-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:6:22-63
+13-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:6:5-66
+13-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:6:22-63
 14    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-14-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:7:5-80
-14-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:7:22-78
+14-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:7:5-80
+14-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:7:22-78
 15    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-15-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:10:5-80
-15-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:10:22-78
+15-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:10:5-80
+15-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:10:22-78
 16    <uses-permission android:name="android.permission.INTERNET" />
-16-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:4:5-67
-16-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:4:22-64
+16-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:4:5-67
+16-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:4:22-64
 17    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-17-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:8:5-79
-17-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:8:22-76
+17-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:8:5-79
+17-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:8:22-76
 18    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-18-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:9:5-80
-18-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:9:22-78
+18-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:9:5-80
+18-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:9:22-78
 19    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 19-->[com.facebook.flipper:flipper:0.125.0] /Users/applemachub/.gradle/caches/transforms-3/e4194d73fe93b3c50d9bc6a16cde53c1/transformed/jetified-flipper-0.125.0/AndroidManifest.xml:16:5-76
 19-->[com.facebook.flipper:flipper:0.125.0] /Users/applemachub/.gradle/caches/transforms-3/e4194d73fe93b3c50d9bc6a16cde53c1/transformed/jetified-flipper-0.125.0/AndroidManifest.xml:16:22-73
@@ -126,138 +126,138 @@
 58-->[me.leolin:ShortcutBadger:1.1.22] /Users/applemachub/.gradle/caches/transforms-3/bf023fad58eb02298c3c86a6d441b38b/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:50:22-86
 59    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
 60    <application
-60-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:12:5-66:19
+60-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:12:5-66:19
 61        android:name="com.localhappinez.MainApplication"
-61-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:13:7-38
+61-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:13:7-38
 62        android:allowBackup="false"
-62-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:17:7-34
+62-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:17:7-34
 63        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 63-->[androidx.core:core:1.7.0] /Users/applemachub/.gradle/caches/transforms-3/8fcb66759c7e5a40fc028cb8d6aa1769/transformed/core-1.7.0/AndroidManifest.xml:24:18-86
 64        android:debuggable="true"
 65        android:icon="@mipmap/ic_launcher"
-65-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:15:7-41
+65-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:15:7-41
 66        android:label="@string/app_name"
-66-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:14:7-39
+66-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:14:7-39
 67        android:roundIcon="@mipmap/ic_launcher_adaptive_fore"
-67-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:16:7-60
+67-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:16:7-60
 68        android:theme="@style/AppTheme"
-68-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:18:7-38
+68-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:18:7-38
 69        android:usesCleartextTraffic="true" >
-69-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:19:7-42
+69-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:19:7-42
 70        <activity
-70-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/debug/AndroidManifest.xml:18:9-110
+70-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/debug/AndroidManifest.xml:18:9-110
 71            android:name="com.facebook.react.devsupport.DevSettingsActivity"
-71-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/debug/AndroidManifest.xml:18:19-83
+71-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/debug/AndroidManifest.xml:18:19-83
 72            android:exported="true" />
-72-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/debug/AndroidManifest.xml:18:84-107
+72-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/debug/AndroidManifest.xml:18:84-107
 73        <!-- MAPS -->
 74        <meta-data
-74-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:41:7-43:66
+74-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:41:7-43:66
 75            android:name="com.google.android.geo.API_KEY"
-75-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:42:9-54
+75-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:42:9-54
 76            android:value="AIzaSyCBRIKQu3tgtuEIhUAkIRy1N8pHu_wFYBk" />
-76-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:43:9-64
+76-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:43:9-64
 77
 78        <activity
-78-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:22:7-33:18
+78-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:22:7-33:18
 79            android:name="com.localhappinez.MainActivity"
-79-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:23:9-37
+79-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:23:9-37
 80            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-80-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:25:9-118
+80-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:25:9-118
 81            android:exported="true"
-81-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:28:9-32
+81-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:28:9-32
 82            android:label="@string/app_name"
-82-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:24:9-41
+82-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:24:9-41
 83            android:launchMode="singleTask"
-83-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:26:9-40
+83-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:26:9-40
 84            android:windowSoftInputMode="adjustResize" >
-84-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:27:9-51
+84-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:27:9-51
 85            <intent-filter>
-85-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:29:9-32:25
+85-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:29:9-32:25
 86                <action android:name="android.intent.action.MAIN" />
-86-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:30:13-65
-86-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:30:21-62
+86-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:30:13-65
+86-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:30:21-62
 87
 88                <category android:name="android.intent.category.LAUNCHER" />
-88-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:31:13-73
-88-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:31:23-70
+88-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:31:13-73
+88-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:31:23-70
 89            </intent-filter>
 90        </activity> <!-- PUSH NOTIFICATION CONFIGS STARTS -->
 91        <meta-data
-91-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:35:7-36:44
+91-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:35:7-36:44
 92            android:name="com.dieam.reactnativepushnotification.notification_foreground"
-92-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:35:19-95
+92-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:35:19-95
 93            android:value="false" /> <!-- Change the resource name to your App's accent color - or any other color you want -->
-93-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:36:21-42
+93-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:36:21-42
 94        <meta-data
-94-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:38:7-39:54
+94-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:38:7-39:54
 95            android:name="com.dieam.reactnativepushnotification.notification_color"
-95-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:38:19-90
+95-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:38:19-90
 96            android:resource="@color/white" />
-96-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:39:21-52
+96-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:39:21-52
 97
 98        <receiver
-98-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:45:9-133
+98-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:45:9-133
 99            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions"
-99-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:45:44-130
+99-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:45:44-130
 100            android:exported="false" />
-100-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:45:19-43
+100-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:45:19-43
 101        <receiver
-101-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:46:9-135
+101-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:46:9-135
 102            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher"
-102-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:46:44-132
+102-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:46:44-132
 103            android:exported="false" />
-103-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:46:19-43
+103-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:46:19-43
 104        <receiver
-104-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:47:9-53:20
+104-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:47:9-53:20
 105            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver"
-105-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:47:44-140
+105-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:47:44-140
 106            android:exported="false" >
-106-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:47:19-43
+106-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:47:19-43
 107            <intent-filter>
-107-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:48:11-52:27
+107-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:48:11-52:27
 108                <action android:name="android.intent.action.BOOT_COMPLETED" />
-108-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:49:13-75
-108-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:49:21-72
+108-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:49:13-75
+108-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:49:21-72
 109                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-109-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:50:13-78
-109-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:50:21-75
+109-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:50:13-78
+109-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:50:21-75
 110                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
-110-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:51:13-77
-110-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:51:21-75
+110-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:51:13-77
+110-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:51:21-75
 111            </intent-filter>
 112        </receiver>
 113
 114        <service
-114-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:54:9-60:19
+114-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:54:9-60:19
 115            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService"
-115-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:55:13-107
+115-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:55:13-107
 116            android:exported="false" >
-116-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:56:13-37
+116-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:56:13-37
 117            <intent-filter>
-117-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:57:13-59:29
+117-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:57:13-59:29
 118                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-118-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:58:17-78
-118-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:58:25-75
+118-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:58:17-78
+118-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:58:25-75
 119            </intent-filter>
 120        </service>
 121
 122        <provider
-122-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:10:9-18:20
+122-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:10:9-18:20
 123            android:name="com.imagepicker.ImagePickerProvider"
-123-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-63
+123-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-63
 124            android:authorities="com.localhappinez.imagepickerprovider"
-124-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-71
+124-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-71
 125            android:exported="false"
-125-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-37
+125-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-37
 126            android:grantUriPermissions="true" >
-126-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:14:13-47
+126-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:14:13-47
 127            <meta-data
-127-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:15:13-17:70
+127-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:15:13-17:70
 128                android:name="android.support.FILE_PROVIDER_PATHS"
-128-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:16:17-67
+128-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:16:17-67
 129                android:resource="@xml/imagepicker_provider_paths" />
-129-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/eventapp/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:17:17-67
+129-->[:react-native-image-picker] /Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:17:17-67
 130        </provider>
 131
 132        <receiver
@@ -288,10 +288,10 @@
 147            android:exported="false" >
 147-->[com.google.firebase:firebase-messaging:23.1.0] /Users/applemachub/.gradle/caches/transforms-3/a2bc4a7f01ee2b43e7938bb5f3f2a627/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:47:13-37
 148            <intent-filter android:priority="-500" >
-148-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:57:13-59:29
+148-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:57:13-59:29
 149                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-149-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:58:17-78
-149-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:58:25-75
+149-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:58:17-78
+149-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:58:25-75
 150            </intent-filter>
 151        </service>
 152        <service
@@ -530,8 +530,8 @@
 273            <intent-filter>
 273-->[androidx.work:work-runtime:2.7.1] /Users/applemachub/.gradle/caches/transforms-3/1d13ac634a57e7edfbb468c398c90d7f/transformed/work-runtime-2.7.1/AndroidManifest.xml:116:13-120:29
 274                <action android:name="android.intent.action.BOOT_COMPLETED" />
-274-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:49:13-75
-274-->/Users/applemachub/Mughees/Projects/open/eventapp/android/app/src/main/AndroidManifest.xml:49:21-72
+274-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:49:13-75
+274-->/Users/applemachub/Mughees/Projects/open/localHappinezz/LocalHappinez-FrontEnd-ReactNative/android/app/src/main/AndroidManifest.xml:49:21-72
 275                <action android:name="android.intent.action.TIME_SET" />
 275-->[androidx.work:work-runtime:2.7.1] /Users/applemachub/.gradle/caches/transforms-3/1d13ac634a57e7edfbb468c398c90d7f/transformed/work-runtime-2.7.1/AndroidManifest.xml:118:17-73
 275-->[androidx.work:work-runtime:2.7.1] /Users/applemachub/.gradle/caches/transforms-3/1d13ac634a57e7edfbb468c398c90d7f/transformed/work-runtime-2.7.1/AndroidManifest.xml:118:25-70

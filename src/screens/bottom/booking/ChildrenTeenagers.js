@@ -15,7 +15,7 @@ import { fonts } from '../../../constants/fonts'
 
 const ChildrenTeenagers = (props) => {
 
-
+    console.log('propsareeads',props.route.params)
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <StatusBar
@@ -53,7 +53,7 @@ const ChildrenTeenagers = (props) => {
                     })
                 }}
                 showStep={false}
-                containerStyle={{ alignItems: 'flex-end', flexDirection: 'column', justifyContent: 'center' }}
+                // containerStyle={{ alignItems: 'flex-end', flexDirection: 'column', justifyContent: 'center' }}
                 nextText={"Next"}
             />
 
