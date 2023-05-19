@@ -1,12 +1,12 @@
 #!/bin/sh
 set -eo pipefail
 
-gpg --quiet --batch --yes --decrypt --passphrase="$IOS_KEYS" --output ./.github/secrets/LocalHappinezProvProfile.mobileprovision ./.github/secrets/LocalHappinezProvProfile.mobileprovision.gpg
+gpg --quiet --batch --yes --decrypt --passphrase="$IOS_KEYS" --output ./.github/secrets/LocalHappinezProvisProfile.mobileprovision ./.github/secrets/LocalHappinezProvisProfile.mobileprovision.gpg
 gpg --quiet --batch --yes --decrypt --passphrase="$IOS_KEYS" --output ./.github/secrets/Certificates.p12 ./.github/secrets/Certificates.p12.gpg
 
 mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
 
-cp ./.github/secrets/LocalHappinezProvProfile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/LocalHappinezProvProfile.mobileprovision
+cp ./.github/secrets/LocalHappinezProvisProfile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/LocalHappinezProvisProfile.mobileprovision
 
 
 security create-keychain -p "lh-1234" build.keychain
