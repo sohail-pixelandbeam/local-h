@@ -8,9 +8,12 @@ mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
 
 cp ./.github/secrets/LocalHappinezProvisProfile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/LocalHappinezProvisProfile.mobileprovision
 
+KEYCHAIN_PATH=$RUNNER_TEMP/th-keychain
+security create-keychain -p "lh-1234" $KEYCHAIN_PATH
+security default-keychain -s $KEYCHAIN_PATH
 
-security create-keychain -p "lh-1234" build.keychain
-security default-keychain -s build.keychain
+#security create-keychain -p "lh-1234" build.keychain
+#security default-keychain -s build.keychain
 security import ./.github/secrets/Certificates.p12 -t agg -k ~/Library/Keychains/build.keychain -P "$IOS_KEYS" -A
 
 security list-keychains -s ~/Library/Keychains/build.keychain
