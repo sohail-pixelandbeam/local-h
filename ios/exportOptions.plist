@@ -8,5 +8,12 @@
     <string>GG9Y7SZ7Y4</string>
     <key>iCloudContainerEnvironment</key>
     <string>Development</string>
+    <key>provisioningProfiles</key>
+    <dict>
+      <key>com.localhappinez</key>
+      <string>LocalHappinezProvisProfile</string>
+    </dict>
+    <key>signingStyle</key>
+	  <string>manual</string>
   </dict>
 </plist>
