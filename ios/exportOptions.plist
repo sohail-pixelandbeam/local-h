@@ -11,7 +11,7 @@
     <key>provisioningProfiles</key>
     <dict>
       <key>com.localhappinez</key>
-      <string>LocalHappinezProvisProfile</string>
+      <string>LocalHappinezDevProfile</string>
     </dict>
     <key>signingStyle</key>
 	  <string>automatic</string>
