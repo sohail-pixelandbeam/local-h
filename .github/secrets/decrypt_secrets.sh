@@ -22,7 +22,7 @@ security set-key-partition-list -S apple-tool:,apple: -s -k "lh-1234" $KEYCHAIN_
 
 # Copy provisioning profile
 mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-cp /.github/secrets/LocalHappinezDevProfile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles
+cp .github/secrets/LocalHappinezDevProfile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles
 
 # Backup
 #security create-keychain -p "lh-1234" build.keychain
