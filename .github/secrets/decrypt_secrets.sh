@@ -20,6 +20,10 @@ security unlock-keychain -p "lh-1234" $KEYCHAIN_PATH
 
 security set-key-partition-list -S apple-tool:,apple: -s -k "lh-1234" $KEYCHAIN_PATH
 
+# Copy provisioning profile
+mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+cp /.github/secrets/LocalHappinezDevProfile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles
+
 # Backup
 #security create-keychain -p "lh-1234" build.keychain
 #security default-keychain -s build.keychain
