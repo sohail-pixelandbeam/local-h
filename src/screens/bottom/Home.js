@@ -19,6 +19,7 @@ import { Context } from '../../Context/DataContext'
 import RangeSlider from 'rn-range-slider';
 import { navigate, navigateFromStack } from '../../../Navigations';
 import HappeningFilterModal from '../../common/HappeningFilterModal';
+import GeneralStatusBar from '../../components/GernalStatusBar';
 
 
 var alertRef;
@@ -28,7 +29,7 @@ const Home = () => {
 
 
     const forceUpdate = useForceUpdate();
-    const { state, setUserGlobal, userProfileData,setHappeningSubmissionDataGlobal } = useContext(Context)
+    const { state, setUserGlobal, userProfileData, setHappeningSubmissionDataGlobal } = useContext(Context)
     const [loading, setLoading] = useState(false);
     const [modalLoading, setModalLoading] = useState(false);
     const [popup1, setPopup1] = useState(false);
@@ -96,7 +97,7 @@ const Home = () => {
     const [allHappenings, setAllHappenings] = useState([]);
     const [bioCount, setBioCount] = useState(0);
 
-    console.log('state.happeningSubmissionData?.happeningTheme',state.happeningSubmissionData?.happeningTheme)
+    console.log('state.happeningSubmissionData?.happeningTheme', state.happeningSubmissionData?.happeningTheme)
 
 
     async function getHappeningSubmissionData(refresh = false) {
@@ -378,7 +379,7 @@ const Home = () => {
 
     // getLocation();
     useEffect(() => {
-        storeItem('profile_temp_data','')
+        storeItem('profile_temp_data', '')
         getHappeningDataFromServer();
         makeStaticArrays();
         getLoginAndProfileDataFromLocal();
@@ -633,27 +634,27 @@ const Home = () => {
                 {
                     // ["Business Support", "Clean Energy and Air", "Community Work", "Construction Work ", "Art", "Harvesting & Farming", "Health & Medical", "Land Conservation", "Marine Protection"]
                     state.happeningSubmissionData?.happeningTheme?.map((v, i) => {
-                            return (
-                                <TouchableOpacity
-                                    key={i}
-                                    onPress={() => {
-                                        let arr = themesLike;
-                                        if (arr.includes(v)) {
-                                            let foundIndex = arr.indexOf(v);
-                                            arr.splice(foundIndex, 1);
-                                        }
-                                        else {
-                                            arr.push(v)
-                                        }
-                                        setThemesLike(arr);
-                                        forceUpdate();
+                        return (
+                            <TouchableOpacity
+                                key={i}
+                                onPress={() => {
+                                    let arr = themesLike;
+                                    if (arr.includes(v)) {
+                                        let foundIndex = arr.indexOf(v);
+                                        arr.splice(foundIndex, 1);
+                                    }
+                                    else {
+                                        arr.push(v)
+                                    }
+                                    setThemesLike(arr);
+                                    forceUpdate();
 
-                                    }}
-                                    style={[styles.themePickerContainer, { backgroundColor: themesLike?.includes(v) ? "#5b4dbc" : "white" }]}>
-                                    <Text style={{ color: themesLike.includes(v) ? "white" : "#5b4dbc", fontFamily: fonts.MRe, fontSize: 8, }}>{v?.happeningThemeName}</Text>
-                                </TouchableOpacity>
-                            )
-                        })
+                                }}
+                                style={[styles.themePickerContainer, { backgroundColor: themesLike?.includes(v) ? "#5b4dbc" : "white" }]}>
+                                <Text style={{ color: themesLike.includes(v) ? "white" : "#5b4dbc", fontFamily: fonts.MRe, fontSize: 8, }}>{v?.happeningThemeName}</Text>
+                            </TouchableOpacity>
+                        )
+                    })
 
                 }
             </View>
@@ -791,13 +792,14 @@ const Home = () => {
     )
 
     return (
-        <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1, }}>
-
-            <StatusBar
-                barStyle={"dark-content"}
-                // // translucent={false}
-                backgroundColor={!popup1 ? "white" : "rgba(255,255,255,0.4)"}
+        <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
+            <GeneralStatusBar
+                backgroundColor='white'
             />
+
+            
+
+
 
             <View style={{ flexDirection: 'row', width: "90%", alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
                 <View>
@@ -1001,7 +1003,7 @@ const Home = () => {
                                         fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10,
                                     }}
                                 />
-                                <Text style={{backgroundColor:'white', position: 'absolute', bottom: 5, right: 20, fontSize: 12, color: "#2A2A2A", fontFamily: fonts.MRe, }}>{bioCount ?? 0}/150</Text>
+                                <Text style={{ backgroundColor: 'white', position: 'absolute', bottom: 5, right: 20, fontSize: 12, color: "#2A2A2A", fontFamily: fonts.MRe, }}>{bioCount ?? 0}/150</Text>
                             </View>
                             <PopupButton
                                 onPress={() => {
@@ -1200,11 +1202,11 @@ const Home = () => {
                                                     {
                                                         languageKnownArr.map((v, i) => {
                                                             return (
-                                                                <View 
+                                                                <View
                                                                     key={i}
                                                                     style={{
-                                                                    paddingHorizontal: 8, height: 28, borderRadius: 18, backgroundColor: '#b9b1f0', flexDirection: 'row', alignItems: 'center',
-                                                                }}>
+                                                                        paddingHorizontal: 8, height: 28, borderRadius: 18, backgroundColor: '#b9b1f0', flexDirection: 'row', alignItems: 'center',
+                                                                    }}>
                                                                     <Text style={{ color: '#ffffff', fontFamily: fonts.MRe, fontSize: 8, }}>{v}</Text>
                                                                     <TouchableOpacity
                                                                         onPress={() => doSpliceLanguageKnown(v)}
@@ -1240,8 +1242,8 @@ const Home = () => {
                                                             modalAlertRef.alertWithType('error', "Error", "Please enter atleast one language")
                                                             return;
                                                         }
-                                                        console.log('profession===',profession)
-                                                        if (profession?.length < 3 || !profession ) {
+                                                        console.log('profession===', profession)
+                                                        if (profession?.length < 3 || !profession) {
                                                             modalAlertRef.alertWithType('error', "Error", "Please enter a valid profession")
                                                             return;
                                                         }
@@ -1298,13 +1300,13 @@ const Home = () => {
                                                         <View style={{ flexDirection: 'row', width: "100%", marginTop: 10, flexWrap: 'wrap' }}>
                                                             {
 
-                                                                skillsArr.map((v,i) => {
+                                                                skillsArr.map((v, i) => {
                                                                     return (
-                                                                        <View 
+                                                                        <View
                                                                             key={i}
                                                                             style={{
-                                                                            paddingHorizontal: 8, height: 28, borderRadius: 18, backgroundColor: '#b9b1f0', flexDirection: 'row', alignItems: 'center', marginLeft: 10, marginTop: 10
-                                                                        }}>
+                                                                                paddingHorizontal: 8, height: 28, borderRadius: 18, backgroundColor: '#b9b1f0', flexDirection: 'row', alignItems: 'center', marginLeft: 10, marginTop: 10
+                                                                            }}>
                                                                             <Text style={{ color: '#ffffff', fontFamily: fonts.MRe, fontSize: 8, }}>{v}</Text>
                                                                             <TouchableOpacity
                                                                                 onPress={() => doSpliceSkills(v)}
@@ -1537,7 +1539,7 @@ const Home = () => {
 
             {/* {loading && <Loader />} */}
             <DropdownAlert ref={(ref) => alertRef = ref} />
-        </SafeAreaView>
+        </View>
     )
 }
 

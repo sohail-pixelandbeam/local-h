@@ -44,6 +44,20 @@ const Images1 = (props) => {
             alertRef.alertWithType('error', "Error", "Please upload minimum 6 images");
             return;
         }
+
+        let formData = new FormData();
+        for (let key in media) {
+            formData.append('file[]', media[key]);
+        }
+
+        const obj = {
+            ...state.happeningDraft,
+            happeningImages: formData
+        }
+        setHappeningData(obj);
+        navigate('Duration1');
+        return;
+
         try {
             setLoading(true);
             let formData = new FormData();

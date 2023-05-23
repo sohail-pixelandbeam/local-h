@@ -11,17 +11,20 @@ const AllBookings = (props) => {
 
     const { state, setHappeningData } = useContext(Context)
     const item = props.route.params?.params ?? {};
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [happeningDetails, setHappeningDetails] = useState([]);
+
 
     async function getHostingDetails() {
         setLoading(true);
         // console.log('getMyHosting/' + item.userData._id)
-        apiRequest('', 'getMyHosting/' + state.userData._id, 'GET')
+        // apiRequest('', 'getMyHosting/' + state.userData._id, 'GET')
+        apiRequest('', 'booking/getFellowBookingByHost/' + props.route.params?.params._id, 'GET')
             .then(data => {
-                console.log('myHostingDetails', data.data);
+                console.log('booking/myHostingDetails', data);
                 setLoading(false)
                 if (data.status) {
-                    // setMyHostings(data.data)
+                    setHappeningDetails(data.data)
                 }
             })
             .catch(err => {

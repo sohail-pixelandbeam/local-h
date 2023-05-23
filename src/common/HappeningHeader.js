@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#35208E'
     },
     heading: {
-        fontFamily: fonts.PBo, fontSize: 29, color: "#FFFFFF", marginTop: 10,
+        fontFamily: fonts.PBo, fontSize: 29, color: "#FFFFFF", 
+        // marginTop: 10,
         lineHeight: 43,
     },
     desc: {

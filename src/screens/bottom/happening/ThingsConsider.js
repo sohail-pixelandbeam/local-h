@@ -8,6 +8,7 @@ import { fonts } from '../../../constants/fonts'
 import { Context } from '../../../Context/DataContext'
 import { apiRequest } from '../../../utils/apiCalls'
 import Loader from '../../../utils/Loader'
+import GeneralStatusBar from '../../../components/GernalStatusBar'
 
 const ThingsConsider = () => {
 
@@ -77,11 +78,12 @@ const ThingsConsider = () => {
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <StatusBar
+            <GeneralStatusBar/>
+            {/* <StatusBar
                 backgroundColor={acolors.primary}
                 barStyle={"light-content"}
                 hidden={Platform.OS == 'ios' ? true : false}
-            />
+            /> */}
             <HappeningHeader
                 // imageUrl={require('../../../assets/thingsConsiderHeaderImg.png')}
                 heading={"Things to\nconsider."}

@@ -19,6 +19,7 @@ import { AddedPhotosTimeLine, EditBioSkillsTimeLine, LiveHappeningTimeLine, Revi
 import { RefreshControl } from 'react-native';
 import EditProfile from './EditProfile';
 import { urls } from '../../utils/Api_urls';
+import GeneralStatusBar from '../../components/GernalStatusBar';
 
 
 
@@ -149,7 +150,7 @@ const Profile = () => {
     async function getMyHostings(refreshing = false) {
         !refreshing && setLoading(true);
         // console.log('getMyHosting/' + state.userData._id)
-        apiRequest('', 'getMyHosting/', 'GET')
+        apiRequest('', 'booking/getMyHosting/', 'GET')
             .then(data => {
                 console.log('myHostings', data.data);
                 setLoading(false);
@@ -167,7 +168,7 @@ const Profile = () => {
     async function getProfileDetails(refreshing = false) {
         !refreshing && setLoading(true);
         // console.log('getMyHosting/' + state.userData._id)
-        apiRequest('', 'getUserDetails', 'GET')
+        apiRequest('', 'auth/getUserDetails', 'GET')
             .then(data => {
                 console.log('userDetails is', data)
                 setLoading(false);
@@ -184,14 +185,13 @@ const Profile = () => {
     async function getMyBookings(refreshing = false) {
         !refreshing && setLoading(true);
         // console.log('getMyHosting/' + state.userData._id)
-        apiRequest('', 'getUserBookingDetails', 'GET')
+        apiRequest('', 'booking/getUserBookingDetails', 'GET')
             .then(data => {
-                console.log('getUserBookingDetails', data);
                 setLoading(false);
                 setRefreshing(false);
-                if (data.status) {
-                    setMyBookings(data.data)
-                }
+                // if (data.status) {
+                setMyBookings(data?.data)
+                // }
             })
             .catch(err => {
                 setLoading(false)
@@ -233,6 +233,7 @@ const Profile = () => {
                 // [{ status: 'Confirmed' }, { status: 'Pending' }, { status: 'Cancelled' },
                 // { status: 'awaiting 4 fellows' }, { status: 'Rejected' }, { status: 'Cancellation request pending' }]
                 myBookings?.map((v, i) => {
+                    let fellowLength = v?.fellow?.length
                     return (
                         <View
                             key={i}
@@ -241,15 +242,42 @@ const Profile = () => {
                                 <View style={{ width: "50%" }}>
                                     <Text style={styles.bookingDate}>Tue, 29 Mar - {v?.happeningOnLocation ? "On Location" : "Online"}</Text>
                                     <Text style={styles.bookingTime}>{v.startTime} - {v.endTime}</Text>
-                                    <Image
+                                    {/* <Image
                                         // style={{width:40,height:40,borderRadius:20}}
                                         source={require('../../static_assets/peopleJoinedImages.png')}
-                                    />
-                                    <Text style={styles.peopleWhoJoinedText}>Akram, Ton, Vamsi and 4 others</Text>
+                                    /> */}
+                                    <View style={{ flexDirection: 'row', marginLeft: 10 }}>
+                                        {
+                                            v.fellow.map((v, i) => {
+                                                return (
+                                                    <>
+                                                        <Image
+                                                            style={{ width: 40, height: 40, borderRadius: 20, marginLeft: -15 }}
+                                                            source={{ uri: v?.profileAndTimeline?.profileImage }}
+                                                        />
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                    </View>
+                                    <View style={{ flexDirection: 'row', }}>
+
+                                        {
+                                            v?.fellow?.map((v, i) => {
+                                                console.log('fellowLength', fellowLength)
+                                                return (
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <Text style={[styles.peopleWhoJoinedText]}>{v?.profileAndTimeline?.userId?.firstName ?? ""} </Text>
+                                                        {fellowLength !== i + 1 && v?.profileAndTimeline?.userId?.firstName && <Text style={[styles.peopleWhoJoinedText]}>, </Text>}
+                                                    </View>
+                                                )
+                                            })
+                                        }
+                                    </View>
                                     <Text style={styles.seeAll}>See all</Text>
                                     <TouchableOpacity
                                         onPress={() => {
-                                            switch (v.status) {
+                                            switch (v.booking.status) {
                                                 case 'Confirmed':
                                                     navigateFromStack('BookingStack', 'ConfirmHappeningStatus')
                                                     return;
@@ -276,8 +304,8 @@ const Profile = () => {
                                         }}
 
                                         style={[styles.bookingStatusContainer, v.status !== 'Confirmed' && { borderColor: '#E53535' }]}>
-                                        <Text style={[styles.bookingStatus, v.status !== 'Confirmed' && { color: '#E53535' }]}>{v.status}</Text>
-                                        {v.status !== 'approved' ?
+                                        <Text style={[styles.bookingStatus, v.status !== 'Confirmed' && { color: '#E53535' }]}>{v.booking?.status.charAt(0).toUpperCase() + v.booking?.status.slice(1)}</Text>
+                                        {v.booking.status !== 'approved' ?
                                             <InfoIcon color="#E53535" />
 
                                             :
@@ -322,6 +350,7 @@ const Profile = () => {
                     />
                 }
                 numColumns={2}
+                showsVerticalScrollIndicator={false}
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
                 contentContainerStyle={{ paddingBottom: 500 }}
                 renderItem={({ item, index }) => {
@@ -330,7 +359,7 @@ const Profile = () => {
                     return (
                         <TouchableOpacity
                             activeOpacity={1}
-                            disabled={true}
+                            // disabled={true}
                             onPress={() => {
                                 item.status == 'cancelled' ? navigateFromStack('BookingStack', 'MyHappeningDetails', { params: 'cancelled' }) :
                                     navigateFromStack('BookingStack', 'AllBookings', item)
@@ -358,15 +387,19 @@ const Profile = () => {
                             </View>
                             <Text style={{ fontFamily: fonts.PMe, fontSize: 11, color: '#5D5760', marginTop: 10 }}>{item.happeningTitle}</Text>
                             <View
-                                style={{ position: 'absolute', top: 8, right: 8,width:100, overflow: 'visible', paddingHorizontal: 10, height: 30, borderRadius: 15, backgroundColor: '#FFFFFF', borderColor: '#707070', alignItems: 'center', justifyContent: 'center' }}
+                                style={{ position: 'absolute', top: 8, right: 8, width: 100, overflow: 'visible', paddingHorizontal: 10, height: 30, borderRadius: 15, backgroundColor: '#FFFFFF', borderColor: '#707070', alignItems: 'center', justifyContent: 'center' }}
                             >
                                 <Text style={{ fontFamily: fonts.PMe, fontSize: 12, color: acolors.btnSecondry, textTransform: 'capitalize' }}>
                                     {makeFromToMonthDate(item)}
                                     {/* {index == 3 || 2 ? "view details" : index == 0 ? "under review" : "2 new requests"} */}
                                 </Text>
                                 {/* <EditPencilIcon /> */}
-
                             </View>
+                            <TouchableOpacity
+                                onPress={() => navigate('EditHappening', item)}
+                                style={{ position: 'absolute', top: -10, right: -10, backgroundColor: 'rgba(255,255,255,1)', elevation: 4, borderRadius: 35 / 2, width: 35, height: 35, alignItems: 'center', justifyContent: 'center', shadowOpacity: 0.5, shadowColor: 'rgba(0,0,0,0.5)' }} >
+                                <EditPencilIcon />
+                            </TouchableOpacity>
                         </TouchableOpacity>
                     )
                 }}
@@ -379,13 +412,8 @@ const Profile = () => {
 
     return (
         <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1, }}>
-            <StatusBar
-                barStyle={"dark-content"}
-                backgroundColor={"white"}
-            />
+            <GeneralStatusBar backgroundColor='white' barStyle="light-content" />
             {loading && <Loader />}
-
-
 
             <AlertMsg
                 heading={bookingStatusAlertMsg}
@@ -450,29 +478,30 @@ const Profile = () => {
                     </TouchableOpacity>
 
                 }
+            </View>
 
-                {/* <TouchableOpacity
-                    onPress={() => navigate('SettingsScreen')}
-                    style={{ position: 'absolute', top: 20, right: 20, alignItems: 'center' }}>
-                    <SettingsIcon />
-                    <Text style={{ fontFamily: fonts.PRe, fontSize: 10, color: '#000000', marginTop: 2 }}>Settings</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
+            <TouchableOpacity
+                onPress={() => navigate('SettingsScreen')}
+                style={{ position: 'absolute', top: 60, right: 20, alignItems: 'center' }}>
+                <SettingsIcon />
+                <Text style={{ fontFamily: fonts.PRe, fontSize: 10, color: '#000000', marginTop: 2 }}>Settings</Text>
+            </TouchableOpacity>
+            {/* <TouchableOpacity
                     onPress={() => navigate('DonationAmount')}
                     style={{ position: 'absolute', top: 20, left: 20, alignItems: 'center' }}>
                     <DonationIcon />
                     <Text style={{ fontFamily: fonts.PRe, fontSize: 10, color: '#000000', marginTop: 2 }}>Donate</Text>
                 </TouchableOpacity> */}
-            </View>
+
             {
                 isEditProfile &&
-
                 <TouchableOpacity
                     onPress={() => setEditProfile(false)}
                     style={{ position: 'absolute', top: 20, right: 20, alignItems: 'center' }}>
                     <Text style={{ fontFamily: fonts.PMe, fontSize: 14, color: '#000000', marginTop: 2 }}>Cancel</Text>
                 </TouchableOpacity>
             }
+
             {profileData?.userProfile?.address !== "Not Provided" && <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 20 }}>
                 <HappeningLocationIconSmall width={11} height={14} />
                 <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5, }}>{profileData?.userProfile?.address} AMSTERDAM, NETHERLANDS</Text>
@@ -484,7 +513,9 @@ const Profile = () => {
                     !isEditProfile &&
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                        <ScrollView horizontal={true}>
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            horizontal={true}>
                             {
                                 tabs.map((v, i) => {
                                     return (
@@ -511,7 +542,9 @@ const Profile = () => {
 
                 {
                     selectedTab == "Bookings" &&
-                    <ScrollView contentContainerStyle={{ paddingBottom: 500 }} >
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{ paddingBottom: 500 }} >
                         <BookingsTab />
                     </ScrollView>
                 }

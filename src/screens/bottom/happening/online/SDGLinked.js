@@ -12,6 +12,7 @@ import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import HappeningStep from '../../../../common/HappeningStep'
 import { apiRequest } from '../../../../utils/apiCalls'
+import { urls } from '../../../../utils/Api_urls'
 
 
 var alertRef;
@@ -20,65 +21,65 @@ const SDGLinked = (props) => {
 
 
     const forceUpdate = useForceUpdate();
-    const { state, setLocationHappeningData,setHappeningData } = useContext(Context)
+    const { state, setLocationHappeningData, setHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
+    // state.happeningSubmissionData.SDG
+    const conditionArr =
+        [
+            {
+                img: require('../../../../assets/SDGScreenImages/Image12.png'), title: "No Poverty", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image30.png'), title: "Zero Hunger", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image31.png'), title: "Good Health and Well-Being", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image32.png'), title: "Quality Education", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image33.png'), title: "Gender Equality", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image34.png'), title: "Clean Water and Sanitation", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image35.png'), title: "Affordable and clean energy", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image36.png'), title: "Decent work and Economic growth", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image37.png'), title: "Industry innovation and Infrastructure", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image38.png'), title: "Reduced Inequalities", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image39.png'), title: "Sustainable cities and communities", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image40.png'), title: "Responsible consuption and production", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image41.png'), title: "Climate Action", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image42.png'), title: "Life Below Water", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image43.png'), title: "Life on Land", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image44.png'), title: "Peace, Justice and Strong -Institutions", desc: "small text"
+            },
+            {
+                img: require('../../../../assets/SDGScreenImages/Image45.png'), title: "Partnerships for the Goal", desc: "small text"
+            },
 
-    const conditionArr = state.happeningSubmissionData.SDG
 
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image12.png'), title: "No Poverty", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image30.png'), title: "Zero Hunger", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image31.png'), title: "Good Health and Well-Being", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image32.png'), title: "Quality Education", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image33.png'), title: "Gender Equality", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image34.png'), title: "Clean Water and Sanitation", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image35.png'), title: "Affordable and clean energy", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image36.png'), title: "Decent work and Economic growth", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image37.png'), title: "Industry innovation and Infrastructure", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image38.png'), title: "Reduced Inequalities", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image39.png'), title: "Sustainable cities and communities", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image40.png'), title: "Responsible consuption and production", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image41.png'), title: "Climate Action", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image42.png'), title: "Life Below Water", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image43.png'), title: "Life on Land", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image44.png'), title: "Peace, Justice and Strong -Institutions", desc: "small text"
-    //     },
-    //     {
-    //         img: require('../../../../assets/SDGScreenImages/Image45.png'), title: "Partnerships for the Goal", desc: "small text"
-    //     },
-
-
-    // ];
+        ];
 
     const [selected, setSelected] = useState([]);
 
@@ -117,15 +118,69 @@ const SDGLinked = (props) => {
             whatSDGIsThisHappeningLinkedTo: selected
         }
         setHappeningData(obj);
-        doSubmitHappening();
+        doUploadImages()
+        // doSubmitHappening();
 
         // navigate('TermsAndLaws')
+    }
+
+
+    function doUploadImages() {
+
+
+        try {
+            setLoading(true);
+            console.log('uplading yes-asdas');
+            const images = state.happeningDraft.happeningImages
+            console.log('images===', images);
+            const url = urls.API + "imageUpload"
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    Accept: 'multipart/form-data',
+                    'Content-Type': 'multipart/form-data',
+                },
+                body: images
+            })
+                .then(data => data.json())
+                .then(data => {
+                    console.log('the data of images === ----', data);
+                    // setLoading(false)
+                    if (data.status) {
+                        const obj = {
+                            ...state.happeningDraft,
+                            addPhotosOfYourHappening: data?.data
+                        }
+                        setHappeningData(obj);
+                        doSubmitHappening();
+                    }
+                    else {
+                        console.log('the data of images === ----', data);
+                        alertRef.alertWithType('error', "Error", data.message);
+                    }
+
+                })
+                .catch(err => {
+                    console.log('the  err', err)
+                    setLoading(false)
+                    alertRef.alertWithType('error', "Error", urls.error);
+                })
+        }
+        catch (err) {
+            console.log('err', err)
+        }
+
+
     }
 
     async function doSubmitHappening() {
 
         try {
             setLoading(true);
+
+            console.log('up')
+            console.log('yes uploaded');
+
             // reqObj.happeningTypeOnlineOrOffline.happeningOnline = Object.assign({}, state.happeningDraft)
             // const loginData = await retrieveItem('login_data');
             // const profileData = await retrieveItem('profile_data');
@@ -150,7 +205,7 @@ const SDGLinked = (props) => {
             // reqObj.daysOfWeek = null;
             // console.log(reqObj.daysOfWeek);
 
-            apiRequest(reqObj, 'createHappeningOnline')
+            apiRequest(reqObj, 'happening/createHappeningOnline')
                 .then(data => {
                     setLoading(false)
                     console.log('data-------asd', data)
@@ -196,16 +251,17 @@ const SDGLinked = (props) => {
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity
-                                onPress={() => addToList(item.sdgLogo)}
-                                style={[styles.content, { backgroundColor: selected.includes(item.sdgLogo) ? '#5B4DBC' : 'white' }]}>
+                                // onPress={() => addToList(item.sdgLogo)}
+                                onPress={() => addToList(item.img)}
+                                style={[styles.content, { backgroundColor: selected.includes(item.img) ? '#5B4DBC' : 'white' }]}>
                                 <View style={{ width: "22%" }}>
                                     <Image
                                         style={{ width: 60, height: 60, borderRadius: 10 }}
-                                        source={{ uri: item.sdgLogo }}
+                                        source={item.img}
                                     />
                                 </View>
                                 <View style={{ flexWrap: 'wrap', width: "78%" }}>
-                                    <Text style={[styles.title, { color: selected.includes(item.sdgLogo) ? 'white' : '#2A2A2A', lineHeight: 20 }]}>{item.sdgName}</Text>
+                                    <Text style={[styles.title, { color: selected.includes(item.img) ? 'white' : '#2A2A2A', lineHeight: 20 }]}>{item.title}</Text>
                                     {/* <Text style={[styles.desc, { color: selected.includes(item.sdgName) ? 'white' : '#2A2A2A' }]}>{item.sdgDescription}</Text> */}
                                 </View>
 

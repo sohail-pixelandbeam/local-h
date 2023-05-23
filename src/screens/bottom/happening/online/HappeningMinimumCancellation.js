@@ -72,7 +72,8 @@ const HappeningMinimumCancellation = (props) => {
 
 
         >
-            <View style={{ marginTop: yOffset - 50, marginLeft: xOffset + 80, backgroundColor: '#35208E', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, width: "40%" }}>
+            {/* marginTop: yOffset - 50, marginLeft: xOffset + 80, */}
+            <View style={{  backgroundColor: '#35208E', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, width: "40%" }}>
                 {
                     repeatOptions.map((v, i) => {
                         return (

@@ -68,6 +68,10 @@ import DonationAmount from './src/screens/bottom/Donation.js/DonationAmount';
 import DonationPaymentMethod from './src/screens/bottom/Donation.js/DonationPaymentMethod';
 import DonationComplete from './src/screens/bottom/Donation.js/DonationComplete';
 import EditProfile from './src/screens/bottom/EditProfile';
+import GeneralStatusBar from './src/components/GernalStatusBar';
+import EditHappening from './src/screens/bottom/happening/EditHappening';
+import EditTitle from './src/screens/bottom/happening/editHappeningScreens/EditTitle';
+import EditDescription from './src/screens/bottom/happening/editHappeningScreens/EditDescription';
 
 
 
@@ -283,8 +287,8 @@ function App() {
   function checkLoggedIn() {
 
     retrieveItem("login_data").then((data) => {
-      console.log('data',data)
-      if (data && (data?.isVerified || data?.isVerify == true )) {
+      console.log('data', data)
+      if (data && (data?.isVerified || data?.isVerify == true)) {
         setLoggedIn(1)
       }
       else {
@@ -343,7 +347,7 @@ function App() {
       <NavigationContainer
         ref={navigationRef}
       >
-
+        
         {
           loggedIn == 2 &&
           <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -368,6 +372,10 @@ function App() {
             <Stack.Screen name="DonationPaymentMethod" component={DonationPaymentMethod} />
             <Stack.Screen name="DonationComplete" component={DonationComplete} />
             <Stack.Screen name="EditProfile" component={EditProfile} />
+            {/* Edit Screens */}
+            <Stack.Screen name="EditHappening" component={EditHappening} />
+            <Stack.Screen name="EditTitle" component={EditTitle} />
+            <Stack.Screen name="EditDescription" component={EditDescription} />
           </Stack.Navigator>
         }
 

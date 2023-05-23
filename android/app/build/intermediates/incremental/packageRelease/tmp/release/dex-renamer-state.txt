@@ -1,7 +1,7 @@
-#Tue Mar 14 03:44:20 PKT 2023
-base.1=/Users/applemachub/Mughees/Projects/open/eventapp/android/app/build/intermediates/dex/release/mergeDexRelease/classes2.dex
-path.1=classes2.dex
-base.0=/Users/applemachub/Mughees/Projects/open/eventapp/android/app/build/intermediates/dex/release/mergeDexRelease/classes.dex
-renamed.1=classes2.dex
-renamed.0=classes.dex
+#Mon May 22 09:57:01 PKT 2023
+base.0=/Users/apple/WebWrite/Mughees/LocalHappinez-FrontEnd-ReactNative/android/app/build/intermediates/dex/release/mergeDexRelease/classes.dex
+base.1=/Users/apple/WebWrite/Mughees/LocalHappinez-FrontEnd-ReactNative/android/app/build/intermediates/dex/release/mergeDexRelease/classes2.dex
 path.0=classes.dex
+path.1=classes2.dex
+renamed.0=classes.dex
+renamed.1=classes2.dex

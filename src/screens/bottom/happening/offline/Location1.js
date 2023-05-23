@@ -456,10 +456,7 @@ const Location1 = (props) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <StatusBar
-                backgroundColor={acolors.primary}
-                barStyle={"light-content"}
-            />
+            
             <HappeningHeader
                 heading={"Where’s this happening?"}
                 desc={"Provide the location information "}

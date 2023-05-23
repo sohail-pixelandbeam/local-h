@@ -16,6 +16,7 @@ import { storeItem, validateEmail } from '../../utils/functions';
 import { apiRequest } from '../../utils/apiCalls';
 import { goBack, navigate } from '../../../Navigations';
 import { changeLoggedIn } from '../../../Common';
+import GeneralStatusBar from '../../components/GernalStatusBar';
 
 
 
@@ -81,6 +82,7 @@ const Signin = ({ navigation }) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: "#35208e" }}>
+            <GeneralStatusBar/>
             <Image
                 source={require('../../assets/signinMask.png')}
                 style={{
@@ -90,7 +92,7 @@ const Signin = ({ navigation }) => {
                 }} />
 
             <View style={{
-                marginTop: 20,
+                // marginTop: 20,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',

@@ -80,7 +80,7 @@ const TermsAndLaws = (props) => {
         reqObj.userProfileId = profileData?._id;
         reqObj.happeningOnline = true;
 
-        apiRequest(reqObj, 'createHappeningOnline')
+        apiRequest(reqObj, 'happening/createHappeningOnline')
             .then(data => {
                 setLoading(false)
                 console.log('data-------asd', data)

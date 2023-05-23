@@ -34,6 +34,7 @@ import SuccessfullySubmitted from './SuccessfullySubmitted';
 import TermsAndLaws from './TermsAndLaws';
 import Title1 from './Title1';
 import Title2 from './Title2';
+import GeneralStatusBar from '../../../../components/GernalStatusBar';
 
 
 
@@ -82,21 +83,24 @@ const MainScreenL = () => {
     // }, []);
 
     return (
-        <Stack.Navigator
-            screenOptions={{ headerShown: false }}
+        <>
+            <GeneralStatusBar />
+            <Stack.Navigator
+                screenOptions={{ headerShown: false }}
             // swipeEnabled={false}
             // tabBar={props => <CustomTabBar components {...props}/>}
-        >
-            {
-                components.map((v, i) => (
-                    <Stack.Screen
-                        initialParams={v.params ?? null} options={{ tabBarLabel: v.label, }} name={v.name} component={v.component}
-                        key={i}
-                    />
-                ))
-            }
+            >
+                {
+                    components.map((v, i) => (
+                        <Stack.Screen
+                            initialParams={v.params ?? null} options={{ tabBarLabel: v.label, }} name={v.name} component={v.component}
+                            key={i}
+                        />
+                    ))
+                }
 
-        </Stack.Navigator>
+            </Stack.Navigator>
+        </>
     )
 
     // const Stack = createStackNavigator();

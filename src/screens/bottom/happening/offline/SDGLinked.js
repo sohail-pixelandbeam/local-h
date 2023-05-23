@@ -144,7 +144,7 @@ const SDGLinked = (props) => {
             // reqObj.daysOfWeek = null;
             // console.log(reqObj.daysOfWeek);
 
-            apiRequest(reqObj, 'createHappeningOnLocation')
+            apiRequest(reqObj, 'happening/createHappeningOnLocation')
                 .then(data => {
                     setLoading(false)
                     console.log('data-------asd', data)

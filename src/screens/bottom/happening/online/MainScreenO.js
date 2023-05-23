@@ -42,6 +42,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import HappeningLanguages1 from './HappeningLanguages1';
 import { navigate, navigateFromStack } from '../../../../../Navigations';
 import CustomTabBar from '../../../../common/CustomTabBar';
+import GeneralStatusBar from '../../../../components/GernalStatusBar';
 
 
 const components = [
@@ -79,21 +80,24 @@ const MainScreenO = () => {
     const Stack = createStackNavigator();
 
     return (
-        <Stack.Navigator
-            screenOptions={{ headerShown: false }}
-            swipeEnabled={false}
-        // tabBar={props => <CustomTabBar components {...props} />}
-        >
-            {
-                components.map((v, i) => (
-                    <Stack.Screen
-                        initialParams={v.params ?? null} options={{ tabBarLabel: v.label, }} name={v.name} component={v.component}
-                        key={i}
-                    />
-                ))
-            }
+        <>
+            <GeneralStatusBar />
+            <Stack.Navigator
+                screenOptions={{ headerShown: false }}
+                swipeEnabled={false}
+            // tabBar={props => <CustomTabBar components {...props} />}
+            >
+                {
+                    components.map((v, i) => (
+                        <Stack.Screen
+                            initialParams={v.params ?? null} options={{ tabBarLabel: v.label, }} name={v.name} component={v.component}
+                            key={i}
+                        />
+                    ))
+                }
 
-        </Stack.Navigator>
+            </Stack.Navigator>
+        </>
     )
 }
 

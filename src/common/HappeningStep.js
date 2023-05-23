@@ -5,7 +5,7 @@ import { goBack, navigate } from '../../Navigations'
 import { BackIcon, NextIcon } from '../components/Svgs'
 import { fonts } from '../constants/fonts'
 
-const HappeningStep = ({ onPress, step, nextText, showStep = true, containerStyle }) => {
+const HappeningStep = ({ onPress, step, nextText, showStep = true, containerStyle, next = true }) => {
 
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
@@ -45,12 +45,16 @@ const HappeningStep = ({ onPress, step, nextText, showStep = true, containerStyl
                 <Text style={{ marginLeft: 10, color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>{"Back"} </Text>
             </TouchableOpacity>
             {showStep && <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Step {step}/19</Text>}
-            <TouchableOpacity
-                onPress={() => onPress()}
-                style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>{nextText ?? "Get Started"} </Text>
-                <NextIcon style={{ marginLeft: 10 }} />
-            </TouchableOpacity>
+            {
+                next &&
+
+                <TouchableOpacity
+                    onPress={() => onPress()}
+                    style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>{nextText ?? "Get Started"} </Text>
+                    <NextIcon style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            }
         </View>
     )
 }

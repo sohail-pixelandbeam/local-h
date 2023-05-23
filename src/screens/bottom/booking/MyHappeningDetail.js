@@ -8,6 +8,7 @@ import { fonts } from '../../../constants/fonts'
 const MyHappeningDetails = (props) => {
 
     const showCancellItems = props.route.params?.params ?? null
+
     const [tabs, setTabs] = useState(showCancellItems ?? 'pendings')
     const [removeModal, setRemoveModal] = useState(false);
     const [removedNext, setRemovedNext] = useState(false);

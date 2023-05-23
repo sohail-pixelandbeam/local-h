@@ -4,7 +4,7 @@
             "outputFile": "com.localhappinez.app-mergeReleaseResources-35:/values-v24/values-v24.xml",
             "map": [
                 {
-                    "source": "/Users/applemachub/.gradle/caches/transforms-3/e0686102678e5eabdd57921af541c76e/transformed/appcompat-1.4.1/res/values-v24/values-v24.xml",
+                    "source": "/Users/apple/.gradle/caches/transforms-3/e0686102678e5eabdd57921af541c76e/transformed/appcompat-1.4.1/res/values-v24/values-v24.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",

@@ -2,16 +2,19 @@ import { getStatusBarHeight } from 'react-native-safearea-height';
 import React from 'react';
 import { View, StatusBar, Platform, StyleSheet } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import { acolors } from '../constants/colors';
 
 
 
-const GeneralStatusBar = ({ backgroundColor, ...props }) => (
+const GeneralStatusBar = ({barStyle, backgroundColor = acolors.primary, ...props }) => (
     <View
         style={[
             Platform.OS === 'ios' ? styles.statusBar : styles.statusBar,
             { backgroundColor },
         ]}>
-        <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+        <StatusBar 
+            barStyle={barStyle}
+            translucent backgroundColor={backgroundColor} {...props} />
     </View>
 );
 export default GeneralStatusBar;

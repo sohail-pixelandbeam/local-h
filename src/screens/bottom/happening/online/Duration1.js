@@ -15,7 +15,8 @@ import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import { Calendar } from 'react-native-calendars'
 import CalanderComponent from '../../../../components/calander.component'
-import DateTimePicker from '@react-native-community/datetimepicker';
+// import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from  'react-native-date-picker'
 // import TimePickercomponent from './timePicker.component'
 import PrivacyPicker from '../../../../components/PrivacyPicker'
 import HappeningStep from '../../../../common/HappeningStep'
@@ -717,44 +718,64 @@ const Duration1 = (props) => {
     )
 
     const FromDateTimePicker = () => (
-        <DateTimePicker
-            value={new Date(-1232403882588)}
-            mode='time'
-            display='spinner'
-            minuteInterval={15}
-            themeVariant="dark"
-            style={{ backgroundColor: acolors.primary, color: 'red' }}
-            onChange={(event, date) => {
-                if (date) {
-                    let time = makeTime(date);
-                    setFromTimeModal(false);
-                    setFromTime(time);
 
-                }
-
-            }}
-
-
-        />
+        <>
+            <DateTimePicker
+                modal
+                open={fromTimeModal}
+                date={new Date(-1232403882588)}
+                mode={'time'}
+                theme='dark'
+                onConfirm={(date) => {
+                    if (date) {
+                        let time = makeTime(date);
+                        setFromTimeModal(false);
+                        setFromTime(time);
+    
+                    }
+                }}
+                onCancel={() => {
+                    setFromTimeModal(false)
+                }}
+            />
+        </>
     )
 
     const ToDateTimePicker = () => (
         <DateTimePicker
-            value={new Date(-1232403882588)}
-            mode='time'
-            display='spinner'
-            minuteInterval={15}
-            themeVariant="dark"
-            style={{ backgroundColor: acolors.primary, color: 'red' }}
-            onChange={(event, date) => {
-                if (date) {
-                    let time = makeTime(date);
-                    setToTimeModal(false);
-                    setToTime(time);
-                }
+                modal
+                open={toTimeModal}
+                date={new Date(-1232403882588)}
+                minuteInterval={15}
+                mode={'time'}
+                theme='dark'
+                onConfirm={(date) => {
+                    if (date) {
+                        let time = makeTime(date);
+                        setToTimeModal(false);
+                        setToTime(time);
+                    }
+                }}
+                onCancel={() => {
+                    setToTimeModal(false)
+                }}
+            />
+        // <DateTimePicker
+        //     value={new Date(-1232403882588)}
+        //     mode='time'
+        //     display='spinner'
+        //     minuteInterval={15}
+        //     themeVariant="dark"
+        //     style={{ backgroundColor: acolors.primary, color: 'red' }}
+        //     onChange={(event, date) => {
+        //         if (date) {
+        //             let time = makeTime(date);
+        //             setToTimeModal(false);
+        //             setToTime(time);
+        //         }
 
-            }}
-        />
+        //     }}
+        // />
     )
 
     const CrossBtn = ({ onPress }) => (
