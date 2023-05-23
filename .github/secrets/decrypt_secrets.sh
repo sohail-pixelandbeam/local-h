@@ -13,6 +13,7 @@ security create-keychain -p "lh-1234" $KEYCHAIN_PATH
 security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
 security default-keychain -s $KEYCHAIN_PATH
 security import ./.github/secrets/Certificates.p12 -t agg -k $KEYCHAIN_PATH -P "$IOS_KEYS" -A
+security import ./github/secrets/ios_development.cer agg -k $KEYCHAIN_PATH -P "$IOS_KEYS" -A
 
 security list-keychains -s $KEYCHAIN_PATH
 security default-keychain -s $KEYCHAIN_PATH
