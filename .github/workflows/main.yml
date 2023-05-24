@@ -21,9 +21,9 @@ jobs:
           pod install
       - uses: yukiarrr/ios-build-action@v1.11.0
         with:
-          project-path: Unity-iPhone.xcodeproj
+          project-path: ./ios/eventapp.xcodeproj
           p12-base64: ${{ secrets.P12_BASE64 }}
           mobileprovision-base64: ${{ secrets.MOBILEPROVISION_BASE64 }}
           code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
           team-id: ${{ secrets.TEAM_ID }}
-          workspace-path: Unity-iPhone.xcworkspace # optional
+          workspace-path: ./ios/eventapp.xcworkspace # optional
