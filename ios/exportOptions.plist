@@ -3,19 +3,19 @@
 <plist version="1.0">
   <dict>
     <key>method</key>
-    <string>development</string>
+	  <string>ad-hoc</string>
     <key>teamID</key>
     <string>GG9Y7SZ7Y4</string>
     <key>iCloudContainerEnvironment</key>
     <string>Development</string>
     <key>provisioningProfiles</key>
     <dict>
-      <key>APP_IDENTIFIER</key>
-      <string>com.localhappinez</string>
-      <key>LocalHappinezProvisProfile.mobileprovision</key>
-      <string>distribution</string>
-    </dict>
+      <key>AppBundleID</key>
+      <string>LocalHappinezProvisProfile</string>
+     </dict>
+    <key>signingCertificate</key>
+    <string>ios Distribution</string>
     <key>signingStyle</key>
-    <string>automatic</string>
+    <string>manual</string>
   </dict>
 </plist>
