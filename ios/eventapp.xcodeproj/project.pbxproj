@@ -620,7 +620,7 @@
 				CODE_SIGN_IDENTITY = "Apple Distribution: Stichting Local Happinez Foundation (GG9Y7SZ7Y4)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: Stichting Local Happinez Foundation (GG9Y7SZ7Y4)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = GG9Y7SZ7Y4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = eventapp/Info.plist;
@@ -653,7 +653,7 @@
 				CODE_SIGN_IDENTITY = "Apple Distribution: Stichting Local Happinez Foundation (GG9Y7SZ7Y4)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: Stichting Local Happinez Foundation (GG9Y7SZ7Y4)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = GG9Y7SZ7Y4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = eventapp/Info.plist;
