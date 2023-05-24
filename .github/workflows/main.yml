@@ -12,7 +12,7 @@ jobs:
         with:
           xcode-version: '13.2'
           apple-id: 'bpurnot@icloud.com'
-          apple-id-password: ${{ secrets.APPLE_ID_PASSWORD }}
+          apple-id-password: ${{ secrets.APPLEID_PASSWORD }}
       - name: Checkout repository
         uses: actions/checkout@v1
       - name: Install gpg
