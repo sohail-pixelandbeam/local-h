@@ -22,7 +22,7 @@ jobs:
           xcode-version: '13.2'
           configuration: 'Release'
           scheme: 'eventapp'
-          path-to-export-options: 'exportOptions.plist'
+          path-to-export-options: './ios/exportOptions.plist'
           update-build: true
           install-pods: false
           resolve-package-dependencies: true
