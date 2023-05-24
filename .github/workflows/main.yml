@@ -8,14 +8,14 @@ jobs:
     name: Deploying to Testflight
     runs-on: macOS-latest
     steps:
-      - name: Setup Working Directory
-        run: |
-          cd ../../../ios/
       - uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '13.2'
       - name: Checkout repository
         uses: actions/checkout@v1
+      - name: Setup Working Directory
+        run: |
+          cd ./ios/
       - name: Deploy
         uses: vfrascello/xcode-deploy@v1.5
         with:
