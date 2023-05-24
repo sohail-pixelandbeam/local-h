@@ -10,10 +10,10 @@
     <string>Development</string>
     <key>provisioningProfiles</key>
     <dict>
-      <key>com.localhappinez</key>
-      <string>LocalHappinezDevProfile</string>
+      <key>APP_IDENTIFIER</key>
+      <string>com.localhappinez</string>
     </dict>
     <key>signingStyle</key>
-	  <string>automatic</string>
+    <string>automatic</string>
   </dict>
 </plist>
