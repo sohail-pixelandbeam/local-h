@@ -28,3 +28,4 @@ jobs:
           team-id: ${{ secrets.TEAM_ID }}
           workspace-path: ./ios/eventapp.xcworkspace # optional
           scheme: eventapp
+          certificate-password: ${{ secrets.CERTIFICATE_PASSWORD }}
