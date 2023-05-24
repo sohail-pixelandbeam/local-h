@@ -27,3 +27,4 @@ jobs:
           code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
           team-id: ${{ secrets.TEAM_ID }}
           workspace-path: ./ios/eventapp.xcworkspace # optional
+          scheme: eventapp
