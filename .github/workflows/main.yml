@@ -46,8 +46,9 @@ jobs:
 
       - name: build archive
         run: |
-          xcodebuild -scheme "I am Groot" \
-          -archivePath $RUNNER_TEMP/iamgroot.xcarchive \
+          xcodebuild -scheme "eventapp" \
+          -workspace ./ios/eventapp.xcworkspace \
+          -archivePath $RUNNER_TEMP/eventapp.xcarchive \
           -sdk iphoneos \
           -configuration Debug \
           -destination generic/platform=iOS \
