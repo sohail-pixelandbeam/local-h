@@ -16,7 +16,7 @@ jobs:
       - name: Deploy
         uses: vfrascello/xcode-deploy@v1.5
         with:
-          xcode-version: '14.0'
+          xcode-version: '13.2'
           configuration: 'Release'
           scheme: 'MyScheme'
           path-to-export-options: 'ExportOptions.plist'
