@@ -15,9 +15,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v1
-      - name: Setup Working Directory
-        run: |
-          cd ./ios/
       - name: Deploy
         uses: vfrascello/xcode-deploy@v1.5
         with:
