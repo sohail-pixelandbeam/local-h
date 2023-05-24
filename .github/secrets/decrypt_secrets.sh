@@ -3,26 +3,25 @@ set -eo pipefail
 
 gpg --quiet --batch --yes --decrypt --passphrase="$IOS_KEYS" --output ./.github/secrets/LocalHappinezProvisProfile.mobileprovision ./.github/secrets/LocalHappinezProvisProfile.mobileprovision.gpg
 gpg --quiet --batch --yes --decrypt --passphrase="$IOS_KEYS" --output ./.github/secrets/Certificates.p12 ./.github/secrets/Certificates.p12.gpg
+gpg --quiet --batch --yes --decrypt --passphrase="$IOS_KEYS" --output ./.github/secrets/LocalHappinezDevProfile.mobileprovision ./.github/secrets/LocalHappinezDevProfile.mobileprovision.gpg
 
 mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
 
 cp ./.github/secrets/LocalHappinezProvisProfile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/LocalHappinezProvisProfile.mobileprovision
+cp ./.github/secrets/LocalHappinezDevProfile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/LocalHappinezDevProfile.mobileprovision
 
 KEYCHAIN_PATH=$RUNNER_TEMP/th-keychain
 security create-keychain -p "lh-1234" $KEYCHAIN_PATH
 security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
 security default-keychain -s $KEYCHAIN_PATH
 security import ./.github/secrets/Certificates.p12 -t agg -k $KEYCHAIN_PATH -P "$IOS_KEYS" -A
+security import ./.github/secrets/ios_development.cer agg -k $KEYCHAIN_PATH -P "$IOS_KEYS" -A
 
 security list-keychains -s $KEYCHAIN_PATH
 security default-keychain -s $KEYCHAIN_PATH
 security unlock-keychain -p "lh-1234" $KEYCHAIN_PATH
 
 security set-key-partition-list -S apple-tool:,apple: -s -k "lh-1234" $KEYCHAIN_PATH
-
-# Copy provisioning profile
-mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-cp .github/secrets/LocalHappinezDevProfile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles
 
 # Backup
 #security create-keychain -p "lh-1234" build.keychain
