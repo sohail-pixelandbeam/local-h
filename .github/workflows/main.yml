@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: sinoru/actions-setup-xcode@v2
         with:
-          xcode-version: '13.2'
+          xcode-version: '13.4'
           apple-id: 'bpurnot@icloud.com'
           apple-id-password: ${{ secrets.APPLEID_PASSWORD }}
       - name: Checkout repository
