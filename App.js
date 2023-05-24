@@ -72,6 +72,11 @@ import GeneralStatusBar from './src/components/GernalStatusBar';
 import EditHappening from './src/screens/bottom/happening/EditHappening';
 import EditTitle from './src/screens/bottom/happening/editHappeningScreens/EditTitle';
 import EditDescription from './src/screens/bottom/happening/editHappeningScreens/EditDescription';
+import EditSkills from './src/screens/bottom/happening/editHappeningScreens/EditSkills';
+import EditFellowsGetBack from './src/screens/bottom/happening/editHappeningScreens/EditFellowsGetBack';
+import EditDuration from './src/screens/bottom/happening/editHappeningScreens/EditDuration';
+import EditHappeningGroup from './src/screens/bottom/happening/editHappeningScreens/EditHappeningGroup';
+import EditPhotos from './src/screens/bottom/happening/editHappeningScreens/EditPhotos';
 
 
 
@@ -376,6 +381,11 @@ function App() {
             <Stack.Screen name="EditHappening" component={EditHappening} />
             <Stack.Screen name="EditTitle" component={EditTitle} />
             <Stack.Screen name="EditDescription" component={EditDescription} />
+            <Stack.Screen name="EditSkills" component={EditSkills} />
+            <Stack.Screen name="EditFellowsGetBack" component={EditFellowsGetBack} />
+            <Stack.Screen name="EditDuration" component={EditDuration} />
+            <Stack.Screen name="EditHappeningGroup" component={EditHappeningGroup} />
+            <Stack.Screen name="EditPhotos" component={EditPhotos} />
           </Stack.Navigator>
         }
 

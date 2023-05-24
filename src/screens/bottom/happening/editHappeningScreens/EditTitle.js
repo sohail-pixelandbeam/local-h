@@ -46,7 +46,7 @@ const EditTitle = (props) => {
                 if (data.status) {
                     alertRef.alertWithType('success', 'Updated');
                     setTimeout(() => {
-                        goBack();
+                        props.navigation.popToTop();
                     }, 700);
 
                 }
@@ -109,7 +109,13 @@ const EditTitle = (props) => {
 
             </View>
 
+            <HappeningStep
+                nextText={"Next"}
+                next={false}
 
+                onPress={() => next()}
+                showStep={false}
+            />
             <DropdownAlert ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 

@@ -24,19 +24,22 @@ const EditHappening = (props) => {
     const [loading, setLoading] = useState(false);
     const [makeYouBest, setMakesYouBest] = useState('');
     const [titleWords, setTitleWords] = useState(0);
-    console.log('props.route.params===', props.route.params._id)
+    console.log('props.route.params===', props.route.params)
 
     const settings = [
         { name: "Title", navigateTo: 'EditTitle' },
         { name: "Description", navigateTo: 'EditDescription' },
-        { name: "Photos", navigateTo: 'TranslationSettings' },
+        { name: "Photos", navigateTo: 'EditPhotos' },
         { name: "Facilities", navigateTo: 'LoginSecuritySettings' },
-        { name: "Skills Required", navigateTo: 'PersonalInfo' },
-        { name: "What will Fellows get", navigateTo: 'NotificationSettings' },
-        { name: "Duration ", navigateTo: 'NotificationSettings' },
-        { name: "Max People ", navigateTo: 'NotificationSettings' },
-        { name: "About you ", navigateTo: 'NotificationSettings' },
+        { name: "Skills Required", navigateTo: 'EditSkills' },
+        { name: "What will Fellows get", navigateTo: 'EditFellowsGetBack' },
+        { name: "Duration ", navigateTo: 'EditDuration' },
+        { name: "Max People ", navigateTo: 'EditHappeningGroup' },
+        // { name: "About you ", navigateTo: 'NotificationSettings' },
     ];
+    if (props.route.params?.happeningOnline) {
+        delete settings[3];
+    }
 
 
     const SettingsTab = () => (
@@ -48,7 +51,7 @@ const EditHappening = (props) => {
                             return (
                                 <TouchableOpacity
                                     key={i}
-                                    onPress={() => navigate(v.navigateTo,props.route.params)}
+                                    onPress={() => navigate(v.navigateTo, props.route.params)}
                                     style={{ width: "100%", justifyContent: 'space-between', flexDirection: 'row', paddingBottom: 10, borderBottomWidth: 1, borderColor: '#707070', marginTop: 20 }}>
                                     <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5D5760' }}>{v.name}</Text>
                                     <ArrowForward />

@@ -1,9 +1,10 @@
+// CC STANDS FOR CODE OF CONDUCT
 
 import React, { useContext, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, ScrollView, TextInput, BackHandler } from 'react-native'
 import { navigate } from '../../../../../Navigations'
 import HappeningHeader from '../../../../common/HappeningHeader'
-import { BackIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, RELIABLENONPROFITS, SUPPORTICON, TickIcon, WELFAREICON } from '../../../../components/Svgs'
+import { BackIcon, DrinksIcon, FoodIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, PIcon, RELIABLENONPROFITS, SUPPORTICON, TickIcon, ToiletIcon, WELFAREICON, WifiIcon } from '../../../../components/Svgs'
 import { acolors } from '../../../../constants/colors'
 import { fonts } from '../../../../constants/fonts'
 
@@ -12,26 +13,41 @@ import { storeItem, useForceUpdate } from '../../../../utils/functions'
 import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import HappeningStep from '../../../../common/HappeningStep'
-import TipsButton from '../../../../components/TipsButton'
-import GeneralStatusBar from '../../../../components/GernalStatusBar'
 import { apiRequest } from '../../../../utils/apiCalls'
+import GeneralStatusBar from '../../../../components/GernalStatusBar'
+
 
 
 var alertRef;
 
-const EditDescription = (props) => {
+const EditFellowsGetBack = (props) => {
 
+
+    const forceUpdate = useForceUpdate();
     const { state, setHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
-    const [description, setDescription] = useState(props.route.params.DiscribeOfYourHappening);
-    console.log('props.route.params', props.route.params)
-    const [titleWords, setTitleWords] = useState(0);
+
+    const [whatWillYouProvide, setWhatWillYouProvide] = useState(props.route.params?.whatWillYouProvide);
+    const [whatFellowsGet, setWhatFellowsGet] = useState(props.route.params?.whatFellowsGet);
+
+
 
 
 
     function next() {
+
+        // if (whatWillYouProvide == "") {
+        //     alertRef.alertWithType('error', "Error", "Please enter what will you provide");
+        //     return;
+        // }
+        if (whatFellowsGet == "") {
+            alertRef.alertWithType('error', "Error", "Please enter what fellows get back");
+            return;
+        }
+
         const body = {
-            DiscribeOfYourHappening: description
+            whatWillYouProvide: whatWillYouProvide,
+            whatFellowsGet: whatFellowsGet,
         }
         const route = 'happening/update-happening/' + props.route.params._id;
         setLoading(true)
@@ -53,71 +69,73 @@ const EditDescription = (props) => {
 
     }
 
-
-    function getTitleWordsCount(text) {
-        if (text == "") {
-            setTitleWords(0)
-            return;
-        }
-        let count = text.trim().split(/\s+/).length
-        setTitleWords(count)
-    }
-
-
-    React.useEffect(() => {
-        getTitleWordsCount(props.route.params.DiscribeOfYourHappening)
-    }, [])
-
-
-
-
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <GeneralStatusBar />
             <HappeningHeader
-                heading={"Edit Description"}
-                desc={""}
+                heading={"Edit what\nfellows get"}
+                desc=""
+            // desc={"What will you priovide by the end of the happening"}
             // headerStyle={{ paddingBottom: 30 }}
             />
             <View style={styles.contentContainer}>
-                <ScrollView>
-                    <View>
+                <ScrollView contentContainerStyle={{ paddingBottom: 150 }} >
+                    <View style={{ width: '90%', alignSelf: 'center', marginTop: 20 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
+                            <Text style={{ fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>Necessities for your happening </Text>
+                            <Text style={{ fontFamily: fonts.MRe, color: '#2A2A2A', fontSize: 12 }}>(Optional) </Text>
+                        </View>
                         <TextInput
-                            onChangeText={(v) => {
-                                setDescription(v)
-                                getTitleWordsCount(v)
-                            }}
-                            placeholder='Describe your happening in about min 100-300 words'
-                            value={description}
-                            // maxLength={300}
-                            textAlignVertical='top'
+                            onChangeText={setWhatWillYouProvide}
+                            value={whatWillYouProvide}
+                            placeholder='eg- driving, scuba diving, IT '
+                            placeholderTextColor={"#A5A2A2"}
+                            textAlignVertical="top"
                             multiline={true}
-                            placeholderTextColor={"#2A2A2A"}
                             style={{
-                                width: "100%", height: 160, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1, marginTop: 50,
-                                fontSize: 12, color: "#2A2A2A", fontFamily: fonts.MRe, paddingHorizontal: 15,
+                                width: "100%", height: 120, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
+                                fontSize: 12, color: "#A5A2A2", fontFamily: fonts.MRe, paddingHorizontal: 10,
+                                marginTop: 10
                             }}
                         />
-                        <Text style={{ color: '#2A2A2A', fontSize: 14, fontFamily: fonts.PRe, position: 'absolute', bottom: 5, left: 10, backgroundColor: 'white' }}>{titleWords}/300</Text>
+                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>What will fellows get in return</Text>
+                        <TextInput
+                            onChangeText={setWhatFellowsGet}
+                            value={whatFellowsGet}
+                            placeholder='Eg- Good food enjoying the indian culture, Great Marine life experience. '
+                            placeholderTextColor={"#A5A2A2"}
+                            textAlignVertical="top"
+                            multiline={true}
+                            style={{
+                                width: "100%", height: 125, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
+                                fontSize: 12, color: "#A5A2A2", fontFamily: fonts.MRe, paddingHorizontal: 10,
+                                marginTop: 10
+                            }}
+                        />
+                        <TouchableOpacity
+                            onPress={() => next()}
+                            style={{ width: "50%", height: 47, borderRadius: 20, backgroundColor: '#5B4DBC', alignItems: 'center', justifyContent: 'center', marginTop: 60, alignSelf: 'center' }}>
+                            <Text style={{ color: 'white', fontFamily: fonts.PMe, }}>Update</Text>
+                        </TouchableOpacity>
+
 
                     </View>
+
                 </ScrollView>
 
+
+
             </View>
-            <TouchableOpacity
-                onPress={() => next()}
-                style={{ width: "50%", height: 47, borderRadius: 20, backgroundColor: '#5B4DBC', alignItems: 'center', justifyContent: 'center', marginTop: 60, alignSelf: 'center' }}>
-                <Text style={{ color: 'white', fontFamily: fonts.PMe, }}>Update</Text>
-            </TouchableOpacity>
+
             <HappeningStep
                 nextText={"Next"}
                 next={false}
-
-                onPress={() => next()}
                 showStep={false}
+
             />
             <DropdownAlert ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
+
         </View>
     )
 }
@@ -178,18 +196,10 @@ const styles = StyleSheet.create({
     },
     subData: {
         fontFamily: fonts.MRe, color: '#828282', fontSize: 8
-    },
-    tipsBtn: {
-        width: 91, height: 32, borderRadius: 20, backgroundColor: '#5b4dbc',
-        alignItems: 'center', justifyContent: 'center',
-        marginTop: 20, alignSelf: 'flex-end'
-    },
-    topsBtnTitle: {
-        color: '#ffffff', fontFamily: fonts.PSBo, fontSize: 9,
-    },
+    }
 
 
 })
 
-export default EditDescription
+export default EditFellowsGetBack
 

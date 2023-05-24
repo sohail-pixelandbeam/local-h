@@ -20,6 +20,7 @@ import { RefreshControl } from 'react-native';
 import EditProfile from './EditProfile';
 import { urls } from '../../utils/Api_urls';
 import GeneralStatusBar from '../../components/GernalStatusBar';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 
@@ -217,6 +218,12 @@ const Profile = () => {
         getMyHostings();
         // getLocationByIp();
     }, []);
+
+    useFocusEffect(React.useCallback(
+        () => {
+            getMyHostings();
+        }, [tabs == 'My Hostings'],
+    ))
 
 
     const BookingsTab = () => (
