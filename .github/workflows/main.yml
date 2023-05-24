@@ -13,6 +13,8 @@ jobs:
           xcode-version: '13.2'
       - name: Checkout repository
         uses: actions/checkout@v1
+      - name: YARN install
+        run: yarn install --frozen-lockfile
       - name: Install Pods
         run: |
           cd ./ios/
