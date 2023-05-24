@@ -8,9 +8,11 @@ jobs:
     name: Deploying to Testflight
     runs-on: macOS-latest
     steps:
-      - uses: maxim-lobanov/setup-xcode@v1
+      - uses: sinoru/actions-setup-xcode@v2
         with:
           xcode-version: '13.2'
+          apple-id: 'bpurnot@icloud.com'
+          apple-id-password: ${{ secrets.APPLE_ID_PASSWORD }}
       - name: Checkout repository
         uses: actions/checkout@v1
       - name: Install gpg
