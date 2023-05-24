@@ -9,7 +9,7 @@
     <key>iCloudContainerEnvironment</key>
     <string>Development</string>
     <key>signingCertificate</key>
-    <string>ios Distribution</string>
+    <string>Apple Distribution: Stichting Local Happinez Foundation (GG9Y7SZ7Y4)</string>
     <key>signingStyle</key>
     <string>manual</string>
     <key>provisioningProfiles</key>
