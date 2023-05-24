@@ -18,7 +18,7 @@ jobs:
         with:
           xcode-version: '13.2'
           configuration: 'Release'
-          scheme: 'MyScheme'
+          scheme: 'eventapp'
           path-to-export-options: './ios/exportOptions.plist'
           update-build: true
           install-pods: false
