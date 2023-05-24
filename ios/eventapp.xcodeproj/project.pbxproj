@@ -619,7 +619,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Stichting Local Happinez Foundation (GG9Y7SZ7Y4)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Stichting Local Happinez Foundation (GG9Y7SZ7Y4)";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = GG9Y7SZ7Y4;
 				ENABLE_BITCODE = NO;
@@ -652,7 +652,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Stichting Local Happinez Foundation (GG9Y7SZ7Y4)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Stichting Local Happinez Foundation (GG9Y7SZ7Y4)";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = GG9Y7SZ7Y4;
 				ENABLE_BITCODE = NO;
