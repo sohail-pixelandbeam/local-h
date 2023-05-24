@@ -13,21 +13,19 @@ jobs:
           xcode-version: '13.2'
       - name: Checkout repository
         uses: actions/checkout@v1
-      - name: Install gpg
-        run: brew install gnupg
-      - name: Setup provisioning profile
-        env:
-          IOS_KEYS: ${{ secrets.IOS_KEYS }}
-        run: ./.github/secrets/decrypt_secrets.sh
-      - name: Archiving project
-        env:
-          PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-        run: ./.github/scripts/archive_app.sh
-      - name: Exporting .ipa
-        run: ./.github/scripts/export_ipa.sh
-      - name: Publishing app
-        if: success()
-        env:
-          APPLEID_USERNAME: ${{ secrets.APPLEID_USERNAME }}
-          APPLEID_PASSWORD: ${{ secrets.APPLEID_PASSWORD }}
-        run: ./.github/scripts/publish_testflight.sh
+      - name: Deploy
+        uses: vfrascello/xcode-deploy@v1.5
+        with:
+          xcode-version: '14.0'
+          configuration: 'Release'
+          scheme: 'MyScheme'
+          path-to-export-options: 'ExportOptions.plist'
+          update-build: true
+          install-pods: false
+          resolve-package-dependencies: true
+          distribution-certificate-p12: ${{ secrets.DISTRIBUTION_CERTIFICATE_P12 }}
+          distribution-certificate-password: ${{ secrets.DISTRIBUTION_CERTIFICATE_PASSWORD }}
+          app-store-provisioning-profile: ${{ secrets.APPSTORE_PROVISIONING_PROFILE}}
+          auth-key-id: ${{ secrets.AUTH_KEY_ID }}
+          auth-key-issuer-id: ${{ secrets.AUTH_KEY_ISSUER_ID }}
+          auth-key-p8: ${{ secrets.AUTH_KEY_P8 }}
