@@ -10,8 +10,8 @@
     <string>Development</string>
     <key>provisioningProfiles</key>
     <dict>
-      <key>AppBundleID</key>
-      <string>LocalHappinezProvisProfile</string>
+      <key>APP_ID_WITHOUT_WILDCARD_CHAR</key>
+      <string>LocalHappinezProvisProfile</string>	    
      </dict>
     <key>signingCertificate</key>
     <string>ios Distribution</string>
