@@ -8,9 +8,9 @@ jobs:
     name: Deploying to Testflight
     runs-on: macOS-latest
     steps:
-      - name: Setup Symfony
+      - name: Setup Working Directory
         run: |
-          cd ios
+          cd ./ios
       - uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '13.2'
