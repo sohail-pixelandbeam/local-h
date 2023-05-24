@@ -14,8 +14,8 @@
     <string>manual</string>
     <key>provisioningProfiles</key>
     <dict>  
-      <key>*com.localhappinez*</key>
-      <string>*LocalHappinezProvisProfile*</string>
+      <key>com.localhappinez</key>
+      <string>LocalHappinezProvisProfile</string>
      </dict>
   </dict>
 </plist>
