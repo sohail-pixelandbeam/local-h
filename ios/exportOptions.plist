@@ -8,7 +8,7 @@
             <string>LocalHappinezProvisProfile</string>
         </dict>
         <key>method</key>
-        <string>ad-hoc</string>
+        <string>app-store</string>
         <key>teamID</key>
         <string>GG9Y7SZ7Y4</string>
         <key>uploadBitcode</key>
