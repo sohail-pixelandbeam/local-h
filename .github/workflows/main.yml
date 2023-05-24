@@ -8,9 +8,6 @@ jobs:
     name: Deploying to Testflight
     runs-on: macOS-latest
     steps:
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '13.2'
       - name: Checkout repository
         uses: actions/checkout@v1
       - name: Setup Working Directory
@@ -22,7 +19,7 @@ jobs:
           xcode-version: '13.2'
           configuration: 'Release'
           scheme: 'eventapp'
-          path-to-export-options: './ios/exportOptions.plist'
+          path-to-export-options: 'exportOptions.plist'
           update-build: true
           install-pods: false
           resolve-package-dependencies: true
