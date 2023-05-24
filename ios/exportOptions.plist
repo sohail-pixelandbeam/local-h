@@ -13,9 +13,9 @@
     <key>signingStyle</key>
     <string>manual</string>
     <key>provisioningProfiles</key>
-    <dict>
-      <key>APP_ID_WITHOUT_WILDCARD_CHAR</key>
-      <string>LocalHappinezProvisProfile</string>	    
+    <dict>  
+      <key>*com.localhappinez*</key>
+      <string>*LocalHappinezProvisProfile*</string>
      </dict>
   </dict>
 </plist>
