@@ -2,10 +2,6 @@
 
 set -eo pipefail
 
-# Install the pods
-cd ./ios/
-pod install
-
 xcodebuild -workspace ./ios/eventapp.xcworkspace \
             -scheme eventapp\
             -sdk iphoneos \
