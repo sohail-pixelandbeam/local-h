@@ -25,62 +25,62 @@ const SDGLinked = (props) => {
     const { state, setLocationHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
 
-    const conditionArr =
-        [
-            {
-                img: require('../../../../assets/SDGScreenImages/Image12.png'), title: "No Poverty", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image30.png'), title: "Zero Hunger", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image31.png'), title: "Good Health and Well-Being", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image32.png'), title: "Quality Education", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image33.png'), title: "Gender Equality", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image34.png'), title: "Clean Water and Sanitation", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image35.png'), title: "Affordable and clean energy", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image36.png'), title: "Decent work and Economic growth", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image37.png'), title: "Industry innovation and Infrastructure", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image38.png'), title: "Reduced Inequalities", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image39.png'), title: "Sustainable cities and communities", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image40.png'), title: "Responsible consuption and production", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image41.png'), title: "Climate Action", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image42.png'), title: "Life Below Water", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image43.png'), title: "Life on Land", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image44.png'), title: "Peace, Justice and Strong -Institutions", desc: "small text"
-            },
-            {
-                img: require('../../../../assets/SDGScreenImages/Image45.png'), title: "Partnerships for the Goal", desc: "small text"
-            },
+    const conditionArr = state.happeningSubmissionData.SDG
+    // [
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image12.png'), title: "No Poverty", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image30.png'), title: "Zero Hunger", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image31.png'), title: "Good Health and Well-Being", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image32.png'), title: "Quality Education", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image33.png'), title: "Gender Equality", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image34.png'), title: "Clean Water and Sanitation", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image35.png'), title: "Affordable and clean energy", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image36.png'), title: "Decent work and Economic growth", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image37.png'), title: "Industry innovation and Infrastructure", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image38.png'), title: "Reduced Inequalities", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image39.png'), title: "Sustainable cities and communities", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image40.png'), title: "Responsible consuption and production", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image41.png'), title: "Climate Action", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image42.png'), title: "Life Below Water", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image43.png'), title: "Life on Land", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image44.png'), title: "Peace, Justice and Strong -Institutions", desc: "small text"
+    //     },
+    //     {
+    //         img: require('../../../../assets/SDGScreenImages/Image45.png'), title: "Partnerships for the Goal", desc: "small text"
+    //     },
 
 
-        ];
+    // ];
 
     const [selected, setSelected] = useState([]);
 
@@ -234,17 +234,17 @@ const SDGLinked = (props) => {
                         return (
                             <TouchableOpacity
                                 // onPress={() => addToList(item.sdgLogo)}
-                                onPress={() => addToList(item.img)}
-                                style={[styles.content, { backgroundColor: selected.includes(item.img) ? '#5B4DBC' : 'white' }]}>
+                                onPress={() => addToList(item.sdgLogo)}
+                                style={[styles.content, { backgroundColor: selected.includes(item.sdgLogo) ? '#5B4DBC' : 'white' }]}>
                                 <View style={{ width: "22%" }}>
                                     <Image
                                         style={{ width: 60, height: 60, borderRadius: 10 }}
-                                        source={item.img}
+                                        source={{ uri: item.sdgLogo }}
                                     />
                                 </View>
                                 <View style={{ flexWrap: 'wrap', width: "78%" }}>
-                                    <Text style={[styles.title, { color: selected.includes(item.img) ? 'white' : '#2A2A2A', lineHeight: 20 }]}>{item.title}</Text>
-                                    {/* <Text style={[styles.desc, { color: selected.includes(item.sdgName) ? 'white' : '#2A2A2A' }]}>{item.sdgDescription}</Text> */}
+                                    <Text style={[styles.title, { color: selected.includes(item.sdgLogo) ? 'white' : '#2A2A2A', lineHeight: 20 }]}>{item.sdgName}</Text>
+                                    {/* <Text style={[styles.desc, { color: selected.includes(item.sdgLogo) ? 'white' : '#2A2A2A' }]}>{item.sdgDescription}</Text> */}
                                 </View>
 
                             </TouchableOpacity>

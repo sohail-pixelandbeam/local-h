@@ -77,6 +77,7 @@ import EditFellowsGetBack from './src/screens/bottom/happening/editHappeningScre
 import EditDuration from './src/screens/bottom/happening/editHappeningScreens/EditDuration';
 import EditHappeningGroup from './src/screens/bottom/happening/editHappeningScreens/EditHappeningGroup';
 import EditPhotos from './src/screens/bottom/happening/editHappeningScreens/EditPhotos';
+import EditFacilities from './src/screens/bottom/happening/editHappeningScreens/EditFacilities';
 
 
 
@@ -199,7 +200,7 @@ const TabNavigator = () => (
     />
     {/* {() => Favourites()} */}
 
-    <Tab.Screen
+    {/* <Tab.Screen
       options={() => ({
         tabBarLabel: () => null,
         tabBarIcon: ({ color, focused }) => (
@@ -207,7 +208,7 @@ const TabNavigator = () => (
         ),
       })}
       name="HappeningsMap" component={HappeningsMap}
-    />
+    /> */}
 
 
     {/* <Tab.Screen
@@ -386,6 +387,7 @@ function App() {
             <Stack.Screen name="EditDuration" component={EditDuration} />
             <Stack.Screen name="EditHappeningGroup" component={EditHappeningGroup} />
             <Stack.Screen name="EditPhotos" component={EditPhotos} />
+            <Stack.Screen name="EditFacilities" component={EditFacilities} />
           </Stack.Navigator>
         }
 

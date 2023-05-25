@@ -30,7 +30,7 @@ const EditHappening = (props) => {
         { name: "Title", navigateTo: 'EditTitle' },
         { name: "Description", navigateTo: 'EditDescription' },
         { name: "Photos", navigateTo: 'EditPhotos' },
-        { name: "Facilities", navigateTo: 'LoginSecuritySettings' },
+        { name: "Facilities", navigateTo: 'EditFacilities' },
         { name: "Skills Required", navigateTo: 'EditSkills' },
         { name: "What will Fellows get", navigateTo: 'EditFellowsGetBack' },
         { name: "Duration ", navigateTo: 'EditDuration' },

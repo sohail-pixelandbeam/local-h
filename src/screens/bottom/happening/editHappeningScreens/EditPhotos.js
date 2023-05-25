@@ -85,14 +85,14 @@ const EditPhotos = (props) => {
     }
 
 
-    function next() {
+    async function next() {
 
         if (media.length == 0 || media.length < 6) {
             alertRef.alertWithType('error', "Error", "Please upload minimum 6 images");
             return;
         }
 
-        if (deletedPhotos.length > 0) doDelPhotos() // DELETE THE PHOTOS
+        if (deletedPhotos.length > 0) await doDelPhotos() // DELETE THE PHOTOS
         const filterNewImages = media.filter((v) => typeof v == 'object') // FILTER THOSE IMAGES THAT USER UPLOADS NEW
 
         try {
@@ -117,7 +117,6 @@ const EditPhotos = (props) => {
                     console.log('data----', data);
                     setLoading(false)
                     if (data.status) {
-                        console.log('the data =====', data.data)
                         let prevImages = media.filter((v) => typeof v == 'string')
                         prevImages.push(...data.data);
                         console.log('the    prevImages', prevImages)
@@ -129,10 +128,8 @@ const EditPhotos = (props) => {
                             .then(data => {
                                 setLoading(false);
                                 if (data.status) {
-                                    setTimeout(() => {
-                                        props.navigation.popToTop();
-                                    }, 700);
                                     alertRef.alertWithType('success', 'Updated');
+                                    props.navigation.popToTop();
 
                                 }
                             })

@@ -105,11 +105,10 @@ const Profile = () => {
 
 
             if (!reqObj.profileImage) delete reqObj.profileImage;
-            console.log('reqObj========asdasd', reqObj.profileImage);
             for (let key in reqObj) {
                 data.append(key, reqObj[key]);
             }
-            let url = urls.API + "updateProfile";
+            let url = urls.API + "profile/update-profile";
             fetch(url, {
                 method: 'POST',
                 headers: {
@@ -121,7 +120,7 @@ const Profile = () => {
                 .then(data => data.json())
                 // .then(data => data.text())
                 .then(data => {
-                    console.log('data i get=====', data)
+                    console.log('daga====', data)
                     setLoading(false)
                     if (data.status) {
                         // alertRef.alertWithType('success', 'Success', 'Profile Updated')
@@ -363,6 +362,7 @@ const Profile = () => {
                 renderItem={({ item, index }) => {
                     // item.startingDate
                     // console.log('item==',item)
+                    console.log('item.addPhotosOfYourHappening', item.addPhotosOfYourHappening)
                     return (
                         <TouchableOpacity
                             activeOpacity={1}
@@ -375,7 +375,7 @@ const Profile = () => {
                             <View>
                                 <Image
                                     // source={require('../../static_assets/content.png')}
-                                    source={item.addPhotosOfYourHappening ? { uri: item.addPhotosOfYourHappening[0] } : require('../../static_assets/content.png')}
+                                    source={item.addPhotosOfYourHappening ? { uri: typeof item.addPhotosOfYourHappening[0] == 'string' ? item.addPhotosOfYourHappening[0] : '' } : require('../../static_assets/content.png')}
                                     style={{ width: '100%', height: 230, borderRadius: 10, }}
                                 />
                                 <View style={[styles.shadow, { position: 'absolute', bottom: 10, width: "85%", alignSelf: 'center', borderRadius: 20, backgroundColor: '#675AC1', }
@@ -404,7 +404,7 @@ const Profile = () => {
                             </View>
                             <TouchableOpacity
                                 onPress={() => navigate('EditHappening', item)}
-                                style={{ position: 'absolute', top: -10, right: -10, backgroundColor: 'rgba(255,255,255,1)', elevation: 4, borderRadius: 35 / 2, width: 35, height: 35, alignItems: 'center', justifyContent: 'center', shadowOpacity: 0.5, shadowColor: 'rgba(0,0,0,0.5)' }} >
+                                style={{ position: 'absolute', top: -10, right: 0, backgroundColor: 'rgba(255,255,255,1)', elevation: 4, borderRadius: 35 / 2, width: 35, height: 35, alignItems: 'center', justifyContent: 'center', shadowOpacity: 0.5, shadowColor: 'rgba(0,0,0,0.5)' }} >
                                 <EditPencilIcon />
                             </TouchableOpacity>
                         </TouchableOpacity>
@@ -418,7 +418,7 @@ const Profile = () => {
 
 
     return (
-        <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1, }}>
+        <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
             <GeneralStatusBar backgroundColor='white' barStyle="light-content" />
             {loading && <Loader />}
 
@@ -487,12 +487,15 @@ const Profile = () => {
                 }
             </View>
 
-            <TouchableOpacity
-                onPress={() => navigate('SettingsScreen')}
-                style={{ position: 'absolute', top: 60, right: 20, alignItems: 'center' }}>
-                <SettingsIcon />
-                <Text style={{ fontFamily: fonts.PRe, fontSize: 10, color: '#000000', marginTop: 2 }}>Settings</Text>
-            </TouchableOpacity>
+            {
+                !isEditProfile &&
+                <TouchableOpacity
+                    onPress={() => navigate('SettingsScreen')}
+                    style={{ position: 'absolute', top: 60, right: 20, alignItems: 'center' }}>
+                    <SettingsIcon />
+                    <Text style={{ fontFamily: fonts.PRe, fontSize: 10, color: '#000000', marginTop: 2 }}>Settings</Text>
+                </TouchableOpacity>
+            }
             {/* <TouchableOpacity
                     onPress={() => navigate('DonationAmount')}
                     style={{ position: 'absolute', top: 20, left: 20, alignItems: 'center' }}>
@@ -502,11 +505,13 @@ const Profile = () => {
 
             {
                 isEditProfile &&
-                <TouchableOpacity
-                    onPress={() => setEditProfile(false)}
-                    style={{ position: 'absolute', top: 20, right: 20, alignItems: 'center' }}>
-                    <Text style={{ fontFamily: fonts.PMe, fontSize: 14, color: '#000000', marginTop: 2 }}>Cancel</Text>
-                </TouchableOpacity>
+                <>
+                    <TouchableOpacity
+                        onPress={() => setEditProfile(false)}
+                        style={{ position: 'absolute', top: 60, right: 20, alignItems: 'center' }}>
+                        <Text style={{ fontFamily: fonts.PMe, fontSize: 14, color: '#000000', }}>Cancel</Text>
+                    </TouchableOpacity>
+                </>
             }
 
             {profileData?.userProfile?.address !== "Not Provided" && <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 20 }}>
@@ -608,7 +613,7 @@ const Profile = () => {
 
 
             <DropdownAlert ref={(ref) => alertRef = ref} />
-        </SafeAreaView>
+        </View>
     )
 }
 

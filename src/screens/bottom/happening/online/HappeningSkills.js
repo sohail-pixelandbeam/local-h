@@ -130,7 +130,7 @@ const HappeningSkills = (props) => {
             <View style={styles.contentContainer}>
                 <ScrollView>
                     <View style={{ width: '90%', alignSelf: 'center', marginTop: 20 }}>
-                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>Add a Skill </Text>
+                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>Add skills </Text>
                         <View>
                             <TextInput
                                 placeholder=''
@@ -179,7 +179,7 @@ const HappeningSkills = (props) => {
 
 
 
-                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>Add a skill level </Text>
+                        {/* <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>Add a skill level </Text>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15 }}>
                             <TouchableOpacity
                                 onPress={() => setSelectedSkils('Beginner')}
@@ -196,7 +196,7 @@ const HappeningSkills = (props) => {
                                 style={{ paddingHorizontal: 15, height: 38, borderRadius: 22, alignItems: 'center', justifyContent: 'center', borderWidth: selectedSkils == 'Pro' ? 0 : 3, borderColor: '#B9B1F0', backgroundColor: selectedSkils == 'Pro' ? '#B9B1F0' : 'white' }}>
                                 <Text style={{ color: selectedSkils == 'Pro' ? 'white' : '#222222', fontSize: 12, fontFamily: fonts.MBo }}>Pro </Text>
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
                     </View>
                     {/* <TouchableOpacity
                         onPress={() => {

@@ -137,7 +137,7 @@ const EditSkills = (props) => {
             <View style={styles.contentContainer}>
                 <ScrollView>
                     <View style={{ width: '90%', alignSelf: 'center', marginTop: 20 }}>
-                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>Add a Skill </Text>
+                        <Text style={{ marginTop: 20, fontFamily: fonts.MBo, color: '#2A2A2A', fontSize: 14 }}>Add skills </Text>
                         <View>
                             <TextInput
                                 placeholder=''
