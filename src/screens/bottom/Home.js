@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import {
     StyleSheet, View, Text, TouchableOpacity, Image,
-    TextInput, FlatList, ScrollView, StatusBar, SafeAreaView, Platform, Switch, RefreshControl, Keyboard
+    TextInput, FlatList, ScrollView, StatusBar, SafeAreaView, Platform, Switch, RefreshControl, Keyboard,
+    KeyboardAvoidingView
 } from 'react-native'
 import { BackIcon, CrossIcon, EditPencilIcon, FilterIcon, HeartWhiteIcon, PlusIcon, SearchIcon, TickIcon, TickIconWhite } from '../../components/Svgs'
 import { fonts } from '../../constants/fonts';
@@ -22,6 +23,7 @@ import HappeningFilterModal from '../../common/HappeningFilterModal';
 import GeneralStatusBar from '../../components/GernalStatusBar';
 
 
+
 var alertRef;
 var modalAlertRef;
 var textInputRef;
@@ -29,7 +31,7 @@ const Home = () => {
 
 
     const forceUpdate = useForceUpdate();
-    const { state, setUserGlobal, userProfileData, setHappeningSubmissionDataGlobal } = useContext(Context)
+    const { state, setUserGlobal, userProfileData, setHappeningSubmissionDataGlobal, setWhishListsGlobal } = useContext(Context)
     const [loading, setLoading] = useState(false);
     const [modalLoading, setModalLoading] = useState(false);
     const [popup1, setPopup1] = useState(false);
@@ -84,6 +86,7 @@ const Home = () => {
     const [createWishListModal, setCreateWishListModal] = useState(false);
     const [wishList, setWishList] = useState([]);
     const [createNewWishList, setCreateNewWishList] = useState([])
+    const [isCreateNewWishlist, setIsCreateNewWishlist] = useState(false);
 
     const [happeningTodayData, setHappeningTodayData] = useState([]);
     const [nearbyHappenings, setHappeningNearbyData] = useState([]);
@@ -97,7 +100,10 @@ const Home = () => {
     const [allHappenings, setAllHappenings] = useState([]);
     const [bioCount, setBioCount] = useState(0);
 
-    console.log('state.happeningSubmissionData?.happeningTheme', state.happeningSubmissionData?.happeningTheme)
+    const [newWhishListName, setNewWhishListName] = useState('');
+    const [whishListHappeningId, setWhishListHappeningId] = useState('');
+    const [wishlistId, setWishlistId] = useState('');
+    const [myWhishLists, setMyWhisLists] = useState([]);
 
 
     async function getHappeningSubmissionData(refresh = false) {
@@ -176,7 +182,6 @@ const Home = () => {
         setCcArr(arr);
 
     }
-
 
     async function uploadPic() {
         const res = await uploadSingleFile();
@@ -343,7 +348,7 @@ const Home = () => {
     async function getProfileDetails(refreshing = false) {
         setLoading(true);
         // console.log('getMyHosting/' + state.userData._id)
-        apiRequest('', 'getUserDetails', 'GET')
+        apiRequest('', 'auth/getUserDetails', 'GET')
             .then(data => {
                 setLoading(false);
                 if (data.status) {
@@ -377,6 +382,77 @@ const Home = () => {
         let loc = await getUserLocation();
     }
 
+    const createNewWhishList = (isAddHappeningToWhishList = false) => {
+
+        if (newWhishListName == '') {
+            alertRef.alertWithType('error', 'Error', 'Pleas enter whishlist name');
+            return;
+        }
+        setLoading(true)
+        const body = {
+            wishlistName: newWhishListName
+        };
+        apiRequest(body, 'wishlist/create-new-wishlist')
+            .then(data => {
+                if (isAddHappeningToWhishList && data.status) {
+                    addHappeningToWhishList(data.data);
+                    setLoading(false)
+                    return;
+                }
+                else {
+                    setCreateWishListModal(false);
+                    alertRef.alertWithType('error', 'Error', data.message);
+
+                }
+                setLoading(false);
+            })
+    }
+
+    function addHappeningToWhishList(whisList) {
+
+        setLoading(true);
+        setCreateWishListModal(false)
+        const body = {
+            wishlistId: whisList._id ?? wishlistId,
+            happeningId: whishListHappeningId,
+            wishlistName: whisList?.wishlistName
+        }
+        apiRequest(body, 'wishlist/save-wishlist-item')
+            .then(data => {
+                console.log('data====', data)
+                setLoading(false);
+                if (data.status == true) {
+                    alertRef.alertWithType('success', 'Success', 'Happening added in wishlist');
+                    getWhishLists();
+                    return
+                }
+                else {
+                    alertRef.alertWithType('error', 'Error', data.message);
+                    return
+                }
+
+            })
+    }
+
+
+    function getWhishLists() {
+
+        setCreateWishListModal(false)
+        apiRequest('', 'wishlist/wishlist-list', 'GET')
+            .then(data => {
+                console.log('whishListdata====', data)
+                setLoading(false);
+                if (data.status == true) {
+                    setWhishListsGlobal(data.data ? data.data.reverse() : []);
+                }
+                else {
+                    alertRef.alertWithType('error', 'Error', data.message);
+                    return
+                }
+
+            })
+    }
+
     // getLocation();
     useEffect(() => {
         storeItem('profile_temp_data', '')
@@ -387,6 +463,7 @@ const Home = () => {
         FilterHeader.showCrossBtn = true;
         getProfileDetails();
         getHappeningSubmissionData();
+        getWhishLists();
     }, [])
 
 
@@ -797,7 +874,7 @@ const Home = () => {
                 backgroundColor='white'
             />
 
-            
+
 
 
 
@@ -888,11 +965,15 @@ const Home = () => {
                                             source={{ uri: item.addPhotosOfYourHappening[0] }}
                                             style={styles.listImg}
                                         />
-                                        {/* <TouchableOpacity
-                                            onPress={() => setCreateWishListModal(true)}
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                console.log('item._id', item._id)
+                                                setWhishListHappeningId(item._id)
+                                                setCreateWishListModal(true)
+                                            }}
                                             style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
-                                            <HeartWhiteIcon color="rgba(0,0,0,0.2)" />
-                                        </TouchableOpacity> */}
+                                            <HeartWhiteIcon color="rgba(0,0,0,0.8)" />
+                                        </TouchableOpacity>
                                         {/* <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
                                             {
                                                 [1, 2, 3, 4, 5].map((v, i) => (
@@ -1442,93 +1523,114 @@ const Home = () => {
 
             </Modal>
 
-            <Modal
-                isVisible={createWishListModal}
-                style={{ margin: 0, }}
+            <KeyboardAvoidingView
+                behavior='position'
             >
-                <View style={{ position: 'absolute', bottom: 0, alignSelf: 'flex-end', backgroundColor: 'white', width: "100%", height: createNewWishList ? 350 : 550, borderTopRightRadius: 15, borderTopLeftRadius: 15, padding: 20 }}>
-                    <View style={{ width: "100%", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760' }}>Name this Wishlist</Text>
-                        <TouchableOpacity
-                            onPress={() => setCreateWishListModal(false)}
-                            style={{ width: 28, height: 28, borderRadius: 28 / 2, backgroundColor: '#F08F8F', alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={{ fontFamily: fonts.MBo, color: '#241414', fontSize: 14, marginTop: -2 }}>x</Text>
-                        </TouchableOpacity>
-                    </View>
+                <Modal
+                    isVisible={createWishListModal}
+                    style={{ margin: 0, alignItems: 'flex-end', justifyContent: 'flex-end' }}
+                >
+                    {loading && <Loader />}
+                    <GeneralStatusBar />
+
+                    <View style={{ alignSelf: 'flex-end', backgroundColor: 'white', width: "100%", borderTopRightRadius: 15, borderTopLeftRadius: 15, padding: 20,minHeight:400 }}>
+
+                        <View style={{ width: "100%", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760' }}>Name this Wishlist</Text>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setCreateWishListModal(false)
+                                    setIsCreateNewWishlist(false)
+                                }}
+                                style={{ width: 28, height: 28, borderRadius: 28 / 2, backgroundColor: '#F08F8F', alignItems: 'center', justifyContent: 'center' }}>
+                                <Text style={{ fontFamily: fonts.MBo, color: '#241414', fontSize: 14, marginTop: -2 }}>x</Text>
+                            </TouchableOpacity>
+                        </View>
 
 
-                    {
-                        createNewWishList ?
-                            <>
-                                <TextInput
-                                    // ref={(ref) => textInputRef = ref}
-                                    placeholder='Summer Plans 2022'
-                                    placeholderTextColor={'#7B7B7B'}
-                                    style={{ width: "100%", height: 44, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', paddingHorizontal: 12, fontFamily: fonts.PRe, fontSize: 12, color: '#222222', marginTop: 20 }}
-                                    maxLength={50}
-                                />
-                                <Text style={{ fontFamily: fonts.PRe, fontSize: 12, color: '#7B7B7B', marginTop: 5 }}>50 characters maximum</Text>
-                                <TouchableOpacity
-                                    onPress={() => { setCreateNewWishList(false) }}
-                                    style={{ width: 107, height: 36, backgroundColor: '#5B4DBC', borderRadius: 25, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginTop: 100 }}>
-                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#FFFFFF', }}>Create</Text>
-                                </TouchableOpacity>
-                            </>
-                            :
+                        {
+                            isCreateNewWishlist ?
+                                <View style={{ height: 400 }}>
 
-                            <>
-                                <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', marginTop: 20 }}>
+                                    <TextInput
+                                        onChangeText={setNewWhishListName}
+                                        placeholder='Summer Plans 2022'
+                                        placeholderTextColor={'#7B7B7B'}
+                                        style={{ width: "100%", height: 44, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', paddingHorizontal: 12, fontFamily: fonts.PRe, fontSize: 12, color: '#222222', marginTop: 20 }}
+                                        maxLength={50}
+                                    />
+                                    <Text style={{ fontFamily: fonts.PRe, fontSize: 12, color: '#7B7B7B', marginTop: 5 }}>50 characters maximum</Text>
                                     <TouchableOpacity
-                                        onPress={() => { setCreateNewWishList(true) }}
-                                        style={{ width: 63, height: 52, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', alignItems: 'center', justifyContent: 'center' }}>
-                                        <PlusIcon />
+                                        onPress={() => {
+                                            createNewWhishList(true);
+                                            // setCreateNewWishList(false) 
+                                        }}
+                                        style={{ width: 157, height: 36, backgroundColor: '#5B4DBC', borderRadius: 25, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginTop: 50 }}>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#FFFFFF', }}>Create & add</Text>
                                     </TouchableOpacity>
-                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760', marginLeft: 10, }}>Create New</Text>
+
+
+
+
                                 </View>
-                                <TouchableOpacity
-                                    style={[styles.shadow, { shadowColor: 'rgba(0,0,0,0.8)', padding: 10, borderRadius: 10, marginTop: 20, width: "100%", flexDirection: 'row', alignItems: 'center' }]}
-                                // onPress={() => navigate('AllWishList')}
-                                >
-                                    <View style={{ borderWidth: 1, borderColor: '#2A2A2A', width: "40%", borderRadius: 15, padding: 5, flexDirection: 'row', flexWrap: 'wrap' }}>
-                                        <Image
-                                            style={{ width: "46%", borderRadius: 10, height: 46 }}
-                                            source={require('../../static_assets/wishListImg.png')}
-                                        />
-                                        <Image
-                                            style={{ width: "46%", borderRadius: 10, height: 46, marginLeft: 5 }}
-                                            source={require('../../static_assets/wishListImg.png')}
-                                        />
-                                        <Image
-                                            style={{ width: "46%", borderRadius: 10, height: 46, marginTop: 5 }}
-                                            source={require('../../static_assets/wishListImg.png')}
-                                        />
-                                        <Image
-                                            style={{ width: "46%", borderRadius: 10, height: 46, marginTop: 5, marginLeft: 5 }}
-                                            source={require('../../static_assets/wishListImg.png')}
-                                        />
+                                :
+
+                                <>
+                                    <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', marginTop: 20 }}>
+                                        <TouchableOpacity
+                                            onPress={() => { setIsCreateNewWishlist(true) }}
+                                            style={{ width: 63, height: 52, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', alignItems: 'center', justifyContent: 'center' }}>
+                                            <PlusIcon />
+                                        </TouchableOpacity>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760', marginLeft: 10, }}>Create New</Text>
                                     </View>
-                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10 }}>Summer Plans Wishlist</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity
-                                    style={[styles.shadow, { shadowColor: 'rgba(0,0,0,0.8)', padding: 10, borderRadius: 10, marginTop: 20, width: "100%", flexDirection: 'row', alignItems: 'center' }]}
-                                // onPress={() => navigate('AllWishList')}
-                                >
-                                    <View style={{ borderWidth: 1, borderColor: '#2A2A2A', width: "40%", borderRadius: 15, padding: 1 }}>
-                                        <Image
-                                            style={{ width: "100%", borderRadius: 10, height: 92 }}
-                                            source={require('../../static_assets/wishListImg.png')}
-                                        />
+                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 15, color: '#5D5760', marginTop: 10, }}>or select from existing</Text>
+                                    <View style={{ maxHeight: 400 }}>
+                                        <ScrollView contentContainerStyle={{ paddingBottom: 30 }} >
+                                            {
+                                                state.whishLists?.map((v, i) => {
+                                                    return (
+                                                        <TouchableOpacity
+                                                            onPress={() => addHappeningToWhishList(v)}
+                                                            style={[styles.shadow, { width: "95%", alignSelf: 'center', padding: 10, paddingVertical: 20, borderRadius: 10, marginTop: 20, flexDirection: 'row', alignItems: 'center' }]}
+                                                        // onPress={() => navigate('AllWishList')}
+                                                        >
+                                                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10 }}>{v.wishlistName}</Text>
+                                                        </TouchableOpacity>
+                                                        // <TouchableOpacity style={{ paddingVertical: 10, borderBottomWidth: 1, borderColor: acolors.lighGrey }}>
+                                                        //     <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#2A2A2A', }}>{v.wishlistName}</Text>
+                                                        // </TouchableOpacity>
+                                                    )
+                                                })
+                                            }
+                                        </ScrollView>
                                     </View>
-                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10 }}>Winter Plans Wishlist</Text>
-                                </TouchableOpacity>
-                            </>
-                    }
+                                    {/* <TouchableOpacity
+                                        style={[styles.shadow, { shadowColor: 'rgba(0,0,0,0.8)', padding: 10, borderRadius: 10, marginTop: 20, width: "100%", flexDirection: 'row', alignItems: 'center' }]}
+                                    // onPress={() => navigate('AllWishList')}
+                                    >
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10 }}>Summer Plans Wishlist</Text>
+                                    </TouchableOpacity> */}
+
+                                    {/* <TouchableOpacity
+                                        style={[styles.shadow, { shadowColor: 'rgba(0,0,0,0.8)', padding: 10, borderRadius: 10, marginTop: 20, width: "100%", flexDirection: 'row', alignItems: 'center' }]}
+                                    // onPress={() => navigate('AllWishList')}
+                                    >
+                                        <View style={{ borderWidth: 1, borderColor: '#2A2A2A', width: "40%", borderRadius: 15, padding: 1 }}>
+                                            <Image
+                                                style={{ width: "100%", borderRadius: 10, height: 92 }}
+                                                source={require('../../static_assets/wishListImg.png')}
+                                            />
+                                        </View>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10 }}>Winter Plans Wishlist</Text>
+                                    </TouchableOpacity> */}
+                                </>
+                        }
 
 
-
-                </View>
-            </Modal>
+                    </View>
+                </Modal>
+            </KeyboardAvoidingView>
 
             <HappeningFilterModal
                 isVisible={filterModal}
@@ -1546,7 +1648,7 @@ const Home = () => {
 // Text style for "Hi"
 const styles = StyleSheet.create({
     shadow: {
-        shadowColor: 'rgba(0, 0, 0, 0.09)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5, elevation: 2,
+        shadowColor: acolors.lighGrey, shadowOffset: { width: 1, height: 1 }, shadowRadius: 3, shadowOpacity: 0.5, elevation: 2,
         backgroundColor: 'white'
     },
     hi: { color: '#000000', fontFamily: fonts.PSBo, fontSize: 18 },

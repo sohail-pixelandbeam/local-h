@@ -190,13 +190,13 @@ const TabNavigator = () => (
     />
     {/* {() => ()} */}
 
-    {/* <Tab.Screen
+    <Tab.Screen
       options={() => ({
         tabBarLabel: () => null,
         tabBarIcon: ({ color }) => <HeartBtmIcon color={color} />,
       })}
       name="WhishListStack" component={WhishListStack}
-    /> */}
+    />
     {/* {() => Favourites()} */}
 
     <Tab.Screen

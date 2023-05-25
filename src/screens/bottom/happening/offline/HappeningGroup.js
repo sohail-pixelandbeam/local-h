@@ -72,8 +72,8 @@ const HappeningGroup = (props) => {
         }
 
         setLocationHappeningData(obj);
-        navigate('HappeningAccessibilty')
-        // navigate('FellowsGetBack');
+        // navigate('HappeningAccessibilty')
+        navigate('FellowsGetBack');
     }
 
 

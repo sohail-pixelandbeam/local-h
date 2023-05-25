@@ -3,5 +3,6 @@ export const acolors = {
     white: "#ffffff",
     btnPrimary: "#ffa183",
     btnSecondry: "#ffa183",
-    grey : "#5d5760"
+    grey : "#5d5760",
+    lighGrey: "#DADADA"
 }

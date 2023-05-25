@@ -1,3 +1,4 @@
+import DateTimePicker from  'react-native-date-picker'
 
 import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, ScrollView, TextInput, Platform, BackHandler } from 'react-native'
@@ -15,7 +16,6 @@ import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import { Calendar } from 'react-native-calendars'
 import CalanderComponent from '../../../../components/calander.component'
-import DateTimePicker from '@react-native-community/datetimepicker';
 // import TimePickercomponent from './timePicker.component'
 import PrivacyPicker from '../../../../components/PrivacyPicker'
 import HappeningStep from '../../../../common/HappeningStep'
@@ -717,41 +717,48 @@ const Duration1 = (props) => {
     )
 
     const FromDateTimePicker = () => (
-        <DateTimePicker
-            value={new Date(-1232403882588)}
-            mode='time'
-            minuteInterval={15}
-            themeVariant="dark"
-            onChange={(event, date) => {
-                if (date) {
-                    let time = makeTime(date);
-                    setFromTimeModal(false);
-                    setFromTime(time);
-
-                }
-
-            }}
-
-            style={{ backgroundColor: acolors.primary, color: 'red' }}
-
-        />
+        <>
+            <DateTimePicker
+                modal
+                open={fromTimeModal}
+                date={new Date(-1232403882588)}
+                mode={'time'}
+                theme='dark'
+                onConfirm={(date) => {
+                    if (date) {
+                        let time = makeTime(date);
+                        setFromTimeModal(false);
+                        setFromTime(time);
+                    }
+                }}
+                onCancel={() => {
+                    setFromTimeModal(false)
+                }}
+            />
+        </>
     )
 
     const ToDateTimePicker = () => (
-        <DateTimePicker
-            value={new Date(-1232403882588)}
-            mode='time'
-            minuteInterval={15}
-            themeVariant="dark"
-            onChange={(event, date) => {
-                if (date) {
-                    let time = makeTime(date);
-                    setToTimeModal(false);
-                    setToTime(time);
-                }
-
-            }}
-        />
+        <>
+            <DateTimePicker
+                modal
+                open={toTimeModal}
+                date={new Date(-1232403882588)}
+                minuteInterval={15}
+                mode={'time'}
+                theme='dark'
+                onConfirm={(date) => {
+                    if (date) {
+                        let time = makeTime(date);
+                        setToTimeModal(false);
+                        setToTime(time);
+                    }
+                }}
+                onCancel={() => {
+                    setToTimeModal(false)
+                }}
+            />
+        </>
     )
 
     const CrossBtn = ({ onPress }) => (

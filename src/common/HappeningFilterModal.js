@@ -16,7 +16,6 @@ const HappeningFilterModal = ({ filterType, isVisible, setIsVisible }) => {
     const [filterModal, setFilterModal] = useState(false);
     // const [filterType, setFilterType] = useState('');
     const [filterTheme, setFilterTheme] = useState('Art & cultural projects');
-    console.log('state.happeningSubmissionData?.happeningTheme', state.happeningSubmissionData?.happeningTheme)
     const [filterThemesArr, setFilterThemesArr] = useState(state.happeningSubmissionData?.happeningTheme ?? [])
     // ['Art & cultural projects', 'Business Support', 'Clean Energy & Air', 'Community Work', 'Disaster Relief', 'Education']);
 

@@ -42,6 +42,21 @@ const Images1 = (props) => {
             alertRef.alertWithType('error', "Error", "Please upload minimum 6 images");
             return;
         }
+
+        let formData = new FormData();
+        for (let key in media) {
+            console.log('media', media[key]);
+            formData.append('file[]', media[key]);
+        }
+
+        const obj = {
+            ...state.locationHappeningDraft,
+            happeningImages: formData
+        }
+        setLocationHappeningData(obj);
+        navigate('AboutHost');
+        return;
+
         try {
             setLoading(true);
             let formData = new FormData();

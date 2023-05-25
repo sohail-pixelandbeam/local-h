@@ -43,7 +43,7 @@ const components = [
 
     // { label: "Group Size", name: "GroupSizeHappeningL", component: GroupSizeHappeningL },
     // { label: "Media", name: "Images1", component: Images1, params: { step: "8" } },
-    { label: "Happening Location", name: "Location1", component: Location1, params: { step: "10" } },
+    // { label: "Happening Location", name: "Location1", component: Location1, params: { step: "10" } },
     // { label: "Code of Conduct", name: "CC1", component: CC1, params: { step: "1" } },
     { label: "Code of Conduct", name: "CC2", component: CC2, params: { step: "2" } },
     { label: "Code of Conduct", name: "CC3", component: CC3, params: { step: "3" } },
@@ -56,7 +56,7 @@ const components = [
     { label: "Media", name: "Images1", component: Images1, params: { step: "8" } },
     { label: "Media", name: "Images2", component: Images2, params: { step: "" } },
     { label: "Ideal Host", name: "AboutHost", component: AboutHost, params: { step: "9" } },
-    // { label: "Happening Location", name: "Location1", component: Location1, params: { step: "10" } },
+    { label: "Happening Location", name: "Location1", component: Location1, params: { step: "10" } },
     { label: "Duration", name: "Duration1", component: Duration1, params: { step: "11" } },
     { label: "Languages Spoken", name: "HappeningLanguages", component: HappeningLanguages, params: { step: "12" } },
     // { label: "Happening Languages", name: "HappeningLanguages1", component: HappeningLanguages1, params: { step: "10" } },

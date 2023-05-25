@@ -8,7 +8,7 @@ const AlertMsg = ({
     heading = "Hey", desc = "Desc", headingStyle, descStyle,
     btnTitle = "Next", onPress, containerStyle,
     onBackdropPress, state = false, renderBtn = true,
-    children,
+    children, isCross = true
 }) => {
     return (
         <ReactNativeModal
@@ -20,11 +20,15 @@ const AlertMsg = ({
             animationOut="slideOutDown"
         >
             <View style={[styles.popupContainer, containerStyle]}>
-                <TouchableOpacity
-                    onPress={() => onBackdropPress()}
-                    style={styles.crossBtn}>
-                    <CrossIcon />
-                </TouchableOpacity>
+                {
+                    isCross &&
+
+                    <TouchableOpacity
+                        onPress={() => onBackdropPress()}
+                        style={styles.crossBtn}>
+                        <CrossIcon />
+                    </TouchableOpacity>
+                }
                 <Text style={[styles.popupHeading, headingStyle]}>{heading}</Text>
                 <Text style={[styles.popupDesc, descStyle]}>{desc}</Text>
 

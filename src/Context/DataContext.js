@@ -23,6 +23,8 @@ const dataReducer = (state, action) => {
             return { ...state, locationHappeningDraft: action.payload }
         case 'setHappeningSubmissionDataGlobal':
             return { ...state, happeningSubmissionData: action.payload }
+        case 'setWhishListsGlobal':
+            return { ...state, whishLists: action.payload }
         default: return state
     }
 
@@ -62,6 +64,11 @@ const setHappeningSubmissionDataGlobal = dispatch => {
         dispatch({ type: 'setHappeningSubmissionDataGlobal', payload: data })
     }
 }
+const setWhishListsGlobal = dispatch => {
+    return (data) => {
+        dispatch({ type: 'setWhishListsGlobal', payload: data })
+    }
+}
 
 
 export const { Provider, Context } = createDataContext(
@@ -72,7 +79,8 @@ export const { Provider, Context } = createDataContext(
         setHappeningData,
         userProfileData,
         setLocationHappeningData,
-        setHappeningSubmissionDataGlobal
+        setHappeningSubmissionDataGlobal,
+        setWhishListsGlobal
     },
     {
         userData: [],
@@ -80,6 +88,7 @@ export const { Provider, Context } = createDataContext(
         userLocation: {},
         happeningDraft: {}, // ONLINE HAPPENING
         locationHappeningDraft: {}, // ON LOCATION HAPPENING
-        happeningSubmissionData: {}
+        happeningSubmissionData: {},
+        whishLists: []
     }
 )
