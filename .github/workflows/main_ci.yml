@@ -1,0 +1,15 @@
+name: Continuous Integration - Testing
+  
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  
+  test-coverage:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
