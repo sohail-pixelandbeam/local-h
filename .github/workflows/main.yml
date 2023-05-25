@@ -1,4 +1,4 @@
-name: Deploying
+name: Continuous Deployment IOS - Build and push to TestFlight
 on:
   push:
     branches:
