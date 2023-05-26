@@ -40,7 +40,8 @@ const CC4 = (props) => {
     // }, []);
 
     function search(searchWord) {
-        let url = urls.API + 'filterUserByName/' + searchWord;
+        let url = urls.API + 'search-and-filter/filterUserByName/' + searchWord;
+        console.log('url==',url)
         fetch(url, {
             method: 'GET'
         })

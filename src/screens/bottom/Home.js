@@ -972,7 +972,7 @@ const Home = () => {
                                                 setCreateWishListModal(true)
                                             }}
                                             style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
-                                            <HeartWhiteIcon color="rgba(0,0,0,0.8)" />
+                                            <HeartWhiteIcon color={item.isFavorite ? 'red' : "rgba(0,0,0,0.8)"} />
                                         </TouchableOpacity>
                                         {/* <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
                                             {
@@ -1533,7 +1533,7 @@ const Home = () => {
                     {loading && <Loader />}
                     <GeneralStatusBar />
 
-                    <View style={{ alignSelf: 'flex-end', backgroundColor: 'white', width: "100%", borderTopRightRadius: 15, borderTopLeftRadius: 15, padding: 20,minHeight:400 }}>
+                    <View style={{ alignSelf: 'flex-end', backgroundColor: 'white', width: "100%", borderTopRightRadius: 15, borderTopLeftRadius: 15, padding: 20, minHeight: 400 }}>
 
                         <View style={{ width: "100%", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
                             <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760' }}>Name this Wishlist</Text>

@@ -792,7 +792,7 @@ const EditDuration = (props) => {
             <View style={styles.contentContainer}>
                 <ScrollView
                     contentContainerStyle={{ paddingBottom: 300 }} >
-                    <Text style={[styles.pickerTitle, { marginTop: 20, marginLeft: 6, marginTop: 50, marginLeft: 5 }]}>{"Single happening"}</Text>
+                    <Text style={[styles.pickerTitle, { marginTop: 20, marginLeft: 6, marginTop: 50, marginLeft: 5 }]}>{"Edit duration of your happening"}</Text>
                     <View style={{ flexDirection: 'row', marginTop: 10 }}>
                         <TouchableOpacity
                             onPress={() => setCalenderModal(true)}
@@ -819,8 +819,8 @@ const EditDuration = (props) => {
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <Text style={[styles.pickerTitle, { marginTop: 20, marginLeft: 6 }]}>{"Recurring happening"}</Text>
-                    <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                    {/* <Text style={[styles.pickerTitle, { marginTop: 20, marginLeft: 6 }]}>{"Recurring happening"}</Text> */}
+                    {/* <View style={{ flexDirection: 'row', marginTop: 10 }}>
                         <TouchableOpacity
                             ref={view => setDNRPosition(view)}
                             onPress={() => {
@@ -843,7 +843,10 @@ const EditDuration = (props) => {
                             <Text style={styles.pickerTitle}>{doesNotRepeat ? doesNotRepeat : "Does not repeat"}</Text>
                             <ArrowDown style={{ marginLeft: 5 }} />
                         </TouchableOpacity>
-                        {/* <View style={{ flexDirection: 'row', marginLeft: 20, alignItems: 'center' }}>
+                       
+
+                    </View> */}
+ {/* <View style={{ flexDirection: 'row', marginLeft: 20, alignItems: 'center' }}>
                             <Text style={[styles.pickerTitle, { marginRight: 10 }]}>All day</Text>
                             <Switch
                                 trackColor={{ false: "#767577", true: "rgba(0,0,0,0.5)" }}
@@ -854,9 +857,6 @@ const EditDuration = (props) => {
                                 ios_backgroundColor="#3e3e3e"
                             />
                         </View> */}
-
-                    </View>
-
 
                     {/* <TextInput
                         placeholder='Message before starting happening'

@@ -1,0 +1,470 @@
+[
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-hdpi_node_modules_reactnativecalendars_src_calendar_img_next.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-hdpi/node_modules_reactnativecalendars_src_calendar_img_next.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxhdpi_node_modules_reactnativedropdownalert_assets_success.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxhdpi/node_modules_reactnativedropdownalert_assets_success.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_16fellows.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_16fellows.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_mask1.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_mask1.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xhdpi_node_modules_reactnativecalendars_src_calendar_img_next.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xhdpi/node_modules_reactnativecalendars_src_calendar_img_next.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image43.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image43.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image35.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image35.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable_rn_edit_text_material.xml.flat",
+        "source": "com.localhappinez.app-main-38:/drawable/rn_edit_text_material.xml"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxhdpi_node_modules_fictionplacesautocomplete_images_powered_by_google_on_white.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxhdpi/node_modules_fictionplacesautocomplete_images_powered_by_google_on_white.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image12.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image12.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_forgetpasswordig.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_forgetpasswordig.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_pic6.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_pic6.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image44.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image44.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_success.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_success.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxhdpi_node_modules_reactnativecalendars_src_calendar_img_previous.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxhdpi/node_modules_reactnativecalendars_src_calendar_img_previous.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxhdpi_node_modules_reactnativedropdownalert_assets_info.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxhdpi/node_modules_reactnativedropdownalert_assets_info.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_happeningapproved.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_happeningapproved.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_node_modules_reactnativecalendars_src_img_down.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/node_modules_reactnativecalendars_src_img_down.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_notifimg1.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_notifimg1.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-xhdpi_ic_launcher_adaptive_back.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-xhdpi/ic_launcher_adaptive_back.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_cc1.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_cc1.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxxhdpi_node_modules_reactnativecalendars_src_calendar_img_previous.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxxhdpi/node_modules_reactnativecalendars_src_calendar_img_previous.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxxhdpi_node_modules_reactnativecalendars_src_calendar_img_next.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxxhdpi/node_modules_reactnativecalendars_src_calendar_img_next.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_cc4.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_cc4.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_shakehandheart.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_shakehandheart.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image41.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image41.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_pic1.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_pic1.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xhdpi_node_modules_reactnativecalendars_src_img_up.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xhdpi/node_modules_reactnativecalendars_src_img_up.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image30.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image30.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxhdpi_node_modules_reactnativedropdownalert_assets_warn.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxhdpi/node_modules_reactnativedropdownalert_assets_warn.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image33.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image33.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_pic4.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_pic4.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_node_modules_reactnativedropdownalert_assets_cancel.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/node_modules_reactnativedropdownalert_assets_cancel.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-hdpi_node_modules_reactnativecalendars_src_img_up.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-hdpi/node_modules_reactnativecalendars_src_img_up.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-hdpi_ic_launcher_adaptive_fore.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-hdpi/ic_launcher_adaptive_fore.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-hdpi_node_modules_reactnativecalendars_src_img_down.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-hdpi/node_modules_reactnativecalendars_src_img_down.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xhdpi_node_modules_reactnativecalendars_src_img_down.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xhdpi/node_modules_reactnativecalendars_src_img_down.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_node_modules_reactnativedropdownalert_assets_warn.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/node_modules_reactnativedropdownalert_assets_warn.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxhdpi_node_modules_reactnativecalendars_src_calendar_img_next.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxhdpi/node_modules_reactnativecalendars_src_calendar_img_next.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_p6.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_p6.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xhdpi_node_modules_reactnativedropdownalert_assets_error.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xhdpi/node_modules_reactnativedropdownalert_assets_error.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_node_modules_reactnativedropdownalert_assets_success.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/node_modules_reactnativedropdownalert_assets_success.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_signinmask.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_signinmask.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image36.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image36.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_toomany.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_toomany.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image39.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image39.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_button_back.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_button_back.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_pic7.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_pic7.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xhdpi_node_modules_reactnativedropdownalert_assets_info.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xhdpi/node_modules_reactnativedropdownalert_assets_info.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_keytipsimages.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_keytipsimages.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_applepay.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_applepay.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_p3.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_p3.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-xxhdpi_ic_launcher_adaptive_back.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-xxhdpi/ic_launcher_adaptive_back.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_peoplejoinedimages.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_peoplejoinedimages.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image40.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image40.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_featuredimage.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_featuredimage.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxhdpi_node_modules_reactnativecalendars_src_img_down.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxhdpi/node_modules_reactnativecalendars_src_img_down.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_donation1.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_donation1.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_map.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_map.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_cc3.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_cc3.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image32.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image32.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_node_modules_reactnativepaper_src_assets_backchevron.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/node_modules_reactnativepaper_src_assets_backchevron.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_profilelarge.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_profilelarge.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxhdpi_node_modules_reactnativecalendars_src_img_up.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxhdpi/node_modules_reactnativecalendars_src_img_up.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-xxxhdpi_ic_launcher_adaptive_back.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-xxxhdpi/ic_launcher_adaptive_back.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-xxhdpi_ic_launcher_adaptive_fore.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-xxhdpi/ic_launcher_adaptive_fore.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxxhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-mdpi_ic_launcher_adaptive_fore.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-mdpi/ic_launcher_adaptive_fore.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_pic3.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_pic3.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_content.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_content.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_tick.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_tick.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-mdpi_ic_launcher_adaptive_back.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-mdpi/ic_launcher_adaptive_back.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xhdpi_node_modules_reactnativedropdownalert_assets_warn.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xhdpi/node_modules_reactnativedropdownalert_assets_warn.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_profileimg.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_profileimg.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xhdpi_node_modules_reactnativecalendars_src_calendar_img_previous.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xhdpi/node_modules_reactnativecalendars_src_calendar_img_previous.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image31.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image31.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_cc2.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_cc2.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxhdpi_node_modules_reactnativedropdownalert_assets_cancel.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxhdpi/node_modules_reactnativedropdownalert_assets_cancel.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_image.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_image.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_thingsconsiderheaderimg.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_thingsconsiderheaderimg.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image38.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image38.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxhdpi_node_modules_reactnativedropdownalert_assets_error.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxhdpi/node_modules_reactnativedropdownalert_assets_error.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxxhdpi_node_modules_reactnativecalendars_src_img_up.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxxhdpi/node_modules_reactnativecalendars_src_img_up.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_node_modules_reactnativedropdownalert_assets_info.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/node_modules_reactnativedropdownalert_assets_info.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_happeningrejected.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_happeningrejected.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_pic2.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_pic2.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_page_img.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_page_img.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image34.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image34.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-hdpi_ic_launcher_adaptive_back.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-hdpi/ic_launcher_adaptive_back.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image45.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image45.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_pic5.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_pic5.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_googlepay.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_googlepay.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image37.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image37.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-hdpi_node_modules_reactnativecalendars_src_calendar_img_previous.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-hdpi/node_modules_reactnativecalendars_src_calendar_img_previous.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xhdpi_node_modules_reactnativedropdownalert_assets_cancel.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xhdpi/node_modules_reactnativedropdownalert_assets_cancel.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_node_modules_reactnativedropdownalert_assets_error.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/node_modules_reactnativedropdownalert_assets_error.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-xxxhdpi_ic_launcher_adaptive_fore.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-xxxhdpi/ic_launcher_adaptive_fore.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_node_modules_reactnativecalendars_src_img_up.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/node_modules_reactnativecalendars_src_img_up.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_static_assets_p2.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_static_assets_p2.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xhdpi_node_modules_reactnativedropdownalert_assets_success.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xhdpi/node_modules_reactnativedropdownalert_assets_success.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xhdpi_node_modules_fictionplacesautocomplete_images_powered_by_google_on_white.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xhdpi/node_modules_fictionplacesautocomplete_images_powered_by_google_on_white.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xxxhdpi_node_modules_reactnativecalendars_src_img_down.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xxxhdpi/node_modules_reactnativecalendars_src_img_down.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_sdgscreenimages_image42.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_sdgscreenimages_image42.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_node_modules_fictionplacesautocomplete_images_powered_by_google_on_white.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/node_modules_fictionplacesautocomplete_images_powered_by_google_on_white.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_paypalpay.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_paypalpay.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_src_assets_ny_done.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/src_assets_ny_done.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-mdpi_node_modules_reactnavigation_elements_src_assets_backiconmask.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backiconmask.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-xhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-xhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/drawable-hdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.localhappinez.app-react-32:/drawable-hdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.localhappinez.app-merged_res-37:/mipmap-xhdpi_ic_launcher_adaptive_fore.png.flat",
+        "source": "com.localhappinez.app-main-38:/mipmap-xhdpi/ic_launcher_adaptive_fore.png"
+    }
+]

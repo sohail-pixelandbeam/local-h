@@ -7,6 +7,7 @@ import { navigate } from '../../../Navigations';
 import { RattingStartIcon } from '../../components/Svgs';
 import { fonts } from '../../constants/fonts';
 import { uploadSingleFile, useForceUpdate } from '../../utils/functions';
+import GeneralStatusBar from '../../components/GernalStatusBar';
 
 
 

@@ -109,8 +109,8 @@ const WhishList = () => {
                 // descStyle={{ lineHeight: 22, color: '#5D5760', fontFamily: fonts.PSBo }}
                 btnTitle="Done"
                 state={isDeletedModal}
-                onBackdropPress={() => setBookingStatusAlert(false)}
-                onPress={() => setBookingStatusAlert(false)}
+                onBackdropPress={() => setIsDeleteModal(false)}
+                onPress={() => setIsDeleteModal(false)}
                 containerStyle={{ paddingHorizontal: 25, paddingBottom: 20, paddingTop: 10, width: "85%" }}
                 children={(
                     <View style={{ flexDirection: 'row', width: "100%", marginTop: 20, justifyContent: 'flex-end' }}>

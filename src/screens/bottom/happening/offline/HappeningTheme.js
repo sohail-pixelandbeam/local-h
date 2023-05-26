@@ -58,7 +58,7 @@ const HappeningTheme = (props) => {
             // headerStyle={{ paddingBottom: 30 }}
             />
             <View style={styles.contentContainer}>
-                <ScrollView>
+                <ScrollView contentContainerStyle={{paddingBottom:250}} showsVerticalScrollIndicator={false} >
 
                     <TextInput
                         placeholder='Search for a theme'
