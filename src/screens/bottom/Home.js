@@ -111,7 +111,7 @@ const Home = () => {
         setLoading(true);
         apiRequest('', 'getHappeningSubmissionData', "GET")
             .then(data => {
-                console.log('dataaaa', data)
+                console.log('getHappeningSubmissionData', data)
                 setLoading(false);
                 if (data.status) {
                     setHappeningSubmissionDataGlobal(data.data)
@@ -140,8 +140,11 @@ const Home = () => {
         // const userLocation = await getUserLocation();
         // const reqObj = { latitude: userLocation?.latitude, longitude: userLocation?.longitude, };
         // console.log('reqObj', reqObj)
+        // showAllhappning
+        setLoading(true);
         apiRequest('', 'showAllhappning', "GET")
             .then(data => {
+                console.log('these are happenings', data)
                 setLoading(false);
                 setRefreshing(false)
                 if (data.status) {
@@ -455,15 +458,31 @@ const Home = () => {
 
     // getLocation();
     useEffect(() => {
-        storeItem('profile_temp_data', '')
         getHappeningDataFromServer();
         makeStaticArrays();
         getLoginAndProfileDataFromLocal();
+        getHappeningSubmissionData();
+
         checkProfileCompletionSteps()
         FilterHeader.showCrossBtn = true;
         getProfileDetails();
         getHappeningSubmissionData();
         getWhishLists();
+
+
+        retrieveItem('login_data')
+            .then(data => {
+                setUserGlobal(data)
+            })
+        retrieveItem('profile_data')
+            .then(profileData => {
+                console.log('profileDaasdasdasta', profileData)
+                userProfileData(profileData)
+                setProfileData(profileData);
+            })
+
+
+
     }, [])
 
 
@@ -877,20 +896,23 @@ const Home = () => {
 
 
 
+            {
+                loginData &&
 
-            <View style={{ flexDirection: 'row', width: "90%", alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
-                <View>
-                    <Text style={styles.hi}>Hi<Text style={styles.julesRobinson}> {loginData?.firstName} {loginData?.lastName} </Text></Text>
-                    <Text style={styles.discoverWhat}>Discover what’s happening</Text>
+                <View style={{ flexDirection: 'row', width: "90%", alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <View>
+                        <Text style={styles.hi}>Hi<Text style={styles.julesRobinson}> {loginData?.firstName} {loginData?.lastName} </Text></Text>
+                        <Text style={styles.discoverWhat}>Discover what’s happening</Text>
+                    </View>
+                    {profileData?.profileImage &&
+                        <Image
+                            style={styles.avator}
+                            source={{ uri: profileData?.profileImage }} // require('../../assets/img1.png')
+                        />
+                    }
                 </View>
-                {profileData?.profileImage &&
-                    <Image
-                        style={styles.avator}
-                        source={{ uri: profileData?.profileImage }} // require('../../assets/img1.png')
-                    />
-                }
-            </View>
-            <View style={{ width: "90%", alignSelf: 'center', marginTop: 30, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+            }
+            <View style={{ width: "90%", alignSelf: 'center', marginTop: loginData ? 30 : 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
                 <View style={{ width: "92%" }}>
                     <TextInput
                         style={styles.textbox}
@@ -903,7 +925,7 @@ const Home = () => {
                 </View>
                 {/* <TouchableOpacity
                     onPress={() => {
-                        setFilterType('Theme');
+                        setFilterType('All');
                         setFilterModal(true);
                     }}
                     style={{ marginRight: 10 }}>
@@ -959,7 +981,7 @@ const Home = () => {
                                 return (
                                     <TouchableOpacity
                                         key={index}
-                                        onPress={() => navigateFromStack('BookingStack', 'HappeningDetails', item)}
+                                        onPress={() => loginData ? navigateFromStack('BookingStack', 'HappeningDetails', item) : navigate('HappeningDetails', item)}
                                         style={{ width: "48%", }}>
                                         <Image
                                             source={{ uri: item.addPhotosOfYourHappening[0] }}

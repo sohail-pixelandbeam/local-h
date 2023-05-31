@@ -8,6 +8,7 @@ import { View, Text, TouchableOpacity, TextInput, Modal, FlatList } from "react-
 import { ArrowDown as PickerArrowDown } from "./Svgs";
 import { fonts } from "../constants/fonts";
 import { acolors } from "../constants/colors";
+import GeneralStatusBar from "./GernalStatusBar";
 
 
 interface dataType {
@@ -48,7 +49,7 @@ const PrivacyPicker = (props: Props) => {
 
   const headerPicker = () => {
     return (
-      <View style={{ backgroundColor: acolors.primary, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', height: 60, paddingHorizontal: 15 }}>
+      <View style={{ backgroundColor: acolors.primary, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 15, paddingBottom: 10 }}>
         <TouchableOpacity
           style={{ marginLeft: 3, }}
           onPress={() => {
@@ -76,7 +77,7 @@ const PrivacyPicker = (props: Props) => {
         backgroundColor: "#ccc",
         paddingVertical: 5,
         paddingHorizontal: 10,
-        width: "100%"
+        width: "100%",
       }}>
         <TextInput
           placeholder={"Search"}
@@ -119,6 +120,8 @@ const PrivacyPicker = (props: Props) => {
           setModal(false)
         }}
       >
+        <GeneralStatusBar barStyle={"light-content"} />
+
         <View>
           {headerPicker()}
           {search()}

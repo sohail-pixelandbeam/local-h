@@ -9,24 +9,22 @@ import HappeningStep from '../../../common/HappeningStep'
 import { BackIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, RELIABLENONPROFITS, SUPPORTICON, WELFAREICON } from '../../../components/Svgs'
 import { acolors } from '../../../constants/colors'
 import { fonts } from '../../../constants/fonts'
+import GeneralStatusBar from '../../../components/GernalStatusBar'
 
 
 
 
 const ChildrenTeenagers = (props) => {
 
-    console.log('propsareeads',props.route.params)
+    console.log('propsareeads', props.route.params)
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <StatusBar
-                backgroundColor={acolors.primary}
-                barStyle={"light-content"}
-            />
+            <GeneralStatusBar />
             <HappeningHeader
                 showBackBtn
                 heading={"Children and\nteenagers"}
                 headerStyle={{ paddingBottom: 30 }}
-                titleStyle={{ marginBottom: 20, marginTop: 30 }}
+                titleStyle={{ marginBottom: 20,  }}
             />
             <View style={styles.contentContainer}>
                 <ScrollView contentContainerStyle={{ paddingBottom: 350 }} >
@@ -78,7 +76,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.MBo, fontSize: 9, color: '#2A2A2A', lineHeight: 15,
     },
     text: {
-        color: '#5D5760', fontFamily: fonts.PMe, fontSize: 12
+        color: '#5D5760', fontFamily: fonts.PMe, fontSize: 12,marginTop:20
     },
     headingText: {
         color: '#5D5760', fontFamily: fonts.PBo, fontSize: 12

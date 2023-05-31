@@ -271,6 +271,11 @@ export function getHOLPreviousScreen(currentScreenName) {
 
 
 
+export const capitalizeFirstLetter = (str) => {
+  if (str) return str?.charAt(0)?.toUpperCase() + str.slice(1);
+};
+
+
 // export async function uploadMultipleFiles(fileType = 'photo') {
 //   try {
 //     let results = await DocumentPicker.pickMultiple({

@@ -9,6 +9,7 @@ import HappeningStep from '../../../common/HappeningStep'
 import { BackIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, RELIABLENONPROFITS, SUPPORTICON, WELFAREICON } from '../../../components/Svgs'
 import { acolors } from '../../../constants/colors'
 import { fonts } from '../../../constants/fonts'
+import GeneralStatusBar from '../../../components/GernalStatusBar'
 
 
 
@@ -18,15 +19,12 @@ const Presence = (props) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <StatusBar
-                backgroundColor={acolors.primary}
-                barStyle={"light-content"}
-            />
+            <GeneralStatusBar />
             <HappeningHeader
                 showBackBtn={true}
                 heading={"Presence"}
                 // headerStyle={{ paddingBottom: 90 }}
-                titleStyle={{ marginTop: 20 }}
+                titleStyle={{ }}
             />
             <View style={styles.contentContainer}>
                 <ScrollView contentContainerStyle={{ paddingBottom: 350 }} >

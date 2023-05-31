@@ -8,20 +8,22 @@ import HappeningStep from '../../../common/HappeningStep'
 import { BackIcon, CalenderHappeningIcon, ClockHappeningIcon, CrossIcon, DrinksIcon, FoodIcon, HappeningLocationIconSmall, HeartIcon, HeartWhiteIcon, InfoIcon, MaxFellowsIcon, PIcon, RattingStartIcon, ToiletIcon, WifiIcon } from '../../../components/Svgs'
 import { acolors } from '../../../constants/colors'
 import { fonts } from '../../../constants/fonts'
-import { formatDate } from '../../../utils/functions';
+import { formatDate, months } from '../../../utils/functions';
+import GeneralStatusBar from '../../../components/GernalStatusBar'
 
 
-const SelectDate = () => {
+const SelectDate = ({ route }) => {
 
     const [infoAlert, setInfoAlert] = useState(false)
     const [selectedDate, setSelectedDate] = useState();
     const [addedDates, setAddedDates] = useState();
-    const [addDateModal, setAddDateModal] = useState(false)
-
+    const [addDateModal, setAddDateModal] = useState(false);
+    const [dates, setDates] = useState(route.params.dates ?? []);
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
     return (
-        <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1, }}>
-            <StatusBar
+        <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
+            <GeneralStatusBar
                 barStyle={"dark-content"}
                 // // translucent={false}
                 backgroundColor={"white"}
@@ -44,16 +46,16 @@ const SelectDate = () => {
             <View style={{ width: "90%", alignSelf: 'center' }}>
                 <TouchableOpacity
                     onPress={() => goBack()}
-                    style={{ marginTop: 20 }} >
+                >
                     <BackIcon
                         color={"#5A4CBB"}
                     />
 
                 </TouchableOpacity>
                 <Text style={[{ color: '#5A4CBB', fontSize: 23, fontFamily: fonts.PBo, marginTop: 15 }]}>Select dates</Text>
-                <Text style={[styles.regulareText, { fontSize: 11 }]}>Contact Sanne de Wit for the dates and times not listed, or if you want to book a larger group</Text>
-                <Text style={{ color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 13, textDecorationLine: 'underline', marginTop: 10 }} >Request Avaliability</Text>
-                <TouchableOpacity
+                {/* <Text style={[styles.regulareText, { fontSize: 11 }]}>Contact Sanne de Wit for the dates and times not listed, or if you want to book a larger group</Text> */}
+                {/* <Text style={{ color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 13, textDecorationLine: 'underline', marginTop: 10 }} >Request Avaliability</Text> */}
+                {/* <TouchableOpacity
                     onPress={() => setAddDateModal(true)}
                     style={[styles.categoriesView, { marginTop: 15 }]}>
                     <Text numberOfLines={1} style={styles.categoriesText}>Add dates</Text>
@@ -75,25 +77,41 @@ const SelectDate = () => {
                             <Text style={{ color: '#FFFFFF', fontFamily: fonts.PSBo, fontSize: 9 }}>Choose</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </View> */}
 
                 <Text style={[styles.headingText, { marginTop: 15 }]}>Choose from avaliable dates</Text>
-                <ScrollView contentContainerStyle={{ paddingBottom: 500 }} >
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ paddingBottom: 500 }} >
                     {
-                        [1, 2, 3, 4, 5].map((v, i) => {
+                        dates.map((v, i) => {
+                            let date = new Date(v.startingDate)
+                            const dayOfWeek = daysOfWeek[(date.getDay() + 1) % 7];
                             return (
                                 <View
                                     key={i}
                                     style={{ width: "100%", padding: 20, borderWidth: 1, borderColor: '#40054F', borderRadius: 20, marginTop: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                                     <View style={{ width: "50%" }}>
-                                        <Text style={[styles.headingText, { fontSize: 10 }]}>Tue, 29 Mar</Text>
-                                        <Text style={[styles.headingText, { fontSize: 18 }]}>11:00 - 16:00</Text>
-                                        <TouchableOpacity style={[styles.chooseBtn, { marginTop: 2 }]}>
+                                        <Text style={[styles.headingText, { fontSize: 10 }]}>{dayOfWeek + ", " + date.getDate() + " " + months[date.getMonth()]} </Text>
+                                        <Text style={[styles.headingText, { fontSize: 18 }]}>{v.startTime} - {v.endTime}</Text>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                console.log('route.params.happening.startingDate', route.params.happening.startingDate);
+                                                let obj = route.params.happening;
+                                                obj.startingDate = v.startingDate;
+                                                obj.endDate = v.endDate;
+                                                obj.startTime = v.startTime;
+                                                obj.endTime = v.endTime;
+                                                navigate('BeforeYouJoin', {
+                                                    data: obj
+                                                })
+                                            }}
+                                            style={[styles.chooseBtn, { marginTop: 2 }]}>
                                             <Text style={{ color: '#FFFFFF', fontFamily: fonts.PSBo, fontSize: 9 }}>Choose</Text>
                                         </TouchableOpacity>
                                     </View>
                                     <View>
-                                        <Text style={[[styles.regulareText, { fontSize: 10 }]]}>3 joined, 7 spots remaining</Text>
+                                        <Text style={[[styles.regulareText, { fontSize: 10 }]]}>{v.joinedFellow} joined, {v.spotsAvaliable} spots remaining</Text>
                                     </View>
                                 </View>
                             )
@@ -103,12 +121,12 @@ const SelectDate = () => {
                     }
                 </ScrollView>
             </View>
-            <HappeningStep
+            {/* <HappeningStep
                 onPress={() => navigate('BeforeYouJoin')}
                 showStep={false}
                 containerStyle={{ alignItems: 'flex-end', flexDirection: 'column', justifyContent: 'center' }}
                 nextText={"Next"}
-            />
+            /> */}
 
             <ReactNativeModal
                 isVisible={addDateModal}
@@ -190,7 +208,7 @@ const SelectDate = () => {
                     </TouchableOpacity>
                 </View>
             </ReactNativeModal>
-        </SafeAreaView>
+        </View>
     )
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { View, Text, SafeAreaView, Image, TouchableOpacity, Dimensions, StatusBar, ScrollView, StyleSheet, Platform } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert'
 import { FlatList } from 'react-native-gesture-handler'
@@ -9,8 +9,9 @@ import { BackIcon, CalenderHappeningIcon, ClockHappeningIcon, DrinksIcon, FoodIc
 import { acolors } from '../../../constants/colors'
 import { fonts } from '../../../constants/fonts'
 import { apiRequest } from '../../../utils/apiCalls'
-import { months } from '../../../utils/functions'
+import { months, retrieveItem } from '../../../utils/functions'
 import Loader from '../../../utils/Loader'
+import GeneralStatusBar from '../../../components/GernalStatusBar'
 
 
 var alertRef;
@@ -23,10 +24,17 @@ const HappeningDetails = (props) => {
     const { width: screenWidth } = Dimensions.get("window");
     const ref = React.useRef();
 
+    const scrollViewRef = useRef(null);
+    const textRef = useRef(null);
+
+
+    const [scrollEnabled, setScrollEnabled] = useState(true);
+
     const [loading, setLoading] = useState(false);
     const [happeningDetails, setHappeningDetails] = useState({});
     const [indicator2, setIndicator2] = useState(0);
-
+    const [user, setUser] = useState([]);
+    const [remaningDays, setRemaningDays] = useState([]);
 
 
 
@@ -38,19 +46,52 @@ const HappeningDetails = (props) => {
     ]
 
 
+    const handleScroll = (event) => {
+        const scrollPosition = event.nativeEvent.contentOffset.y;
+
+        if (scrollViewRef.current && textRef.current) {
+            textRef.current.measure((x, y, width, height, pageX, pageY) => {
+                console.log('height', height, '   pageY', pageY)
+                // Calculate the target position
+                const targetPosition = pageY + height + 20;
+
+                if (scrollPosition >= targetPosition) {
+                    setScrollEnabled(false);
+                } else {
+                    setScrollEnabled(true);
+                }
+            });
+        }
+    };
+
+
+    // const handleScroll = (event) => {
+    //     const scrollPosition = event.nativeEvent.contentOffset.y;
+    //     const targetPosition = a// calculate the position of the target element
+
+    //     if (scrollPosition >= targetPosition) {
+    //         setScrollEnabled(false);
+    //     } else {
+    //         setScrollEnabled(true);
+    //     }
+    // };
+
+
+
     function getHappeningDetails() {
 
         setLoading(true);
-        // console.log(item)
+        console.log('item', item)
         apiRequest('', 'getHappningDetails/' + item?._id, "GET")
             .then(data => {
                 setLoading(false);
-                console.log('here is the dataasd', data.data)
+                console.log('here is the dataasdasdasd', data.data.remaningDayHappening)
                 if (data.status) {
+
                     // let startTime = data.data?.startTime;
                     // let endTime = data.data?.endTime;
-                    console.log(data.data.userProfileId)
-                    setHappeningDetails(data.data);
+                    setHappeningDetails(data.data.happningDetails);
+                    setRemaningDays(data.data?.remaningDayHappening ?? []);
                     // console.log(data.data[1].addSkills)
                 }
             })
@@ -59,7 +100,7 @@ const HappeningDetails = (props) => {
             })
     }
 
-    function makeFromToMonthDate() {    
+    function makeFromToMonthDate() {
 
         let startingDate = happeningDetails?.startingDate;
         let endingDate = happeningDetails?.endDate;
@@ -79,8 +120,16 @@ const HappeningDetails = (props) => {
 
     }
 
+    function getUserData() {
+        retrieveItem('login_data')
+            .then(data => {
+                setUser(data)
+            })
+    }
+
 
     useEffect(() => {
+        getUserData();
         getHappeningDetails();
     }, [])
 
@@ -96,15 +145,20 @@ const HappeningDetails = (props) => {
 
 
     return (
-        <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1, }}>
-            <StatusBar
-                barStyle={"dark-content"}
-                // // translucent={false}
-                backgroundColor={"white"}
-            />
+        <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
+            <GeneralStatusBar backgroundColor='transparent' />
             <DropdownAlert ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
-            <ScrollView contentContainerStyle={{ paddingBottom: 200 }}>
+            {/* <TouchableOpacity
+                onPress={() => goBack()}
+                style={{ position: 'absolute', top: 40, width: 34, height: 34, borderRadius: 34 / 2, backgroundColor: 'rgba(0.5,0.5,0.5,0.5)', alignItems: 'center', justifyContent: 'center' }}>
+                <BackIcon />
+            </TouchableOpacity> */}
+            <ScrollView
+                ref={scrollViewRef}
+                // onScroll={handleScroll}
+                // scrollEnabled={scrollEnabled}
+                contentContainerStyle={{ paddingBottom: 100 }}>
                 {/* <Image
                     // source={require('../../../static_assets/image.png')}
                     source={happeningDetails?.addPhotosOfYourHappening ? { uri: happeningDetails?.addPhotosOfYourHappening[0] } : require('../../../static_assets/image.png')}
@@ -128,7 +182,8 @@ const HappeningDetails = (props) => {
                                     justifyContent: "center",
                                     alignItems: "center",
                                 }}
-                            ><Image
+                            >
+                                <Image
                                     // source={require('../../../static_assets/image.png')}
                                     source={{ uri: item }}
                                     style={{ height: 300, resizeMode: 'cover', top: 0, width: "100%" }}
@@ -149,7 +204,10 @@ const HappeningDetails = (props) => {
                     {/* <ScrollView contentContainerStyle={{ paddingBottom: 800 }}> */}
                     <View style={{ width: '85%', alignSelf: 'center' }}>
                         <View style={{ flexDirection: 'row', width: "100%", marginTop: 15 }}>
-                            <Text style={[styles.title, { width: "80%" }]}>{happeningDetails?.happeningTitle}</Text>
+                            <Text
+                                ref={textRef}
+                                // onLayout={handleScroll}
+                                style={[styles.title, { width: "80%" }]}>{happeningDetails?.happeningTitle}</Text>
                             {/* <Image
                                 source={require('../../../static_assets/fish.png')}
                             /> */}
@@ -391,29 +449,47 @@ const HappeningDetails = (props) => {
                                 <Text style={[styles.regulareText, { marginTop: 10 }]}>{happeningDetails?.discribeTheLocaltion}</Text>
                             </>
                         }
-                        {/* <View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
-                                <Text style={[styles.headingText]}>This Happening is Recursive</Text>
-                                <TouchableOpacity>
-                                    <InfoIcon style={{ marginLeft: 10 }} />
-                                </TouchableOpacity>
-                            </View>
+                        {
+                            remaningDays?.length > 1 ?
+                                <View>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
+                                        <Text style={[styles.headingText]}>This Happening is Recursive</Text>
+                                        <TouchableOpacity>
+                                            <InfoIcon style={{ marginLeft: 10 }} />
+                                        </TouchableOpacity>
+                                    </View>
 
-                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, justifyContent: 'space-between', height: 46, borderRadius: 15, backgroundColor: 'rgba(91,77,188,0.5)', width: "89%", marginTop: 10 }}>
-                                <Text style={{ color: '#FFFFFF', fontFamily: fonts.PSBo, fontSize: 9 }}>Join  Every Thurdsay</Text>
-                                <TouchableOpacity
-                                    onPress={() => navigate('SelectDate')}
-                                    style={styles.chooseBtn}>
-                                    <Text style={{ color: '#FFFFFF', fontFamily: fonts.PSBo, fontSize: 9 }}>Choose</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View> */}
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, justifyContent: 'space-between', height: 46, borderRadius: 15, backgroundColor: 'rgba(91,77,188,0.5)', width: "89%", marginTop: 10 }}>
+                                        {/* <Text style={{ color: '#FFFFFF', fontFamily: fonts.PSBo, fontSize: 9 }}>Join  Every Thurdsay</Text> */}
+                                        <TouchableOpacity
+                                            onPress={() => navigate('SelectDate', {
+                                                dates: remaningDays,
+                                                happening: happeningDetails
+                                            })}
+                                            style={styles.chooseBtn}>
+                                            <Text style={{ color: '#FFFFFF', fontFamily: fonts.PSBo, fontSize: 9 }}>Choose</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View> : null}
                         <TouchableOpacity
                             // disabled
-                            onPress={() => navigate('BeforeYouJoin', {
-                                data: happeningDetails
-                            })} //SelectDate
-                            style={{ width: "100%", alignSelf: 'center', opacity: 0.5, alignItems: 'center', justifyContent: 'center', height: 43.48, borderRadius: 18, backgroundColor: '#5B4DBC', marginTop: 20 }}>
+                            onPress={() => {
+                                if (!user) {
+                                    navigate('AuthStack')
+                                    return;
+                                }
+                                if (remaningDays?.length > 1) {
+                                    navigate('SelectDate', {
+                                        dates: remaningDays,
+                                        happening: happeningDetails
+                                    })
+                                    return;
+                                }
+                                navigate('BeforeYouJoin', {
+                                    data: happeningDetails
+                                })
+                            }} //SelectDate
+                            style={{ width: "100%", alignSelf: 'center', alignItems: 'center', justifyContent: 'center', height: 43.48, borderRadius: 18, backgroundColor: '#5B4DBC', marginTop: 20 }}>
                             <Text style={{ color: '#FFFFFF', fontFamily: fonts.PSBo, fontSize: 14 }}>Join Happening</Text>
                         </TouchableOpacity>
                         {/* <Text style={[styles.headingText, { marginTop: 15 }]}>Choose from avaliable dates</Text>
@@ -537,11 +613,7 @@ const HappeningDetails = (props) => {
             </ScrollView>
             <View style={{ position: 'absolute', top: Platform.OS == 'ios' ? 30 : 10, }}>
                 <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between', width: Dimensions.get('window').width, }}>
-                    <TouchableOpacity
-                        onPress={() => goBack()}
-                        style={{ width: 34, height: 34, borderRadius: 34 / 2, backgroundColor: 'rgba(0.5,0.5,0.5,0.5)', alignItems: 'center', justifyContent: 'center' }}>
-                        <BackIcon />
-                    </TouchableOpacity>
+
                     {/* <TouchableOpacity
                         onPress={() => {
                             // doFav()
@@ -558,7 +630,7 @@ const HappeningDetails = (props) => {
                     </TouchableOpacity> */}
                 </View>
             </View>
-        </SafeAreaView >
+        </View >
     )
 }
 

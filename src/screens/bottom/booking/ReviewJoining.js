@@ -13,8 +13,9 @@ import { acolors } from '../../../constants/colors'
 import { fonts } from '../../../constants/fonts'
 import { Context } from '../../../Context/DataContext'
 import { apiRequest } from '../../../utils/apiCalls'
-import { formatDate } from '../../../utils/functions';
+import { formatDate, months } from '../../../utils/functions';
 import Loader from '../../../utils/Loader'
+import GeneralStatusBar from '../../../components/GernalStatusBar'
 
 
 var alertRef;
@@ -25,11 +26,21 @@ const ReviewJoining = (props) => {
 
     const [agree, setAgree] = useState(false);
     const params = props.route.params?.data;
-    const user = params?.userProfileId?.userId;
+    const user = params?.userProfileId;
     const [loading, setLoading] = useState(false);
 
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const date = new Date(params.startingDate)
+    const dayOfWeek = daysOfWeek[(date.getDay() + 1) % 7];
+    const dateString = dayOfWeek + ", " + date.getDate() + " " + months[date.getMonth()]
+    console.log('dateString', dateString)
 
     function doSendRequest() {
+
+        if (!agree) {
+            alertRef.alertWithType('error', 'Error', 'Please agree to terms and conditions');
+            return;
+        }
 
         const reqObj = {
             // "userId": state.userData?._id,
@@ -64,14 +75,10 @@ const ReviewJoining = (props) => {
     }
 
     return (
-        <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1, }}>
+        <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
             {loading && <Loader />}
-            <StatusBar
-                barStyle={"dark-content"}
-                // // translucent={false}
-                backgroundColor={"white"}
-            />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
+
 
             <AlertMsg
                 heading='Recursive Happening'
@@ -89,27 +96,27 @@ const ReviewJoining = (props) => {
 
                 <TouchableOpacity
                     onPress={() => goBack()}
-                    style={{ marginTop: 20 }} >
+                    style={{ marginTop: 0 }} >
                     <BackIcon
                         color={"#5A4CBB"}
                     />
                 </TouchableOpacity>
 
-                <Text style={[{ color: '#5A4CBB', fontSize: 23, fontFamily: fonts.PBo, marginTop: 15 }]}>Review Your Joining</Text>
-                <ScrollView contentContainerStyle={{ paddingBottom: 100 }} >
+                <Text style={[{ color: '#5A4CBB', fontSize: 23, fontFamily: fonts.PBo, marginTop: 15, marginBottom: 10 }]}>Review your joining</Text>
+                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 260 }} >
                     <View style={{ width: "100%", flexDirection: 'row' }}>
                         <Image
-                            source={require('../../../static_assets/FeaturedImage.png')}
+                            source={{ uri: params.addPhotosOfYourHappening[0] }}
                             style={{ width: "40%", height: 103, borderRadius: 21, }}
                         />
                         <View style={{ marginLeft: 10, width: "58%" }}>
                             <Text style={[styles.bookingTitle, { width: "90%" }]}>{params?.happeningTitle}</Text>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
                                 <Image
                                     style={{ width: 33, height: 33, borderRadius: 33 / 2, marginRight: 10 }}
-                                    source={require('../../../static_assets/profileImg.png')}
+                                    source={user?.profileImage ? { uri: user?.profileImage } : require('../../../static_assets/profileImg.png')}
                                 />
-                                <Text style={styles.hostedBy}>Hosted by{"\n"}{user?.userName}</Text>
+                                <Text style={styles.hostedBy}>Hosted by{"\n"}{user?.userId?.firstName + " " + user?.userId?.lastName}</Text>
                             </View>
                         </View>
                     </View>
@@ -117,9 +124,11 @@ const ReviewJoining = (props) => {
                     <View
                         style={{ width: "100%", padding: 20, borderWidth: 1, borderColor: '#40054F', borderRadius: 20, marginTop: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                         <View style={{ width: "50%" }}>
-                            {/* <Text style={[styles.headingText, { fontSize: 10 }]}>Every Thursday from 29th Mar</Text> */}
-                            <Text style={[styles.headingText, { fontSize: 18 }]}>{params?.startTime} - {params?.endTime}</Text>
-                            <Text style={[[styles.regulareText, { fontSize: 10 }]]}>Joining 2 others, 3 more spots avalible</Text>
+                            <Text style={[styles.headingText, { fontSize: 18 }]}>{dateString}</Text>
+                            <Text style={[styles.headingText, { fontSize: 12 }]}>{params?.startTime} - {params?.endTime}</Text>
+
+
+                            <Text style={[[styles.regulareText, { fontSize: 10 }]]}>Joining {params?.joinedFellow} others, {params?.spotsAvaliable} more spots avalible</Text>
                         </View>
                         <View>
                             {/* <Text style={[{ color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 12 }]}>1 Adult, 1 youngster{"\n"}2 Children</Text> */}
@@ -133,7 +142,7 @@ const ReviewJoining = (props) => {
                         <>
                             <Text style={[styles.headingText, { fontSize: 18, marginTop: 15 }]}>Meet host at</Text>
                             <View
-                                // pointerEvents='none'
+                                pointerEvents='none'
                                 style={{ flex: 1, alignSelf: 'center', width: '100%', height: 200, borderRadius: 30, overflow: 'hidden', marginTop: 15 }}>
                                 <MapView
                                     ref={ref => map = ref}
@@ -174,7 +183,12 @@ const ReviewJoining = (props) => {
                                 </MapView>
                             </View>
                             <View onPress={() => console.log(params)}
-                                style={{ width: "100%", alignSelf: 'center', backgroundColor: 'white', elevation: 2, borderRadius: 18, paddingHorizontal: 10, paddingVertical: 10, marginTop: -25 }}>
+                                style={{
+                                    width: "100%", alignSelf: 'center',
+                                    backgroundColor: 'white', elevation: 2, borderRadius: 18, 
+                                    paddingHorizontal: 10, paddingVertical: 10, marginTop: -25,
+                                    marginHorizontal:10
+                                }}>
                                 <Text style={{ fontFamily: fonts.PSBo, fontSize: 15, color: '#1A1A20', marginTop: 5 }}>{params?.conformHappeningLocation}</Text>
                                 <Text style={{ fontFamily: fonts.PRe, fontSize: 8, color: '#9E9DA6', marginTop: 2 }}>{params?.city}, {params?.country}</Text>
                             </View>
@@ -185,7 +199,7 @@ const ReviewJoining = (props) => {
                         style={{ width: "100%", marginTop: 5, resizeMode: 'stretch' }}
                         source={require('../../../static_assets/location1.png')}
                     /> */}
-                    <View style={[styles.shadow, { paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, marginTop: 10 }]}>
+                    <View style={[styles.shadow, { marginHorizontal: 5, paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, marginTop: 10 }]}>
                         <Text style={[styles.regulareText, { fontSize: 10, textAlign: 'center' }]}>* This joining can only be cancelled {params?.numberCancellationPeriod} {params?.string} before the start time of happenning.</Text>
                     </View>
 
@@ -197,27 +211,32 @@ const ReviewJoining = (props) => {
                         </TouchableOpacity>
                         <Text style={styles.label}>I agree with the <Text style={{ fontFamily: fonts.PSBo, color: '#5B4DBC' }} onPress={() => navigate('Termandcondition')} >terms and conditions</Text></Text>
                     </View>
-
-                    <View style={[{ marginTop: 30, paddingTop: 10, backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-between', width: "100%", paddingHorizontal: 20, alignItems: 'center', paddingBottom: 10, }]}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                // storeItem('login_data', '');
-                                // storeItem('profile_data', '');
-                                // changeLoggedIn.changeNow(2);
-                            }}
-                        >
-                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 10, color: '#5B4DBC', textDecorationLine: 'underline' }}>Cancel</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => doSendRequest()}
-                            style={styles.submitHappeningBtn}>
-                            <Text style={styles.submitHappeningText}>Send Join Request</Text>
-                        </TouchableOpacity>
-                    </View>
-
                 </ScrollView>
+
             </View>
-        </SafeAreaView >
+            <View style={[{
+                marginTop: 30, paddingTop: 10, backgroundColor: 'white', flexDirection: 'row',
+                justifyContent: 'space-between', width: "90%", paddingHorizontal: 20, alignItems: 'center', paddingBottom: 10, alignSelf: 'center',
+                position: 'absolute', bottom: 40
+            }]}>
+                <TouchableOpacity
+                    onPress={() => {
+                        // storeItem('login_data', '');
+                        // storeItem('profile_data', '');
+                        // changeLoggedIn.changeNow(2);
+                    }}
+                >
+                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 10, color: '#5B4DBC', textDecorationLine: 'underline' }}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => doSendRequest()}
+                    style={styles.submitHappeningBtn}>
+                    <Text style={styles.submitHappeningText}>Send Join Request</Text>
+                </TouchableOpacity>
+            </View>
+
+            <DropdownAlert ref={(ref) => alertRef = ref} />
+        </View >
     )
 }
 
@@ -300,14 +319,14 @@ const styles = StyleSheet.create({
     },
 
     bookingTitle: {
-        color: '#4F4E50', fontFamily: fonts.PBo, fontSize: 19, marginTop: 10,
+        color: '#4F4E50', fontFamily: fonts.PBo, fontSize: 17, marginTop: 0,
     },
     hostedBy: {
         color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 11,
     },
 
     shadow: {
-        shadowColor: 'rgba(0, 0, 0, 0.8)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5, elevation: 2,
+        shadowColor: 'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.2, elevation: 2,
         backgroundColor: 'white'
     },
 

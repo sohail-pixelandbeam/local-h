@@ -26,11 +26,12 @@ import { useFocusEffect } from '@react-navigation/native';
 
 var alertRef;
 
-const Profile = () => {
+const Profile = (props) => {
 
     const { state, setHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
     const [selectedTab, setSelectedTab] = useState('Profile');
+
 
     const [bookingStatusAlert, setBookingStatusAlert] = useState(false)
     const [bookingStatusAlertMsg, setBookingStatusAlertMsg] = useState('');
@@ -44,6 +45,9 @@ const Profile = () => {
 
     const [isEditProfile, setEditProfile] = useState(false);
     const [profilePic, setProfilePic] = useState(''); // WHEN EDITING THE PROFILE
+
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 
 
     // "Timeline",
@@ -212,7 +216,7 @@ const Profile = () => {
     }
 
     useEffect(() => {
-        console.log('setProfileData', profileData)
+
         getProfileDetails();
         getMyHostings();
         // getLocationByIp();
@@ -220,6 +224,11 @@ const Profile = () => {
 
     useFocusEffect(React.useCallback(
         () => {
+            if (props.route.params?.focused) {
+                setSelectedTab(props.route.params?.focused);
+                getMyBookings();
+
+            }
             getMyHostings();
         }, [tabs == 'My Hostings'],
     ))
@@ -239,15 +248,21 @@ const Profile = () => {
                 // [{ status: 'Confirmed' }, { status: 'Pending' }, { status: 'Cancelled' },
                 // { status: 'awaiting 4 fellows' }, { status: 'Rejected' }, { status: 'Cancellation request pending' }]
                 myBookings?.map((v, i) => {
-                    let fellowLength = v?.fellow?.length
+                    let fellowLength = v?.fellow?.length;
+                    let happening = v.booking?.happeningId;
+                    console.log('startingDate', v.booking?.happeningId?.startingDate)
+                    const date = new Date(happening?.startingDate)
+                    const dayOfWeek = daysOfWeek[(date.getDay() + 1) % 7];
+                    const dateString = dayOfWeek + ", " + date.getDate() + " " + months[date.getMonth()]
+
                     return (
                         <View
                             key={i}
                             style={styles.bookingCard}>
                             <View style={{ flexDirection: 'row', width: "100%", }}>
                                 <View style={{ width: "50%" }}>
-                                    <Text style={styles.bookingDate}>Tue, 29 Mar - {v?.happeningOnLocation ? "On Location" : "Online"}</Text>
-                                    <Text style={styles.bookingTime}>{v.startTime} - {v.endTime}</Text>
+                                    <Text style={styles.bookingDate}>{dateString} - {happening?.happeningOnLocation ? "On Location" : "Online"}</Text>
+                                    <Text style={styles.bookingTime}>{happening?.startTime} - {happening.endTime}</Text>
                                     {/* <Image
                                         // style={{width:40,height:40,borderRadius:20}}
                                         source={require('../../static_assets/peopleJoinedImages.png')}
@@ -321,16 +336,16 @@ const Profile = () => {
                                 </View>
                                 <View style={{ width: "49%", marginLeft: 10 }}>
                                     <Image
-                                        source={require('../../static_assets/FeaturedImage.png')}
+                                        source={{ uri: happening?.addPhotosOfYourHappening[0] }}
                                         style={{ width: "100%", height: 103, borderRadius: 21, }}
                                     />
-                                    <Text style={[styles.bookingTitle, { width: "90%" }]}>Restore coral reefs in open sea</Text>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text style={[styles.bookingTitle, { width: "90%" }]}>{happening?.happeningTitle}</Text>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center',marginTop:5 }}>
                                         <Image
                                             style={{ width: 33, height: 33, borderRadius: 33 / 2, marginRight: 10 }}
-                                            source={require('../../static_assets/profileImg.png')}
+                                            source={{ uri: happening?.userProfileId?.profileImage }}
                                         />
-                                        <Text style={styles.hostedBy}>Hosted by{"\n"}Sanne de Wit</Text>
+                                        <Text style={styles.hostedBy}>Hosted by{"\n"}{happening?.userProfileId?.userId?.firstName + " " + happening?.userProfileId?.userId?.lastName}</Text>
                                     </View>
                                 </View>
 
@@ -514,9 +529,9 @@ const Profile = () => {
                 </>
             }
 
-            {profileData?.userProfile?.address !== "Not Provided" && <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 20 }}>
+            {profileData?.userProfile?.address !== "Not Provided" && <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 30 }}>
                 <HappeningLocationIconSmall width={11} height={14} />
-                <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5, }}>{profileData?.userProfile?.address} AMSTERDAM, NETHERLANDS</Text>
+                <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5, }}>{profileData?.userProfile?.address} </Text>
             </View>
             }
             <Text style={[styles.headingText, { marginTop: 5, alignSelf: 'center', marginTop: 20 }]}>{profileData?.userProfile?.userId?.firstName.concat(' ' + profileData?.userProfile?.userId?.lastName)}</Text>
@@ -629,7 +644,8 @@ const styles = StyleSheet.create({
         fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760',
     },
     bookingCard: {
-        width: "101%", marginTop: 20, elevation: 5, backgroundColor: 'white', padding: 10, shadowColor: 'rgba(0,0,0,0.6)', shadowOpacity: 0.5,
+        width: "98%", alignSelf: 'center', marginTop: 20, elevation: 5, backgroundColor: 'white', padding: 10,
+        shadowColor: '#dedede', shadowOpacity: 0.4, margin: 5,borderRadius:10,paddingHorizontal:14
     },
     bookingDate: {
         fontFamily: fonts.PSBo, fontSize: 10, color: '#5B4DBC'
