@@ -20,6 +20,8 @@ var textInputRef;
 
 const PersonalInfo = () => {
 
+
+
     const [loading, setLoading] = useState(false);
     const [createWishListModal, setCreateWishListModal] = useState(false);
     const [wishListName, setWishListName] = useState('');
@@ -77,6 +79,8 @@ const PersonalInfo = () => {
     const [year, setYear] = useState(splitDateOfBirth[2]);
     const [isEdit, setIsEdit] = useState(false)
 
+
+
     function makeStaticArrays() {
         let arr = [];
         for (let i = 1; i <= 31; i++) {
@@ -122,7 +126,7 @@ const PersonalInfo = () => {
 
         setLoading(true)
 
-        let getMonth = monthsArr.findIndex((v) => month.title == v.title) + 1;
+        let getMonth = monthsArr.findIndex((v) => month?.title == v.title) + 1;
         if (getMonth < 10) getMonth = "0" + getMonth.toString();
         const birthday = day + " " + getMonth + " " + year;
         console.log('birthday', birthday)
@@ -209,6 +213,7 @@ const PersonalInfo = () => {
 
     useEffect(() => {
         makeStaticArrays();
+
     }, [])
 
     const PersonalInfoView = () => {
@@ -269,6 +274,7 @@ const PersonalInfo = () => {
             </View>
         )
     }
+
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>

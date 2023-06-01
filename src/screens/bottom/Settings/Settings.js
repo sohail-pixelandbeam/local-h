@@ -13,6 +13,7 @@ import { changeLoggedIn } from '../../../../Common';
 import { ArrowForward, BackIcon, EditPencilIcon, InfoIcon, NextIcon, RecursionIcon, SettingsIcon } from '../../../components/Svgs';
 import AlertMsg from '../../../common/AlertMsg';
 import { apiRequest } from '../../../utils/apiCalls';
+import GeneralStatusBar from '../../../components/GernalStatusBar';
 
 
 
@@ -21,6 +22,7 @@ var alertRef;
 const SettingsScreen = () => {
 
     const { state, setHappeningData } = useContext(Context)
+
 
     const settings = [
         { name: "Personal Info", navigateTo: 'PersonalInfo' },
@@ -57,15 +59,14 @@ const SettingsScreen = () => {
 
 
     return (
-        <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1, }}>
-            <StatusBar
+        <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
+            <GeneralStatusBar
                 barStyle={"dark-content"}
                 backgroundColor={"white"}
             />
-
             <View>
                 <Image
-                    style={{ width: 115, height: 115, borderRadius: 115 / 2, borderWidth: 5, borderColor: acolors.primary, alignSelf: 'center', marginTop: 20 }}
+                    style={{ width: 115, height: 115, borderRadius: 115 / 2, borderWidth: 5, borderColor: acolors.primary, alignSelf: 'center', marginTop: 0 }}
                     source={{ uri: state?.profileData?.profileImage }}
                 />
                 <Text style={[{ color: '#FFA183', fontFamily: fonts.PBo, fontSize: 30, marginTop: 20, alignSelf: 'center' }]}>{state?.userData?.userName}</Text>
@@ -79,7 +80,7 @@ const SettingsScreen = () => {
 
 
 
-        </SafeAreaView>
+        </View>
     )
 }
 

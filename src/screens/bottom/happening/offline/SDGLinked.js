@@ -18,7 +18,7 @@ import { urls } from '../../../../utils/Api_urls'
 
 var alertRef;
 
-const SDGLinked = (props) => {
+const   SDGLinked = (props) => {
 
 
     const forceUpdate = useForceUpdate();

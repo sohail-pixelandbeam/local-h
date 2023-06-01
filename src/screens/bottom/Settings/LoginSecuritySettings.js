@@ -55,6 +55,7 @@ const LoginSecuritySettings = () => {
                         <View>
 
                             <TouchableOpacity
+                                onPress={() => navigate('EditPassword')}
                                 style={{ width: "100%", justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 10, borderBottomWidth: 1, borderColor: '#707070', marginTop: 20 }}>
                                 <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760' }}>Password</Text>
                                 <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5B4DBC' }}>Edit</Text>

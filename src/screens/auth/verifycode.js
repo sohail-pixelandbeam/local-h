@@ -45,7 +45,7 @@ const Verifycode = (props) => {
                             let data1 = data;
                             alertRef.alertWithType("success", "Success", "Success");
                             data1.isVerify = true;
-                            console.log('------data1',data1)
+                            console.log('------data1', data1)
                             storeItem('login_data', data1);
                             setTimeout(() => {
                                 changeLoggedIn.changeNow(1);
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
         lineHeight: 21,
         letterSpacing: 0.25,
         color: '#5d5760',
-        fontFamily: 'MontserratRegular',
+        fontFamily: fonts.PRe,
 
     },
 
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
         lineHeight: 21,
         letterSpacing: 0.25,
         color: 'white',
-        fontFamily: 'MontserratRegular',
+        fontFamily: fonts.PRe,
     },
 
     input: {
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#ffffff',
         borderRadius: 20,
-        fontFamily: 'MontserratRegular',
+        fontFamily: fonts.PRe,
         color: '#5d5760',
     },
 
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     },
     label: {
         margin: 8,
-        fontFamily: 'MontserratRegular',
+        fontFamily: fonts.PRe,
         color: 'white'
     },
 

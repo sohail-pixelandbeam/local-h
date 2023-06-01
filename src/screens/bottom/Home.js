@@ -106,12 +106,35 @@ const Home = () => {
     const [myWhishLists, setMyWhisLists] = useState([]);
 
 
+    async function getProfileDetails() {
+        setLoading(true);
+        apiRequest('', 'auth/getUserDetails', 'GET')
+            .then(async data => {
+                setLoading(false);
+                if (data.status && data.data) {
+                    setLoginData(data.data?.userProfile?.userId);
+                    let token = await retrieveItem('login_data');
+                    let userData = { ...data.data.loginUser, token: token.token }
+                    storeItem('login_data', userData)
+                    storeItem('profile_data', data.data.userProfile)
+                    setUserGlobal(data.data.loginUser)
+                    userProfileData(data.data.userProfile)
+                    goBack();
+                    setLoading(false);
+                }
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            })
+    };
+
+
     async function getHappeningSubmissionData(refresh = false) {
 
         setLoading(true);
         apiRequest('', 'getHappeningSubmissionData', "GET")
             .then(data => {
-                console.log('getHappeningSubmissionData', data)
                 setLoading(false);
                 if (data.status) {
                     setHappeningSubmissionDataGlobal(data.data)
@@ -130,7 +153,6 @@ const Home = () => {
             return;
         }
         let count = text.trim().split(/\s+/).length
-        console.log(count);
         setBioCount(count)
     }
 
@@ -139,12 +161,10 @@ const Home = () => {
         if (!refresh) setLoading(true);
         // const userLocation = await getUserLocation();
         // const reqObj = { latitude: userLocation?.latitude, longitude: userLocation?.longitude, };
-        // console.log('reqObj', reqObj)
         // showAllhappning
         setLoading(true);
         apiRequest('', 'showAllhappning', "GET")
             .then(data => {
-                console.log('these are happenings', data)
                 setLoading(false);
                 setRefreshing(false)
                 if (data.status) {
@@ -255,7 +275,6 @@ const Home = () => {
                 bio: bio,
                 // }
             }
-            console.log('reqObj', reqObj)
             for (let key in reqObj) {
                 data.append(key, reqObj[key]);
             }
@@ -272,11 +291,10 @@ const Home = () => {
                 .then(data => data.json())
                 // .then(data => data.text())
                 .then(data => {
-                    console.log('data===', data)
-                    console.log('status ===', data.status)
                     setModalLoading(false)
                     if (data.status) {
                         storeItem('profile_data', data.data)
+                        getProfileDetails();
                         setPopupCases(11)
                     }
                     else {
@@ -284,7 +302,6 @@ const Home = () => {
                     }
                 })
                 .catch(error => {
-                    console.log('error', error)
                     setModalLoading(false);
                     modalAlertRef.alertWithType('error', urls.error_title, urls.error)
                     setLoading(false)
@@ -348,22 +365,6 @@ const Home = () => {
 
     }
 
-    async function getProfileDetails(refreshing = false) {
-        setLoading(true);
-        // console.log('getMyHosting/' + state.userData._id)
-        apiRequest('', 'auth/getUserDetails', 'GET')
-            .then(data => {
-                setLoading(false);
-                if (data.status) {
-                    console.log('loginData', data.data)
-                    setLoginData(data.data?.userProfile?.userId);
-                }
-            })
-            .catch(err => {
-                setLoading(false)
-                console.log(err)
-            })
-    };
 
     async function getLoginAndProfileDataFromLocal() {
         retrieveItem('login_data')
@@ -422,7 +423,6 @@ const Home = () => {
         }
         apiRequest(body, 'wishlist/save-wishlist-item')
             .then(data => {
-                console.log('data====', data)
                 setLoading(false);
                 if (data.status == true) {
                     alertRef.alertWithType('success', 'Success', 'Happening added in wishlist');
@@ -443,7 +443,6 @@ const Home = () => {
         setCreateWishListModal(false)
         apiRequest('', 'wishlist/wishlist-list', 'GET')
             .then(data => {
-                console.log('whishListdata====', data)
                 setLoading(false);
                 if (data.status == true) {
                     setWhishListsGlobal(data.data ? data.data.reverse() : []);
@@ -459,27 +458,33 @@ const Home = () => {
     // getLocation();
     useEffect(() => {
         getHappeningDataFromServer();
-        makeStaticArrays();
-        getLoginAndProfileDataFromLocal();
-        getHappeningSubmissionData();
-
-        checkProfileCompletionSteps()
-        FilterHeader.showCrossBtn = true;
-        getProfileDetails();
-        getHappeningSubmissionData();
-        getWhishLists();
-
-
         retrieveItem('login_data')
             .then(data => {
-                setUserGlobal(data)
+                if (data) {
+                    makeStaticArrays();
+                    getLoginAndProfileDataFromLocal();
+                    getHappeningSubmissionData();
+                    checkProfileCompletionSteps()
+                    FilterHeader.showCrossBtn = true;
+                    getProfileDetails();
+                    getHappeningSubmissionData();
+                    getWhishLists();
+
+                }
             })
-        retrieveItem('profile_data')
-            .then(profileData => {
-                console.log('profileDaasdasdasta', profileData)
-                userProfileData(profileData)
-                setProfileData(profileData);
-            })
+
+
+
+        // retrieveItem('login_data')
+        //     .then(data => {
+        //         setUserGlobal(data)
+        //     })
+        // retrieveItem('profile_data')
+        //     .then(profileData => {
+        //         console.log('profileDaasdasdasta', profileData)
+        //         userProfileData(profileData)
+        //         setProfileData(profileData);
+        //     })
 
 
 
@@ -989,7 +994,6 @@ const Home = () => {
                                         />
                                         <TouchableOpacity
                                             onPress={() => {
-                                                console.log('item._id', item._id)
                                                 setWhishListHappeningId(item._id)
                                                 setCreateWishListModal(true)
                                             }}
@@ -1345,7 +1349,6 @@ const Home = () => {
                                                             modalAlertRef.alertWithType('error', "Error", "Please enter atleast one language")
                                                             return;
                                                         }
-                                                        console.log('profession===', profession)
                                                         if (profession?.length < 3 || !profession) {
                                                             modalAlertRef.alertWithType('error', "Error", "Please enter a valid profession")
                                                             return;
@@ -1516,7 +1519,7 @@ const Home = () => {
                                                             </View>
                                                             <PopupButton
                                                                 onPress={() => {
-                                                                    if (distance == "") {
+                                                                    if (distance == "" && alertHappening) {
                                                                         modalAlertRef.alertWithType('error', "Error", "Please enter distance")
                                                                         return
                                                                     }
@@ -1576,12 +1579,12 @@ const Home = () => {
 
                                     <TextInput
                                         onChangeText={setNewWhishListName}
-                                        placeholder='Summer Plans 2022'
+                                        placeholder='e.g. Summer Plans 2022'
                                         placeholderTextColor={'#7B7B7B'}
                                         style={{ width: "100%", height: 44, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', paddingHorizontal: 12, fontFamily: fonts.PRe, fontSize: 12, color: '#222222', marginTop: 20 }}
-                                        maxLength={50}
+                                        // maxLength={50}
                                     />
-                                    <Text style={{ fontFamily: fonts.PRe, fontSize: 12, color: '#7B7B7B', marginTop: 5 }}>50 characters maximum</Text>
+                                    {/* <Text style={{ fontFamily: fonts.PRe, fontSize: 12, color: '#7B7B7B', marginTop: 5 }}>50 characters maximum</Text> */}
                                     <TouchableOpacity
                                         onPress={() => {
                                             createNewWhishList(true);

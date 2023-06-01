@@ -21,6 +21,7 @@ const HappeningDetails = (props) => {
     let item = props.route.params?.params ?? props.route.params ?? null;
     // console.log('item', item)
     const languageForYourHappening = item?.languageSpokenAtHappening?.toString();
+    const languageForYourHappeningArr = item?.languageSpokenAtHappening
     const { width: screenWidth } = Dimensions.get("window");
     const ref = React.useRef();
 
@@ -288,9 +289,18 @@ const HappeningDetails = (props) => {
                             <Text style={styles.headingText}>Minimum Age</Text>
                             <Text style={styles.textRed}>{happeningDetails?.minAgeToParticipate}</Text>
                         </View>
-                        <View style={styles.spaceBetweenView}>
+                        <View style={[styles.spaceBetweenView, { alignItems: 'flex-start' }]}>
                             <Text style={styles.headingText}>Languages </Text>
-                            <Text style={styles.textRed}>{languageForYourHappening}</Text>
+                            <View style={{ flexDirection: 'row', width: '40%', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                                {
+                                    languageForYourHappeningArr.map((v, i) => {
+                                        return (
+                                            <Text style={styles.textRed}>{v}, </Text>
+                                        )
+                                    })
+                                }
+                            </View>
+                            {/* <Text style={styles.textRed}>{languageForYourHappening}</Text> */}
                         </View>
                         <View style={styles.spaceBetweenView}>
                             <Text style={styles.headingText}>Happening type</Text>
@@ -449,7 +459,7 @@ const HappeningDetails = (props) => {
                                 <Text style={[styles.regulareText, { marginTop: 10 }]}>{happeningDetails?.discribeTheLocaltion}</Text>
                             </>
                         }
-                        {
+                        {/* {
                             remaningDays?.length > 1 ?
                                 <View>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
@@ -460,7 +470,6 @@ const HappeningDetails = (props) => {
                                     </View>
 
                                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, justifyContent: 'space-between', height: 46, borderRadius: 15, backgroundColor: 'rgba(91,77,188,0.5)', width: "89%", marginTop: 10 }}>
-                                        {/* <Text style={{ color: '#FFFFFF', fontFamily: fonts.PSBo, fontSize: 9 }}>Join  Every Thurdsay</Text> */}
                                         <TouchableOpacity
                                             onPress={() => navigate('SelectDate', {
                                                 dates: remaningDays,
@@ -470,7 +479,10 @@ const HappeningDetails = (props) => {
                                             <Text style={{ color: '#FFFFFF', fontFamily: fonts.PSBo, fontSize: 9 }}>Choose</Text>
                                         </TouchableOpacity>
                                     </View>
-                                </View> : null}
+                                </View> : null} */}
+
+                        {/* <Text style={{ color: '#FFFFFF', fontFamily: fonts.PSBo, fontSize: 9 }}>Join  Every Thurdsay</Text> */}
+
                         <TouchableOpacity
                             // disabled
                             onPress={() => {

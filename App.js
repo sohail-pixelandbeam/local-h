@@ -78,6 +78,7 @@ import EditDuration from './src/screens/bottom/happening/editHappeningScreens/Ed
 import EditHappeningGroup from './src/screens/bottom/happening/editHappeningScreens/EditHappeningGroup';
 import EditPhotos from './src/screens/bottom/happening/editHappeningScreens/EditPhotos';
 import EditFacilities from './src/screens/bottom/happening/editHappeningScreens/EditFacilities';
+import EditPassword from './src/screens/bottom/EditPassword';
 
 
 
@@ -231,15 +232,15 @@ function App() {
         })}
         name="Profile" component={Chat}
       /> */}
-      {loggedIn == 1 &&
-        <Tab.Screen
-          options={() => ({
-            tabBarLabel: () => null,
-            tabBarIcon: ({ color }) => <ProfileBtmIcon color={color} />,
-          })}
-          name="Profilee" component={HappeningStack}
-        />
-      }
+
+      <Tab.Screen
+        options={() => ({
+          tabBarLabel: () => null,
+          tabBarIcon: ({ color }) => <ProfileBtmIcon color={color} />,
+        })}
+        name="Profilee" component={HappeningStack}
+      />
+
 
 
     </Tab.Navigator>
@@ -366,9 +367,16 @@ function App() {
         {
           loggedIn == 2 &&
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {/* <Stack.Screen name="BottomTabs" component={TabNavigator} /> */}
-            {/* <Stack.Screen name="HappeningDetails" component={HappeningDetails} /> */}
+            <Stack.Screen name="BottomTabs" component={TabNavigator} />
+            <Stack.Screen name="HappeningDetails" component={HappeningDetails} />
             <Stack.Screen name="AuthStack" component={AuthStack} />
+
+            <Stack.Screen name="MainScreenL" component={MainScreenL} />
+            {/* MainScreen0 CONTAINS ONLINE ONLINE HAPPENING SCREENS */}
+            <Stack.Screen name="MainScreenO" component={MainScreenO} />
+            <Stack.Screen name="TypeHappening" component={TypeHappening} />
+
+
 
           </Stack.Navigator>
         }{
@@ -399,6 +407,7 @@ function App() {
             <Stack.Screen name="EditHappeningGroup" component={EditHappeningGroup} />
             <Stack.Screen name="EditPhotos" component={EditPhotos} />
             <Stack.Screen name="EditFacilities" component={EditFacilities} />
+            <Stack.Screen name="EditPassword" component={EditPassword} />
           </Stack.Navigator>
         }
 

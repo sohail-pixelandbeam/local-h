@@ -126,12 +126,17 @@ const ReviewJoining = (props) => {
                         <View style={{ width: "50%" }}>
                             <Text style={[styles.headingText, { fontSize: 18 }]}>{dateString}</Text>
                             <Text style={[styles.headingText, { fontSize: 12 }]}>{params?.startTime} - {params?.endTime}</Text>
-
-
                             <Text style={[[styles.regulareText, { fontSize: 10 }]]}>Joining {params?.joinedFellow} others, {params?.spotsAvaliable} more spots avalible</Text>
                         </View>
                         <View>
-                            {/* <Text style={[{ color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 12 }]}>1 Adult, 1 youngster{"\n"}2 Children</Text> */}
+                            <Text style={[{ color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 14 }]}>1 Adult</Text>
+                            {
+                                parseInt(params?.childrens) > 0 ?
+                                    <View>
+                                        <Text style={[{ color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 14 }]}>{params?.childrens} Children</Text>
+                                    </View>
+                                    : null
+                            }
                         </View>
                     </View>
 
@@ -185,9 +190,9 @@ const ReviewJoining = (props) => {
                             <View onPress={() => console.log(params)}
                                 style={{
                                     width: "100%", alignSelf: 'center',
-                                    backgroundColor: 'white', elevation: 2, borderRadius: 18, 
+                                    backgroundColor: 'white', elevation: 2, borderRadius: 18,
                                     paddingHorizontal: 10, paddingVertical: 10, marginTop: -25,
-                                    marginHorizontal:10
+                                    marginHorizontal: 10
                                 }}>
                                 <Text style={{ fontFamily: fonts.PSBo, fontSize: 15, color: '#1A1A20', marginTop: 5 }}>{params?.conformHappeningLocation}</Text>
                                 <Text style={{ fontFamily: fonts.PRe, fontSize: 8, color: '#9E9DA6', marginTop: 2 }}>{params?.city}, {params?.country}</Text>

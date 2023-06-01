@@ -8,7 +8,7 @@ import { ArrowForward, BackIcon, PlusIcon } from '../../../components/Svgs';
 import { acolors } from '../../../constants/colors';
 import { fonts } from '../../../constants/fonts';
 import { Context } from '../../../Context/DataContext';
-import { apiRequest } from '../../../utils/apiCalls';
+import { apiFormDataRequest, apiRequest } from '../../../utils/apiCalls';
 import Loader from '../../../utils/Loader';
 
 var alertRef;
@@ -16,14 +16,27 @@ var textInputRef;
 
 const NotificationSettings = () => {
 
+    const { state } = useContext(Context);
     const [loading, setLoading] = useState(false);
-    const [emailR, setEmailR] = useState(false) // EMAIL REMAINDERS
+    const [emailR, setEmailR] = useState(state.userData.happening_reminder_mail) // EMAIL REMAINDERS
     const [smsR, setSMSR] = useState(false) // SMS REMAINDERS
 
 
 
-    const { state } = useContext(Context);
+    const doChangeNotifStatus = () => {
 
+        setLoading(true);
+        apiFormDataRequest({ happening_reminder_mail: !emailR }, 'update-profile')
+            .then(data => {
+                console.log('data ===', data);
+                setLoading(false)
+                setEmailR(!emailR)
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log('notif update error', err)
+            })
+    }
 
 
     return (
@@ -50,7 +63,7 @@ const NotificationSettings = () => {
                 <Text style={{ fontFamily: fonts.PSBo, fontSize: 21, color: '#5B4DBC', marginTop: 30 }}>Notification</Text>
                 <Text style={{ fontFamily: fonts.PRe, fontSize: 21, color: '#414141' }}>Settings</Text>
 
-                <View style={{ backgroundColor: '#F8F8F8', width: "100%", borderRadius: 20, paddingTop: 20, paddingHorizontal: 10, paddingBottom: 10 ,marginTop:20}}>
+                <View style={{ backgroundColor: '#F8F8F8', width: "100%", borderRadius: 20, paddingTop: 20, paddingHorizontal: 10, paddingBottom: 10, marginTop: 20 }}>
                     <ScrollView contentContainerStyle={{ paddingBottom: 100 }} >
                         <View>
                             <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760' }}>Reminders</Text>
@@ -59,15 +72,16 @@ const NotificationSettings = () => {
                             <View style={{ width: "100%", justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 10, borderBottomWidth: 1, borderColor: '#707070', marginTop: 20 }}>
                                 <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760' }}>Email</Text>
                                 <Switch
+
                                     style={{ elevation: 2 }}
-                                    trackColor={{ false: "#767577", true: "white" }}
+                                    trackColor={{ false: "#dedede", true: "#dedede" }}
                                     thumbColor={emailR ? "#5B4DBC" : "#f4f3f4"}
-                                    onValueChange={() => setEmailR(!emailR)}
+                                    onValueChange={() => doChangeNotifStatus()}
                                     value={emailR}
-                                    ios_backgroundColor="#707070"
+                                    ios_backgroundColor="#dedede"
                                 />
                             </View>
-                            <View style={{ width: "100%", justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 10, borderBottomWidth: 1, borderColor: '#707070', marginTop: 20 }}>
+                            {/* <View style={{ width: "100%", justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 10, borderBottomWidth: 1, borderColor: '#707070', marginTop: 20 }}>
                                 <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760' }}>SMS</Text>
                                 <Switch
                                     style={{ elevation: 2 }}
@@ -77,11 +91,11 @@ const NotificationSettings = () => {
                                     value={smsR}
                                     ios_backgroundColor="#707070"
                                 />
-                            </View>
+                            </View> */}
                         </View>
 
 
-                        <View>
+                        {/* <View>
                             <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760',marginTop:70 }}>Notifications</Text>
                             <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5D5760' }}>notifications about messages from hosts or fellows</Text>
 
@@ -107,9 +121,9 @@ const NotificationSettings = () => {
                                     ios_backgroundColor="#707070"
                                 />
                             </View>
-                        </View>
+                        </View> */}
 
-                        
+
                     </ScrollView>
                 </View>
 

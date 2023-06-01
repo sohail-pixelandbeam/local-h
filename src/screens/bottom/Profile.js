@@ -46,6 +46,8 @@ const Profile = (props) => {
     const [isEditProfile, setEditProfile] = useState(false);
     const [profilePic, setProfilePic] = useState(''); // WHEN EDITING THE PROFILE
 
+    const [isGuest, setIsGuest] = useState(false);
+
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 
@@ -186,6 +188,7 @@ const Profile = (props) => {
                 console.log(err)
             })
     };
+
     async function getMyBookings(refreshing = false) {
         !refreshing && setLoading(true);
         // console.log('getMyHosting/' + state.userData._id)
@@ -217,8 +220,20 @@ const Profile = (props) => {
 
     useEffect(() => {
 
-        getProfileDetails();
-        getMyHostings();
+        setLoading(true);
+        retrieveItem('login_data')
+            .then(data => {
+                if (data) {
+                    getProfileDetails();
+                    getMyHostings();
+                }
+                else {
+                    setIsGuest(true)
+                    setLoading(false);
+                }
+            })
+
+
         // getLocationByIp();
     }, []);
 
@@ -250,11 +265,10 @@ const Profile = (props) => {
                 myBookings?.map((v, i) => {
                     let fellowLength = v?.fellow?.length;
                     let happening = v.booking?.happeningId;
-                    console.log('startingDate', v.booking?.happeningId?.startingDate)
                     const date = new Date(happening?.startingDate)
                     const dayOfWeek = daysOfWeek[(date.getDay() + 1) % 7];
                     const dateString = dayOfWeek + ", " + date.getDate() + " " + months[date.getMonth()]
-
+                    console.log('v.status', v.booking.status)
                     return (
                         <View
                             key={i}
@@ -299,7 +313,7 @@ const Profile = (props) => {
                                     <TouchableOpacity
                                         onPress={() => {
                                             switch (v.booking.status) {
-                                                case 'Confirmed':
+                                                case 'approved':
                                                     navigateFromStack('BookingStack', 'ConfirmHappeningStatus')
                                                     return;
                                                 case 'pending':
@@ -324,9 +338,9 @@ const Profile = (props) => {
 
                                         }}
 
-                                        style={[styles.bookingStatusContainer, v.status !== 'Confirmed' && { borderColor: '#E53535' }]}>
-                                        <Text style={[styles.bookingStatus, v.status !== 'Confirmed' && { color: '#E53535' }]}>{v.booking?.status.charAt(0).toUpperCase() + v.booking?.status.slice(1)}</Text>
-                                        {v.booking.status !== 'approved' ?
+                                        style={[styles.bookingStatusContainer, v.booking.status !== 'Accept' && { borderColor: '#E53535' }]}>
+                                        <Text style={[styles.bookingStatus, v.booking.status !== 'Accept' && { color: '#E53535' }]}>{v.booking?.status.charAt(0).toUpperCase() + v.booking?.status.slice(1)}</Text>
+                                        {v.booking.status !== 'Accept' ?
                                             <InfoIcon color="#E53535" />
 
                                             :
@@ -340,7 +354,7 @@ const Profile = (props) => {
                                         style={{ width: "100%", height: 103, borderRadius: 21, }}
                                     />
                                     <Text style={[styles.bookingTitle, { width: "90%" }]}>{happening?.happeningTitle}</Text>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center',marginTop:5 }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
                                         <Image
                                             style={{ width: 33, height: 33, borderRadius: 33 / 2, marginRight: 10 }}
                                             source={{ uri: happening?.userProfileId?.profileImage }}
@@ -431,6 +445,39 @@ const Profile = (props) => {
     )
 
 
+    if (isGuest) {
+        return (
+            <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
+                <GeneralStatusBar backgroundColor='white' barStyle="light-content" />
+                {loading && <Loader />}
+
+                <View
+                    style={{ width: 115, height: 115, alignSelf: 'center' }}
+                >
+                    <Image
+                        style={{ width: 115, height: 115, borderRadius: 115 / 2, borderWidth: 5, borderColor: acolors.primary, alignSelf: 'center', marginTop: 20 }}
+                        source={{ uri: 'https://cdn.pixabay.com/photo/2016/11/18/23/38/child-1837375_640.png' }}
+                    // source={{ uri: profilePic.uri ?? profileData?.userProfile?.profileImage }}
+                    />
+                </View>
+                <Text style={[styles.headingText, { marginTop: 5, alignSelf: 'center', marginTop: 20 }]}>{"Guest"}</Text>
+
+                <View style={{ position: 'absolute', bottom: Platform.OS == 'ios' ? 80 : 50, paddingTop: 10, backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-between', width: "100%", paddingHorizontal: 20, elevation: 5, alignItems: 'center', paddingBottom: 10, shadowOffset: { width: 1, height: 1 } }}>
+
+                    <TouchableOpacity onPress={() => setConfirmSignOut(true)}>
+                        <Text style={styles.signOut}></Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => navigate('ThingsConsider')}
+                        style={styles.submitHappeningBtn}>
+                        <Text style={styles.submitHappeningText}>+ Submit a Happening</Text>
+                    </TouchableOpacity>
+
+
+                </View>
+            </View>
+        )
+    }
 
     return (
         <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
@@ -529,7 +576,7 @@ const Profile = (props) => {
                 </>
             }
 
-            {profileData?.userProfile?.address !== "Not Provided" && <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 30 }}>
+            {profileData?.userProfile?.address !== "Not Provided" || profileData?.userProfile?.address !== '' && <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 30 }}>
                 <HappeningLocationIconSmall width={11} height={14} />
                 <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5, }}>{profileData?.userProfile?.address} </Text>
             </View>
@@ -645,7 +692,7 @@ const styles = StyleSheet.create({
     },
     bookingCard: {
         width: "98%", alignSelf: 'center', marginTop: 20, elevation: 5, backgroundColor: 'white', padding: 10,
-        shadowColor: '#dedede', shadowOpacity: 0.4, margin: 5,borderRadius:10,paddingHorizontal:14
+        shadowColor: '#dedede', shadowOpacity: 0.4, margin: 5, borderRadius: 10, paddingHorizontal: 14
     },
     bookingDate: {
         fontFamily: fonts.PSBo, fontSize: 10, color: '#5B4DBC'

@@ -9,6 +9,7 @@ import { BackIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERC
 import { acolors } from '../../../../constants/colors'
 import { fonts } from '../../../../constants/fonts'
 import { getHOLPreviousScreen, useForceUpdate } from '../../../../utils/functions'
+import HappeningStep from '../../../../common/HappeningStep'
 
 
 const CC2 = (props) => {
@@ -57,7 +58,14 @@ const CC2 = (props) => {
                 </ScrollView>
 
             </View>
-            <TouchableOpacity
+
+            <HappeningStep
+                nextText={"Next"}
+                onPress={() => navigate('CC3')}
+                step={props?.route?.params?.step}
+            />
+
+            {/* <TouchableOpacity
                 onPress={() => navigate('CC3')}
                 activeOpacity={0.9}
                 style={styles.agreeBtn}>
@@ -66,7 +74,7 @@ const CC2 = (props) => {
                     <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Next</Text>
                     <NextIcon style={{ marginLeft: 10 }} />
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
     )
 }

@@ -153,7 +153,7 @@ const SDGLinked = (props) => {
                             addPhotosOfYourHappening: data?.data
                         }
                         setHappeningData(obj);
-                        doSubmitHappening();
+                        doSubmitHappening(data?.data);
                     }
                     else {
                         console.log('the data of images === ----', data);
@@ -174,7 +174,7 @@ const SDGLinked = (props) => {
 
     }
 
-    async function doSubmitHappening() {
+    async function doSubmitHappening(images) {
 
         try {
             setLoading(true);
@@ -200,6 +200,7 @@ const SDGLinked = (props) => {
             // reqObj.userProfileId = profileData?._id;
             reqObj.happeningOnline = true;
             reqObj.haveYouHostedOnlineMeetingsBefore = true;
+            if (images) reqObj.whatSDGIsThisHappeningLinkedTo = images;
 
             // reqObj.happeningAccessibility = "nothing";
             // reqObj.fellowMustComeAlone = true;
@@ -262,7 +263,7 @@ const SDGLinked = (props) => {
                                     />
                                 </View>
                                 <View style={{ flexWrap: 'wrap', width: "78%" }}>
-                                    <Text style={[styles.title, { color: selected.includes(item.sdgLogo) ? 'white' : '#2A2A2A', lineHeight: 20 }]}>{item.title}</Text>
+                                    <Text style={[styles.title, { color: selected.includes(item.sdgLogo) ? 'white' : '#2A2A2A', lineHeight: 20 }]}>{item.sdgName}</Text>
                                     {/* <Text style={[styles.desc, { color: selected.includes(item.sdgName) ? 'white' : '#2A2A2A' }]}>{item.sdgDescription}</Text> */}
                                 </View>
 

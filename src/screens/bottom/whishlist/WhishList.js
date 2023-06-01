@@ -286,9 +286,9 @@ const WhishList = () => {
                         placeholder='Summer Plans 2022'
                         placeholderTextColor={'#7B7B7B'}
                         style={{ width: "100%", height: 44, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', paddingHorizontal: 12, fontFamily: fonts.PRe, fontSize: 12, color: '#222222', marginTop: 20 }}
-                        maxLength={50}
+                        // maxLength={50}
                     />
-                    <Text style={{ fontFamily: fonts.PRe, fontSize: 12, color: '#7B7B7B', marginTop: 5 }}>50 characters maximum</Text>
+                    {/* <Text style={{ fontFamily: fonts.PRe, fontSize: 12, color: '#7B7B7B', marginTop: 5 }}>50 characters maximum</Text> */}
                     <TouchableOpacity
                         onPress={() => {
                             createNewWhishList();

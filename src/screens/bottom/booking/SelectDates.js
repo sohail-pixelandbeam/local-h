@@ -96,12 +96,12 @@ const SelectDate = ({ route }) => {
                                         <Text style={[styles.headingText, { fontSize: 18 }]}>{v.startTime} - {v.endTime}</Text>
                                         <TouchableOpacity
                                             onPress={() => {
-                                                console.log('route.params.happening.startingDate', route.params.happening.startingDate);
                                                 let obj = route.params.happening;
                                                 obj.startingDate = v.startingDate;
                                                 obj.endDate = v.endDate;
                                                 obj.startTime = v.startTime;
                                                 obj.endTime = v.endTime;
+                                                obj._id = v._id
                                                 navigate('BeforeYouJoin', {
                                                     data: obj
                                                 })

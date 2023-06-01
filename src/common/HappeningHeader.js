@@ -7,7 +7,7 @@ import { fonts } from '../constants/fonts'
 
 
 
-const HappeningHeader = ({ heading, desc, imageUrl, headerStyle, showBackBtn = false, titleStyle }) => (
+const HappeningHeader = ({ heading, desc, imageUrl, headerStyle, showBackBtn = false, titleStyle, imageStyle }) => (
     <View style={[styles.header, headerStyle]}>
 
         {showBackBtn &&
@@ -21,7 +21,7 @@ const HappeningHeader = ({ heading, desc, imageUrl, headerStyle, showBackBtn = f
         {
             imageUrl &&
             <Image
-                style={{ alignSelf: 'center' }}
+                style={[{ alignSelf: 'center' }, imageStyle]}
                 source={imageUrl}
             />
         }

@@ -20,7 +20,8 @@ interface Props {
   data: any,
   selected: any,
   onValueChange: (i, v) => void,
-  titleStyle: any
+  titleStyle: any,
+  onPressModal: () => void
 }
 
 const PrivacyPicker = (props: Props) => {
@@ -53,6 +54,7 @@ const PrivacyPicker = (props: Props) => {
         <TouchableOpacity
           style={{ marginLeft: 3, }}
           onPress={() => {
+            onPressModal()
             setModal(false)
           }}
         >

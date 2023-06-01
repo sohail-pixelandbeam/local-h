@@ -13,6 +13,7 @@ import { fonts } from '../../../../constants/fonts'
 import { Context } from '../../../../Context/DataContext'
 import { urls } from '../../../../utils/Api_urls'
 import { getHOLPreviousScreen, useForceUpdate } from '../../../../utils/functions'
+import HappeningStep from '../../../../common/HappeningStep'
 
 
 var alertRef;
@@ -41,7 +42,7 @@ const CC4 = (props) => {
 
     function search(searchWord) {
         let url = urls.API + 'search-and-filter/filterUserByName/' + searchWord;
-        console.log('url==',url)
+        console.log('url==', url)
         fetch(url, {
             method: 'GET'
         })
@@ -167,7 +168,29 @@ const CC4 = (props) => {
                 </ScrollView>
 
             </View>
-            <TouchableOpacity
+
+            <HappeningStep
+                nextText={"Next"}
+                onPress={() => {
+                    if (hostedPoint == 0) {
+                        alertRef.alertWithType('error', "Error", "Please mark any one point")
+                        return
+                    }
+                    if (hostedPoint == 2) {
+                        console.log('ues')
+                        setGetCoHostInfoModal(true)
+                        return;
+                    }
+                    if (hostedPoint == 3) {
+                        setErrorPopup(true);
+                        return;
+                    }
+                    navigate('HappeningTheme')
+                }}
+                step={props?.route?.params?.step}
+            />
+
+            {/* <TouchableOpacity
                 onPress={() => {
                     if (hostedPoint == 0) {
                         alertRef.alertWithType('error', "Error", "Please mark any one point")
@@ -191,7 +214,7 @@ const CC4 = (props) => {
                     <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Next</Text>
                     <NextIcon style={{ marginLeft: 10 }} />
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <ErrorPopupModal />
             <DropdownAlert ref={(ref) => alertRef = ref} />
 
