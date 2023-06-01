@@ -7,7 +7,7 @@ import { fonts } from '../constants/fonts'
 
 
 
-const HappeningHeader = ({ heading, desc, imageUrl, headerStyle, showBackBtn = false, titleStyle }) => (
+const HappeningHeader = ({ heading, desc, imageUrl, headerStyle, showBackBtn = false, titleStyle, imageStyle }) => (
     <View style={[styles.header, headerStyle]}>
 
         {showBackBtn &&
@@ -21,11 +21,13 @@ const HappeningHeader = ({ heading, desc, imageUrl, headerStyle, showBackBtn = f
         {
             imageUrl &&
             <Image
-                style={{ alignSelf: 'center' }}
+                style={[{ alignSelf: 'center' }, imageStyle]}
                 source={imageUrl}
             />
         }
-        <Text style={[styles.heading, titleStyle]}>{heading}</Text>
+        <Text style={[styles.heading, showBackBtn && {
+            marginTop: 10,
+        }, titleStyle]}>{heading}</Text>
         <Text style={styles.desc}>{desc}</Text>
 
     </View>
@@ -38,8 +40,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#35208E'
     },
     heading: {
-        fontFamily: fonts.PBo, fontSize: 29, color: "#FFFFFF", 
-        // marginTop: 10,
+        fontFamily: fonts.PBo, fontSize: 29, color: "#FFFFFF",
         lineHeight: 43,
     },
     desc: {

@@ -9,6 +9,7 @@ import { Context } from '../../../Context/DataContext'
 import { apiRequest } from '../../../utils/apiCalls'
 import Loader from '../../../utils/Loader'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
+import { retrieveItem } from '../../../utils/functions'
 
 const ThingsConsider = () => {
 
@@ -71,14 +72,18 @@ const ThingsConsider = () => {
 
 
     React.useEffect(() => {
-        getHappeningSubmissionData()
+        retrieveItem('login_data')
+            .then(data => {
+                if (data) getHappeningSubmissionData()
+            })
+
     }, [])
 
 
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <GeneralStatusBar/>
+            <GeneralStatusBar />
             {/* <StatusBar
                 backgroundColor={acolors.primary}
                 barStyle={"light-content"}

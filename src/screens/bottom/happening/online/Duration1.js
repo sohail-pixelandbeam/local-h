@@ -326,153 +326,6 @@ const Duration1 = (props) => {
         </ReactNativeModal>
     )
 
-    const RepeatDailyPopup = () => (
-        <ReactNativeModal
-            isVisible={dailyRepeatModal}
-            // onBackButtonPress={() => setDailyRepeatModal(false)}
-            // onBackdropPress={() => setDailyRepeatModal(false)}
-            backdropOpacity={0.2}
-            style={{ margin: 0 }}
-
-
-        >
-            <DropdownAlert ref={(ref) => alertRef = ref} />
-            <View style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, width: "90%", alignSelf: 'center' }}>
-
-                {
-                    dailyRepeatCalanderModal ?
-                        <View style={{ marginTop: 0, width: "110%", marginLeft: "-5%" }}>
-                            <TouchableOpacity
-                                onPress={() => setDailyRepeatCalanderModal(false)}
-                                style={{ backgroundColor: 'black', width: 30, height: 30, borderRadius: 30 / 2, alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
-                                <BackIcon width={7} height={18} />
-                            </TouchableOpacity>
-                            <CalanderComponent
-                                selectedDate={repeatDaily?.startingDate}
-                                onDayPress={(v) => {
-                                    setRepeatDaily({
-                                        ...repeatDaily,
-                                        startingDate: v.dateString
-                                    })
-                                    setDailyRepeatCalanderModal(false);
-                                }}
-                            />
-                        </View>
-                        :
-                        dailyEndRepeatCalanderModal ?
-                            <View style={{ marginTop: 0, width: "110%", marginLeft: "-5%" }}>
-                                <TouchableOpacity
-                                    onPress={() => setDailyEndRepeatCalanderModal(false)}
-                                    style={{ backgroundColor: 'black', width: 20, height: 20, borderRadius: 20 / 2, alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-                                    <BackIcon width={7} height={18} />
-                                </TouchableOpacity>
-                                <CalanderComponent
-                                    minDate={repeatDaily.startingDate}
-                                    selectedDate={repeatDaily?.end}
-                                    onDayPress={(v) => {
-                                        console.log(v)
-                                        setRepeatDaily({
-                                            ...repeatDaily,
-                                            end: v.dateString
-                                        })
-                                        setDailyEndRepeatCalanderModal(false);
-                                    }}
-                                />
-                            </View>
-                            :
-
-                            <>
-                                <Text style={styles.recurrenceText}>Recurrence - Daily</Text>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 20 }}>
-                                    <Text style={styles.pickerTitle}>Start</Text>
-                                    <TouchableOpacity
-                                        onPress={() => setDailyRepeatCalanderModal(true)}
-                                        style={[styles.shadow, styles.pickerContainer, { marginLeft: 0 }]}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                            <Text style={styles.pickerTitle}>{repeatDaily.startingDate}</Text>
-                                            <CalenderIcon style={{ marginLeft: 5 }} />
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
-                                    <Text style={styles.pickerTitle}>Repeat</Text>
-                                    <View style={[styles.shadow, styles.pickerContainer, { marginLeft: 0 }]}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text style={styles.pickerTitle}>Daily</Text>
-                                            {/* <ArrowDown style={{ marginLeft: 5 }} /> */}
-                                        </View>
-                                    </View>
-                                </View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
-                                    <Text style={styles.pickerTitle}>Every</Text>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <View style={[styles.shadow, styles.pickerContainer, { marginLeft: 0, width: 60 }]}>
-                                            <PrivacyPicker
-                                                selected={{ title: repeatDaily.every }}
-                                                data={daysArr}
-                                                onValueChange={(i, v) => {
-                                                    setRepeatDaily({
-                                                        ...repeatDaily,
-                                                        every: v.title
-                                                    });
-                                                }}
-                                            />
-                                            {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text style={styles.pickerTitle}>1</Text>
-                                            <ArrowDown style={{ marginLeft: 5 }} />
-                                        </View> */}
-                                        </View>
-                                        <Text style={[styles.pickerTitle, { marginLeft: 5 }]}>Day(s)</Text>
-                                    </View>
-
-                                </View>
-
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, justifyContent: 'space-between' }}>
-                                    <Text style={styles.pickerTitle}>End</Text>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        {/* <TouchableOpacity style={[styles.shadow, styles.pickerContainer,]}>
-                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                <Text style={styles.pickerTitle}>On this day</Text>
-                                                <ArrowDown style={{ marginLeft: 5 }} />
-                                            </View>
-                                        </TouchableOpacity> */}
-                                        <TouchableOpacity
-                                            onPress={() => setDailyEndRepeatCalanderModal(true)}
-                                            style={[styles.shadow, styles.pickerContainer,]}>
-                                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                                <Text style={styles.pickerTitle}>{repeatDaily.end}</Text>
-                                                <CalenderIcon style={{ marginLeft: 10 }} />
-                                            </View>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                                {/* <Text style={{ fontFamily: fonts.MSBo, fontSize: 11, color: '#241414', marginTop: 20 }}>happens everyday starting Tuesday, 1 Jan 2022 </Text> */}
-                                <View style={{ flexDirection: 'row' }}>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            setDoesNotRepeat('');
-                                            setDailyRepeatModal(false)
-
-                                            // setDailyRepeatModal(false)
-                                        }}
-                                        style={[styles.tipsBtn, { backgroundColor: acolors.btnSecondry, marginRight: 10 }]}>
-                                        <Text style={[styles.topsBtnTitle, { fontSize: 12, color: 'black' }]}>Cancel</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            doValidateDailyRepeatFields()
-                                        }}
-                                        style={[styles.tipsBtn, {}]}>
-                                        <Text style={[styles.topsBtnTitle, { fontSize: 12 }]}>Save</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </>
-                }
-            </View>
-
-        </ReactNativeModal >
-    )
-
     const RepeatMonthlyPopup = () => (
         <ReactNativeModal
             isVisible={monthlyRepeatModal}
@@ -900,7 +753,151 @@ const Duration1 = (props) => {
 
             {/* POPUPS */}
             <RepeatOnPopup />
-            <RepeatDailyPopup />
+            <ReactNativeModal
+            isVisible={dailyRepeatModal}
+            // onBackButtonPress={() => setDailyRepeatModal(false)}
+            // onBackdropPress={() => setDailyRepeatModal(false)}
+            backdropOpacity={0.2}
+            style={{ margin: 0 }}
+
+
+        >
+            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <View style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, width: "90%", alignSelf: 'center' }}>
+
+                {
+                    dailyRepeatCalanderModal ?
+                        <View style={{ marginTop: 0, width: "110%", marginLeft: "-5%" }}>
+                            <TouchableOpacity
+                                onPress={() => setDailyRepeatCalanderModal(false)}
+                                style={{ backgroundColor: 'black', width: 30, height: 30, borderRadius: 30 / 2, alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
+                                <BackIcon width={7} height={18} />
+                            </TouchableOpacity>
+                            <CalanderComponent
+                                selectedDate={repeatDaily?.startingDate}
+                                onDayPress={(v) => {
+                                    setRepeatDaily({
+                                        ...repeatDaily,
+                                        startingDate: v.dateString
+                                    })
+                                    setDailyRepeatCalanderModal(false);
+                                }}
+                            />
+                        </View>
+                        :
+                        dailyEndRepeatCalanderModal ?
+                            <View style={{ marginTop: 0, width: "110%", marginLeft: "-5%" }}>
+                                <TouchableOpacity
+                                    onPress={() => setDailyEndRepeatCalanderModal(false)}
+                                    style={{ backgroundColor: 'black', width: 20, height: 20, borderRadius: 20 / 2, alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
+                                    <BackIcon width={7} height={18} />
+                                </TouchableOpacity>
+                                <CalanderComponent
+                                    minDate={repeatDaily.startingDate}
+                                    selectedDate={repeatDaily?.end}
+                                    onDayPress={(v) => {
+                                        console.log(v)
+                                        setRepeatDaily({
+                                            ...repeatDaily,
+                                            end: v.dateString
+                                        })
+                                        setDailyEndRepeatCalanderModal(false);
+                                    }}
+                                />
+                            </View>
+                            :
+
+                            <>
+                                <Text style={styles.recurrenceText}>Recurrence - Daily</Text>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 20 }}>
+                                    <Text style={styles.pickerTitle}>Start</Text>
+                                    <TouchableOpacity
+                                        onPress={() => setDailyRepeatCalanderModal(true)}
+                                        style={[styles.shadow, styles.pickerContainer, { marginLeft: 0 }]}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <Text style={styles.pickerTitle}>{repeatDaily.startingDate}</Text>
+                                            <CalenderIcon style={{ marginLeft: 5 }} />
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
+                                    <Text style={styles.pickerTitle}>Repeat</Text>
+                                    <View style={[styles.shadow, styles.pickerContainer, { marginLeft: 0 }]}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <Text style={styles.pickerTitle}>Daily</Text>
+                                            {/* <ArrowDown style={{ marginLeft: 5 }} /> */}
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
+                                    <Text style={styles.pickerTitle}>Every</Text>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <View style={[styles.shadow, styles.pickerContainer, { marginLeft: 0, width: 60 }]}>
+                                            <PrivacyPicker
+                                                selected={{ title: repeatDaily.every }}
+                                                data={daysArr}
+                                                onValueChange={(i, v) => {
+                                                    setRepeatDaily({
+                                                        ...repeatDaily,
+                                                        every: v.title
+                                                    });
+                                                    // setDailyRepeatModal(true)
+                                                }}
+                                            />
+                                            {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <Text style={styles.pickerTitle}>1</Text>
+                                            <ArrowDown style={{ marginLeft: 5 }} />
+                                        </View> */}
+                                        </View>
+                                        <Text style={[styles.pickerTitle, { marginLeft: 5 }]}>Day(s)</Text>
+                                    </View>
+
+                                </View>
+
+                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, justifyContent: 'space-between' }}>
+                                    <Text style={styles.pickerTitle}>End</Text>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        {/* <TouchableOpacity style={[styles.shadow, styles.pickerContainer,]}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <Text style={styles.pickerTitle}>On this day</Text>
+                                                <ArrowDown style={{ marginLeft: 5 }} />
+                                            </View>
+                                        </TouchableOpacity> */}
+                                        <TouchableOpacity
+                                            onPress={() => setDailyEndRepeatCalanderModal(true)}
+                                            style={[styles.shadow, styles.pickerContainer,]}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                <Text style={styles.pickerTitle}>{repeatDaily.end}</Text>
+                                                <CalenderIcon style={{ marginLeft: 10 }} />
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                {/* <Text style={{ fontFamily: fonts.MSBo, fontSize: 11, color: '#241414', marginTop: 20 }}>happens everyday starting Tuesday, 1 Jan 2022 </Text> */}
+                                <View style={{ flexDirection: 'row' }}>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setDoesNotRepeat('');
+                                            setDailyRepeatModal(false)
+
+                                            // setDailyRepeatModal(false)
+                                        }}
+                                        style={[styles.tipsBtn, { backgroundColor: acolors.btnSecondry, marginRight: 10 }]}>
+                                        <Text style={[styles.topsBtnTitle, { fontSize: 12, color: 'black' }]}>Cancel</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            doValidateDailyRepeatFields()
+                                        }}
+                                        style={[styles.tipsBtn, {}]}>
+                                        <Text style={[styles.topsBtnTitle, { fontSize: 12 }]}>Save</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </>
+                }
+            </View>
+
+        </ReactNativeModal >
             {/* WEEKLY WEEKLY POPUP */}
             <ReactNativeModal
                 isVisible={weeklyRepeatModal}

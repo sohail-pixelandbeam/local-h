@@ -78,6 +78,7 @@ import EditDuration from './src/screens/bottom/happening/editHappeningScreens/Ed
 import EditHappeningGroup from './src/screens/bottom/happening/editHappeningScreens/EditHappeningGroup';
 import EditPhotos from './src/screens/bottom/happening/editHappeningScreens/EditPhotos';
 import EditFacilities from './src/screens/bottom/happening/editHappeningScreens/EditFacilities';
+import EditPassword from './src/screens/bottom/EditPassword';
 
 
 
@@ -148,7 +149,7 @@ const HomeStack = () => (
 const HappeningStack = () => (
   <Stack.Navigator
     screenOptions={{ headerShown: false }}
-    initialRouteName="Home"
+    initialRouteName="Profile"
   >
     <Stack.Screen name="Profile" component={Profile} />
 
@@ -168,67 +169,8 @@ const HappeningStack = () => (
   </Stack.Navigator>
 )
 
-const TabNavigator = () => (
-  <Tab.Navigator
-    inactiveColor="#aaaaaa"
-    activeColor="#5b4dbc"
-    barStyle={{
-      backgroundColor: '#ffffff',
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      elevation: 2,
-      position: 'absolute',
-      overflow: 'hidden',
-    }}
-    shifting={false}
-  >
-    <Tab.Screen
-      options={() => ({
-        tabBarLabel: () => null,
-        tabBarIcon: ({ color }) => <SearchBtmIcon color={color} />,
-      })}
-      name="Search" component={HomeStack}
-    />
-    {/* {() => ()} */}
-
-    <Tab.Screen
-      options={() => ({
-        tabBarLabel: () => null,
-        tabBarIcon: ({ color }) => <HeartBtmIcon color={color} />,
-      })}
-      name="WhishListStack" component={WhishListStack}
-    />
-    {/* {() => Favourites()} */}
-
-    {/* <Tab.Screen
-      options={() => ({
-        tabBarLabel: () => null,
-        tabBarIcon: ({ color, focused }) => (
-          focused ? <LocationBtmIconFocused /> : <LocationBtmIcon color={color} />
-        ),
-      })}
-      name="HappeningsMap" component={HappeningsMap}
-    /> */}
 
 
-    {/* <Tab.Screen
-      options={() => ({
-        tabBarLabel: () => null,
-        tabBarIcon: ({ color }) => <ChatBtmIcon color={color} />,
-      })}
-      name="Profile" component={Chat}
-    /> */}
-    <Tab.Screen
-      options={() => ({
-        tabBarLabel: () => null,
-        tabBarIcon: ({ color }) => <ProfileBtmIcon color={color} />,
-      })}
-      name="Profilee" component={HappeningStack}
-    />
-
-
-  </Tab.Navigator>
-);
 
 
 function App() {
@@ -236,6 +178,74 @@ function App() {
   const forceUpdate = useForceUpdate();
   const [isLogined, setIsLogined] = React.useState(0); // 1 = LOGINED, 2 = NOT LOGINED
   const [loggedIn, setLoggedIn] = React.useState(0)
+
+
+  const TabNavigator = () => (
+    <Tab.Navigator
+      inactiveColor="#aaaaaa"
+      activeColor="#5b4dbc"
+      barStyle={{
+        backgroundColor: '#ffffff',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        elevation: 2,
+        position: 'absolute',
+        overflow: 'hidden',
+      }}
+      shifting={false}
+    >
+
+      <Tab.Screen
+        options={() => ({
+          tabBarLabel: () => null,
+          tabBarIcon: ({ color }) => <SearchBtmIcon color={color} />,
+        })}
+        name="Search" component={HomeStack}
+      />
+
+      {loggedIn == 1 &&
+        <Tab.Screen
+          options={() => ({
+            tabBarLabel: () => null,
+            tabBarIcon: ({ color }) => <HeartBtmIcon color={color} />,
+          })}
+          name="WhishListStack" component={WhishListStack}
+        />
+      }
+      {/* {() => Favourites()} */}
+
+      {/* <Tab.Screen
+        options={() => ({
+          tabBarLabel: () => null,
+          tabBarIcon: ({ color, focused }) => (
+            focused ? <LocationBtmIconFocused /> : <LocationBtmIcon color={color} />
+          ),
+        })}
+        name="HappeningsMap" component={HappeningsMap}
+      /> */}
+
+
+      {/* <Tab.Screen
+        options={() => ({
+          tabBarLabel: () => null,
+          tabBarIcon: ({ color }) => <ChatBtmIcon color={color} />,
+        })}
+        name="Profile" component={Chat}
+      /> */}
+
+      <Tab.Screen
+        options={() => ({
+          tabBarLabel: () => null,
+          tabBarIcon: ({ color }) => <ProfileBtmIcon color={color} />,
+        })}
+        name="Profilee" component={HappeningStack}
+      />
+
+
+
+    </Tab.Navigator>
+  );
+
 
 
   function getPushToken() {
@@ -319,20 +329,20 @@ function App() {
     // storeItem('login_data','');
     getPushToken();
     checkLogin();
-    retrieveItem('login_data')
-      .then(data => {
-        if (data && data.isVerify) {
-          console.log(data);
-          setIsLogined(1);
-        }
-        else setIsLogined(2);
-        forceUpdate();
+    // retrieveItem('login_data')
+    //   .then(data => {
+    //     if (data && data.isVerify) {
+    //       console.log(data);
+    //       setIsLogined(1);
+    //     }
+    //     else setIsLogined(2);
+    //     forceUpdate();
 
-      })
+    //   })
   }, [])
 
 
-  if (isLogined == 0) {
+  if (loggedIn == 0) {
     return (
       <View style={{ backgroundColor: 'white', flex: 1 }}>
         <Loader />
@@ -353,12 +363,21 @@ function App() {
       <NavigationContainer
         ref={navigationRef}
       >
-        
+
         {
           loggedIn == 2 &&
           <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="BottomTabs" component={TabNavigator} />
+            <Stack.Screen name="HappeningDetails" component={HappeningDetails} />
             <Stack.Screen name="AuthStack" component={AuthStack} />
-            {/* <Stack.Screen name="BottomTabs" component={TabNavigator} /> */}
+
+            <Stack.Screen name="MainScreenL" component={MainScreenL} />
+            {/* MainScreen0 CONTAINS ONLINE ONLINE HAPPENING SCREENS */}
+            <Stack.Screen name="MainScreenO" component={MainScreenO} />
+            <Stack.Screen name="TypeHappening" component={TypeHappening} />
+
+
+
           </Stack.Navigator>
         }{
           loggedIn == 1 &&
@@ -388,6 +407,7 @@ function App() {
             <Stack.Screen name="EditHappeningGroup" component={EditHappeningGroup} />
             <Stack.Screen name="EditPhotos" component={EditPhotos} />
             <Stack.Screen name="EditFacilities" component={EditFacilities} />
+            <Stack.Screen name="EditPassword" component={EditPassword} />
           </Stack.Navigator>
         }
 

@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList } from 'react-native'
 import { navigate } from '../../../../Navigations'
 import HappeningHeader from '../../../common/HappeningHeader'
 import { BackIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, RELIABLENONPROFITS, SUPPORTICON, WELFAREICON } from '../../../components/Svgs'
 import { acolors } from '../../../constants/colors'
 import { fonts } from '../../../constants/fonts'
+import GeneralStatusBar from '../../../components/GernalStatusBar'
+import { retrieveItem } from '../../../utils/functions'
+import AlertMsg from '../../../common/AlertMsg'
+import HappeningStep from '../../../common/HappeningStep'
 
 const TypeHappening = () => {
 
+    const [isGuest, setIsGuest] = React.useState(false);
+    const [loginModal, setLoginModal] = useState(false);
 
     const conditionArr = [
         {
@@ -16,20 +22,70 @@ const TypeHappening = () => {
             // 'GroupSizeHappeningL'
         },
         {
-            Svg: OnlineHappeningIcon, title: "Online Happening", desc: "Connect with fellows through online meet software like Zoom, Teams etc. ",
+            Svg: OnlineHappeningIcon, title: "Online/Remote Happening", desc: "Organize an online get-together using Zoom, Team, and so on. Or ask a friend to assist you from a distant location.",
             navigate: 'MainScreenO'
         },
 
 
     ]
 
+    useEffect(() => {
+        retrieveItem('login_data')
+            .then(data => {
+                if (!data) {
+                    setIsGuest(true)
+                }
+            })
+    }, [])
+
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <StatusBar
-                backgroundColor={acolors.primary}
-                barStyle={"light-content"}
+            <GeneralStatusBar />
+
+            <AlertMsg
+
+                headingStyle={{ color: acolors.primary, fontSize: 24 }}
+                heading={"Please Log in to\nSubmit a happening"}
+                desc=""
+                // renderBtn={false}
+                // descStyle={{ lineHeight: 22, color: '#5D5760', fontFamily: fonts.PSBo }}
+                btnTitle="Login"
+                state={loginModal}
+                onBackdropPress={() => setLoginModal(false)}
+                onPress={() => {
+                    setLoginModal(false);
+                    navigate('AuthStack');
+
+                }}
+                containerStyle={{ paddingHorizontal: 25, paddingBottom: 80, paddingTop: 10 }}
+
+            // children={(
+            //     <View style={{ flexDirection: 'row', width: "100%", marginTop: 0, justifyContent: 'space-between' }}>
+            //         <TouchableOpacity
+            //             style={[styles.popupBtn]}
+            //             // onPress={() => setConfirmSignOut(false)}
+            //         >
+            //             <Text style={styles.popupBtnTitle}>{"Sign up"}</Text>
+            //         </TouchableOpacity>
+            //         <TouchableOpacity
+            //             style={[styles.popupBtn, { borderWidth: 1, borderColor: '#5B4DBC', backgroundColor: 'white' }]}
+            //             onPress={() => {
+            //                 // storeItem('login_data', '');
+            //                 // storeItem('profile_data', '');
+            //                 // changeLoggedIn.changeNow(2);
+            //             }}
+            //         >
+            //             <Text style={[styles.popupBtnTitle, { color: '#5B4DBC' }]}>{"Login"}</Text>
+            //         </TouchableOpacity>
+
+            //     </View>
+            // )
+            // }
+
             />
+
             <HappeningHeader
+                imageStyle={{ marginTop: -20 }}
                 imageUrl={require('../../../assets/thingsConsiderHeaderImg.png')}
                 heading={"What’s the type of\nyour happening ?"}
                 desc={"Specify whether the happening is in a physical location or online."}
@@ -43,12 +99,18 @@ const TypeHappening = () => {
                         let Icon = item.Svg
                         return (
                             <TouchableOpacity
-                                onPress={() => navigate(item.navigate)}
+                                onPress={() => {
+                                    if (isGuest) {
+                                        setLoginModal(true);
+                                        return;
+                                    }
+                                    navigate(item.navigate)
+                                }}
                                 style={styles.content}>
                                 <View style={{ width: "20%" }}>
                                     <Icon />
                                 </View>
-                                <View style={{ width: "70%" }}>
+                                <View style={{ width: "69%" }}>
                                     <Text style={styles.title}>{item.title}</Text>
                                     <Text style={styles.desc}>{item.desc}</Text>
                                 </View>
@@ -66,7 +128,12 @@ const TypeHappening = () => {
 
             </View>
 
-
+            <HappeningStep
+                showStep={false}
+                next={false}
+                onPress={() => navigate('CC3')}
+                
+            />
         </View>
     )
 }
@@ -94,7 +161,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'white', flexDirection: 'row', paddingHorizontal: 30, alignItems: 'center', justifyContent: 'flex-end',
         borderTopRightRadius: 30, borderTopLeftRadius: 30,
         elevation: 5
-    }
+    },
+    popupBtn: {
+        width: "49%", height: 29, borderRadius: 20, backgroundColor: '#5b4dbc',
+        alignItems: 'center', justifyContent: 'center'
+    },
 
 })
 

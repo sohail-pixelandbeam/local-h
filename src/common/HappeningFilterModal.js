@@ -16,7 +16,8 @@ const HappeningFilterModal = ({ filterType, isVisible, setIsVisible }) => {
     const [filterModal, setFilterModal] = useState(false);
     // const [filterType, setFilterType] = useState('');
     const [filterTheme, setFilterTheme] = useState('Art & cultural projects');
-    const [filterThemesArr, setFilterThemesArr] = useState(state.happeningSubmissionData?.happeningTheme ?? [])
+    const [filterThemesArr, setFilterThemesArr] = useState(state.happeningSubmissionData?.happeningTheme)
+    // console.log('happeningTheme', state.happeningSubmissionData.happeningTheme[0])
     // ['Art & cultural projects', 'Business Support', 'Clean Energy & Air', 'Community Work', 'Disaster Relief', 'Education']);
 
 
@@ -111,18 +112,18 @@ const HappeningFilterModal = ({ filterType, isVisible, setIsVisible }) => {
                                             return (
                                                 <TouchableOpacity
                                                     onPress={() => {
-                                                        setFilterTheme(v)
+                                                        setFilterTheme(v.happeningThemeName)
                                                         forceUpdate();
                                                     }}
                                                     style={[styles.filterThemePickerContainer,]}>
                                                     <View>
-                                                        <Text style={styles.themeText}>{v?.filterThemesArr}</Text>
+                                                        <Text style={styles.themeText}>{v?.happeningThemeName}</Text>
                                                         {/* <Text style={styles.subData}>sub data</Text> */}
                                                     </View>
 
                                                     <View style={styles.languagePickerCircle}>
                                                         {/* {filterTheme == v &&  */}
-                                                        <TickIcon width={17} height={12} />
+                                                        {filterTheme == v.happeningThemeName && <TickIcon width={17} height={12} />}
                                                         {/* } */}
                                                     </View>
                                                 </TouchableOpacity>

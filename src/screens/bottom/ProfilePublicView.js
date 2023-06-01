@@ -7,7 +7,8 @@ import { acolors } from '../../constants/colors';
 import { fonts } from '../../constants/fonts';
 import { Context } from '../../Context/DataContext';
 import { apiRequest } from '../../utils/apiCalls';
-import { retrieveItem } from '../../utils/functions';
+import { capitalizeFirstLetter, retrieveItem } from '../../utils/functions';
+import GeneralStatusBar from '../../components/GernalStatusBar';
 
 const ProfilePublicView = (props) => {
 
@@ -24,15 +25,16 @@ const ProfilePublicView = (props) => {
 
     async function getProfileDetails(refreshing = false) {
         !refreshing && setLoading(true);
-        console.log('getMyHosting/', props.route.params?.data?.userProfileId?.userId?._id)
-        const reqObj = {
-            "userId": props.route.params?.data?.userProfileId?.userId?._id,
-            "token": await getUserToken()
-        }
-        console.log('asadasd', reqObj)
-        apiRequest(reqObj, 'publicProfile', 'POST')
+        // console.log('props.route.params?.data?.userProfileId?.userId?._id/', props.route.params?.data?.userProfileId?.userId?._id)
+        // const reqObj = {
+        //     "userId": props.route.params?.data?.userProfileId?.userId?._id,
+        //     "token": await getUserToken()
+        // }
+        const url = 'publicProfile/' + props.route.params?.data?.userProfileId?.userId?._id
+        console.log('url', url)
+        apiRequest('', url, 'GET')
             .then(data => {
-                console.log('userDetails is', data)
+                console.log('data ===', data)
                 setLoading(false);
                 if (data.status) {
                     setProfileData(data.data)
@@ -50,16 +52,14 @@ const ProfilePublicView = (props) => {
     }, [])
 
 
+
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
+            <GeneralStatusBar backgroundColor='#fff' />
             <View style={{ width: "90%", alignSelf: 'center' }}>
-                <StatusBar
-                    barStyle={"dark-content"}
-                    backgroundColor={"white"}
-                />
                 <View>
                     <Image
-                        style={{ width: 115, height: 115, borderRadius: 115 / 2, borderWidth: 5, borderColor: acolors.primary, alignSelf: 'center', marginTop: 20 }}
+                        style={{ width: 115, height: 115, borderRadius: 115 / 2, borderWidth: 5, borderColor: acolors.primary, alignSelf: 'center', marginTop: 0 }}
                         source={{ uri: profileData?.profileImage }}
                     />
                     <TouchableOpacity
@@ -72,14 +72,16 @@ const ProfilePublicView = (props) => {
                     profileData?.address !== 'Not Provided' &&
                     <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 20 }}>
                         <HappeningLocationIconSmall width={11} height={14} />
-                        <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5 }}>AMSTERDAM, NETHERLANDS</Text>
+                        <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5 }}>{capitalizeFirstLetter(profileData.address)}</Text>
                     </View>
                 }
                 <Text style={[{ fontFamily: fonts.PBo, fontSize: 30, color: '#FFA183', marginTop: 5, alignSelf: 'center' }]}>{profileData?.userId?.firstName + " " + profileData?.userId?.lastName}</Text>
                 {/* <Text style={[{ fontFamily: fonts.PBo, fontSize: 10, color: '#7B7B7B', marginTop: 0, alignSelf: 'center' }]}>Typically replies in 30 mins</Text> */}
 
-                <ScrollView contentContainerStyle={{ paddingBottom: 300 }} >
-                    <View style={[styles.shadow, { backgroundColor: 'white', width: "100%", borderRadius: 12, paddingHorizontal: 10, paddingTop: 10, paddingBottom: 20, marginTop: 10,  }]}>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ paddingBottom: 300 }} >
+                    <View style={[styles.shadow, { backgroundColor: 'white', width: "100%", borderRadius: 12, paddingHorizontal: 10, paddingTop: 10, paddingBottom: 20, marginTop: 10, }]}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: "100%" }}>
                             <Text style={[styles.aboutHeading, { marginTop: 0 }]}>Bio</Text>
                         </View>
@@ -196,7 +198,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.PBo, fontSize: 15, color: '#ffa183', marginTop: 10
     },
     aboutDesc: {
-        fontFamily: fonts.PRe, fontSize: 11, color: '#5D5760', lineHeight: 25
+        fontFamily: fonts.PRe, fontSize: 11, color: '#5D5760', lineHeight: 24
     },
     heading: {
         fontFamily: fonts.PSBo, fontSize: 16, color: '#ffa183', marginTop: 10

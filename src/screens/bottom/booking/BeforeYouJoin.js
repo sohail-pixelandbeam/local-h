@@ -9,6 +9,7 @@ import HappeningStep from '../../../common/HappeningStep'
 import { BackIcon, HappeningLocationIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, RELIABLENONPROFITS, SUPPORTICON, WELFAREICON } from '../../../components/Svgs'
 import { acolors } from '../../../constants/colors'
 import { fonts } from '../../../constants/fonts'
+import GeneralStatusBar from '../../../components/GernalStatusBar'
 
 
 
@@ -18,10 +19,7 @@ const BeforeYouJoin = (props) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <StatusBar
-                backgroundColor={acolors.primary}
-                barStyle={"light-content"}
-            />
+            <GeneralStatusBar />
             <HappeningHeader
                 showBackBtn
                 heading={"Before you\nJoin "}
@@ -48,7 +46,7 @@ const BeforeYouJoin = (props) => {
                     data: props.route.params?.data
                 })}
                 showStep={false}
-                // containerStyle={{ alignItems: 'flex-end', flexDirection: 'column', justifyContent: 'center' }}
+            // containerStyle={{ alignItems: 'flex-end', flexDirection: 'column', justifyContent: 'center' }}
             // nextText = {"Next"}
             />
 

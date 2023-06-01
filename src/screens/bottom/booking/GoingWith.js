@@ -12,6 +12,7 @@ import { fonts } from '../../../constants/fonts'
 import { urls } from '../../../utils/Api_urls'
 import { formatDate, useForceUpdate } from '../../../utils/functions';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import GeneralStatusBar from '../../../components/GernalStatusBar'
 
 
 var textInputRef;
@@ -68,13 +69,13 @@ const GoingWith = (props) => {
     }
 
     const ChildrenInfo = () => (
-        <View style={[styles.shadow, { width: "100%", paddingVertical: 15, paddingLeft: 20, paddingRight: 10, borderRadius: 12, marginTop: 15 }]}>
+        <View style={[styles.shadow, { width: "98%", alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', height: 80, alignItems: 'center', paddingLeft: 20, paddingRight: 10, borderRadius: 12, marginTop: 15 }]}>
             <View>
                 <Text style={styles.headingText}>Children</Text>
-                <Text style={[styles.regulareText, { fontSize: 10 }]}>below 12 years old</Text>
-                <Text style={[styles.regulareText, { fontSize: 10, marginTop: 12 }]}>You can bring a maximum of 5 children.</Text>
+                <Text style={[styles.regulareText, { fontSize: 10 }]}>below 18 years old</Text>
+                {/* <Text style={[styles.regulareText, { fontSize: 10, marginTop: 12 }]}>You can bring a maximum of 5 children.</Text> */}
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', right: 10, top: 0 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                 <TouchableOpacity
                     onPress={() => minusChildren()}
                     style={styles.addMinusBtn}>
@@ -90,17 +91,17 @@ const GoingWith = (props) => {
                 </TouchableOpacity>
             </View>
 
-            <View style={{ flexDirection: 'row', width: "100%", justifyContent: 'space-between', alignItems: 'center', marginTop: 15 }}>
-                {/* <TouchableOpacity
+            {/* <View style={{ flexDirection: 'row', width: "100%", justifyContent: 'space-between', alignItems: 'center', marginTop: 15 }}> */}
+            {/* <TouchableOpacity
                     onPress={() => setChildrens(0)}
                 >
                     <Text style={{ color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 10, textDecorationLine: 'underline', }}>reset</Text>
                 </TouchableOpacity> */}
-                {/* <TouchableOpacity style={styles.popupBtn}>
+            {/* <TouchableOpacity style={styles.popupBtn}>
                     <Text style={[styles.popupBtnTitle, { margin: 0 }]}>Save</Text>
                 </TouchableOpacity> */}
 
-            </View>
+            {/* </View> */}
         </View>
     )
 
@@ -109,12 +110,9 @@ const GoingWith = (props) => {
 
 
     return (
-        <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1, }}>
-            <StatusBar
-                barStyle={"dark-content"}
-                // // translucent={false}
-                backgroundColor={"white"}
-            />
+        <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
+            <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
+
             <DropdownAlert ref={(ref) => alertRef = ref} />
 
             <View style={{ width: "90%", alignSelf: 'center' }}>
@@ -126,130 +124,31 @@ const GoingWith = (props) => {
                     />
                 </TouchableOpacity>
 
-                <Text style={[{ color: '#5A4CBB', fontSize: 23, fontFamily: fonts.PBo, marginTop: 15 }]}>Are you Going with{"\n"}Children or Youngsters?</Text>
-                <Text style={[styles.regulareText, { fontSize: 11 }]}>From 12 years, people are requested to create their own profile.</Text>
+                <Text style={[{ color: '#5A4CBB', fontSize: 23, fontFamily: fonts.PBo, marginTop: 15 }]}>Are you going with{"\n"}children </Text>
+                {/* or Youngsters? */}
+                <Text style={[styles.regulareText, { fontSize: 11 }]}>From 18 years, people are requested to create their own profile.</Text>
                 <ScrollView contentContainerStyle={{ paddingBottom: 200 }}>
-                    {params?.minAgeToParticipate <= 12 && < ChildrenInfo />}
-                    {params?.minAgeToParticipate <= 18 && <View style={[styles.shadow, { width: "100%", paddingVertical: 15, paddingLeft: 20, paddingRight: 10, borderRadius: 12, marginTop: 15 }]}>
-                        <View>
-                            <Text style={styles.headingText}>Youngsters</Text>
-                            <Text style={[styles.regulareText, { fontSize: 10 }]}>12-18 years old</Text>
-                            <Text style={[styles.regulareText, { fontSize: 10, marginTop: 4 }]}>You can bring a maximum of 5 children.</Text>
-                        </View>
-                        <View>
-                            <View>
-                                <TextInput
-                                    placeholder='Search for youngsters to join'
-                                    ref={(ref) => textInputRef = ref}
-                                    placeholderTextColor={"#7b7b7b"}
-                                    onChangeText={(v) => search(v)}
-                                    style={{
-                                        width: "100%", height: 47, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
-                                        fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10, marginTop: 10
-                                    }}
-                                />
-                                {
-                                    youngstersData[0] &&
-                                    <View style={{ backgroundColor: 'white', elevation: 2, borderTopRightRadius: 0, borderTopLeftRadius: 0, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 10 }}>
-                                        {youngstersData?.map((v, i) => {
-                                            return (
-                                                <TouchableOpacity
-                                                    onPress={() => {
-                                                        if (!selectedYoungsters.includes(v)) setSelectedYoungsters([...selectedYoungsters, v])
-                                                        textInputRef.clear();
-                                                        setYoungstersData([]);
-                                                    }}
-                                                    style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
-                                                    <Image
-                                                        style={{ width: 30, height: 30, borderRadius: 15 }}
-                                                        source={{ uri: v?.profileImage }}
-                                                    />
-                                                    <Text style={{ color: "black", fontFamily: fonts.PRi, fontSize: 14, marginLeft: 10 }} key={i}>{v.userId?.userName}</Text>
-                                                </TouchableOpacity>
-                                            )
-                                        })}
-                                    </View>
-                                }
-                            </View>
-                            {
-                                selectedYoungsters &&
-                                <View style={{}}>
-                                    {
-                                        selectedYoungsters?.map((v, i) => {
-                                            return (
-                                                <TouchableOpacity
-                                                    key={i}
-                                                    onPress={() => {
-                                                        if (!selectedYoungsters.includes(v)) setSelectedYoungsters([...selectedYoungsters, v])
-                                                        textInputRef.clear();
-                                                        setYoungstersData([]);
-                                                    }}
-                                                    style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
-                                                    <Image
-                                                        style={{ width: 30, height: 30, borderRadius: 15 }}
-                                                        source={{ uri: v?.profileImage }}
-                                                    />
-                                                    <Text style={{ color: "black", fontFamily: fonts.PRe, fontSize: 14, marginLeft: 10 }} key={i}>{v.userId?.userName}</Text>
-                                                    <TouchableOpacity
-                                                        onPress={() => {
-                                                            let arr = selectedYoungsters;
-                                                            let findIndex = arr.indexOf(selectedYoungsters);
-                                                            arr.splice(findIndex, 1);
-                                                            setSelectedYoungsters(arr);
-                                                            forceUpdate();
-                                                        }}
-                                                        style={{ position: 'absolute', right: 0, width: 40, height: 30, }}>
-                                                        <TrashIcon color="red" />
-                                                    </TouchableOpacity>
-                                                </TouchableOpacity>
-                                            )
-                                        })
-                                    }
-                                </View>
-                            }
-                            {/* <TouchableOpacity
-                                onPress={() => {
-                                    // if (skill.length > 1) {
-                                    // textInputRef.clear();
-                                    // doMakeSkills()
-                                    // }
+                    {params?.minAgeToParticipate <= 18 && < ChildrenInfo />}
 
-                                }}
-                                style={{ position: 'absolute', padding: 10, marginTop: 0, right: 0 }}>
-                                <Text style={{ fontSize: 34, color: '#241414', fontFamily: fonts.MRe, }}>+</Text>
-                            </TouchableOpacity> */}
-                        </View>
 
-                        <View style={{ flexDirection: 'row', width: "100%", justifyContent: 'space-between', alignItems: 'center', marginTop: 15 }}>
-                            <TouchableOpacity
-                                onPress={() => setSelectedYoungsters([])}
-                                style={{ marginTop: 20 }}>
-                                <Text style={{ color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 10, textDecorationLine: 'underline', }}>reset</Text>
-                            </TouchableOpacity>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                {/* <TouchableOpacity style={{ height: 23, borderRadius: 10, paddingHorizontal: 10, justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginRight: 10 }}>
-                                    <Text style={{ color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 10, }}>share happening</Text>
-                                </TouchableOpacity> */}
-
-                                {/* <TouchableOpacity style={[styles.popupBtn, { margin: 0 }]}>
-                                    <Text style={[styles.popupBtnTitle,]}>Save</Text>
-                                </TouchableOpacity> */}
-                            </View>
-                        </View>
-                    </View >}
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigate('ReviewJoining', {
-                                data: props.route.params?.data,
-                                fellowWantToComeAlone: true,
-                            })
-                        }}
-                        style={[styles.shadow, { width: "100%", paddingVertical: 15, paddingLeft: 20, paddingRight: 10, borderRadius: 12, marginTop: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
-                        <Text style={[styles.headingText, { fontSize: 14 }]}>I'm Not Going With Children or{"\n"}youngsters</Text>
-                        <NextIcon style={{ marginLeft: 10 }} />
-                    </TouchableOpacity>
                 </ScrollView>
+
             </View>
+
+            <TouchableOpacity
+                onPress={() => {
+                    let obj = props.route.params?.data;
+                    obj.childrens = 0;
+                    navigate('ReviewJoining', {
+                        data: obj,
+                        fellowWantToComeAlone: true,
+                    })
+                }}
+                style={[styles.shadow, { width: "90%", alignSelf: 'center', paddingVertical: 15, paddingLeft: 20, paddingRight: 10, borderRadius: 12, marginTop: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', position: 'absolute', bottom: 100 }]}>
+                <Text style={[styles.headingText, { fontSize: 14 }]}>I'm not going with children</Text>
+                {/* //or{"\n"}youngsters */}
+                <NextIcon style={{ marginLeft: 10 }} />
+            </TouchableOpacity>
 
             <HappeningStep
                 onPress={() => {
@@ -353,7 +252,7 @@ const GoingWith = (props) => {
                     </TouchableOpacity>
                 </View>
             </ReactNativeModal>
-        </SafeAreaView>
+        </View>
     )
 }
 
@@ -435,7 +334,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white', elevation: 2, alignItems: 'center', justifyContent: 'center'
     },
     shadow: {
-        shadowColor: 'rgba(0, 0, 0, 0.8)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5, elevation: 2,
+        shadowColor: 'rgba(0, 0, 0, 0.7)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.3, elevation: 2,
         backgroundColor: 'white'
     },
 
@@ -444,7 +343,7 @@ const styles = StyleSheet.create({
     },
 
     quantityBox: {
-        width: 52, height: 37, borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10
+        width: 52, height: 37, borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10,
     }
 
 
@@ -453,3 +352,113 @@ const styles = StyleSheet.create({
 })
 
 export default GoingWith
+
+
+
+// {params?.minAgeToParticipate <= 18 && <View style={[styles.shadow, { width: "100%", paddingVertical: 15, paddingLeft: 20, paddingRight: 10, borderRadius: 12, marginTop: 15 }]}>
+// <View>
+//     <Text style={styles.headingText}>Youngsters</Text>
+//     <Text style={[styles.regulareText, { fontSize: 10 }]}>12-18 years old</Text>
+//     <Text style={[styles.regulareText, { fontSize: 10, marginTop: 4 }]}>You can bring a maximum of 5 children.</Text>
+// </View>
+// <View>
+//     <View>
+//         <TextInput
+//             placeholder='Search for youngsters to join'
+//             ref={(ref) => textInputRef = ref}
+//             placeholderTextColor={"#7b7b7b"}
+//             onChangeText={(v) => search(v)}
+//             style={{
+//                 width: "100%", height: 47, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
+//                 fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10, marginTop: 10
+//             }}
+//         />
+//         {
+//             youngstersData[0] &&
+//             <View style={{ backgroundColor: 'white', elevation: 2, borderTopRightRadius: 0, borderTopLeftRadius: 0, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 10 }}>
+//                 {youngstersData?.map((v, i) => {
+//                     return (
+//                         <TouchableOpacity
+//                             onPress={() => {
+//                                 if (!selectedYoungsters.includes(v)) setSelectedYoungsters([...selectedYoungsters, v])
+//                                 textInputRef.clear();
+//                                 setYoungstersData([]);
+//                             }}
+//                             style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
+//                             <Image
+//                                 style={{ width: 30, height: 30, borderRadius: 15 }}
+//                                 source={{ uri: v?.profileImage }}
+//                             />
+//                             <Text style={{ color: "black", fontFamily: fonts.PRi, fontSize: 14, marginLeft: 10 }} key={i}>{v.userId?.userName}</Text>
+//                         </TouchableOpacity>
+//                     )
+//                 })}
+//             </View>
+//         }
+//     </View>
+//     {
+//         selectedYoungsters &&
+//         <View style={{}}>
+//             {
+//                 selectedYoungsters?.map((v, i) => {
+//                     return (
+//                         <TouchableOpacity
+//                             key={i}
+//                             onPress={() => {
+//                                 if (!selectedYoungsters.includes(v)) setSelectedYoungsters([...selectedYoungsters, v])
+//                                 textInputRef.clear();
+//                                 setYoungstersData([]);
+//                             }}
+//                             style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
+//                             <Image
+//                                 style={{ width: 30, height: 30, borderRadius: 15 }}
+//                                 source={{ uri: v?.profileImage }}
+//                             />
+//                             <Text style={{ color: "black", fontFamily: fonts.PRe, fontSize: 14, marginLeft: 10 }} key={i}>{v.userId?.userName}</Text>
+//                             <TouchableOpacity
+//                                 onPress={() => {
+//                                     let arr = selectedYoungsters;
+//                                     let findIndex = arr.indexOf(selectedYoungsters);
+//                                     arr.splice(findIndex, 1);
+//                                     setSelectedYoungsters(arr);
+//                                     forceUpdate();
+//                                 }}
+//                                 style={{ position: 'absolute', right: 0, width: 40, height: 30, }}>
+//                                 <TrashIcon color="red" />
+//                             </TouchableOpacity>
+//                         </TouchableOpacity>
+//                     )
+//                 })
+//             }
+//         </View>
+//     }
+//     {/* <TouchableOpacity
+//         onPress={() => {
+//             // if (skill.length > 1) {
+//             // textInputRef.clear();
+//             // doMakeSkills()
+//             // }
+
+//         }}
+//         style={{ position: 'absolute', padding: 10, marginTop: 0, right: 0 }}>
+//         <Text style={{ fontSize: 34, color: '#241414', fontFamily: fonts.MRe, }}>+</Text>
+//     </TouchableOpacity> */}
+// </View>
+
+// <View style={{ flexDirection: 'row', width: "100%", justifyContent: 'space-between', alignItems: 'center', marginTop: 15 }}>
+//     <TouchableOpacity
+//         onPress={() => setSelectedYoungsters([])}
+//         style={{ marginTop: 20 }}>
+//         <Text style={{ color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 10, textDecorationLine: 'underline', }}>reset</Text>
+//     </TouchableOpacity>
+//     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//         {/* <TouchableOpacity style={{ height: 23, borderRadius: 10, paddingHorizontal: 10, justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginRight: 10 }}>
+//             <Text style={{ color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 10, }}>share happening</Text>
+//         </TouchableOpacity> */}
+
+//         {/* <TouchableOpacity style={[styles.popupBtn, { margin: 0 }]}>
+//             <Text style={[styles.popupBtnTitle,]}>Save</Text>
+//         </TouchableOpacity> */}
+//     </View>
+// </View>
+// </View >}

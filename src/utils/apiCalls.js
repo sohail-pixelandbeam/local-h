@@ -1,5 +1,5 @@
 const { urls } = require("../utils/Api_urls");
-import { doConsole, retrieveItem } from "./../utils/functions"
+import { doConsole, formatDate, retrieveItem } from "./../utils/functions"
 
 async function doPost(body_data, url_plus) {
 
@@ -42,7 +42,7 @@ export async function apiRequest(body_data, url_plus, method = "POST") {
   var url;
   url = urls.API + url_plus
   // + "&&" + last_request;
-  if (method == 'GET') url += '?' + Object.keys(body_data).map((k) => (k + '=' + encodeURIComponent(body_data[k]))).join('&');
+  if (method == 'GET' && body_data.token) url += '?' + Object.keys(body_data).map((k) => (k + '=' + encodeURIComponent(body_data[k]))).join('&');
 
   console.log(" I request @ " + url);
   console.log(body_data);
@@ -64,11 +64,44 @@ export async function apiRequest(body_data, url_plus, method = "POST") {
       .then((response) => response.json())
       // .then((response) => response.text())
       .then((responseJson) => {
-        console.log(responseJson)
+        // console.log(responseJson)
         return responseJson
       }).catch((error) => {
         console.log(error)
         return error
+      })
+  )
+
+
+  // return {isError,data};
+}
+
+export async function apiFormDataRequest(body_data, url_plus, method = "POST") {
+
+  const formData = new FormData();
+  for (let key in body_data) {
+    formData.append(key, body_data[key])
+  }
+  var myHeaders = new Headers();
+  const token = await retrieveItem('login_data');
+  myHeaders.append("Authorization", `Bearer ${token?.token}`);
+
+
+  var url;
+  url = urls.API + url_plus
+
+  return (
+    fetch(url, {
+      method: 'POST',
+      headers: myHeaders,
+      body: formData
+    })
+      .then(data => data.json())
+      .then(data => {
+        return data;
+      })
+      .catch(error => {
+        return error;
       })
   )
 

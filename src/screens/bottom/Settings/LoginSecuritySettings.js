@@ -55,12 +55,13 @@ const LoginSecuritySettings = () => {
                         <View>
 
                             <TouchableOpacity
+                                onPress={() => navigate('EditPassword')}
                                 style={{ width: "100%", justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 10, borderBottomWidth: 1, borderColor: '#707070', marginTop: 20 }}>
                                 <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760' }}>Password</Text>
                                 <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5B4DBC' }}>Edit</Text>
                             </TouchableOpacity>
 
-                            <View style={{ width: "100%", justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 10, borderBottomWidth: 1, borderColor: '#707070', marginTop: 20 }}>
+                            {/* <View style={{ width: "100%", justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 10, borderBottomWidth: 1, borderColor: '#707070', marginTop: 20 }}>
                                 <View style={{ width: "80%" }}>
                                     <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760' }}>Hide Timestamps</Text>
                                     <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5D5760' }}>hide last active time on timeline</Text>
@@ -73,9 +74,9 @@ const LoginSecuritySettings = () => {
                                     value={emailR}
                                     ios_backgroundColor="#707070"
                                 />
-                            </View>
+                            </View> */}
 
-                            <View style={{ width: "100%", justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 10, borderBottomWidth: 1, borderColor: '#707070', marginTop: 20 }}>
+                            {/* <View style={{ width: "100%", justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 10, borderBottomWidth: 1, borderColor: '#707070', marginTop: 20 }}>
                                 <View style={{ width: "70%" }}>
                                     <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760' }}>Facebook</Text>
                                     <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5D5760' }}>Not connected</Text>
@@ -110,7 +111,7 @@ const LoginSecuritySettings = () => {
                                 <TouchableOpacity>
                                     <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5B4DBC' }}>Disconnect</Text>
                                 </TouchableOpacity>
-                            </View>
+                            </View> */}
 
 
 

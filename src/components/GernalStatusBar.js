@@ -6,7 +6,7 @@ import { acolors } from '../constants/colors';
 
 
 
-const GeneralStatusBar = ({barStyle, backgroundColor = acolors.primary, ...props }) => (
+const GeneralStatusBar = ({barStyle = "light-content", backgroundColor = acolors.primary, ...props }) => (
     <View
         style={[
             Platform.OS === 'ios' ? styles.statusBar : styles.statusBar,

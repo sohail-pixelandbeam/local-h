@@ -26,11 +26,12 @@ import { useFocusEffect } from '@react-navigation/native';
 
 var alertRef;
 
-const Profile = () => {
+const Profile = (props) => {
 
     const { state, setHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
     const [selectedTab, setSelectedTab] = useState('Profile');
+
 
     const [bookingStatusAlert, setBookingStatusAlert] = useState(false)
     const [bookingStatusAlertMsg, setBookingStatusAlertMsg] = useState('');
@@ -44,6 +45,11 @@ const Profile = () => {
 
     const [isEditProfile, setEditProfile] = useState(false);
     const [profilePic, setProfilePic] = useState(''); // WHEN EDITING THE PROFILE
+
+    const [isGuest, setIsGuest] = useState(false);
+
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 
 
     // "Timeline",
@@ -182,6 +188,7 @@ const Profile = () => {
                 console.log(err)
             })
     };
+
     async function getMyBookings(refreshing = false) {
         !refreshing && setLoading(true);
         // console.log('getMyHosting/' + state.userData._id)
@@ -212,14 +219,31 @@ const Profile = () => {
     }
 
     useEffect(() => {
-        console.log('setProfileData', profileData)
-        getProfileDetails();
-        getMyHostings();
+
+        setLoading(true);
+        retrieveItem('login_data')
+            .then(data => {
+                if (data) {
+                    getProfileDetails();
+                    getMyHostings();
+                }
+                else {
+                    setIsGuest(true)
+                    setLoading(false);
+                }
+            })
+
+
         // getLocationByIp();
     }, []);
 
     useFocusEffect(React.useCallback(
         () => {
+            if (props.route.params?.focused) {
+                setSelectedTab(props.route.params?.focused);
+                getMyBookings();
+
+            }
             getMyHostings();
         }, [tabs == 'My Hostings'],
     ))
@@ -239,15 +263,20 @@ const Profile = () => {
                 // [{ status: 'Confirmed' }, { status: 'Pending' }, { status: 'Cancelled' },
                 // { status: 'awaiting 4 fellows' }, { status: 'Rejected' }, { status: 'Cancellation request pending' }]
                 myBookings?.map((v, i) => {
-                    let fellowLength = v?.fellow?.length
+                    let fellowLength = v?.fellow?.length;
+                    let happening = v.booking?.happeningId;
+                    const date = new Date(happening?.startingDate)
+                    const dayOfWeek = daysOfWeek[(date.getDay() + 1) % 7];
+                    const dateString = dayOfWeek + ", " + date.getDate() + " " + months[date.getMonth()]
+                    console.log('v.status', v.booking.status)
                     return (
                         <View
                             key={i}
                             style={styles.bookingCard}>
                             <View style={{ flexDirection: 'row', width: "100%", }}>
                                 <View style={{ width: "50%" }}>
-                                    <Text style={styles.bookingDate}>Tue, 29 Mar - {v?.happeningOnLocation ? "On Location" : "Online"}</Text>
-                                    <Text style={styles.bookingTime}>{v.startTime} - {v.endTime}</Text>
+                                    <Text style={styles.bookingDate}>{dateString} - {happening?.happeningOnLocation ? "On Location" : "Online"}</Text>
+                                    <Text style={styles.bookingTime}>{happening?.startTime} - {happening.endTime}</Text>
                                     {/* <Image
                                         // style={{width:40,height:40,borderRadius:20}}
                                         source={require('../../static_assets/peopleJoinedImages.png')}
@@ -284,7 +313,7 @@ const Profile = () => {
                                     <TouchableOpacity
                                         onPress={() => {
                                             switch (v.booking.status) {
-                                                case 'Confirmed':
+                                                case 'approved':
                                                     navigateFromStack('BookingStack', 'ConfirmHappeningStatus')
                                                     return;
                                                 case 'pending':
@@ -309,9 +338,9 @@ const Profile = () => {
 
                                         }}
 
-                                        style={[styles.bookingStatusContainer, v.status !== 'Confirmed' && { borderColor: '#E53535' }]}>
-                                        <Text style={[styles.bookingStatus, v.status !== 'Confirmed' && { color: '#E53535' }]}>{v.booking?.status.charAt(0).toUpperCase() + v.booking?.status.slice(1)}</Text>
-                                        {v.booking.status !== 'approved' ?
+                                        style={[styles.bookingStatusContainer, v.booking.status !== 'Accept' && { borderColor: '#E53535' }]}>
+                                        <Text style={[styles.bookingStatus, v.booking.status !== 'Accept' && { color: '#E53535' }]}>{v.booking?.status.charAt(0).toUpperCase() + v.booking?.status.slice(1)}</Text>
+                                        {v.booking.status !== 'Accept' ?
                                             <InfoIcon color="#E53535" />
 
                                             :
@@ -321,16 +350,16 @@ const Profile = () => {
                                 </View>
                                 <View style={{ width: "49%", marginLeft: 10 }}>
                                     <Image
-                                        source={require('../../static_assets/FeaturedImage.png')}
+                                        source={{ uri: happening?.addPhotosOfYourHappening[0] }}
                                         style={{ width: "100%", height: 103, borderRadius: 21, }}
                                     />
-                                    <Text style={[styles.bookingTitle, { width: "90%" }]}>Restore coral reefs in open sea</Text>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text style={[styles.bookingTitle, { width: "90%" }]}>{happening?.happeningTitle}</Text>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
                                         <Image
                                             style={{ width: 33, height: 33, borderRadius: 33 / 2, marginRight: 10 }}
-                                            source={require('../../static_assets/profileImg.png')}
+                                            source={{ uri: happening?.userProfileId?.profileImage }}
                                         />
-                                        <Text style={styles.hostedBy}>Hosted by{"\n"}Sanne de Wit</Text>
+                                        <Text style={styles.hostedBy}>Hosted by{"\n"}{happening?.userProfileId?.userId?.firstName + " " + happening?.userProfileId?.userId?.lastName}</Text>
                                     </View>
                                 </View>
 
@@ -416,6 +445,39 @@ const Profile = () => {
     )
 
 
+    if (isGuest) {
+        return (
+            <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
+                <GeneralStatusBar backgroundColor='white' barStyle="light-content" />
+                {loading && <Loader />}
+
+                <View
+                    style={{ width: 115, height: 115, alignSelf: 'center' }}
+                >
+                    <Image
+                        style={{ width: 115, height: 115, borderRadius: 115 / 2, borderWidth: 5, borderColor: acolors.primary, alignSelf: 'center', marginTop: 20 }}
+                        source={{ uri: 'https://cdn.pixabay.com/photo/2016/11/18/23/38/child-1837375_640.png' }}
+                    // source={{ uri: profilePic.uri ?? profileData?.userProfile?.profileImage }}
+                    />
+                </View>
+                <Text style={[styles.headingText, { marginTop: 5, alignSelf: 'center', marginTop: 20 }]}>{"Guest"}</Text>
+
+                <View style={{ position: 'absolute', bottom: Platform.OS == 'ios' ? 80 : 50, paddingTop: 10, backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-between', width: "100%", paddingHorizontal: 20, elevation: 5, alignItems: 'center', paddingBottom: 10, shadowOffset: { width: 1, height: 1 } }}>
+
+                    <TouchableOpacity onPress={() => setConfirmSignOut(true)}>
+                        <Text style={styles.signOut}></Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => navigate('ThingsConsider')}
+                        style={styles.submitHappeningBtn}>
+                        <Text style={styles.submitHappeningText}>+ Submit a Happening</Text>
+                    </TouchableOpacity>
+
+
+                </View>
+            </View>
+        )
+    }
 
     return (
         <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
@@ -514,9 +576,9 @@ const Profile = () => {
                 </>
             }
 
-            {profileData?.userProfile?.address !== "Not Provided" && <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 20 }}>
+            {profileData?.userProfile?.address !== "Not Provided" || profileData?.userProfile?.address !== '' && <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 30 }}>
                 <HappeningLocationIconSmall width={11} height={14} />
-                <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5, }}>{profileData?.userProfile?.address} AMSTERDAM, NETHERLANDS</Text>
+                <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5, }}>{profileData?.userProfile?.address} </Text>
             </View>
             }
             <Text style={[styles.headingText, { marginTop: 5, alignSelf: 'center', marginTop: 20 }]}>{profileData?.userProfile?.userId?.firstName.concat(' ' + profileData?.userProfile?.userId?.lastName)}</Text>
@@ -629,7 +691,8 @@ const styles = StyleSheet.create({
         fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760',
     },
     bookingCard: {
-        width: "101%", marginTop: 20, elevation: 5, backgroundColor: 'white', padding: 10, shadowColor: 'rgba(0,0,0,0.6)', shadowOpacity: 0.5,
+        width: "98%", alignSelf: 'center', marginTop: 20, elevation: 5, backgroundColor: 'white', padding: 10,
+        shadowColor: '#dedede', shadowOpacity: 0.4, margin: 5, borderRadius: 10, paddingHorizontal: 14
     },
     bookingDate: {
         fontFamily: fonts.PSBo, fontSize: 10, color: '#5B4DBC'
