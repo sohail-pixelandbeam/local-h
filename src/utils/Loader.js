@@ -46,7 +46,7 @@ const Loader = () => {
 
     return (
         <View style={{ backgroundColor: 'red', position: "absolute", width: "100%", top: 0, left: 0, right: 0, bottom: 9, flex: 1, zIndex: 999999999, backgroundColor: "rgba(0,0,0,0.5)", justifyContent: "center", alignItems: "center" }}>
-            <ActivityIndicator color={acolors.primary} size={"large"} />
+            <ActivityIndicator color={'#fff'} size={"large"} />
             {/* <Animated.Image
                 style={{transform: [{rotate: spin}] , width:40,height:40,zIndex:99999999999999999,backgroundColor:"white",borderRadius:100}}
                 source={require("../../assets/loader.png")}

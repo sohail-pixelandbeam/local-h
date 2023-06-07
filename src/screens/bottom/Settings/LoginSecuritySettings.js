@@ -140,7 +140,9 @@ const LoginSecuritySettings = () => {
                                     <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760' }}>Account</Text>
                                     <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5D5760' }}>Deactivate your account</Text>
                                 </View>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => navigate('DActiveBooking')}
+                                >
                                     <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5B4DBC' }}>Deactivate</Text>
                                 </TouchableOpacity>
                             </View>

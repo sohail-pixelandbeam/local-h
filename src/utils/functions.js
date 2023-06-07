@@ -9,6 +9,8 @@ import { navigate } from '../../Navigations';
 import { useRoute } from '@react-navigation/native';
 import { launchImageLibrary } from 'react-native-image-picker';
 
+import GetLocation from 'react-native-get-location'
+
 
 
 
@@ -251,8 +253,13 @@ export async function getUserLocation() {
         resolve(position.coords);
       },
       (error) => {
-        Alert.alert("Please enable location to see nearby happenings")
-        reject(error);
+
+        // GetLocation.openGpsSettings();
+        // Geolocation.openGPs
+        // Alert.alert("Please enable location to see nearby happenings")
+        resolve({
+          error: '1' // LOCATION OFF ERROR
+        });
       },
       {
         enableHighAccuracy: true,

@@ -4,5 +4,6 @@ export const acolors = {
     btnPrimary: "#ffa183",
     btnSecondry: "#ffa183",
     grey : "#5d5760",
-    lighGrey: "#DADADA"
+    lighGrey: "#DADADA",
+    primaryLight: '#5B4DBC'
 }

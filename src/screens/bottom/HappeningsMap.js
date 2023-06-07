@@ -17,6 +17,10 @@ import { Context } from '../../Context/DataContext'
 import MapView, { Callout, PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { goBack, navigateFromStack } from '../../../Navigations';
 import HappeningFilterModal from '../../common/HappeningFilterModal';
+import GeneralStatusBar from '../../components/GernalStatusBar';
+import AlertMsg from '../../common/AlertMsg';
+import GetLocation from 'react-native-get-location';
+import { useIsFocused } from '@react-navigation/core';
 
 
 
@@ -30,7 +34,7 @@ const HappeningsMap = () => {
     const forceUpdate = useForceUpdate();
     const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
     const { state, setUserGlobal, userProfileData } = useContext(Context);
-
+    const isFocused = useIsFocused();
     const [userSelectedLocation, setUserSelectedLocation] = useState({
         latitude: 0.00,
         longitude: 0.11,
@@ -46,6 +50,7 @@ const HappeningsMap = () => {
     const [filterType, setFilterType] = useState('');
     const [happeningData, setHappeningData] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [gpsSettingsPopup, setGpsSettingPopup] = useState(false);
     const userData = state.userData;
     const profileData = state.profileData;
 
@@ -57,13 +62,18 @@ const HappeningsMap = () => {
     ]
 
 
-    async function getHappeningDataFromServer(refresh = false) {
+    async function getHappeningDataFromServer(lat, lng) {
 
         setLoading(true);
-        apiRequest('', 'allHappeningOnMapLocation', "GET")
+        const body = {
+            latitude: lat,
+            longitude: lng
+        }
+        apiRequest(body , 'geotagging/GetAllNearestHappening', "GET")
             .then(data => {
                 setLoading(false);
                 if (data.status) {
+                    console.log('_____data', data)
                     setHappeningData(data.data);
                 }
 
@@ -89,29 +99,47 @@ const HappeningsMap = () => {
 
     async function getLocation() {
         let loc = await getUserLocation();
-        console.log('location===,',loc)
+        if (loc?.error == '1') {
+            console.log('error_____ ')
+            setGpsSettingPopup(true);
+            return
+        }
+        getHappeningDataFromServer(loc?.latitude, loc?.longitude)
         setUserSelectedLocation({
             ...userSelectedLocation,
             latitude: loc?.latitude,
             longitude: loc?.longitude
         })
 
+
     }
 
     useEffect(() => {
         getLocation()
-        getHappeningDataFromServer()
-    }, [])
+    }, [isFocused])
 
 
     return (
-        <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1, }}>
+        <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
             {loading && <Loader />}
-            <StatusBar
-                barStyle={"dark-content"}
-                // // translucent={false}
-                backgroundColor={"white"}
+            <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
+            <AlertMsg
+                heading={"Please enable location to see nearby happenings"}
+                desc=""
+                isCross={true}
+                renderBtn={true}
+                // descStyle={{ lineHeight: 22, color: '#5D5760', fontFamily: fonts.PSBo }}
+                btnTitle="Enable"
+                state={gpsSettingsPopup}
+                onBackdropPress={() => setGpsSettingPopup(false)}
+                onPress={() => {
+                    setGpsSettingPopup(false)
+                    GetLocation.openGpsSettings();
+                }}
+
+                containerStyle={{ paddingHorizontal: 25, paddingBottom: 50, paddingTop: 10 }}
             />
+
 
             <View style={{ flexDirection: 'row', width: "90%", alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
                 <TouchableOpacity onPress={() => goBack()} >
@@ -265,7 +293,7 @@ const HappeningsMap = () => {
             />
 
 
-        </SafeAreaView >
+        </View >
     )
 }
 

@@ -29,7 +29,7 @@ const SettingsScreen = () => {
         { name: "Notifications", navigateTo: 'NotificationSettings' },
         { name: "Translation", navigateTo: 'TranslationSettings' },
         { name: "Login & Security", navigateTo: 'LoginSecuritySettings' },
-        { name: "Time Zones", navigateTo: 'PersonalInfo' },
+        { name: "Time Zones", navigateTo: 'Timezones' },
         { name: "Get Verified", navigateTo: 'NotificationSettings' },
         { name: "Help & Tips ", navigateTo: 'NotificationSettings' },
     ];

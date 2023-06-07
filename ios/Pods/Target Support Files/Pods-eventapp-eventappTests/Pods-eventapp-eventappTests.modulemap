@@ -1,6 +1,0 @@
-module Pods_eventapp_eventappTests {
-  umbrella header "Pods-eventapp-eventappTests-umbrella.h"
-
-  export *
-  module * { export * }
-}

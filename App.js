@@ -79,6 +79,10 @@ import EditHappeningGroup from './src/screens/bottom/happening/editHappeningScre
 import EditPhotos from './src/screens/bottom/happening/editHappeningScreens/EditPhotos';
 import EditFacilities from './src/screens/bottom/happening/editHappeningScreens/EditFacilities';
 import EditPassword from './src/screens/bottom/EditPassword';
+import Timezones from './src/screens/bottom/Settings/Timezones';
+import DActiveBooking from './src/screens/bottom/Settings/DeactivateScreens/DActiveBookings';
+import DReason from './src/screens/bottom/Settings/DeactivateScreens/DReason';
+import DFinal from './src/screens/bottom/Settings/DeactivateScreens/DFinal';
 
 
 
@@ -214,7 +218,7 @@ function App() {
       }
       {/* {() => Favourites()} */}
 
-      {/* <Tab.Screen
+      <Tab.Screen
         options={() => ({
           tabBarLabel: () => null,
           tabBarIcon: ({ color, focused }) => (
@@ -222,7 +226,7 @@ function App() {
           ),
         })}
         name="HappeningsMap" component={HappeningsMap}
-      /> */}
+      />
 
 
       {/* <Tab.Screen
@@ -408,6 +412,11 @@ function App() {
             <Stack.Screen name="EditPhotos" component={EditPhotos} />
             <Stack.Screen name="EditFacilities" component={EditFacilities} />
             <Stack.Screen name="EditPassword" component={EditPassword} />
+            <Stack.Screen name="Timezones" component={Timezones} />
+            {/* Deactivate screens */}
+            <Stack.Screen name="DActiveBooking" component={DActiveBooking} />
+            <Stack.Screen name="DReason" component={DReason} />
+            <Stack.Screen name="DFinal" component={DFinal} />
           </Stack.Navigator>
         }
 

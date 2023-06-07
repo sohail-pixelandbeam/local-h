@@ -96,6 +96,7 @@ export async function apiFormDataRequest(body_data, url_plus, method = "POST") {
       headers: myHeaders,
       body: formData
     })
+      // .then(data => data.text())
       .then(data => data.json())
       .then(data => {
         return data;
