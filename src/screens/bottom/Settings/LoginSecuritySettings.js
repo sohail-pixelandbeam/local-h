@@ -25,6 +25,10 @@ const LoginSecuritySettings = () => {
     const { state } = useContext(Context);
 
 
+    const doDeactivate = () => {
+        navigate('DReason')
+    }
+
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -140,7 +144,11 @@ const LoginSecuritySettings = () => {
                                     <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760' }}>Account</Text>
                                     <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5D5760' }}>Deactivate your account</Text>
                                 </View>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        doDeactivate()
+                                    }}
+                                >
                                     <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5B4DBC' }}>Deactivate</Text>
                                 </TouchableOpacity>
                             </View>

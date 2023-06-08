@@ -25,6 +25,8 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.reactnativedocumentpicker.DocumentPickerPackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.RNGestureHandlerPackage;
+// react-native-get-location
+import com.github.douglasjunior.reactNativeGetLocation.ReactNativeGetLocationPackage;
 // react-native-image-picker
 import com.imagepicker.ImagePickerPackage;
 // react-native-maps
@@ -93,6 +95,7 @@ public class PackageList {
       new RNDeviceInfo(),
       new DocumentPickerPackage(),
       new RNGestureHandlerPackage(),
+      new ReactNativeGetLocationPackage(),
       new ImagePickerPackage(),
       new MapsPackage(),
       new PagerViewPackage(),

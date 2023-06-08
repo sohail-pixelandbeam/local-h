@@ -29,14 +29,13 @@ async function doPost(body_data, url_plus) {
 async function getUserToken() {
   let token = await retrieveItem('login_data');
   return token?.token;
-
 }
 
-export async function apiRequest(body_data, url_plus, method = "POST") {
+export async function apiRequest(body_data, url_plus, method = "POST", userToken) {
 
 
-  if (!body_data) body_data = { token: await getUserToken() }
-  else body_data["token"] = await getUserToken()
+  if (!body_data) body_data = { token: userToken ?? await getUserToken() }
+  else body_data["token"] = userToken ?? await getUserToken()
   // let last_request = new Date();
   // last_request = last_request.getFullYear() + "-" + (last_request.getMonth() + 1) + "-" + last_request.getDate() + " " + last_request.getHours() + ":" + last_request.getMinutes()
   var url;
@@ -86,7 +85,6 @@ export async function apiFormDataRequest(body_data, url_plus, method = "POST") {
   const token = await retrieveItem('login_data');
   myHeaders.append("Authorization", `Bearer ${token?.token}`);
 
-
   var url;
   url = urls.API + url_plus
 
@@ -96,6 +94,7 @@ export async function apiFormDataRequest(body_data, url_plus, method = "POST") {
       headers: myHeaders,
       body: formData
     })
+      // .then(data => data.text())
       .then(data => data.json())
       .then(data => {
         return data;

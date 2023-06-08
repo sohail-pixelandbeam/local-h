@@ -5,6 +5,8 @@ import {
     KeyboardAvoidingView
 } from 'react-native'
 import { BackIcon, CrossIcon, EditPencilIcon, FilterIcon, HeartWhiteIcon, PlusIcon, SearchIcon, TickIcon, TickIconWhite } from '../../components/Svgs'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+
 import { fonts } from '../../constants/fonts';
 import { acolors } from '../../constants/colors';
 import Modal from "react-native-modal";
@@ -426,6 +428,7 @@ const Home = () => {
                 setLoading(false);
                 if (data.status == true) {
                     alertRef.alertWithType('success', 'Success', 'Happening added in wishlist');
+                    getHappeningDataFromServer();
                     getWhishLists();
                     return
                 }
@@ -436,7 +439,6 @@ const Home = () => {
 
             })
     }
-
 
     function getWhishLists() {
 
@@ -455,19 +457,39 @@ const Home = () => {
             })
     }
 
-    // getLocation();
+    function doFilter(fromTime, endTime, theme) {
+
+        const body = {
+            themeOfYourHappening: theme,
+            // startTime: fromTime,
+            // endTime: endTime
+        }
+        console.log('body___', body)
+        setLoading(true)
+        apiRequest(body, 'search-and-filter/sort-my-search-result', 'GET')
+            .then(data => {
+                console.log('data___', data)
+                setLoading(false)
+                if (data.status) {
+                    setAllHappenings(data?.data.reverse());
+                }
+
+            })
+
+    }
+
+
     useEffect(() => {
         getHappeningDataFromServer();
+        getHappeningSubmissionData();
         retrieveItem('login_data')
             .then(data => {
                 if (data) {
                     makeStaticArrays();
                     getLoginAndProfileDataFromLocal();
-                    getHappeningSubmissionData();
                     checkProfileCompletionSteps()
                     FilterHeader.showCrossBtn = true;
                     getProfileDetails();
-                    getHappeningSubmissionData();
                     getWhishLists();
 
                 }
@@ -928,14 +950,14 @@ const Home = () => {
                         <SearchIcon />
                     </TouchableOpacity>
                 </View>
-                {/* <TouchableOpacity
+                <TouchableOpacity
                     onPress={() => {
                         setFilterType('All');
                         setFilterModal(true);
                     }}
                     style={{ marginRight: 10 }}>
                     <FilterIcon />
-                </TouchableOpacity> */}
+                </TouchableOpacity>
             </View>
             {/* <View style={{ marginLeft: "4%", flexDirection: 'row', marginTop: 20, width: "100%", marginBottom: 10 }}>
                 <FlatList
@@ -998,7 +1020,17 @@ const Home = () => {
                                                 setCreateWishListModal(true)
                                             }}
                                             style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
-                                            <HeartWhiteIcon color={item.isFavorite ? 'red' : "rgba(0,0,0,0.8)"} />
+                                            {
+                                                item.isFavorite ?
+                                                    <AntDesign
+                                                        name='heart'
+                                                        color={"red"}
+                                                        size={20}
+                                                    />
+                                                    :
+                                                    <HeartWhiteIcon color={item.isFavorite ? 'red' : "rgba(0,0,0,0.8)"} />
+                                            }
+
                                         </TouchableOpacity>
                                         {/* <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
                                             {
@@ -1582,7 +1614,7 @@ const Home = () => {
                                         placeholder='e.g. Summer Plans 2022'
                                         placeholderTextColor={'#7B7B7B'}
                                         style={{ width: "100%", height: 44, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', paddingHorizontal: 12, fontFamily: fonts.PRe, fontSize: 12, color: '#222222', marginTop: 20 }}
-                                        // maxLength={50}
+                                    // maxLength={50}
                                     />
                                     {/* <Text style={{ fontFamily: fonts.PRe, fontSize: 12, color: '#7B7B7B', marginTop: 5 }}>50 characters maximum</Text> */}
                                     <TouchableOpacity
@@ -1658,6 +1690,7 @@ const Home = () => {
             </KeyboardAvoidingView>
 
             <HappeningFilterModal
+                onDone={doFilter}
                 isVisible={filterModal}
                 filterType={filterType}
                 setIsVisible={() => setFilterModal(false)}
@@ -1690,7 +1723,7 @@ const styles = StyleSheet.create({
         // borderWidth: 5,
     },
     textbox: {
-        width: "100%", height: 56, borderRadius: 22, backgroundColor: '#5b4dbc', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15, color: '#ffffff', fontFamily: fonts.PRe, fontSize: 14,
+        width: "98%", height: 56, borderRadius: 22, backgroundColor: '#5b4dbc', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15, color: '#ffffff', fontFamily: fonts.PRe, fontSize: 14,
     },
     categoriesView: {
         width: 93, height: 27, maxWidth: 391, borderRadius: 18, borderColor: '#b9b1f0', borderWidth: 3, backgroundColor: '#ffffff', alignItems: 'center', justifyContent: 'center', marginLeft: 10

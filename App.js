@@ -79,6 +79,15 @@ import EditHappeningGroup from './src/screens/bottom/happening/editHappeningScre
 import EditPhotos from './src/screens/bottom/happening/editHappeningScreens/EditPhotos';
 import EditFacilities from './src/screens/bottom/happening/editHappeningScreens/EditFacilities';
 import EditPassword from './src/screens/bottom/EditPassword';
+import Timezones from './src/screens/bottom/Settings/Timezones';
+import DActiveBooking from './src/screens/bottom/Settings/DeactivateScreens/DActiveBookings';
+import DReason from './src/screens/bottom/Settings/DeactivateScreens/DReason';
+import DFinal from './src/screens/bottom/Settings/DeactivateScreens/DFinal';
+import AccountDeActivated from './src/screens/bottom/Settings/DeactivateScreens/AccountDeActivated';
+import ActivateAccountVerifyOTP from './src/screens/bottom/Settings/DeactivateScreens/ActivateAccountVerifyOTP';
+import GetVerified from './src/screens/bottom/Settings/GetVerified';
+import GetVerifiedDetails from './src/screens/bottom/Settings/GetVerifiedDetails';
+import VerificationSubmitted from './src/screens/bottom/Settings/VerificationSubmitted';
 
 
 
@@ -214,7 +223,7 @@ function App() {
       }
       {/* {() => Favourites()} */}
 
-      {/* <Tab.Screen
+      <Tab.Screen
         options={() => ({
           tabBarLabel: () => null,
           tabBarIcon: ({ color, focused }) => (
@@ -222,7 +231,7 @@ function App() {
           ),
         })}
         name="HappeningsMap" component={HappeningsMap}
-      /> */}
+      />
 
 
       {/* <Tab.Screen
@@ -376,6 +385,8 @@ function App() {
             <Stack.Screen name="MainScreenO" component={MainScreenO} />
             <Stack.Screen name="TypeHappening" component={TypeHappening} />
 
+            <Stack.Screen name="AccountDeActivated" component={AccountDeActivated} />
+            <Stack.Screen name="ActivateAccountVerifyOTP" component={ActivateAccountVerifyOTP} />
 
 
           </Stack.Navigator>
@@ -408,6 +419,17 @@ function App() {
             <Stack.Screen name="EditPhotos" component={EditPhotos} />
             <Stack.Screen name="EditFacilities" component={EditFacilities} />
             <Stack.Screen name="EditPassword" component={EditPassword} />
+            <Stack.Screen name="Timezones" component={Timezones} />
+            {/* Get Verified Screen */}
+            <Stack.Screen name="GetVerified" component={GetVerified} />
+            <Stack.Screen name="GetVerifiedDetails" component={GetVerifiedDetails} />
+            <Stack.Screen name="VerificationSubmitted" component={VerificationSubmitted} />
+            {/* Deactivate screens */}
+            <Stack.Screen name="DActiveBooking" component={DActiveBooking} />
+            <Stack.Screen name="DReason" component={DReason} />
+            <Stack.Screen name="DFinal" component={DFinal} />
+            <Stack.Screen name="AccountDeActivated" component={AccountDeActivated} />
+            
           </Stack.Navigator>
         }
 

@@ -13,6 +13,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 import { goBack, navigate } from '../../../Navigations';
 import { storeItem, validateEmail } from '../../utils/functions';
 import { apiRequest } from '../../utils/apiCalls';
+import GeneralStatusBar from '../../components/GernalStatusBar';
 
 
 let alertRef;
@@ -72,7 +73,7 @@ const Signup = ({ navigation }) => {
 
         apiRequest(reqObj, 'auth/userSignUp')
             .then(data => {
-                console.log('data====',data)
+                console.log('data====', data)
                 if (data.status) {
                     alertRef.alertWithType('success', "Success", "Signup Successfully")
                     data.isVerify = false
@@ -97,6 +98,7 @@ const Signup = ({ navigation }) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: "#35208e" }}>
+            <GeneralStatusBar />
             {loading && <Loader />}
             <DropdownAlert ref={(ref) => alertRef = ref} />
             <View style={{

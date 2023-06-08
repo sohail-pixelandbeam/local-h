@@ -5,7 +5,7 @@ import { BackIcon, ChatIcon, NextIcon, RequestSubmittedSvg } from '../../../comp
 import { fonts } from '../../../constants/fonts'
 import { Context } from '../../../Context/DataContext'
 import { apiRequest } from '../../../utils/apiCalls'
-import { formatDateToString } from '../../../utils/functions';
+import { capitalizeFirstLetter, formatDateToString } from '../../../utils/functions';
 
 const AllBookings = (props) => {
 
@@ -15,13 +15,13 @@ const AllBookings = (props) => {
     const [happeningDetails, setHappeningDetails] = useState([]);
 
 
+
     async function getHostingDetails() {
         setLoading(true);
         // console.log('getMyHosting/' + item.userData._id)
         // apiRequest('', 'getMyHosting/' + state.userData._id, 'GET')
         apiRequest('', 'booking/getFellowBookingByHost/' + props.route.params?.params._id, 'GET')
             .then(data => {
-                console.log('booking/myHostingDetails', data);
                 setLoading(false)
                 if (data.status) {
                     setHappeningDetails(data.data)
@@ -57,7 +57,7 @@ const AllBookings = (props) => {
             <ScrollView contentContainerStyle={{ paddingBottom: 150 }} >
                 <View style={{ width: "90%", alignSelf: 'center' }}>
 
-                    <Text style={[styles.heading, { marginTop: 20, lineHeight: 35, color: '#ffa183' }]}>{item.happeningTitle}</Text>
+                    <Text style={[styles.heading, { marginTop: 20, lineHeight: 35, color: '#ffa183' }]}>{capitalizeFirstLetter(item.happeningTitle)}</Text>
 
                     {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15 }}>
                         <View style={{ width: "49%" }}>
@@ -97,28 +97,62 @@ const AllBookings = (props) => {
                     <Text style={[styles.heading, { marginTop: 10 }]}>Bookings</Text> */}
 
                     <TouchableOpacity
-                        onPress={() => navigate('MyHappeningDetails')}
+                        onPress={() => navigate('MyHappeningDetails', {
+                            params: props.route.params?.params,
+                            data: happeningDetails
+                        })}
                         style={styles.bookingCard}>
                         <View style={{ flexDirection: 'row', width: "100%", }}>
                             <View style={{ width: "50%" }}>
                                 <Text style={styles.bookingDate}>{item.startingDate} - {item.happeningOnLocation ? "On Location" : "Online"}</Text>
                                 <Text style={styles.bookingTime}>{item.startTime} - {item?.endTime}</Text>
-                                <Image
+
+                                <View style={{ flexDirection: 'row', marginLeft: 10 }}>
+                                    {
+                                        happeningDetails.approvedFellow?.map((v, i) => {
+                                            return (
+                                                <>
+                                                    <Image
+                                                        style={{ width: 40, height: 40, borderRadius: 20, marginLeft: -15 }}
+                                                        source={{ uri: v?.profileAndTimeline?.profileImage }}
+                                                    />
+                                                </>
+                                            )
+                                        })
+                                    }
+                                </View>
+                                <View style={{ flexDirection: 'row', marginBottom: -12 }}>
+
+                                    {
+                                        happeningDetails?.approvedFellow?.map((v, i) => {
+                                            // console.log('fellowLength', fellowLength)
+                                            return (
+                                                <View style={{ flexDirection: 'row' }}>
+                                                    <Text style={[styles.peopleWhoJoinedText]}>{v?.profileAndTimeline?.userId?.firstName ?? ""} </Text>
+                                                    {/* {fellowLength !== i + 1 && v?.profileAndTimeline?.userId?.firstName && <Text style={[styles.peopleWhoJoinedText]}>, </Text>} */}
+                                                </View>
+                                            )
+                                        })
+                                    }
+                                </View>
+
+
+                                {/* <Image
                                     // style={{width:40,height:40,borderRadius:20}}
                                     style={{ marginTop: 10 }}
                                     source={require('../../../static_assets/peopleJoinedImages.png')}
                                 />
-                                <Text style={styles.peopleWhoJoinedText}>Akram, Ton, Vamsi and 4 others</Text>
+                                <Text style={styles.peopleWhoJoinedText}>Akram, Ton, Vamsi and 4 others</Text> */}
                                 <Text style={styles.seeAll}>See all</Text>
                                 <TouchableOpacity
                                     style={[styles.bookingStatusContainer, { borderColor: '#E53535' }]}>
-                                    <Text style={[styles.bookingStatus, { color: '#E53535' }]}>12 joined Awaiting 3 more </Text>
+                                    <Text style={[styles.bookingStatus, { color: '#E53535' }]}>{happeningDetails?.totalJoinFellow} joined Awaiting {happeningDetails?.requireFellow} more </Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={{ width: "49%", marginLeft: 10 }}>
                                 <View style={{ width: "70%", height: 118, alignSelf: 'center', alignItems: 'center', justifyContent: 'center', borderRadius: 32, backgroundColor: '#5B4DBC', }}>
-                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 33, color: 'white', }}>3</Text>
-                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white', marginTop: -12, textAlign: 'center' }}>Join{"\n"}Requests</Text>
+                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 33, color: 'white', }}>{happeningDetails?.joinRequest}</Text>
+                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white', marginTop: -5, textAlign: 'center' }}>Join{"\n"}Requests</Text>
                                 </View>
                                 <TouchableOpacity
                                     onPress={() => navigate('BookingCancelling')}

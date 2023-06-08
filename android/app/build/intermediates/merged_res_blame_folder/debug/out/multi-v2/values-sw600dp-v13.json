@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.localhappinez.app-mergeDebugResources-36:/values-sw600dp-v13/values-sw600dp-v13.xml",
+            "outputFile": "com.localhappinez.app-mergeDebugResources-5:/values-sw600dp-v13/values-sw600dp-v13.xml",
             "map": [
                 {
-                    "source": "/Users/apple/.gradle/caches/transforms-3/e0686102678e5eabdd57921af541c76e/transformed/appcompat-1.4.1/res/values-sw600dp-v13/values-sw600dp-v13.xml",
+                    "source": "C:\\Users\\sohail\\.gradle\\caches\\transforms-3\\e0686102678e5eabdd57921af541c76e\\transformed\\appcompat-1.4.1\\res\\values-sw600dp-v13\\values-sw600dp-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "/Users/apple/.gradle/caches/transforms-3/e3293ae0ad33779fbdd717a6184558e6/transformed/material-1.1.0/res/values-sw600dp-v13/values-sw600dp-v13.xml",
+                    "source": "C:\\Users\\sohail\\.gradle\\caches\\transforms-3\\e3293ae0ad33779fbdd717a6184558e6\\transformed\\material-1.1.0\\res\\values-sw600dp-v13\\values-sw600dp-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,10,11,12,13,14",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",

@@ -1,14 +1,17 @@
 import React, { useContext, useState } from 'react'
 import { TouchableOpacity, View, Text, ScrollView, StyleSheet } from 'react-native'
 import Modal from 'react-native-modal'
-import { CrossIcon, TickIcon } from '../components/Svgs'
+import { ArrowDown, CrossIcon, TickIcon } from '../components/Svgs'
 import { fonts } from '../constants/fonts'
 import { Context } from '../Context/DataContext'
 import { useForceUpdate } from '../utils/functions'
+import GeneralStatusBar from '../components/GernalStatusBar'
+import DateTimePicker from 'react-native-date-picker'
+import { acolors } from '../constants/colors'
 
 
 
-const HappeningFilterModal = ({ filterType, isVisible, setIsVisible }) => {
+const HappeningFilterModal = ({ filterType, isVisible, setIsVisible, onDone }) => {
 
 
     const forceUpdate = useForceUpdate();
@@ -17,12 +20,26 @@ const HappeningFilterModal = ({ filterType, isVisible, setIsVisible }) => {
     // const [filterType, setFilterType] = useState('');
     const [filterTheme, setFilterTheme] = useState('Art & cultural projects');
     const [filterThemesArr, setFilterThemesArr] = useState(state.happeningSubmissionData?.happeningTheme)
-    // console.log('happeningTheme', state.happeningSubmissionData.happeningTheme[0])
     // ['Art & cultural projects', 'Business Support', 'Clean Energy & Air', 'Community Work', 'Disaster Relief', 'Education']);
+
+    const [fromTimeModal, setFromTimeModal] = useState(false);
+    const [fromTime, setFromTime] = useState('');
+    const [toTime, setToTime] = useState('');
+    const [toTimeModal, setToTimeModal] = useState(false);
+
+
+    function makeTime(date) {
+        var time;
+        let hours = date.getHours();
+        let minutes = date.getMinutes() == 0 ? "00" : date.getMinutes();
+        time = hours + ":" + minutes;
+        return time;
+    }
+
 
 
     const FilterHeader = (props) => (
-        <View style={{ width: "100%", flexDirection: 'row', justifyContent: 'space-between', }}>
+        <View style={{ width: "100%", flexDirection: 'row', justifyContent: 'space-between', marginTop: 14 }}>
             <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760', }}>{props.title}</Text>
             {
                 props.showCrossBtn &&
@@ -39,6 +56,53 @@ const HappeningFilterModal = ({ filterType, isVisible, setIsVisible }) => {
     )
 
 
+    const FromDateTimePicker = () => (
+
+        <>
+            <DateTimePicker
+                modal
+                open={fromTimeModal}
+                date={new Date(-1232403882588)}
+                mode={'time'}
+                theme='dark'
+                onConfirm={(date) => {
+                    if (date) {
+                        let time = makeTime(date);
+                        setFromTimeModal(false);
+                        setFromTime(time);
+
+                    }
+                }}
+                onCancel={() => {
+                    setFromTimeModal(false)
+                }}
+            />
+        </>
+    )
+
+    const ToDateTimePicker = () => (
+        <DateTimePicker
+            modal
+            open={toTimeModal}
+            date={new Date(-1232403882588)}
+            minuteInterval={15}
+            mode={'time'}
+            theme='dark'
+            onConfirm={(date) => {
+                if (date) {
+                    let time = makeTime(date);
+                    setToTimeModal(false);
+                    setToTime(time);
+                }
+            }}
+            onCancel={() => {
+                setToTimeModal(false)
+            }}
+        />
+
+    )
+
+
 
     return (
         <Modal
@@ -49,54 +113,103 @@ const HappeningFilterModal = ({ filterType, isVisible, setIsVisible }) => {
             onBackdropPress={() => { setIsVisible(false) }}
             animationOut="slideOutDown"
         >
-            <View style={[styles.popupContainer, { paddingVertical: 15, backgroundColor: 'white', height: filterType == 'All' ? "80%" : "40%", width: "100%", borderRadius: 20, paddingHorizontal: 30, bottom: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 10 }]}>
+            <FromDateTimePicker />
+            <ToDateTimePicker />
+            <View style={[styles.popupContainer, { paddingVertical: 15, backgroundColor: 'white', height: filterType == 'All' ? "93%" : "40%", width: "100%", borderRadius: 20, paddingHorizontal: 30, bottom: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 10 }]}>
 
                 {
 
                     filterType == 'All' ?
-                        <ScrollView>
-                            {
-                                ["Theme", "Time of day", "Online", "Languages Spoken"]
-                                    .map((v, i) => {
-                                        return (
-                                            <View style={{ marginTop: 10 }}>
-                                                <FilterHeader showCrossBtn={i == 0 ? true : false} title={v} />
-                                                <View style={{
-                                                    marginHorizontal: 2,
-                                                    elevation: 5, backgroundColor: 'white', borderTopRightRadius: 10, borderRadius: 10, padding: 15,
-                                                    shadowColor: 'rgba(0,0,0,0.2)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
-                                                    marginBottom: 10, paddingBottom: 25
-                                                }}>
-                                                    <ScrollView >
-                                                        {
-                                                            filterThemesArr?.map((v, i) => {
-                                                                return (
-                                                                    <TouchableOpacity
-                                                                        onPress={() => {
-                                                                            setFilterTheme(v)
-                                                                            forceUpdate();
-                                                                        }}
-                                                                        style={styles.filterThemePickerContainer}>
-                                                                        <View>
-                                                                            <Text style={styles.themeText}>{v?.happeningThemeName}</Text>
-                                                                            {/* <Text style={styles.subData}>sub data</Text> */}
-                                                                        </View>
+                        <>
+                            <ScrollView showsVerticalScrollIndicator={false} >
+                                {
+                                    ["Start time", "End time", "Theme",]
+                                        .map((v, i) => {
+                                            if (i == 0) return (
+                                                <>
+                                                    <FilterHeader
+                                                        // showCrossBtn={i == 0 ? true : false} 
+                                                        title={v} />
 
-                                                                        <View style={styles.languagePickerCircle}>
-                                                                            {filterTheme == v && <TickIcon width={17} height={12} />}
-                                                                        </View>
-                                                                    </TouchableOpacity>
-                                                                )
-                                                            })
-                                                        }
-                                                    </ScrollView>
+                                                    <TouchableOpacity
+                                                        onPress={() => setFromTimeModal(true)}
+                                                        style={[styles.shadow, styles.pickerContainer, { marginTop: 20 }]}>
+                                                        <Text style={{ fontFamily: fonts.PRe, fontSize: 12, color: '#2A2A2A' }}>Start time</Text>
+                                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                            <Text style={styles.pickerTitle}>{fromTime} </Text>
+                                                            <ArrowDown style={{ marginLeft: 5 }} />
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                </>
+                                            )
+                                            if (i == 1) return (
+                                                <>
+                                                    <FilterHeader
+                                                        // showCrossBtn={i == 0 ? true : false} 
+                                                        title={v} />
+
+                                                    <TouchableOpacity
+                                                        onPress={() => setToTimeModal(true)}
+                                                        style={[styles.shadow, styles.pickerContainer, { marginTop: 20 }]}>
+                                                        <Text style={{ fontFamily: fonts.PRe, fontSize: 12, color: '#2A2A2A' }}>End time</Text>
+                                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                            <Text style={styles.pickerTitle}>{toTime} </Text>
+                                                            <ArrowDown style={{ marginLeft: 5 }} />
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                </>
+                                            )
+                                            return (
+                                                <View style={{ marginTop: 10 }}>
+
+                                                    <FilterHeader
+                                                        // showCrossBtn={i == 0 ? true : false} 
+                                                        title={v} />
+                                                    <View style={{
+                                                        marginHorizontal: 2,
+                                                        elevation: 5, backgroundColor: 'white', borderTopRightRadius: 10, borderRadius: 10, padding: 15,
+                                                        shadowColor: 'rgba(0,0,0,0.2)', shadowOffset: { width: 2, height: 2 }, shadowRadius: 3, shadowOpacity: 0.5,
+                                                        marginBottom: 10, paddingBottom: 25
+                                                    }}>
+                                                        <ScrollView showsVerticalScrollIndicator={false} >
+                                                            {
+                                                                state.happeningSubmissionData?.happeningTheme && state.happeningSubmissionData.happeningTheme?.map((v, i) => {
+                                                                    return (
+                                                                        <TouchableOpacity
+                                                                            onPress={() => {
+                                                                                setFilterTheme(v)
+                                                                                forceUpdate();
+                                                                            }}
+                                                                            style={styles.filterThemePickerContainer}>
+                                                                            <View>
+                                                                                <Text style={styles.themeText}>{v?.happeningThemeName}</Text>
+                                                                                {/* <Text style={styles.subData}>sub data</Text> */}
+                                                                            </View>
+
+                                                                            <View style={styles.languagePickerCircle}>
+                                                                                {filterTheme == v && <TickIcon width={17} height={12} />}
+                                                                            </View>
+                                                                        </TouchableOpacity>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </ScrollView>
+                                                    </View>
                                                 </View>
-                                            </View>
-                                        )
-                                    })
+                                            )
+                                        })
 
-                            }
-                        </ScrollView>
+                                }
+                            </ScrollView>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setIsVisible(false)
+                                    onDone(fromTime, toTime, filterTheme?.happeningThemeName)
+                                }}
+                                style={{ width: "50%", height: 40, backgroundColor: acolors.primaryLight, borderRadius: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>
+                                <Text style={{ fontFamily: fonts.PMe, fontSize: 13, color: '#fff' }}>Done</Text>
+                            </TouchableOpacity>
+                        </>
 
                         :
                         <>
@@ -134,6 +247,13 @@ const HappeningFilterModal = ({ filterType, isVisible, setIsVisible }) => {
                             </View>
                         </>
                 }
+                <TouchableOpacity
+                    onPress={() => {
+                        setIsVisible(false)
+                    }}
+                    style={{ top: 10, position: 'absolute', right: 10, width: 28, height: 28, borderRadius: 28 / 2, backgroundColor: '#F08F8F', alignItems: 'center', justifyContent: 'center' }}>
+                    <CrossIcon width={10} height={18} color="#241414" />
+                </TouchableOpacity>
             </View>
         </Modal>
 
@@ -171,6 +291,20 @@ const styles = StyleSheet.create({
     languageText: {
         fontSize: 9, color: "#2a2a2a", fontFamily: fonts.MSBo, letterSpacing: 0.18,
     },
+
+
+    pickerContainer: {
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 46, borderRadius: 10,
+        paddingLeft: 8, paddingHorizontal: 10, marginHorizontal: 1
+    },
+    shadow: {
+        shadowColor: 'rgba(0, 0, 0, 0.4)', shadowOffset: { width: 0.5, height: 0.5 }, shadowRadius: 2, shadowOpacity: 0.5, elevation: 2,
+        backgroundColor: 'white'
+    },
+    pickerTitle: {
+        fontFamily: fonts.MBo, fontSize: 12, color: '#2A2A2A'
+    },
+
 })
 
 export default HappeningFilterModal

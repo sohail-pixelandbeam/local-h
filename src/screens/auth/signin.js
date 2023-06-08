@@ -55,9 +55,9 @@ const Signin = ({ navigation }) => {
 
         apiRequest(reqObj, 'auth/userSignIn')
             .then(data => {
+                console.log(data);
                 setLoading(false);
                 if (data.status) {
-                    console.log(data);
                     let userData = data.data?.user
                     userData["token"] = data.data.token
                     storeItem('login_data', userData);
@@ -66,6 +66,10 @@ const Signin = ({ navigation }) => {
                     navigate('BottomTabs');
                 }
                 else {
+                    if (data.deactivated) {
+                        navigate('AccountDeActivated', reqObj)
+                        return;
+                    }
                     alertRef.alertWithType("error", "Error", data.message);
                     setLoading(false)
                 }
@@ -82,7 +86,7 @@ const Signin = ({ navigation }) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: "#35208e" }}>
-            <GeneralStatusBar/>
+            <GeneralStatusBar />
             <Image
                 source={require('../../assets/signinMask.png')}
                 style={{

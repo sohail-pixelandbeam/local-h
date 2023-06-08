@@ -30,9 +30,10 @@ const PersonalInfo = () => {
 
     const user = { ...state.profileData, ...state.userData } ?? {}
     let dateOfBirth = user.dateOfBirth.replaceAll(' ', '/');
+    console.log('dateOfBirth', dateOfBirth)
     let splitDateOfBirth = user.dateOfBirth.split(' ');
     let x = splitDateOfBirth[1];
-    let y = parseInt(x) < 10 && x.length == 2 ? x[1] : x;
+    let y = parseInt(x) < 10 && x.length == 2 ? x[1] : parseInt(x);
 
 
     const [personalInfo, setPersonalInfo] = useState({
@@ -332,7 +333,7 @@ const PersonalInfo = () => {
                                                                     onValueChange={(i, v) => { setDay(v.title); }}
                                                                 />
                                                             </View>
-                                                            <View style={[styles.shadow, styles.dateOfBirthPicker]}>
+                                                            <View style={[styles.shadow, styles.dateOfBirthPicker,]}>
                                                                 <PrivacyPicker
                                                                     selected={{ title: month ?? "Month" }}
                                                                     data={monthsArr}
@@ -354,7 +355,8 @@ const PersonalInfo = () => {
                                                     :
 
                                                     <TextInput
-                                                        placeholder=''
+
+                                                        defaultValue={personalInfo[v.value].toString()}
                                                         value={personalInfo[v.value]}
                                                         onChangeText={(text) => {
                                                             setPersonalInfo({
