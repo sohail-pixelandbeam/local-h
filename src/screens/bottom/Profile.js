@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView, StatusBar, View, Image, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList, Platform, } from 'react-native'
 
-
 import { Context } from '../../Context/DataContext';
 import { months, retrieveItem, storeItem, uploadSingleFile, useForceUpdate } from '../../utils/functions'
 import Loader from '../../utils/Loader'
