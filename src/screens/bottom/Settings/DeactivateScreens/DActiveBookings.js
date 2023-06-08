@@ -42,7 +42,9 @@ const DActiveBooking = () => {
             <Text style={[styles.deactivateHeading, { marginTop: 5 }]}>You have Active Bookings,</Text>
             <Text style={{ fontFamily: fonts.PRe, fontSize: 15, color: '#222222', lineHeight: 23, marginTop: 5 }}>can't deactivate your account with active bookings. If you wish to deactivate, cancel the bookings</Text>
             <TouchableOpacity
-                onPress={() => navigate('DReason')}
+                onPress={() => navigate('Profile', {
+                    focused: 'Bookings'
+                })}
                 style={{ width: "40%", alignSelf: 'flex-end', backgroundColor: acolors.primaryLight, borderRadius: 20, height: 35, marginTop: 50, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ fontFamily: fonts.PMe, color: '#fff', fontSize: 12 }}>My Bookings</Text>
             </TouchableOpacity>

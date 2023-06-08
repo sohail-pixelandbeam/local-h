@@ -20,7 +20,7 @@ import { RefreshControl } from 'react-native';
 import EditProfile from './EditProfile';
 import { urls } from '../../utils/Api_urls';
 import GeneralStatusBar from '../../components/GernalStatusBar';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 
 
@@ -28,11 +28,13 @@ var alertRef;
 
 const Profile = (props) => {
 
+    console.log('props.route.params', props.route.params)
     const { state, setHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
     const [selectedTab, setSelectedTab] = useState('Profile');
 
-
+    const forceUpdate = useForceUpdate();
+    const isFocused = useIsFocused();
     const [bookingStatusAlert, setBookingStatusAlert] = useState(false)
     const [bookingStatusAlertMsg, setBookingStatusAlertMsg] = useState('');
 
@@ -237,16 +239,15 @@ const Profile = (props) => {
         // getLocationByIp();
     }, []);
 
-    useFocusEffect(React.useCallback(
-        () => {
-            if (props.route.params?.focused) {
-                setSelectedTab(props.route.params?.focused);
-                getMyBookings();
+    useEffect(() => {
+        if (props.route.params?.focused) {
+            setSelectedTab(props.route.params?.focused);
+            forceUpdate()
+            getMyBookings();
 
-            }
-            getMyHostings();
-        }, [tabs == 'My Hostings'],
-    ))
+        }
+        getMyHostings();
+    }, [tabs == 'My Hostings', isFocused])
 
 
     const BookingsTab = () => (
@@ -312,7 +313,10 @@ const Profile = (props) => {
                                     <Text style={styles.seeAll}>See all</Text>
                                     <TouchableOpacity
                                         onPress={() => {
+                                            console.log('v.booking.status',v)
+                                            return;
                                             switch (v.booking.status) {
+                                                
                                                 case 'approved':
                                                     navigateFromStack('BookingStack', 'ConfirmHappeningStatus')
                                                     return;
@@ -338,9 +342,9 @@ const Profile = (props) => {
 
                                         }}
 
-                                        style={[styles.bookingStatusContainer, v.booking.status !== 'Accept' && { borderColor: '#E53535' }]}>
-                                        <Text style={[styles.bookingStatus, v.booking.status !== 'Accept' && { color: '#E53535' }]}>{v.booking?.status.charAt(0).toUpperCase() + v.booking?.status.slice(1)}</Text>
-                                        {v.booking.status !== 'Accept' ?
+                                        style={[styles.bookingStatusContainer, v.booking.status !== 'approved' && { borderColor: '#E53535' }]}>
+                                        <Text style={[styles.bookingStatus, v.booking.status !== 'approved' && { color: '#E53535' }]}>{v.booking?.status.charAt(0).toUpperCase() + v.booking?.status.slice(1)}</Text>
+                                        {v.booking.status !== 'approved' ?
                                             <InfoIcon color="#E53535" />
 
                                             :

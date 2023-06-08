@@ -55,9 +55,10 @@ const Signin = ({ navigation }) => {
 
         apiRequest(reqObj, 'auth/userSignIn')
             .then(data => {
+                console.log(data);
                 setLoading(false);
                 if (data.status) {
-                    console.log(data);
+                    
                     let userData = data.data?.user
                     userData["token"] = data.data.token
                     storeItem('login_data', userData);

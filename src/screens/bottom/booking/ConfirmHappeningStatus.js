@@ -1,10 +1,12 @@
 import React from 'react'
 import { StatusBar, View, Text, Image, SafeAreaView, StyleSheet, TouchableOpacity, TextInput, ScrollView, } from 'react-native'
-import { goBack } from '../../../../Navigations'
+import { goBack, navigate } from '../../../../Navigations'
 import { BackIcon, ChatIcon, RequestSubmittedSvg } from '../../../components/Svgs'
 import { fonts } from '../../../constants/fonts'
 
 const ConfirmHappeningStatus = (props) => {
+
+
     return (
         <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1, }}>
             <StatusBar
@@ -69,7 +71,9 @@ const ConfirmHappeningStatus = (props) => {
                 </View>
             </ScrollView>
             <View style={[styles.shadow, { width: "100%", alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', position: 'absolute', bottom: 0, alignItems: 'center', paddingVertical: 20, paddingHorizontal: 20, borderTopRightRadius: 15, borderTopLeftRadius: 15 }]}>
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', }}>
+                <TouchableOpacity
+                    onPress={() => navigate('BookingCancelling')}
+                    style={{ flexDirection: 'row', alignItems: 'center', }}>
                     <ChatIcon />
                     <Text style={{ fontFamily: fonts.PSBo, fontSize: 16, color: '#5B4DBC', marginLeft: 10 }}>Chat with{"\n"}host</Text>
                 </TouchableOpacity>

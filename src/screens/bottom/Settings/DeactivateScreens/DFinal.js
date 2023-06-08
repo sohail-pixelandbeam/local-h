@@ -38,11 +38,19 @@ const DFinal = ({ route }) => {
         }
         apiRequest(body, "auth/set-account-status")
             .then(data => {
+                console.log('___data', data)
                 if (data.status) {
                     alertRef?.alertWithType('success', 'Success', 'Account deactivated successfully')
                     storeItem('login_data', '');
                     storeItem('profile_data', '');
                     changeLoggedIn.changeNow(2);
+                }
+                else {
+                    if (data.message == 'You have pending booking, please cancel your booking first') {
+                        navigate('DActiveBooking');
+                        return;
+                    }
+                    alertRef.alertWithType('error', 'Error', data.message)
                 }
                 setLoading(false);
 
@@ -63,6 +71,7 @@ const DFinal = ({ route }) => {
                 barStyle={"dark-content"}
                 backgroundColor={"white"}
             />
+
             {loading && <Loader />}
             <View style={{ width: "90%", alignSelf: 'center' }}>
                 <View style={{ width: "100%", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -93,7 +102,7 @@ const DFinal = ({ route }) => {
             </View>
 
 
-
+            <DropdownAlert ref={(ref) => alertRef = ref} />
         </View>
     )
 }
