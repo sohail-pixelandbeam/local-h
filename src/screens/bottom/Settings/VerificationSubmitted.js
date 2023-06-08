@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#35208E',
         padding: 20,
-        paddingTop: 35,
+        paddingTop: 45,
     },
     contentBox: {
         alignItems: 'center',

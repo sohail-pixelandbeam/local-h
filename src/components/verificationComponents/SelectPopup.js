@@ -8,6 +8,7 @@ import {
     ScrollView,
 } from 'react-native';
 import Label from './Label';
+import { fonts } from '../../constants/fonts';
 
 export default function SelectPopup({
     isShow,
@@ -34,7 +35,7 @@ export default function SelectPopup({
                     <View style={styles.box} >
                         <View style={styles.headingView}>
                             <View style={styles.headingBox}>
-                                <Label style={{ fontSize: 18 }}>{heading}</Label>
+                                <Label style={{ fontSize: 20, fontFamily: fonts.MSBo }}>{heading}</Label>
                                 <TouchableOpacity onPress={() => setter(false)}>
                                     <View style={styles.crossBox}>
                                         <Image source={require('./assets/img/cross.png')}></Image>
@@ -77,9 +78,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0)',
-        paddingBottom: 60,
-        padding: 0,
+        backgroundColor: 'rgba(0,0,0,0.4)',
     },
     box: {
         backgroundColor: 'white',
@@ -94,8 +93,7 @@ const styles = StyleSheet.create({
     headingView: {
         width: '100%',
         backgroundColor: 'white',
-        paddingHorizontal: 15,
-        paddingHorizontal: 20,
+        paddingHorizontal: 5,
         paddingVertical: 5,
         marginBottom: 10,
     },
