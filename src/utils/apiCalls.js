@@ -29,7 +29,6 @@ async function doPost(body_data, url_plus) {
 async function getUserToken() {
   let token = await retrieveItem('login_data');
   return token?.token;
-
 }
 
 export async function apiRequest(body_data, url_plus, method = "POST", userToken) {
@@ -85,7 +84,6 @@ export async function apiFormDataRequest(body_data, url_plus, method = "POST") {
   var myHeaders = new Headers();
   const token = await retrieveItem('login_data');
   myHeaders.append("Authorization", `Bearer ${token?.token}`);
-
 
   var url;
   url = urls.API + url_plus

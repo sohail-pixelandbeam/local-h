@@ -30,7 +30,7 @@ const SettingsScreen = () => {
         { name: "Translation", navigateTo: 'TranslationSettings' },
         { name: "Login & Security", navigateTo: 'LoginSecuritySettings' },
         { name: "Time Zones", navigateTo: 'Timezones' },
-        { name: "Get Verified", navigateTo: 'NotificationSettings' },
+        { name: "Get Verified", navigateTo: 'GetVerified' },
         { name: "Help & Tips ", navigateTo: 'NotificationSettings' },
     ];
 
@@ -71,9 +71,9 @@ const SettingsScreen = () => {
                 />
                 <Text style={[{ color: '#FFA183', fontFamily: fonts.PBo, fontSize: 30, marginTop: 20, alignSelf: 'center' }]}>{state?.userData?.userName}</Text>
                 <SettingsTab />
-                <TouchableOpacity 
-                    onPress={()=>goBack()}
-                    style={{ position: 'absolute', top: 20, left: 20,padding:10 }}>
+                <TouchableOpacity
+                    onPress={() => goBack()}
+                    style={{ position: 'absolute', top: 20, left: 20, padding: 10 }}>
                     <BackIcon color="#000" />
                 </TouchableOpacity>
             </View>

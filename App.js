@@ -85,6 +85,9 @@ import DReason from './src/screens/bottom/Settings/DeactivateScreens/DReason';
 import DFinal from './src/screens/bottom/Settings/DeactivateScreens/DFinal';
 import AccountDeActivated from './src/screens/bottom/Settings/DeactivateScreens/AccountDeActivated';
 import ActivateAccountVerifyOTP from './src/screens/bottom/Settings/DeactivateScreens/ActivateAccountVerifyOTP';
+import GetVerified from './src/screens/bottom/Settings/GetVerified';
+import GetVerifiedDetails from './src/screens/bottom/Settings/GetVerifiedDetails';
+import VerificationSubmitted from './src/screens/bottom/Settings/VerificationSubmitted';
 
 
 
@@ -417,6 +420,10 @@ function App() {
             <Stack.Screen name="EditFacilities" component={EditFacilities} />
             <Stack.Screen name="EditPassword" component={EditPassword} />
             <Stack.Screen name="Timezones" component={Timezones} />
+            {/* Get Verified Screen */}
+            <Stack.Screen name="GetVerified" component={GetVerified} />
+            <Stack.Screen name="GetVerifiedDetails" component={GetVerifiedDetails} />
+            <Stack.Screen name="VerificationSubmitted" component={VerificationSubmitted} />
             {/* Deactivate screens */}
             <Stack.Screen name="DActiveBooking" component={DActiveBooking} />
             <Stack.Screen name="DReason" component={DReason} />
