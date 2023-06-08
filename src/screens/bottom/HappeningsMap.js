@@ -36,8 +36,8 @@ const HappeningsMap = () => {
     const { state, setUserGlobal, userProfileData } = useContext(Context);
     const isFocused = useIsFocused();
     const [userSelectedLocation, setUserSelectedLocation] = useState({
-        latitude: 0.00,
-        longitude: 0.11,
+        latitude: 52.75126,
+        longitude: 37.618423,
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
         locationTitle: ''
@@ -69,14 +69,11 @@ const HappeningsMap = () => {
             latitude: lat,
             longitude: lng
         }
-        apiRequest(body , 'geotagging/GetAllNearestHappening', "GET")
+
+        apiRequest(body, 'geotagging/allHappeningOnMapLocation', "GET")
             .then(data => {
                 setLoading(false);
-                if (data.status) {
-                    console.log('_____data', data)
-                    setHappeningData(data.data);
-                }
-
+                setHappeningData(data.data ?? []);
             })
             .catch(err => {
                 console.log('errorr', err)
@@ -115,7 +112,8 @@ const HappeningsMap = () => {
     }
 
     useEffect(() => {
-        getLocation()
+        // getLocation()
+        getHappeningDataFromServer()
     }, [isFocused])
 
 
@@ -205,7 +203,6 @@ const HappeningsMap = () => {
                 >
                     {
                         happeningData?.map((v, i) => {
-
                             if (v?.location?.coordinates) {
                                 return (
                                     <Marker
@@ -223,13 +220,15 @@ const HappeningsMap = () => {
                                         pinColor={acolors.primary}
                                         description=""
                                         onPress={() => {
+                                            console.log("pressed")
                                             setIsCalloutModal(true)
+                                            forceUpdate();
                                             setCalloutParams(v)
                                         }}
 
                                     >
                                         <MarkerIcon />
-                                        <Text style={{ color: '#121212', fontSize: 10, fontFamily: fonts.PBo, }}>{v.title}</Text>
+                                        {/* <Text style={{ color: '#121212', fontSize: 10, fontFamily: fonts.PBo, }}>{v.title}</Text> */}
                                     </Marker>
                                 )
                             }
@@ -243,15 +242,15 @@ const HappeningsMap = () => {
             </View>
 
             {
-                isCalloutModal &&
+                calloutParams?.addPhotosOfYourHappening &&
                 <TouchableOpacity
                     activeOpacity={0.8}
                     onPress={() => navigateFromStack('BookingStack', 'HappeningDetails', calloutParams)}
-                    style={{ width: "85%", height: "14%", backgroundColor: 'white', alignSelf: 'center', bottom: 80, position: 'absolute', borderRadius: 20 }}>
+                    style={{ width: "85%", height: "14%", backgroundColor: 'white', alignSelf: 'center', bottom: 100, position: 'absolute', borderRadius: 20 }}>
                     <View style={{ flexDirection: 'row', width: "100%", flex: 1 }}>
                         <Image
                             style={{ width: "37%", height: "100%", borderTopLeftRadius: 20, borderBottomLeftRadius: 20, resizeMode: 'stretch', }}
-                            source={{ uri: calloutParams?.addPhotosOfYourHappening[0] }
+                            source={{ uri: calloutParams?.addPhotosOfYourHappening && calloutParams?.addPhotosOfYourHappening[0] }
                                 // require('../../static_assets/FeaturedImage1.png')
                             }
                         />
@@ -277,7 +276,7 @@ const HappeningsMap = () => {
                                         Linking.openURL(url);
                                     }}
                                     style={{ flexDirection: 'row', alignItems: 'center', padding: 10, marginTop: -10, marginRight: -5 }}>
-                                    <Text style={{ fontFamily: fonts.PBo, fontSize: 9, color: '#5B4DBC', marginRight: 5 }}>Direction</Text>
+                                    <Text style={{ fontFamily: fonts.PBo, fontSize: 9, color: '#5B4DBC', marginRight: 5 }}>View happening</Text>
                                     <DirectionArrow />
                                 </TouchableOpacity>
                             </View>

@@ -313,10 +313,10 @@ const Profile = (props) => {
                                     <Text style={styles.seeAll}>See all</Text>
                                     <TouchableOpacity
                                         onPress={() => {
-                                            console.log('v.booking.status',v)
-                                            return;
+                                            // console.log('v.booking.status',v)
+                                            // return;
                                             switch (v.booking.status) {
-                                                
+
                                                 case 'approved':
                                                     navigateFromStack('BookingStack', 'ConfirmHappeningStatus')
                                                     return;

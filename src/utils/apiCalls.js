@@ -32,11 +32,11 @@ async function getUserToken() {
 
 }
 
-export async function apiRequest(body_data, url_plus, method = "POST") {
+export async function apiRequest(body_data, url_plus, method = "POST", userToken) {
 
 
-  if (!body_data) body_data = { token: await getUserToken() }
-  else body_data["token"] = await getUserToken()
+  if (!body_data) body_data = { token: userToken ?? await getUserToken() }
+  else body_data["token"] = userToken ?? await getUserToken()
   // let last_request = new Date();
   // last_request = last_request.getFullYear() + "-" + (last_request.getMonth() + 1) + "-" + last_request.getDate() + " " + last_request.getHours() + ":" + last_request.getMinutes()
   var url;

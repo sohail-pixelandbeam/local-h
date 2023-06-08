@@ -5,6 +5,8 @@ import {
     KeyboardAvoidingView
 } from 'react-native'
 import { BackIcon, CrossIcon, EditPencilIcon, FilterIcon, HeartWhiteIcon, PlusIcon, SearchIcon, TickIcon, TickIconWhite } from '../../components/Svgs'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+
 import { fonts } from '../../constants/fonts';
 import { acolors } from '../../constants/colors';
 import Modal from "react-native-modal";
@@ -426,6 +428,7 @@ const Home = () => {
                 setLoading(false);
                 if (data.status == true) {
                     alertRef.alertWithType('success', 'Success', 'Happening added in wishlist');
+                    getHappeningDataFromServer();
                     getWhishLists();
                     return
                 }
@@ -1017,7 +1020,17 @@ const Home = () => {
                                                 setCreateWishListModal(true)
                                             }}
                                             style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
-                                            <HeartWhiteIcon color={item.isFavorite ? 'red' : "rgba(0,0,0,0.8)"} />
+                                            {
+                                                item.isFavorite ?
+                                                    <AntDesign
+                                                        name='heart'
+                                                        color={"red"}
+                                                        size={20}
+                                                    />
+                                                    :
+                                                    <HeartWhiteIcon color={item.isFavorite ? 'red' : "rgba(0,0,0,0.8)"} />
+                                            }
+
                                         </TouchableOpacity>
                                         {/* <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
                                             {
