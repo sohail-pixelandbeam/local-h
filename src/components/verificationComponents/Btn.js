@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { fonts } from '../../constants/fonts';
 
 export default function Btn({
     bgColor = '#5B4DBC',
@@ -22,6 +23,7 @@ export default function Btn({
 
 const styles = StyleSheet.create({
     btnBox: {
+        fontFamily: fonts.MRe,
         width: 112,
         height: 37,
         alignItems: 'center',

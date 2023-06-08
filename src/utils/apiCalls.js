@@ -84,7 +84,6 @@ export async function apiFormDataRequest(body_data, url_plus, method = "POST") {
   var myHeaders = new Headers();
   const token = await retrieveItem('login_data');
   myHeaders.append("Authorization", `Bearer ${token?.token}`);
-  console.log("form data ", formData)
 
   var url;
   url = urls.API + url_plus

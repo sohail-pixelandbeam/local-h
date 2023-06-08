@@ -40,13 +40,12 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 30,
         color: 'white',
-        fontWeight: '800',
         textAlign: 'center',
     },
     heading1: {
         fontSize: 30,
         color: 'white',
-        fontWeight: '400',
+        fontWeight: '800',
         textAlign: 'center',
     },
     circle: {

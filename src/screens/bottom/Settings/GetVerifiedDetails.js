@@ -14,12 +14,12 @@ import Label from '../../../components/verificationComponents/Label';
 import SelectPopup from '../../../components/verificationComponents/SelectPopup';
 import Input from '../../../components/verificationComponents/Input';
 import Btn from '../../../components/verificationComponents/Btn';
-import Loader from '../../../components/verificationComponents/Loader';
 import DropdownAlert from 'react-native-dropdownalert';
 import { Context } from '../../../Context/DataContext';
 import { BackIcon } from '../../../components/Svgs';
 import { goBack } from '../../../../Navigations';
 import { apiFormDataRequest } from '../../../utils/apiCalls';
+import Loader from '../../../utils/Loader';
 
 
 var alertRef;
@@ -83,6 +83,7 @@ export default function GetVerifiedDetails({ navigation, route }) {
         payload.id_issuing_country = route.params.id_issuing_country;
         payload.type_of_id = route.params.type_of_id;
         payload.upload_image_of_id = route.params.upload_image_of_id;
+        // payload.add_links = 'http.lshg'
         if (
             payload.id_issuing_country &&
             payload.type_of_id &&
@@ -91,13 +92,11 @@ export default function GetVerifiedDetails({ navigation, route }) {
             payload.category_type
         ) {
 
-            console.log('Shukr alhmdolellah');
-            apiFormDataRequest(payload, 'auth/profile/update-profile-verification')
+            apiFormDataRequest(payload, 'profile/update-profile-verification')
                 .then(data => {
-                    navigation.navigate('VerificationSubmitted')
-                    console.log('data====', data)
                     if (data.status) {
                         alertRef.alertWithType('success', "Success", "Request Submitted Successfully")
+                        navigation.navigate('VerificationSubmitted')
                     }
                     else {
                         alertRef.alertWithType("error", "Error", data.message);
@@ -110,41 +109,6 @@ export default function GetVerifiedDetails({ navigation, route }) {
                     alertRef.alertWithType("error", "Error", "Network Error");
                 })
 
-            // const apiUrl =
-            //     'http://52.57.23.48:3001/api/v1/profile/update-profile-verification';
-            // const authToken =
-            //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDAzOTEyMjNiMzcxMzk0M2I5MDI0MzYiLCJpYXQiOjE2ODU3NzI5ODJ9.lE2CAjTeP3xTlTfv6GwYlHtlk1xE_uTAX5Zvt5k28FU';
-            // const dataObject = payload;
-
-            // const formData = new FormData();
-            // formData.append('id_issuing_country', payload.id_issuing_country);
-            // formData.append('type_of_id', payload.type_of_id);
-            // formData.append('upload_image_of_id', payload.upload_image_of_id);
-            // formData.append('category', payload.category);
-            // formData.append('category_type', payload.category_type);
-            // formData.append('also_known_as', payload.also_known_as);
-            // formData.append('add_links', payload.add_links);
-            // console.log('My Form data', formData)
-            // fetch(apiUrl, {
-            //     method: 'POST',
-            //     headers: {
-            //         Authorization: `Bearer ${authToken}`,
-            //         'Content-Type': 'multipart/form-data',
-            //     },
-            //     body: formData,
-            // })
-            //     .then(response => response.json())
-            //     .then(data => {
-            //         // Handle the response data
-            //         setIsLoading(false);
-            //         console.log('Api called successfuly');
-            //         navigation.navigate('verificationSubmission');
-            //     })
-            //     .catch(error => {
-            //         // Handle any errors
-            //         console.log(error);
-            //         setIsLoading(false);
-            //     });
         } else {
             alertRef.alertWithType('error', "Error", 'Required Fields are missing.');
             setIsLoading(false);
@@ -265,7 +229,7 @@ export default function GetVerifiedDetails({ navigation, route }) {
                 <Btn label="Submit" onPress={onSubmitRequest} />
             </View>
             <DropdownAlert ref={(ref) => alertRef = ref} />
-            <Loader isShow={isLoading} />
+            {isLoading && <Loader />}
         </View>
     );
 }

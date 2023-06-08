@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text } from 'react-native';
 import React from 'react';
+import { fonts } from '../../constants/fonts';
 
 export default function Heading({
     fontSize = 21,
@@ -10,6 +11,7 @@ export default function Heading({
     return (
         <Text
             style={{
+                fontFamily: fonts.MBo,
                 fontSize: fontSize,
                 color: color,
                 fontWeight: '600',

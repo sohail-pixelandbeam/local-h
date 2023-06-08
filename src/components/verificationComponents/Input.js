@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput } from 'react-native';
+import { fonts } from '../../constants/fonts';
 
 export default function Input({
     type,
@@ -20,6 +21,7 @@ export default function Input({
             {label ? (
                 <Text
                     style={{
+                        fontFamily: fonts.MRe,
                         color: '#2A2A2A',
                         zIndex: 10,
                         marginBottom: 11,
@@ -41,11 +43,12 @@ export default function Input({
                 placeholder={placeHolder ? placeHolder : ''}
                 placeholderTextColor="#a0a0a0"
                 style={{
+                    fontFamily: fonts.MRe,
                     width: '100%',
                     borderRadius: 10,
                     borderColor: '#00000066',
                     borderWidth: 1,
-                    height: multiline ? 'auto' : 38,
+                    height: multiline ? 'auto' : 42,
                     paddingLeft: 15,
                     color: '#000',
                     ...style,

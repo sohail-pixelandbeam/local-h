@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Modal, StyleSheet, View, Image, ActivityIndicator } from 'react-native';
 
-export default function Loader({ isShow }) {
+export default function Loader({ isShow = true }) {
     return (
         <View style={styles.centeredView}>
             <Modal animationType="fade" transparent={true} visible={isShow}>

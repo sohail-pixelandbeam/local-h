@@ -18,12 +18,14 @@ import { Context } from '../../../Context/DataContext';
 import { BackIcon } from '../../../components/Svgs';
 import { goBack } from '../../../../Navigations';
 import DropdownAlert from 'react-native-dropdownalert';
+import Loader from '../../../utils/Loader';
 
 
 
 var alertRef;
 export default function GetVerified({ navigation }) {
     const { state } = useContext(Context);
+    const [loading, setLoading] = useState(false);
     let [payload, setPayload] = useState({
         id_issuing_country: null,
         type_of_id: null,
@@ -77,13 +79,16 @@ export default function GetVerified({ navigation }) {
     }
 
     const goNext = () => {
+        setLoading(true);
         if (
             payload.id_issuing_country &&
             payload.type_of_id &&
             payload.upload_image_of_id
         ) {
+            setLoading(false);
             navigation.navigate('GetVerifiedDetails', payload);
         } else {
+            setLoading(false);
             alertRef.alertWithType('error', "Error", "Required Fields are missing");
             return;
         }
@@ -148,6 +153,7 @@ export default function GetVerified({ navigation }) {
                     <Btn label="Done" onPress={goNext} />
                 </View>
                 <DropdownAlert ref={(ref) => alertRef = ref} />
+                {loading && <Loader />}
             </View>
         </SafeAreaView>
     );
