@@ -25,6 +25,7 @@ const CC4 = (props) => {
 
     const [hostedPoint, setHostedPoint] = useState(0);
     const [errorPopup, setErrorPopup] = useState(false);
+    const [errorPopup4, setErrorPopup4] = useState(false);
     const [coHostInfoModal, setGetCoHostInfoModal] = useState(false)
     const [coHostDat, setCoHostData] = useState([]);
     const [selectedCoHost, setSelectedCoHost] = useState([]);
@@ -114,6 +115,30 @@ const CC4 = (props) => {
         </ReactNativeModal>
     )
 
+    const ErrorPopupModal4 = () => (
+        <ReactNativeModal
+            isVisible={errorPopup4}
+
+        >
+            <View style={{ backgroundColor: 'white', paddingHorizontal: 20, paddingTop: 25, paddingBottom: 10, borderRadius: 20 }}>
+                <Text style={[styles.popupHeading]}>We're very sorry, but at least one host should be present at the happening</Text>
+
+                <View style={{ alignSelf: 'flex-end', flexDirection: 'row' }}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setErrorPopup4(false)
+                            // navigate('Duration1');
+                        }}
+                        style={styles.tipsBtn}>
+                        <Text style={styles.topsBtnTitle}>Done</Text>
+                    </TouchableOpacity>
+
+                </View>
+            </View>
+
+        </ReactNativeModal>
+    )
+
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -162,6 +187,15 @@ const CC4 = (props) => {
                                 <View style={styles.radioUnSelected} />}
                             <Text style={[styles.text, { marginLeft: 10 }]}>No, I am not present at the location, but another person is</Text>
                         </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => setHostedPoint(4)}
+                            style={styles.pointsView}>
+                            {hostedPoint == 4 ? <View style={styles.radioSelected}>
+                                <TickIcon color="#fff" width={6.3} height={6.3} />
+                            </View> :
+                                <View style={styles.radioUnSelected} />}
+                            <Text style={[styles.text, { marginLeft: 10 }]}>No, I am not present at the location nor is anybody else.</Text>
+                        </TouchableOpacity>
 
 
                     </View>
@@ -183,6 +217,10 @@ const CC4 = (props) => {
                     }
                     if (hostedPoint == 3) {
                         setErrorPopup(true);
+                        return;
+                    }
+                    if (hostedPoint == 4) {
+                        setErrorPopup4(true);
                         return;
                     }
                     navigate('HappeningTheme')
@@ -216,6 +254,7 @@ const CC4 = (props) => {
                 </View>
             </TouchableOpacity> */}
             <ErrorPopupModal />
+            <ErrorPopupModal4 />
             <DropdownAlert ref={(ref) => alertRef = ref} />
 
 
