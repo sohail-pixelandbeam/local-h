@@ -10,7 +10,7 @@ import { apiRequest } from '../../../utils/apiCalls'
 import Loader from '../../../utils/Loader'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
 import { retrieveItem } from '../../../utils/functions'
-import Btn from '../../../components/verificationComponents/Btn'
+import AlertMsg1 from '../../../common/AlertMsg1'
 
 const ThingsConsider = () => {
 
@@ -18,14 +18,19 @@ const ThingsConsider = () => {
 
     const { setHappeningSubmissionDataGlobal } = useContext(Context);
     const [loading, setLoading] = useState(false);
+    const [loginModal, setLoginModal] = useState(false);
+    const [isGuest, setIsGuest] = React.useState(false);
+
+
 
 
 
     const conditionArr = [
-        { title: "NGOs & LOCAL COMMUNITIES", desc: "Representatives of local communities and small NPOs worldwide have free access to upload their projects.\n\nNPOs with more extensive donor networks and fanbases can contact us for a service partnership." },
+        { title: "NGOs & LOCAL COMMUNITIES", desc: "Representatives of local communities and small NPOs worldwide have free access to upload their projects. NPOs with larger donor networks and fanbases are invited to contact us for a service partnership." },
+        { title: "RELIABILITY", desc: "We accept projects of reliable NPOs and hosts. Prior to publishing a happening, we conduct desk and field research." },
+        { title: "WELFARE OF VULNERABLE GROUPS", desc: "The welfare of children, elderly people, animals, and other vulnerable groups is unquestioned. Projects involving these groups must be represented and supervised by trusted organizations/hosts. Orphanages are not admitted to the platform." },
         { title: "ONLY HANDS & EXPERTISE", desc: "On all projects, there is a need for hands and/or expertise. Requests for financial support are not admitted." },
         { title: "ONLINE & ON-LOCATION PROJECTS", desc: "The projects you submit can take place in an actual location or a virtual environment with video tooling." },
-        { title: "WELFARE OF VULNERABLE GROUPS", desc: "The welfare of children, elderly people, animals, and other vulnerable groups is unquestioned. Projects involving these groups must be represented and supervised by trusted organizations/hosts. Orphanages are not admitted to the platform." },
         { title: "GIVE AND RECEIVE", desc: "Fellows share time and knowledge, local hosts give something in return, such as education about local nature or culture, a taste of a local product, a guided tour." },
         { title: "SUSTAINABLE PROJECTS", desc: "The nature of each project is related to a minimum of one of the United Nations' sustainable development goals (SDG)." },
         { title: "SHORT-TERM & LONG-TERM PROJECTS", desc: "We also accept projects that only last briefly, like for half or one day." },
@@ -75,10 +80,17 @@ const ThingsConsider = () => {
     React.useEffect(() => {
         retrieveItem('login_data')
             .then(data => {
-                if (data) getHappeningSubmissionData()
+                if (data) {
+                    getHappeningSubmissionData()
+                }
+                else {
+                    setIsGuest(true)
+                }
             })
 
     }, [])
+
+
 
 
 
@@ -92,6 +104,7 @@ const ThingsConsider = () => {
             /> */}
             <HappeningHeader
                 // imageUrl={require('../../../assets/thingsConsiderHeaderImg.png')}
+                showBackBtn={true}
                 heading={"Things to\nconsider."}
                 desc={"Here are a few terms that need to be agreed before you proceed to post your happening. "}
             />
@@ -111,7 +124,13 @@ const ThingsConsider = () => {
                     }
                 </View>
                 <TouchableOpacity
-                    onPress={() => navigate('TypeHappening')}
+                    onPress={() => {
+                        if (isGuest) {
+                            setLoginModal(true);
+                            return;
+                        }
+                        navigate('TypeHappening')
+                    }}
                     activeOpacity={0.9}
                     style={[styles.agreeBtn, { paddingBottom: 20 }]}>
                     <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Agree and Continue</Text>
@@ -129,6 +148,28 @@ const ThingsConsider = () => {
                 <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Agree and Continue</Text>
                 <NextIcon style={{ marginLeft: 10 }} />
             </TouchableOpacity> */}
+
+            <AlertMsg1
+
+                headingStyle={{ color: acolors.primary, fontSize: 20 }}
+                heading={"Please Log in to\nSubmit a happening"}
+                desc=""
+                // renderBtn={false}
+                // descStyle={{ lineHeight: 22, color: '#5D5760', fontFamily: fonts.PSBo }}
+                btnTitle="Login"
+                btnTitle2="Sign Up"
+                renderBtn2={true}
+                state={loginModal}
+                onBackdropPress={() => setLoginModal(false)}
+                onPress={() => {
+                    setLoginModal(false);
+                    navigate('AuthStack');
+
+                }}
+                containerStyle={{ paddingHorizontal: 25, paddingBottom: 80, paddingTop: 10 }}
+
+            />
+
             {loading && <Loader />}
         </View >
     )
