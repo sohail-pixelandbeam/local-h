@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, Platform } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, Platform, ScrollView } from 'react-native'
 import { navigate } from '../../../../Navigations'
 import HappeningHeader from '../../../common/HappeningHeader'
 import { BackIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, RELIABLENONPROFITS, SUPPORTICON, WELFAREICON } from '../../../components/Svgs'
@@ -10,6 +10,7 @@ import { apiRequest } from '../../../utils/apiCalls'
 import Loader from '../../../utils/Loader'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
 import { retrieveItem } from '../../../utils/functions'
+import Btn from '../../../components/verificationComponents/Btn'
 
 const ThingsConsider = () => {
 
@@ -95,49 +96,54 @@ const ThingsConsider = () => {
                 desc={"Here are a few terms that need to be agreed before you proceed to post your happening. "}
             />
 
-            <View style={styles.contentContainer}>
-                <FlatList
-                    data={conditionArr}
-                    contentContainerStyle={{ paddingBottom: 550 }}
-                    renderItem={({ item, index }) => {
-                        let Icon = item.Svg
+            <ScrollView style={styles.contentContainer}>
+                <View style={{ paddingHorizontal: 25 }} >
+                    {conditionArr.map((item, index) => {
                         return (
-                            <View style={styles.content}>
-                                {/* <View style={{ width: "22%" }}>
-                                    <Icon />
-                                </View> */}
+                            <View key={index} style={styles.content}>
                                 <View>
                                     <Text style={styles.title}>{item.title}</Text>
                                     <Text style={styles.desc}>{item.desc}</Text>
                                 </View>
                             </View>
-
-
                         )
-                    }}
+                    })
+                    }
+                </View>
+                <TouchableOpacity
+                    onPress={() => navigate('TypeHappening')}
+                    activeOpacity={0.9}
+                    style={[styles.agreeBtn, { paddingBottom: 20 }]}>
+                    <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Agree and Continue</Text>
+                    <NextIcon style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+                <View style={{ height: 400 }} />
+            </ScrollView>
 
-                />
-
-            </View>
 
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
                 onPress={() => navigate('TypeHappening')}
                 activeOpacity={0.9}
                 style={styles.agreeBtn}>
                 <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Agree and Continue</Text>
                 <NextIcon style={{ marginLeft: 10 }} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             {loading && <Loader />}
         </View >
     )
 }
 
 const styles = StyleSheet.create({
+    // contentContainer: {
+    //     backgroundColor: '#FDFDFD',
+    //     width: "100%", borderTopRightRadius: 30, borderTopLeftRadius: 30,
+    //     marginTop: -30, paddingTop: 20, paddingHorizontal: 25
+    // },
     contentContainer: {
         backgroundColor: '#FDFDFD',
         width: "100%", borderTopRightRadius: 30, borderTopLeftRadius: 30,
-        marginTop: -30, paddingTop: 20, paddingHorizontal: 25
+        marginTop: -30, paddingTop: 20
     },
     content: {
         width: "100%", paddingHorizontal: 10, paddingVertical: 10, flexDirection: 'row',
@@ -152,11 +158,14 @@ const styles = StyleSheet.create({
         color: '#161615', fontFamily: fonts.MRe, fontSize: 9, lineHeight: 11, marginTop: 4
     },
     agreeBtn: {
-        width: "100%", position: 'absolute', bottom: Platform.OS == 'ios' ? 80 : 50, height: 70,
+        width: "100%", position: 'absolute', bottom: Platform.OS == 'ios' ? 80 : 50, height: 80,
         backgroundColor: 'white', flexDirection: 'row', paddingHorizontal: 30, alignItems: 'center', justifyContent: 'flex-end',
         borderTopRightRadius: 30, borderTopLeftRadius: 30,
         elevation: 5
     },
+    btnStyling: {
+        marginTop: 20,
+    }
 
 
 })
