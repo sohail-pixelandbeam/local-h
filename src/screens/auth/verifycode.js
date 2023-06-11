@@ -163,7 +163,7 @@ const Verifycode = (props) => {
                 </View>
 
                 <View style={{ width: "80%", alignSelf: 'center' }}>
-                    <Text style={styles.text_3}>Please enter verification code send to your email address or check your spam folder</Text>
+                    <Text style={styles.text_3}>Please enter verification code send to your email address. Please check your spam folder if it's not in your inbox.</Text>
                 </View>
 
                 <View style={

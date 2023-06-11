@@ -24,8 +24,8 @@ export default function Btn({
 const styles = StyleSheet.create({
     btnBox: {
         fontFamily: fonts.MRe,
-        width: 112,
         height: 37,
+        paddingHorizontal: 20,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 12,

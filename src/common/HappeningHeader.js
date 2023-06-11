@@ -13,7 +13,7 @@ const HappeningHeader = ({ heading, desc, imageUrl, headerStyle, showBackBtn = f
         {showBackBtn &&
             <TouchableOpacity
                 onPress={() => goBack()}
-                stye={{ marginLeft: -10, padding: 15 }}
+                style={{ marginLeft: -10, padding: 15, marginBottom: 20 }}
             >
                 <BackIcon />
             </TouchableOpacity>

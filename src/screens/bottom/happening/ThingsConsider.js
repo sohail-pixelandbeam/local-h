@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, Platform } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, Platform, ScrollView } from 'react-native'
 import { navigate } from '../../../../Navigations'
 import HappeningHeader from '../../../common/HappeningHeader'
 import { BackIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, RELIABLENONPROFITS, SUPPORTICON, WELFAREICON } from '../../../components/Svgs'
@@ -10,6 +10,7 @@ import { apiRequest } from '../../../utils/apiCalls'
 import Loader from '../../../utils/Loader'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
 import { retrieveItem } from '../../../utils/functions'
+import AlertMsg1 from '../../../common/AlertMsg1'
 
 const ThingsConsider = () => {
 
@@ -17,21 +18,26 @@ const ThingsConsider = () => {
 
     const { setHappeningSubmissionDataGlobal } = useContext(Context);
     const [loading, setLoading] = useState(false);
+    const [loginModal, setLoginModal] = useState(false);
+    const [isGuest, setIsGuest] = React.useState(false);
+
+
 
 
 
     const conditionArr = [
-        { title: "NGOs & LOCAL COMMUNITIES", desc: "Representatives of local communities and small NPOs worldwide have free access to upload their projects.\n\nNPOs with more extensive donor networks and fanbases can contact us for a service partnership." },
-        { title: "ONLY HANDS & EXPERTISE", desc: "On all projects, there is a need for hands and/or expertise. Requests for financial support are not admitted." },
-        { title: "ONLINE & ON-LOCATION PROJECTS", desc: "The projects you submit can take place in an actual location or a virtual environment with video tooling." },
-        { title: "WELFARE OF VULNERABLE GROUPS", desc: "The welfare of children, elderly people, animals, and other vulnerable groups is unquestioned. Projects involving these groups must be represented and supervised by trusted organizations/hosts. Orphanages are not admitted to the platform." },
-        { title: "GIVE AND RECEIVE", desc: "Fellows share time and knowledge, local hosts give something in return, such as education about local nature or culture, a taste of a local product, a guided tour." },
-        { title: "SUSTAINABLE PROJECTS", desc: "The nature of each project is related to a minimum of one of the United Nations' sustainable development goals (SDG)." },
-        { title: "SHORT-TERM & LONG-TERM PROJECTS", desc: "We also accept projects that only last briefly, like for half or one day." },
-        { title: "NON-COMMERCIAL ACTIVITIES", desc: "Our platform is not the place for commercial operations like ticket sales and paid tours." },
+        { title: "NGOs & LOCAL COMMUNITIES", desc: "Representatives of local communities and small NPOs worldwide have free access to upload their projects. NPOs with larger donor networks and fanbases are invited to contact us for a service partnership." },
+        { title: "RELIABILITY", desc: "We accept projects of reliable NPOs and hosts. Prior to publishing a happening, we conduct desk and field research." },
+        { title: "WELFARE VULNERABLE GROUPS", desc: "The welfare of children, animals and other vulnerable groups is unquestioned. Projects involving these groups must be represented and supervised by trusted organizations/hosts. Orphanages are not admitted to the platform." },
+        { title: "HANDS, SKILLS & EXPERTISE", desc: "On all projects, there is a need for hands skills and/or expertise. Requests for financial support are not admitted." },
+        { title: "SUSTAINALBE PROJECTS", desc: "The nature of each project is related to a minimum of one of the goals of the United Nations (SDG)." },
+        { title: "SHORT- & LONG-TERM PROJECTS. ONLINE, REMOTE & ON-LOCATION", desc: "We accept projects of any duration. They can be both online and on-site projects." },
+        { title: "NO REPLACEMENTS OF LOCAL JOBS:", desc: "Our platform enables local communities and NPOs to ask for help where they cannot find it locally. Support should never come at the expense of opportunities for local citizens." },
+        { title: "GIVE & RECEIVE", desc: "The principle of giving and receiving applies to every project. Fellows share time and knowledge, local hosts give something in return, such as education about local nature or culture, a taste of a local product, or a guided tour." },
+        { title: "NON-COMMERCIAL ACTIVITIES", desc: "The goal of each project is to solve a sustainable problem. Our platform is not the place for commercial operations like ticket sales and paid tours." },
         { title: "NO ACCOMMODATION", desc: "We do not encourage members to travel but to give something back wherever they are. This means that hosts are not obliged to offer free food and/or accommodation." },
-        { title: "HOST PRESENCE", desc: "Every project requires one or more hosts to be present at the location when a volunteer comes to assist. Before you meet in person, you can contact a fellow through our app if you like. A chat function is available between hosts and fellows." },
-        { title: "COMMUNICATION", desc: "Hosts must frequently check the app for updates on discussions, registrations, and other information." },
+        { title: "HOST PRESENCE", desc: "Every project requires one or more hosts to be present at the location for instructions and personal meet when a volunteer comes to assist. In case of projects with vulnerable groups, a host needs to be present at all times." },
+        { title: "COMMUNICATION", desc: "Before meeting in person, contact takes place via our app. A chat function is available between hosts and volunteers. \n Hosts must frequently check the app for updates on discussions, registrations, and other information. And need to have some experience in working with people from outside their village." },
 
         // {
         //     Svg: LOCALCOMMUNITIES, title: "LOCAL COMMUNITIES & SMALL NONPROFITS", desc: "Representatives of local communities and small  nonprofits all over the world have free access to share their happenings. Nonprofits with larger donor networks and fanbases are invited to contact us for a service partnership."
@@ -74,10 +80,17 @@ const ThingsConsider = () => {
     React.useEffect(() => {
         retrieveItem('login_data')
             .then(data => {
-                if (data) getHappeningSubmissionData()
+                if (data) {
+                    getHappeningSubmissionData()
+                }
+                else {
+                    setIsGuest(true)
+                }
             })
 
     }, [])
+
+
 
 
 
@@ -91,53 +104,87 @@ const ThingsConsider = () => {
             /> */}
             <HappeningHeader
                 // imageUrl={require('../../../assets/thingsConsiderHeaderImg.png')}
+                showBackBtn={true}
                 heading={"Things to\nconsider."}
                 desc={"Here are a few terms that need to be agreed before you proceed to post your happening. "}
             />
 
-            <View style={styles.contentContainer}>
-                <FlatList
-                    data={conditionArr}
-                    contentContainerStyle={{ paddingBottom: 550 }}
-                    renderItem={({ item, index }) => {
-                        let Icon = item.Svg
+            <ScrollView style={styles.contentContainer}>
+                <View style={{ paddingHorizontal: 25 }} >
+                    {conditionArr.map((item, index) => {
                         return (
-                            <View style={styles.content}>
-                                {/* <View style={{ width: "22%" }}>
-                                    <Icon />
-                                </View> */}
+                            <View key={index} style={styles.content}>
                                 <View>
                                     <Text style={styles.title}>{item.title}</Text>
                                     <Text style={styles.desc}>{item.desc}</Text>
                                 </View>
                             </View>
-
-
                         )
+                    })
+                    }
+                </View>
+                <TouchableOpacity
+                    onPress={() => {
+                        if (isGuest) {
+                            setLoginModal(true);
+                            return;
+                        }
+                        navigate('TypeHappening')
                     }}
+                    activeOpacity={0.9}
+                    style={[styles.agreeBtn, { paddingBottom: 20 }]}>
+                    <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Agree and Continue</Text>
+                    <NextIcon style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+                <View style={{ height: 400 }} />
+            </ScrollView>
 
-                />
-
-            </View>
 
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
                 onPress={() => navigate('TypeHappening')}
                 activeOpacity={0.9}
                 style={styles.agreeBtn}>
                 <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Agree and Continue</Text>
                 <NextIcon style={{ marginLeft: 10 }} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+
+            <AlertMsg1
+
+                headingStyle={{ color: acolors.primary, fontSize: 20 }}
+                heading={"Please Log in to\nSubmit a happening"}
+                desc=""
+                // renderBtn={false}
+                // descStyle={{ lineHeight: 22, color: '#5D5760', fontFamily: fonts.PSBo }}
+                btnTitle="Login"
+                btnTitle2="Sign Up"
+                renderBtn2={true}
+                state={loginModal}
+                onBackdropPress={() => setLoginModal(false)}
+                onPress={() => {
+                    setLoginModal(false);
+                    navigate('AuthStack');
+
+                }}
+                containerStyle={{ paddingHorizontal: 25, paddingBottom: 80, paddingTop: 10 }}
+
+            />
+
             {loading && <Loader />}
         </View >
     )
 }
 
 const styles = StyleSheet.create({
+    // contentContainer: {
+    //     backgroundColor: '#FDFDFD',
+    //     width: "100%", borderTopRightRadius: 30, borderTopLeftRadius: 30,
+    //     marginTop: -30, paddingTop: 20, paddingHorizontal: 25
+    // },
     contentContainer: {
         backgroundColor: '#FDFDFD',
         width: "100%", borderTopRightRadius: 30, borderTopLeftRadius: 30,
-        marginTop: -30, paddingTop: 20, paddingHorizontal: 25
+        marginTop: -30, paddingTop: 20
     },
     content: {
         width: "100%", paddingHorizontal: 10, paddingVertical: 10, flexDirection: 'row',
@@ -152,11 +199,14 @@ const styles = StyleSheet.create({
         color: '#161615', fontFamily: fonts.MRe, fontSize: 9, lineHeight: 11, marginTop: 4
     },
     agreeBtn: {
-        width: "100%", position: 'absolute', bottom: Platform.OS == 'ios' ? 80 : 50, height: 70,
+        width: "100%", position: 'absolute', bottom: Platform.OS == 'ios' ? 80 : 50, height: 80,
         backgroundColor: 'white', flexDirection: 'row', paddingHorizontal: 30, alignItems: 'center', justifyContent: 'flex-end',
         borderTopRightRadius: 30, borderTopLeftRadius: 30,
         elevation: 5
     },
+    btnStyling: {
+        marginTop: 20,
+    }
 
 
 })
