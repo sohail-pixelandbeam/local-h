@@ -4,8 +4,9 @@ import {
     TextInput, FlatList, ScrollView, StatusBar, SafeAreaView, Platform, Switch, RefreshControl, Keyboard,
     KeyboardAvoidingView
 } from 'react-native'
-import { BackIcon, CrossIcon, EditPencilIcon, FilterIcon, HeartWhiteIcon, PlusIcon, SearchIcon, TickIcon, TickIconWhite } from '../../components/Svgs'
+import { BackIcon, CrossIcon, EditPencilIcon, FilterIcon, HeartWhiteIcon, PlusIcon, SearchIcon, TickIcon, TickIconWhite, HeartFilled } from '../../components/Svgs'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import Entypo from 'react-native-vector-icons/Entypo'
 
 import { fonts } from '../../constants/fonts';
 import { acolors } from '../../constants/colors';
@@ -384,6 +385,7 @@ const Home = () => {
         // wait(2000).then(() => setRefreshing(false));
     }, []);
 
+
     async function getLocation() {
         let loc = await getUserLocation();
     }
@@ -617,7 +619,7 @@ const Home = () => {
             {/* <BackPopupBtn /> */}
             {/* <CrossBtn /> */}
             {
-                !profilePic &&
+                !profilePic?.uri &&
                 <>
                     <Text style={styles.popupHeading}>Add your Best{"\n"}Picture!</Text>
                     <TouchableOpacity
@@ -630,7 +632,7 @@ const Home = () => {
                 </>
             }
             {
-                profilePic &&
+                profilePic?.uri &&
                 <>
 
                     <Text style={[styles.popupHeading]}>You look great!</Text>
@@ -653,7 +655,7 @@ const Home = () => {
             }
             <PopupButton
                 onPress={() => {
-                    if (!profilePic) {
+                    if (!profilePic?.uri) {
                         modalAlertRef.alertWithType('error', "Error", "Please upload pic");
                         return;
                     }
@@ -753,7 +755,7 @@ const Home = () => {
             {/* <CrossBtn /> */}
             <Text style={styles.popupHeading}>Themes you like</Text>
             <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>choose min of  three themes you like</Text>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+            <ScrollView style={{ flexDirection: 'row', maxHeight: 300, flexWrap: 'wrap' }}>
                 {
                     // ["Business Support", "Clean Energy and Air", "Community Work", "Construction Work ", "Art", "Harvesting & Farming", "Health & Medical", "Land Conservation", "Marine Protection"]
                     state.happeningSubmissionData?.happeningTheme?.map((v, i) => {
@@ -780,15 +782,21 @@ const Home = () => {
                     })
 
                 }
-            </View>
+            </ScrollView>
             <PopupButton
                 onPress={() => {
-                    let data = {
-                        themesYouLikes: themesLike,
-                        nextCase: 9
+                    if (themesLike.length > 2) {
+                        console.log(themesLike)
+                        let data = {
+                            themesYouLikes: themesLike,
+                            nextCase: 9
+                        }
+                        saveTempProfileDataToLocal('themesYouLikes', data);
+                        setPopupCases(9)
+                    } else {
+                        modalAlertRef.alertWithType('error', "Error", 'Please, Select atleast 3 themes.')
+                        return
                     }
-                    saveTempProfileDataToLocal('themesYouLikes', data);
-                    setPopupCases(9)
                 }}
                 btnStyle={{ position: 'relative', marginTop: 120, alignSelf: 'flex-end' }}
                 title="Next"
@@ -1017,19 +1025,13 @@ const Home = () => {
                                         <TouchableOpacity
                                             onPress={() => {
                                                 setWhishListHappeningId(item._id)
-                                                setCreateWishListModal(true)
+                                                if (!item.isFavorite) {
+                                                    setCreateWishListModal(true)
+                                                }
                                             }}
                                             style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
-                                            {
-                                                item.isFavorite ?
-                                                    <AntDesign
-                                                        name='heart'
-                                                        color={"red"}
-                                                        size={20}
-                                                    />
-                                                    :
-                                                    <HeartWhiteIcon color={item.isFavorite ? 'red' : "rgba(0,0,0,0.8)"} />
-                                            }
+                                            <HeartFilled color={item.isFavorite ? 'red' : "rgba(0,0,0,0.5)"} />
+                                            {/* <HeartWhiteIcon color={item.isFavorite ? 'red' : "rgba(0,0,0,0.8)"} /> */}
 
                                         </TouchableOpacity>
                                         {/* <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
@@ -1377,6 +1379,7 @@ const Home = () => {
                                                 />
                                                 <PopupButton
                                                     onPress={() => {
+                                                        Keyboard.dismiss()
                                                         if (languageKnownArr.length == 0) {
                                                             modalAlertRef.alertWithType('error', "Error", "Please enter atleast one language")
                                                             return;
@@ -1426,7 +1429,7 @@ const Home = () => {
                                                         />
                                                         <TouchableOpacity
                                                             onPress={() => {
-                                                                if (skill.length > 1) {
+                                                                if (skill.length > 0) {
                                                                     textInputRef.clear();
                                                                     doMakeSkills()
                                                                 }
@@ -1641,7 +1644,7 @@ const Home = () => {
                                         </TouchableOpacity>
                                         <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760', marginLeft: 10, }}>Create New</Text>
                                     </View>
-                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 15, color: '#5D5760', marginTop: 10, }}>or select from existing</Text>
+                                    {state.whishLists && state.whishLists.length > 0 && <Text style={{ fontFamily: fonts.PSBo, fontSize: 15, color: '#5D5760', marginTop: 10, }}>or select from existing</Text>}
                                     <View style={{ maxHeight: 400 }}>
                                         <ScrollView contentContainerStyle={{ paddingBottom: 30 }} >
                                             {
@@ -1847,7 +1850,7 @@ export default Home
 // {/* <Modal
 // isVisible={filterModal}
 // backdropColor="#171515"
-// // backdropOpacity={0.5}    
+// // backdropOpacity={0.5}
 // style={{ margin: 0 }}
 // onBackdropPress={() => { setFilterModal(false) }}
 // animationOut="slideOutDown"

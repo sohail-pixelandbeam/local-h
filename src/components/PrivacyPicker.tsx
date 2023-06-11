@@ -54,7 +54,7 @@ const PrivacyPicker = (props: Props) => {
         <TouchableOpacity
           style={{ marginLeft: 3, }}
           onPress={() => {
-            onPressModal()
+            // onPressModal()
             setModal(false)
           }}
         >

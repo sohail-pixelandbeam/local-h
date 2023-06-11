@@ -28,16 +28,16 @@ const ThingsConsider = () => {
     const conditionArr = [
         { title: "NGOs & LOCAL COMMUNITIES", desc: "Representatives of local communities and small NPOs worldwide have free access to upload their projects. NPOs with larger donor networks and fanbases are invited to contact us for a service partnership." },
         { title: "RELIABILITY", desc: "We accept projects of reliable NPOs and hosts. Prior to publishing a happening, we conduct desk and field research." },
-        { title: "WELFARE OF VULNERABLE GROUPS", desc: "The welfare of children, elderly people, animals, and other vulnerable groups is unquestioned. Projects involving these groups must be represented and supervised by trusted organizations/hosts. Orphanages are not admitted to the platform." },
-        { title: "ONLY HANDS & EXPERTISE", desc: "On all projects, there is a need for hands and/or expertise. Requests for financial support are not admitted." },
-        { title: "ONLINE & ON-LOCATION PROJECTS", desc: "The projects you submit can take place in an actual location or a virtual environment with video tooling." },
-        { title: "GIVE AND RECEIVE", desc: "Fellows share time and knowledge, local hosts give something in return, such as education about local nature or culture, a taste of a local product, a guided tour." },
-        { title: "SUSTAINABLE PROJECTS", desc: "The nature of each project is related to a minimum of one of the United Nations' sustainable development goals (SDG)." },
-        { title: "SHORT-TERM & LONG-TERM PROJECTS", desc: "We also accept projects that only last briefly, like for half or one day." },
-        { title: "NON-COMMERCIAL ACTIVITIES", desc: "Our platform is not the place for commercial operations like ticket sales and paid tours." },
+        { title: "WELFARE VULNERABLE GROUPS", desc: "The welfare of children, animals and other vulnerable groups is unquestioned. Projects involving these groups must be represented and supervised by trusted organizations/hosts. Orphanages are not admitted to the platform." },
+        { title: "HANDS, SKILLS & EXPERTISE", desc: "On all projects, there is a need for hands skills and/or expertise. Requests for financial support are not admitted." },
+        { title: "SUSTAINALBE PROJECTS", desc: "The nature of each project is related to a minimum of one of the goals of the United Nations (SDG)." },
+        { title: "SHORT- & LONG-TERM PROJECTS. ONLINE, REMOTE & ON-LOCATION", desc: "We accept projects of any duration. They can be both online and on-site projects." },
+        { title: "NO REPLACEMENTS OF LOCAL JOBS:", desc: "Our platform enables local communities and NPOs to ask for help where they cannot find it locally. Support should never come at the expense of opportunities for local citizens." },
+        { title: "GIVE & RECEIVE", desc: "The principle of giving and receiving applies to every project. Fellows share time and knowledge, local hosts give something in return, such as education about local nature or culture, a taste of a local product, or a guided tour." },
+        { title: "NON-COMMERCIAL ACTIVITIES", desc: "The goal of each project is to solve a sustainable problem. Our platform is not the place for commercial operations like ticket sales and paid tours." },
         { title: "NO ACCOMMODATION", desc: "We do not encourage members to travel but to give something back wherever they are. This means that hosts are not obliged to offer free food and/or accommodation." },
-        { title: "HOST PRESENCE", desc: "Every project requires one or more hosts to be present at the location when a volunteer comes to assist. Before you meet in person, you can contact a fellow through our app if you like. A chat function is available between hosts and fellows." },
-        { title: "COMMUNICATION", desc: "Hosts must frequently check the app for updates on discussions, registrations, and other information." },
+        { title: "HOST PRESENCE", desc: "Every project requires one or more hosts to be present at the location for instructions and personal meet when a volunteer comes to assist. In case of projects with vulnerable groups, a host needs to be present at all times." },
+        { title: "COMMUNICATION", desc: "Before meeting in person, contact takes place via our app. A chat function is available between hosts and volunteers. \n Hosts must frequently check the app for updates on discussions, registrations, and other information. And need to have some experience in working with people from outside their village." },
 
         // {
         //     Svg: LOCALCOMMUNITIES, title: "LOCAL COMMUNITIES & SMALL NONPROFITS", desc: "Representatives of local communities and small  nonprofits all over the world have free access to share their happenings. Nonprofits with larger donor networks and fanbases are invited to contact us for a service partnership."
