@@ -1,11 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StatusBar, View, Text, Image, SafeAreaView, StyleSheet, TouchableOpacity, TextInput, ScrollView, } from 'react-native'
 import ReactNativeModal from 'react-native-modal'
 import { goBack } from '../../../../Navigations'
 import { BackIcon, ChatIcon, NextIcon, RequestSubmittedSvg } from '../../../components/Svgs'
 import { fonts } from '../../../constants/fonts'
 import { capitalizeFirstLetter } from '../../../utils/functions'
+import GeneralStatusBar from '../../../components/GernalStatusBar'
+import Loader from '../../../utils/Loader'
+import { apiRequest } from '../../../utils/apiCalls'
+import DropdownAlert from 'react-native-dropdownalert'
 
+
+var alertRef;
 const MyHappeningDetails = (props) => {
 
     const showCancellItems = null
@@ -14,23 +20,142 @@ const MyHappeningDetails = (props) => {
     const [tabs, setTabs] = useState(showCancellItems ?? 'pendings')
     const [removeModal, setRemoveModal] = useState(false);
     const [removedNext, setRemovedNext] = useState(false);
+    const [data, setData] = useState(props.route.params?.data);
+    const [loading, setLoading] = useState(false);
+    const [removingUser, setRemovingUser] = useState('');
+
+    const [removingReason, setRemovingReason] = useState('');
 
     const params = props.route?.params?.params;
-    const data = props.route.params?.data
 
-    // console.log('____data', data)
+
+
+
+    async function getHostingDetails() {
+        setLoading(true);
+        apiRequest('', 'booking/getFellowBookingByHost/' + params._id, 'GET')
+            .then(data => {
+                setLoading(false)
+                setLoading(false)
+                if (data.status) {
+                    setData(data.data);
+                }
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            })
+    };
+
+
+    function doAcceptRequest(userId, happening) {
+        const body = {
+            fellowUserId: userId,
+            happeningId: happening.happeningId,
+            bookingId: happening._id,
+            timeZone: happening.timeZone,
+            startTime: happening.startTime,
+            endTime: happening.endTime,
+            startingDate: happening.startingDate,
+            endDate: happening.endDate,
+        }
+        setLoading(true)
+        apiRequest(body, 'booking/hostAcceptJoinRequest')
+            .then(data => {
+                console.log('data___', data)
+                if (data.status) {
+                    alertRef.alertWithType('success', 'Success', data.message)
+                    getHostingDetails();
+                    setTabs('joined')
+
+                }
+                else {
+                    setLoading(false)
+                    alertRef.alertWithType('error', 'Error', data.message)
+                }
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            })
+
+    }
+
+
+    function doRejectRequest(userId, happening) {
+        const body = {
+            fellowUserId: userId,
+            fellowBookingId: happening._id,
+            Reject: true
+        }
+        setLoading(true)
+        apiRequest(body, 'booking/hostRejectToFellow', 'PUT')
+            .then(data => {
+                setLoading(false)
+                console.log('data___', data)
+                if (data.status) {
+                    alertRef.alertWithType('success', 'Success', data.message)
+                    getHostingDetails();
+                    setTabs('joined')
+
+                }
+                else {
+                    alertRef.alertWithType('error', 'Error', data.message)
+                }
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            })
+
+    }
+
+    function doRemoveFellow() {
+
+        if(removingReason.length<3){
+            alertRef.alertWithType('error','Error','Please enter a valid removing reason');
+            return;
+        }
+        const body = {
+            fellowBookingId: removingUser._id,
+            noShow: true,
+            bookingCancellationReasons: removingReason
+        }
+        setLoading(true)
+        apiRequest(body, 'booking/NoShowByHostToFellow', 'PUT')
+            .then(data => {
+                setLoading(false)
+                console.log('data___', data)
+                if (data.status) {
+                    alertRef.alertWithType('success', 'Success', data.message);
+                    setRemovedNext(true);
+                    getHostingDetails();
+                    
+                }
+                else {
+                    alertRef.alertWithType('error', 'Error', data.message);
+                }
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            })
+
+    }
+
+    useEffect(() => {
+        // setLoading(false)
+        // getHostingDetails()
+    }, [])
 
 
     return (
-        <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1, }}>
-            <StatusBar
-                barStyle={"dark-content"}
-                // // translucent={false}
-                backgroundColor={"white"}
-            />
+        <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
+            <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
+            {loading && <Loader />}
             <TouchableOpacity
                 onPress={() => goBack()}
-                style={{ padding: 20 }} >
+                style={{ padding: 20, paddingTop: 0 }} >
                 <BackIcon
                     color={"#5A4CBB"}
                 />
@@ -81,7 +206,7 @@ const MyHappeningDetails = (props) => {
                                     <TouchableOpacity
                                         onPress={() => setTabs('pendings')}
                                         style={tabs == 'pendings' ? styles.activeTab : styles.inActiveTab}>
-                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 33, color: tabs == 'pendings' ? 'white' : '#5B4DBC', }}>{data?.pendingFellow.length}</Text>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 33, color: tabs == 'pendings' ? 'white' : '#5B4DBC', }}>{data?.pendingFellow?.length}</Text>
                                         <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: tabs == 'pendings' ? 'white' : '#5B4DBC', marginTop: -8, textAlign: 'center' }}>Pending{"\n"}Requests</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
@@ -113,7 +238,7 @@ const MyHappeningDetails = (props) => {
                             <Text style={[styles.heading, { marginTop: 10, color: '#FFA183' }]}>Join{"\n"}Requests</Text>
                             {
                                 data?.pendingFellow?.map((v, i) => {
-                                    console.log(v.profileAndTimeline)
+
                                     return (
                                         <View
                                             key={i}
@@ -124,10 +249,15 @@ const MyHappeningDetails = (props) => {
                                             />
                                             <Text style={{ fontFamily: fonts.PBo, fontSize: 12, color: "#2A2A2A", marginLeft: 10 }}>{v?.userId?.firstName} {v?.userId?.lastName} </Text>
                                             <View style={{ position: 'absolute', right: 10 }}>
-                                                <TouchableOpacity style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#5B4DBC' }}>
+                                                <TouchableOpacity
+                                                    onPress={() => doAcceptRequest(v.profileAndTimeline.userId, v)}
+                                                    style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#5B4DBC' }}>
                                                     <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white' }}>Accept</Text>
                                                 </TouchableOpacity>
-                                                <TouchableOpacity style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginTop: 5 }}>
+                                                <TouchableOpacity
+                                                    onPress={() => doRejectRequest(v.profileAndTimeline.userId, v)}
+
+                                                    style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginTop: 5 }}>
                                                     <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: '#5B4DBC' }}>Reject</Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -174,7 +304,10 @@ const MyHappeningDetails = (props) => {
                                                     <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white' }}>Message</Text>
                                                 </TouchableOpacity>
                                                 <TouchableOpacity
-                                                    onPress={() => setRemoveModal(true)}
+                                                    onPress={() => {
+                                                        setRemovingUser(v);
+                                                        setRemoveModal(true);
+                                                    }}
                                                     style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginTop: 5 }}>
                                                     <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: '#5B4DBC' }}>Remove</Text>
                                                 </TouchableOpacity>
@@ -254,16 +387,17 @@ const MyHappeningDetails = (props) => {
                             <Text style={{ fontFamily: fonts.PBo, fontSize: 21, color: '#FFA183' }}>Remove fellow from{"\n"}Happening?</Text>
                             <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760', marginTop: 15 }}>Please enter reason</Text>
                             <TextInput
+                                onChangeText={setRemovingReason}
                                 style={{ width: "100%", height: 42, borderWidth: 1, borderColor: '#2A2A2A', borderRadius: 12, fontFamily: fonts.PMe, fontSize: 14, color: '#5D5760', marginTop: 10, paddingHorizontal: 10 }}
                             />
-                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760', marginTop: 15 }}>Please describe what happened</Text>
+                            {/* <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760', marginTop: 15 }}>Please describe what happened</Text>
                             <TextInput
                                 style={{ width: "100%", height: 152, borderWidth: 1, borderColor: '#2A2A2A', borderRadius: 12, fontFamily: fonts.PMe, fontSize: 14, color: '#5D5760', marginTop: 10, paddingHorizontal: 15, paddingTop: 10 }}
                                 multiline={true}
                                 textAlignVertical="top"
-                            />
+                            /> */}
                             <TouchableOpacity
-                                onPress={() => setRemovedNext(true)}
+                                onPress={() => doRemoveFellow()}
                                 style={{ width: 90, height: 31, alignItems: 'center', justifyContent: 'center', borderRadius: 20, backgroundColor: '#5B4DBC', alignSelf: 'flex-end', marginTop: 30 }}>
                                 <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: "white" }}>Next</Text>
                             </TouchableOpacity>
@@ -272,8 +406,10 @@ const MyHappeningDetails = (props) => {
                 }
 
             </ReactNativeModal>
+            <DropdownAlert ref={(ref) => alertRef = ref} />
 
-        </SafeAreaView>
+
+        </View>
 
     )
 }

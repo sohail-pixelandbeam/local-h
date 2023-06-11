@@ -959,7 +959,7 @@ const Home = () => {
                     <FilterIcon />
                 </TouchableOpacity>
             </View>
-            {/* <View style={{ marginLeft: "4%", flexDirection: 'row', marginTop: 20, width: "100%", marginBottom: 10 }}>
+            <View style={{ marginLeft: "4%", flexDirection: 'row', marginTop: 20, width: "100%", marginBottom: 10 }}>
                 <FlatList
                     contentContainerStyle={{ paddingRight: 50 }}
                     showsHorizontalScrollIndicator={false}
@@ -976,7 +976,7 @@ const Home = () => {
                         </TouchableOpacity>
                     )}
                 />
-            </View> */}
+            </View>
             <ScrollView
                 refreshControl={
                     <RefreshControl

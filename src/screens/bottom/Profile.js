@@ -27,7 +27,6 @@ var alertRef;
 
 const Profile = (props) => {
 
-    console.log('props.route.params', props.route.params)
     const { state, setHappeningData } = useContext(Context)
     const [loading, setLoading] = useState(false);
     const [selectedTab, setSelectedTab] = useState('Profile');
@@ -77,7 +76,6 @@ const Profile = (props) => {
     async function uploadPic() {
         const res = await uploadSingleFile();
         setProfilePic(res);
-        console.log('res====', res)
 
     }
 
@@ -127,7 +125,6 @@ const Profile = (props) => {
                 .then(data => data.json())
                 // .then(data => data.text())
                 .then(data => {
-                    console.log('daga====', data)
                     setLoading(false)
                     if (data.status) {
                         // alertRef.alertWithType('success', 'Success', 'Profile Updated')
@@ -152,14 +149,11 @@ const Profile = (props) => {
 
     }
 
-
-
     async function getMyHostings(refreshing = false) {
         !refreshing && setLoading(true);
         // console.log('getMyHosting/' + state.userData._id)
         apiRequest('', 'booking/getMyHosting/', 'GET')
             .then(data => {
-                console.log('myHostings', data.data);
                 setLoading(false);
                 setRefreshing(false);
                 if (data.status) {
@@ -177,11 +171,9 @@ const Profile = (props) => {
         // console.log('getMyHosting/' + state.userData._id)
         apiRequest('', 'auth/getUserDetails', 'GET')
             .then(data => {
-                console.log('userDetails is', data)
                 setLoading(false);
                 if (data.status) {
                     setProfileData(data.data)
-                    console.log('userDetails isiaa', data?.data?.userProfile)
                 }
             })
             .catch(err => {
@@ -216,14 +208,16 @@ const Profile = (props) => {
     async function getLocationByIp() {
         let publicIp = await fetch('https://api.ipify.org/?format=json')
         publicIp = await publicIp.json();
-        console.log('this is the ip', publicIp.ip)
     }
 
     useEffect(() => {
 
+
+
         setLoading(true);
         retrieveItem('login_data')
             .then(data => {
+                console.log('login_data',data);
                 if (data) {
                     getProfileDetails();
                     getMyHostings();
@@ -243,9 +237,11 @@ const Profile = (props) => {
             setSelectedTab(props.route.params?.focused);
             forceUpdate()
             getMyBookings();
+            getMyHostings();
 
         }
-        getMyHostings();
+        
+        
     }, [tabs == 'My Hostings', isFocused])
 
 
@@ -268,7 +264,6 @@ const Profile = (props) => {
                     const date = new Date(happening?.startingDate)
                     const dayOfWeek = daysOfWeek[(date.getDay() + 1) % 7];
                     const dateString = dayOfWeek + ", " + date.getDate() + " " + months[date.getMonth()]
-                    console.log('v.status', v.booking.status)
                     return (
                         <View
                             key={i}
@@ -299,7 +294,6 @@ const Profile = (props) => {
 
                                         {
                                             v?.fellow?.map((v, i) => {
-                                                console.log('fellowLength', fellowLength)
                                                 return (
                                                     <View style={{ flexDirection: 'row' }}>
                                                         <Text style={[styles.peopleWhoJoinedText]}>{v?.profileAndTimeline?.userId?.firstName ?? ""} </Text>
@@ -325,7 +319,7 @@ const Profile = (props) => {
                                                 case 'awaiting 4 fellows':
                                                     navigateFromStack('BookingStack', 'AwaitingFellows')
                                                     return
-                                                case 'Rejected':
+                                                case 'Reject':
                                                     setBookingStatusAlertMsg('The host has rejected your request for joining. ')
                                                     break
                                                 case 'Cancellation request pending':
@@ -394,13 +388,13 @@ const Profile = (props) => {
                 renderItem={({ item, index }) => {
                     // item.startingDate
                     // console.log('item==',item)
-                    console.log('item.addPhotosOfYourHappening', item.addPhotosOfYourHappening)
+                    // console.log('item.addPhotosOfYourHappening', item._id)
                     return (
                         <TouchableOpacity
                             activeOpacity={1}
                             // disabled={true}
                             onPress={() => {
-                                item.status == 'cancelled' ? navigateFromStack('BookingStack', 'MyHappeningDetails', { params: 'cancelled' }) :
+                                item.status == 'happening canceled' ? navigateFromStack('BookingStack', 'MyHappeningDetails', { params: 'cancelled' }) :
                                     navigateFromStack('BookingStack', 'AllBookings', item)
                             }}
                             style={{ width: "48%", marginTop: 20, }}>
@@ -416,8 +410,8 @@ const Profile = (props) => {
                                 >
 
                                     <View style={[{ flexDirection: 'row', height: 35, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: 20, }, item == 'underReview' && { borderWidth: 3, borderColor: '#B9B1F0' }]}>
-                                        <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: '#675AC1', textTransform: 'capitalize' }}>
-                                            {item.status}
+                                        <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color:  item.status == 'happening canceled' ? 'red': '#675AC1', textTransform: 'capitalize' }}>
+                                             {item.status == 'happening canceled' ? 'Cancelled':item.status}
                                             {/* {index == 3 || 2 ? "view details" : index == 0 ? "under review" : "2 new requests"} */}
                                         </Text>
                                         {/* {index != 0 && <NextIcon />} */}
@@ -467,8 +461,8 @@ const Profile = (props) => {
 
                 <View style={{ position: 'absolute', bottom: Platform.OS == 'ios' ? 80 : 50, paddingTop: 10, backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-between', width: "100%", paddingHorizontal: 20, elevation: 5, alignItems: 'center', paddingBottom: 10, shadowOffset: { width: 1, height: 1 } }}>
 
-                    <TouchableOpacity onPress={() => setConfirmSignOut(true)}>
-                        <Text style={styles.signOut}></Text>
+                    <TouchableOpacity onPress={() => navigate('AuthStack')}>
+                        <Text style={styles.signOut}>Sign up</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => navigate('ThingsConsider')}

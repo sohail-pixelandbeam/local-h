@@ -6,6 +6,7 @@ import { fonts } from '../../../constants/fonts'
 import { Context } from '../../../Context/DataContext'
 import { apiRequest } from '../../../utils/apiCalls'
 import { capitalizeFirstLetter, formatDateToString } from '../../../utils/functions';
+import GeneralStatusBar from '../../../components/GernalStatusBar'
 
 const AllBookings = (props) => {
 
@@ -41,8 +42,8 @@ const AllBookings = (props) => {
 
 
     return (
-        <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1, }}>
-            <StatusBar
+        <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
+            <GeneralStatusBar
                 barStyle={"dark-content"}
                 // // translucent={false}
                 backgroundColor={"white"}
@@ -143,7 +144,7 @@ const AllBookings = (props) => {
                                     source={require('../../../static_assets/peopleJoinedImages.png')}
                                 />
                                 <Text style={styles.peopleWhoJoinedText}>Akram, Ton, Vamsi and 4 others</Text> */}
-                                <Text style={styles.seeAll}>See all</Text>
+                                {happeningDetails?.approvedFellow && happeningDetails?.approvedFellow[0] && <Text style={styles.seeAll}>See all</Text>}
                                 <TouchableOpacity
                                     style={[styles.bookingStatusContainer, { borderColor: '#E53535' }]}>
                                     <Text style={[styles.bookingStatus, { color: '#E53535' }]}>{happeningDetails?.totalJoinFellow} joined Awaiting {happeningDetails?.requireFellow} more </Text>
@@ -155,8 +156,13 @@ const AllBookings = (props) => {
                                     <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white', marginTop: -5, textAlign: 'center' }}>Join{"\n"}Requests</Text>
                                 </View>
                                 <TouchableOpacity
-                                    onPress={() => navigate('BookingCancelling')}
-                                    style={{ position: 'absolute', bottom: 5, alignSelf: 'center', padding: 5 }}>
+                                    onPress={() => navigate('BookingCancelling', {
+                                        params: props.route.params?.params,
+                                        data: happeningDetails
+                                    })}
+                                    // style={{ position: 'absolute', bottom: 0, alignSelf: 'center', padding: 5 }}
+                                    style={{ alignSelf: 'flex-end', padding: 5, marginRight: 20, marginTop: 5 }}
+                                >
                                     <Text style={{ fontFamily: fonts.PSBo, fontSize: 11, color: '#5B4DBC', textDecorationLine: 'underline' }}>Cancel </Text>
                                 </TouchableOpacity>
 
@@ -173,7 +179,7 @@ const AllBookings = (props) => {
                 </View>
             </ScrollView>
 
-        </SafeAreaView>
+        </View>
 
     )
 }
@@ -199,7 +205,7 @@ const styles = StyleSheet.create({
     },
 
     bookingCard: {
-        width: "101%", marginTop: 20, elevation: 5, backgroundColor: 'white', padding: 10, shadowColor: 'rgba(0,0,0,0.6)', shadowOpacity: 0.5,
+        width: "101%", marginTop: 20, elevation: 5, backgroundColor: 'white', padding: 10, shadowColor: 'rgba(0,0,0,0.3)', shadowOpacity: 0.4, paddingBottom: 20, borderRadius: 10
     },
     bookingDate: {
         fontFamily: fonts.PSBo, fontSize: 10, color: '#5B4DBC'

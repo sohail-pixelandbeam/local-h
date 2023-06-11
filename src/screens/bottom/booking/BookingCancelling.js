@@ -3,17 +3,48 @@ import { StatusBar, View, Text, Image, SafeAreaView, StyleSheet, TouchableOpacit
 import { goBack } from '../../../../Navigations'
 import { BackIcon, ChatIcon, NextIcon, RequestSubmittedSvg } from '../../../components/Svgs'
 import { fonts } from '../../../constants/fonts'
+import { apiRequest } from '../../../utils/apiCalls'
+import GeneralStatusBar from '../../../components/GernalStatusBar'
+import DropdownAlert from 'react-native-dropdownalert'
+import Loader from '../../../utils/Loader'
 
 
 
+let alertRef;
 const BookingCancelling = (props) => {
 
 
-    const [cancelled, setCacnelled] = useState(false)
+    const [cancelled, setCacnelled] = useState(false);
+    const [reason, setReason] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const params = props.route.params.params;
+
+    function doCancelHappening() {
+
+        if (reason.length < 3) {
+            alertRef.alertWithType('error', 'Error', 'Please enter a valid cancelling reason');
+            return
+        }
+        const body = {
+            happeningId: params?._id,
+            cancelHappeningResion: reason
+        }
+        setLoading(true);
+        apiRequest(body, 'happening/cancel-happening')
+            .then(data => {
+                setLoading(false);
+                if (data.status) {
+                    setCacnelled(true);
+                }
+            })
+            .catch(err => {
+                setLoading(false)
+            })
+
+    }
 
     useEffect(() => {
-
-
         return () => {
             setCacnelled(false)
         }
@@ -40,8 +71,8 @@ const BookingCancelling = (props) => {
     }
     else
         return (
-            <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1, }}>
-                <StatusBar
+            <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
+                <GeneralStatusBar
                     barStyle={"dark-content"}
                     // // translucent={false}
                     backgroundColor={"white"}
@@ -58,24 +89,27 @@ const BookingCancelling = (props) => {
                         <Text style={{ fontFamily: fonts.PBo, fontSize: 29, color: '#FFA183', }}>Why are you{"\n"}cancelling ?</Text>
                         <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760', marginTop: 15 }}>Please enter reason</Text>
                         <TextInput
+                            onChangeText={setReason}
                             style={{ width: "100%", height: 42, borderWidth: 1, borderColor: '#2A2A2A', borderRadius: 12, fontFamily: fonts.PMe, fontSize: 14, color: '#5D5760', marginTop: 10, paddingHorizontal: 10 }}
                         />
-                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760', marginTop: 15 }}>Please describe what happened</Text>
+                        {/* <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760', marginTop: 15 }}>Please describe what happened</Text>
                         <TextInput
                             style={{ width: "100%", height: 152, borderWidth: 1, borderColor: '#2A2A2A', borderRadius: 12, fontFamily: fonts.PMe, fontSize: 14, color: '#5D5760', marginTop: 10, paddingHorizontal: 15, paddingTop: 10 }}
                             multiline={true}
                             textAlignVertical="top"
-                        />
+                        /> */}
                         <TouchableOpacity
-                            onPress={() => setCacnelled(true)}
+                            onPress={() => doCancelHappening()}
                             style={{ width: 90, height: 31, alignItems: 'center', justifyContent: 'center', borderRadius: 20, backgroundColor: '#5B4DBC', alignSelf: 'flex-end', marginTop: 30 }}>
-                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: "white" }}>Next</Text>
+                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: "white" }}>Cancel</Text>
                         </TouchableOpacity>
                     </View>
 
                 </ScrollView>
+                <DropdownAlert ref={(ref) => alertRef = ref} />
+                {loading && <Loader />}
 
-            </SafeAreaView>
+            </View>
 
         )
 }
