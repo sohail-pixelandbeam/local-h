@@ -169,6 +169,7 @@ const HappeningStack = () => (
     <Stack.Screen name="NotificationSettings" component={NotificationSettings} />
     <Stack.Screen name="TranslationSettings" component={TranslationSettings} />
     <Stack.Screen name="LoginSecuritySettings" component={LoginSecuritySettings} />
+    
     {/* <Stack.Screen name="TypeHappening" component={TypeHappening} />
     LOCATION HAPPENING SCREENS
     <Stack.Screen name="GroupSizeHappeningL" component={GroupSizeHappeningL} />

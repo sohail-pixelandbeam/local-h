@@ -22,7 +22,7 @@ import AlertMsg from '../../common/AlertMsg';
 import GetLocation from 'react-native-get-location';
 import { useIsFocused } from '@react-navigation/core';
 
-
+import Entypo from 'react-native-vector-icons/Entypo';
 
 
 var alertRef;
@@ -59,10 +59,29 @@ const HappeningsMap = () => {
         { lat: 33.651148023765, lng: 73.077061381191, title: "Mughees Abbas" },
         { lat: 31.471123870604, lng: 74.250891599804, title: "Faisal" },
         { lat: 31.58363, lng: 74.998746, title: "Ahsan" },
-    ]
+    ];
 
 
     async function getHappeningDataFromServer(lat, lng) {
+
+        setLoading(true);
+        const body = {
+            latitude: lat,
+            longitude: lng
+        }
+
+        apiRequest(body, 'geotagging/allHappeningOnMapLocation', "GET")
+            .then(data => {
+                setLoading(false);
+                setHappeningData(data.data ?? []);
+            })
+            .catch(err => {
+                console.log('errorr', err)
+                setLoading(false)
+            })
+    }
+
+    async function getNearbyHappenings(lat, lng) {
 
         setLoading(true);
         const body = {
@@ -101,7 +120,7 @@ const HappeningsMap = () => {
             setGpsSettingPopup(true);
             return
         }
-        getHappeningDataFromServer(loc?.latitude, loc?.longitude)
+        getNearbyHappenings(loc?.latitude, loc?.longitude)
         setUserSelectedLocation({
             ...userSelectedLocation,
             latitude: loc?.latitude,
@@ -171,7 +190,7 @@ const HappeningsMap = () => {
                 </TouchableOpacity>
             </View>
 
-            <View style={{ marginLeft: "4%", flexDirection: 'row', marginTop: 10, width: "100%", marginBottom: 0 }}>
+            {/* <View style={{ marginLeft: "4%", flexDirection: 'row', marginTop: 10, width: "100%", marginBottom: 0 }}>
                 <FlatList
                     contentContainerStyle={{ paddingRight: 50 }}
                     showsHorizontalScrollIndicator={false}
@@ -188,17 +207,18 @@ const HappeningsMap = () => {
                         </TouchableOpacity>
                     )}
                 />
-            </View>
+            </View> */}
 
             <View style={{ flex: 1, alignSelf: 'center', width: '100%', borderRadius: 30, overflow: 'hidden', marginTop: 25 }}>
+
                 <MapView
                     ref={ref => map = ref}
                     showsUserLocation={true}
-                    showsMyLocationButton={true}
+                    // showsMyLocationButton={true}
                     region={userSelectedLocation}
                     provider={PROVIDER_GOOGLE}
                     userLocationAnnotationTitle={null}
-                    style={{ width: '100%', height: '100%', }}
+                    style={{ width: '100%', height: '87%', }}
                     onPress={() => setIsCalloutModal(false)}
                 >
                     {
@@ -239,6 +259,21 @@ const HappeningsMap = () => {
                     }
 
                 </MapView>
+
+                <TouchableOpacity
+                    onPress={()=>getNearbyHappenings()}
+                    style={{ position: 'absolute', width: "44%", flexDirection: 'row', top: 20, right: 20, alignSelf: 'center', padding: 10, backgroundColor: '#5b4dbc', borderRadius: 10, alignItems: 'center', justifyContent: 'center', }}
+                >
+                    <Entypo
+                        name="location-pin"
+                        style={{ marginRight: 3 }}
+                        color="white"
+                        size={20}
+                    />
+                    <Text style={{ fontSize: 10, textAlign: 'center', fontFamily: fonts.PMe, color: 'white' }}>Show nearby happenings</Text>
+
+                </TouchableOpacity>
+
             </View>
 
             {

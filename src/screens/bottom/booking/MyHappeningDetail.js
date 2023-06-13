@@ -182,7 +182,7 @@ const MyHappeningDetails = (props) => {
                                 <Text style={styles.peopleWhoJoinedText}>{capitalizeFirstLetter(params.happeningTitle)}</Text>
                             </View>
                             <Image
-                                source={require('../../../static_assets/FeaturedImage.png')}
+                                source={{uri:params?.addPhotosOfYourHappening[0]}}
                                 style={{ width: "30%", height: 75, borderRadius: 21, }}
                             />
 

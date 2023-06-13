@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView, StatusBar, View, Image, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList, Platform, } from 'react-native'
 
 import { Context } from '../../Context/DataContext';
-import { months, retrieveItem, storeItem, uploadSingleFile, useForceUpdate } from '../../utils/functions'
+import { capitalizeFirstLetter, months, retrieveItem, storeItem, uploadSingleFile, useForceUpdate } from '../../utils/functions'
 import Loader from '../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import { acolors } from '../../constants/colors';
@@ -217,7 +217,7 @@ const Profile = (props) => {
         setLoading(true);
         retrieveItem('login_data')
             .then(data => {
-                console.log('login_data',data);
+                console.log('login_data', data);
                 if (data) {
                     getProfileDetails();
                     getMyHostings();
@@ -240,8 +240,8 @@ const Profile = (props) => {
             getMyHostings();
 
         }
-        
-        
+
+
     }, [tabs == 'My Hostings', isFocused])
 
 
@@ -336,7 +336,7 @@ const Profile = (props) => {
                                         }}
 
                                         style={[styles.bookingStatusContainer, v.booking.status !== 'approved' && { borderColor: '#E53535' }]}>
-                                        <Text style={[styles.bookingStatus, v.booking.status !== 'approved' && { color: '#E53535' }]}>{v.booking?.status.charAt(0).toUpperCase() + v.booking?.status.slice(1)}</Text>
+                                        <Text style={[styles.bookingStatus, v.booking.status !== 'approved' && { color: '#E53535' }]}>{v.booking.status == 'Reject' ? 'Rejected' : capitalizeFirstLetter(v.booking?.status)}</Text>
                                         {v.booking.status !== 'approved' ?
                                             <InfoIcon color="#E53535" />
 
@@ -410,8 +410,8 @@ const Profile = (props) => {
                                 >
 
                                     <View style={[{ flexDirection: 'row', height: 35, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: 20, }, item == 'underReview' && { borderWidth: 3, borderColor: '#B9B1F0' }]}>
-                                        <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color:  item.status == 'happening canceled' ? 'red': '#675AC1', textTransform: 'capitalize' }}>
-                                             {item.status == 'happening canceled' ? 'Cancelled':item.status}
+                                        <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: item.status == 'happening canceled' ? 'red' : '#675AC1', textTransform: 'capitalize' }}>
+                                            {item.status == 'happening canceled' ? 'Cancelled' : item.status}
                                             {/* {index == 3 || 2 ? "view details" : index == 0 ? "under review" : "2 new requests"} */}
                                         </Text>
                                         {/* {index != 0 && <NextIcon />} */}

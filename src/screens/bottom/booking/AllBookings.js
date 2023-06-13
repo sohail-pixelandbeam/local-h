@@ -128,7 +128,7 @@ const AllBookings = (props) => {
                                         happeningDetails?.approvedFellow?.map((v, i) => {
                                             // console.log('fellowLength', fellowLength)
                                             return (
-                                                <View style={{ flexDirection: 'row' }}>
+                                                <View style={{ flexDirection: 'row', marginT }}>
                                                     <Text style={[styles.peopleWhoJoinedText]}>{v?.profileAndTimeline?.userId?.firstName ?? ""} </Text>
                                                     {/* {fellowLength !== i + 1 && v?.profileAndTimeline?.userId?.firstName && <Text style={[styles.peopleWhoJoinedText]}>, </Text>} */}
                                                 </View>
@@ -146,7 +146,7 @@ const AllBookings = (props) => {
                                 <Text style={styles.peopleWhoJoinedText}>Akram, Ton, Vamsi and 4 others</Text> */}
                                 {happeningDetails?.approvedFellow && happeningDetails?.approvedFellow[0] && <Text style={styles.seeAll}>See all</Text>}
                                 <TouchableOpacity
-                                    style={[styles.bookingStatusContainer, { borderColor: '#E53535' }]}>
+                                    style={[styles.bookingStatusContainer, { borderColor: '#E53535', marginTop:30 }]}>
                                     <Text style={[styles.bookingStatus, { color: '#E53535' }]}>{happeningDetails?.totalJoinFellow} joined Awaiting {happeningDetails?.requireFellow} more </Text>
                                 </TouchableOpacity>
                             </View>

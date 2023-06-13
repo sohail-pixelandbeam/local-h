@@ -10,6 +10,7 @@ import { fonts } from '../../../constants/fonts';
 import { Context } from '../../../Context/DataContext';
 import { apiRequest } from '../../../utils/apiCalls';
 import Loader from '../../../utils/Loader';
+import GeneralStatusBar from '../../../components/GernalStatusBar';
 
 var alertRef;
 var textInputRef;
@@ -31,16 +32,14 @@ const LoginSecuritySettings = () => {
 
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
+            <GeneralStatusBar backgroundColor='white' barStyle='dark-content' />
             <DropdownAlert ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
-            <StatusBar
-                backgroundColor={'white'}
-                barStyle={"dark-content"}
-            />
+          
             <View style={{ width: "90%", alignSelf: 'center' }}>
 
-                <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', justifyContent: 'space-between', marginTop: 20 }}>
+                <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', justifyContent: 'space-between', marginTop: 0 }}>
                     <TouchableOpacity
                         onPress={() => goBack()}
                         style={{ padding: 10 }}>
@@ -51,7 +50,7 @@ const LoginSecuritySettings = () => {
                         style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
                     />
                 </View>
-                <Text style={{ fontFamily: fonts.PSBo, fontSize: 21, color: '#5B4DBC', marginTop: 30 }}>Login & Security</Text>
+                <Text style={{ fontFamily: fonts.PSBo, fontSize: 21, color: '#5B4DBC', marginTop: 10 }}>Login & Security</Text>
                 <Text style={{ fontFamily: fonts.PRe, fontSize: 21, color: '#414141' }}>Settings</Text>
 
                 <View style={{ backgroundColor: '#F8F8F8', width: "100%", borderRadius: 20, paddingTop: 20, paddingHorizontal: 10, paddingBottom: 10, marginTop: 20 }}>
@@ -166,7 +165,7 @@ const LoginSecuritySettings = () => {
                 </View>
 
             </View>
-        </SafeAreaView >
+        </View >
     )
 }
 

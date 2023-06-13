@@ -128,11 +128,10 @@ const GoingWith = (props) => {
                 {/* or Youngsters? */}
                 <Text style={[styles.regulareText, { fontSize: 11 }]}>From 18 years, people are requested to create their own profile.</Text>
                 <ScrollView contentContainerStyle={{ paddingBottom: 200 }}>
-                    {params?.minAgeToParticipate <= 18 && < ChildrenInfo />}
-
-
+                    {/* {params?.minAgeToParticipate <= 18 &&  */}
+                    <ChildrenInfo />
+                    {/* } */}
                 </ScrollView>
-
             </View>
 
             <TouchableOpacity

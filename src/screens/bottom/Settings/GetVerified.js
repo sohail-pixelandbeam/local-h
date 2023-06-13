@@ -19,6 +19,7 @@ import { BackIcon } from '../../../components/Svgs';
 import { goBack } from '../../../../Navigations';
 import DropdownAlert from 'react-native-dropdownalert';
 import Loader from '../../../utils/Loader';
+import GeneralStatusBar from '../../../components/GernalStatusBar';
 
 
 
@@ -95,20 +96,22 @@ export default function GetVerified({ navigation }) {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
+            <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
             <View style={styles.containerMain}>
+                <View style={{ flexDirection: 'row', width: "90%", alignItems: 'center',alignSelf:'center', justifyContent: 'space-between' }}>
+                    <TouchableOpacity
+                        onPress={() => goBack()}>
+                        <BackIcon color="#5B4DBC" />
+                    </TouchableOpacity>
+                    <Image
+                        source={{ uri: state.profileData?.profileImage }}
+                        style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
+                    />
+                </View>
                 <ScrollView style={styles.containerUpper}>
-                    <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', justifyContent: 'space-between' }}>
-                        <TouchableOpacity
-                            onPress={() => goBack()}>
-                            <BackIcon color="#5B4DBC" />
-                        </TouchableOpacity>
-                        <Image
-                            source={{ uri: state.profileData?.profileImage }}
-                            style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
-                        />
-                    </View>
-                    <Heading style={{ marginTop: 50 }}>Government</Heading>
+
+                    <Heading style={{ marginTop: 0 }}>Government</Heading>
                     <Heading color="#414141" >ID</Heading>
                     <Input
                         label="ID issuing country"
@@ -155,7 +158,7 @@ export default function GetVerified({ navigation }) {
                 <DropdownAlert ref={(ref) => alertRef = ref} />
                 {loading && <Loader />}
             </View>
-        </SafeAreaView>
+        </View>
     );
 }
 

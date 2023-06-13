@@ -24,7 +24,7 @@ const ChildrenTeenagers = (props) => {
                 showBackBtn
                 heading={"Children and\nteenagers"}
                 headerStyle={{ paddingBottom: 30 }}
-                titleStyle={{ marginBottom: 20,  }}
+                titleStyle={{ marginBottom: 20, }}
             />
             <View style={styles.contentContainer}>
                 <ScrollView contentContainerStyle={{ paddingBottom: 350 }} >
@@ -43,12 +43,15 @@ const ChildrenTeenagers = (props) => {
                     const params = props.route.params?.data;
                     if (params?.minAgeToParticipate > 18) {
                         navigate('ReviewJoining', {
-                            data: params
+                            data: params,
+                            fellowWantToComeAlone: true,
                         })
                     }
-                    else navigate('GoingWith', {
-                        data: params
-                    })
+                    else {
+                        navigate('GoingWith', {
+                            data: params,
+                        })
+                    }
                 }}
                 showStep={false}
                 // containerStyle={{ alignItems: 'flex-end', flexDirection: 'column', justifyContent: 'center' }}
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.MBo, fontSize: 9, color: '#2A2A2A', lineHeight: 15,
     },
     text: {
-        color: '#5D5760', fontFamily: fonts.PMe, fontSize: 12,marginTop:20
+        color: '#5D5760', fontFamily: fonts.PMe, fontSize: 12, marginTop: 20
     },
     headingText: {
         color: '#5D5760', fontFamily: fonts.PBo, fontSize: 12

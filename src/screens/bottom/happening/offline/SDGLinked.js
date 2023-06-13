@@ -102,9 +102,10 @@ const   SDGLinked = (props) => {
 
 
     // React.useEffect(() => {
-    //     BackHandler.addEventListener('hardwareBackPress', function () {
-    //         return true;
-    //     })
+    //     setLoading(false)
+    //     // BackHandler.addEventListener('hardwareBackPress', function () {
+    //     //     return true;
+    //     // })
     // }, []);
 
 

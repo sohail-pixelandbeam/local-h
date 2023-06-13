@@ -106,7 +106,7 @@ const HappeningFacilites = (props) => {
             <View style={styles.contentContainer}>
                 <ScrollView contentContainerStyle={{ paddingBottom: 150 }} >
                     <View style={{ width: '90%', alignSelf: 'center', marginTop: 20 }}>
-                        <View style={{ flexDirection: 'row', width: "60%", flexWrap: 'wrap', marginTop: 10, marginLeft: -20, alignSelf: 'center', justifyContent: 'space-between' }}>
+                        <View style={{ flexDirection: 'row', width: "70%", flexWrap: 'wrap', marginTop: 10, alignSelf: 'center', justifyContent: 'space-evenly' }}>
                             {
                                 facilitesArr?.map((v, i) => {
                                     let Icon = v?.icon
@@ -114,8 +114,13 @@ const HappeningFacilites = (props) => {
                                         <TouchableOpacity
                                             disabled={!providingFacilities}
                                             onPress={() => addRemoveFacilities(v.title)}
-                                            style={{ alignItems: 'center', marginLeft: 20, marginTop: 20 }}>
-                                            <View style={{ width: 54, height: 54, borderRadius: 54 / 2, borderWidth: selectedFacilties.includes(v?.title) ? 0 : 2, backgroundColor: selectedFacilties.includes(v.title) ? '#5B4DBC' : 'white', borderColor: 'rgba(0,0,0,0.4)', alignItems: 'center', justifyContent: 'center' }}>
+                                            style={{ alignItems: 'center', marginLeft: 20, marginTop: 20,marginLeft:20 }}>
+                                            <View style={{
+                                                width: 54, height: 54, borderRadius: 54 / 2,
+                                                borderWidth: selectedFacilties.includes(v?.title) ? 0 : 2,
+                                                backgroundColor: selectedFacilties.includes(v.title) ? '#5B4DBC' : 'white', 
+                                                borderColor: 'rgba(0,0,0,0.4)', alignItems: 'center', justifyContent: 'center',
+                                            }}>
                                                 {Icon ? <Icon color={selectedFacilties.includes(v.title) ? "#fff" : "#222222"} />
                                                     :
                                                     <Text style={{ fontFamily: fonts.PMe, fontSize: 30, color: 'white', marginTop: 5 }}>{v.title.charAt(0)}</Text>

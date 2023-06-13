@@ -96,7 +96,7 @@ const Timezones = () => {
             <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
             <View style={{ width: "90%", alignSelf: 'center' }}>
 
-                <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', justifyContent: 'space-between', marginTop: 20 }}>
+                <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', justifyContent: 'space-between', marginTop: 0 }}>
                     <TouchableOpacity
                         onPress={() => goBack()}
                         style={{ padding: 10 }}>

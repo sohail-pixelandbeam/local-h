@@ -108,6 +108,8 @@ const Home = () => {
     const [wishlistId, setWishlistId] = useState('');
     const [myWhishLists, setMyWhisLists] = useState([]);
 
+    const [searchKeyword, setSearchKeyword] = useState('');
+
 
     async function getProfileDetails() {
         setLoading(true);
@@ -206,14 +208,10 @@ const Home = () => {
             });
         }
         setCcArr(arr);
-
     }
 
-    async function uploadPic() {
-        const res = await uploadSingleFile();
-        setProfilePic(res);
 
-    }
+
 
 
     function doMakeKnownLanguages() {
@@ -224,6 +222,11 @@ const Home = () => {
         forceUpdate();
     }
 
+    async function uploadPic() {
+        const res = await uploadSingleFile();
+        setProfilePic(res);
+
+    }
 
     function doSpliceLanguageKnown(v) {
         let arr = languageKnownArr;
@@ -241,7 +244,6 @@ const Home = () => {
         setSkill('');
         forceUpdate();
     }
-
 
     function doSpliceSkills(v) {
         let arr = skillsArr;
@@ -315,7 +317,6 @@ const Home = () => {
             setLoading(false)
         }
     }
-
 
     async function saveTempProfileDataToLocal(key, value) {
 
@@ -459,23 +460,42 @@ const Home = () => {
             })
     }
 
-    function doFilter(fromTime, endTime, theme) {
+    function doFilter(body) {
 
-        const body = {
-            themeOfYourHappening: theme,
-            // startTime: fromTime,
-            // endTime: endTime
-        }
-        console.log('body___', body)
+        // const body = {
+        //     // themeOfYourHappening: theme,
+        //     startTime: fromTime,
+        //     endTime: endTime
+        // }
+        console.log('___body___', body)
         setLoading(true)
-        apiRequest(body, 'search-and-filter/sort-my-search-result', 'GET')
+        apiRequest(body, 'search-and-filter/search-happenings', 'GET')
             .then(data => {
-                console.log('data___', data)
+                // console.log('data___', data)
                 setLoading(false)
                 if (data.status) {
                     setAllHappenings(data?.data.reverse());
                 }
 
+            })
+
+    }
+
+    function searchHappening(keyword) {
+
+        const body = {
+            keyword: keyword,
+        }
+        setLoading(true)
+        apiRequest(body, 'search-and-filter/search-happenings', 'GET')
+            .then(data => {
+                setLoading(false)
+                if (data.status) {
+                    setAllHappenings(data?.data.reverse());
+                }
+            })
+            .catch(err => {
+                setLoading(false)
             })
 
     }
@@ -951,6 +971,8 @@ const Home = () => {
                 <View style={{ width: "92%" }}>
                     <TextInput
                         style={styles.textbox}
+                        onChangeText={(v) => setSearchKeyword(v)}
+                        onSubmitEditing={() => searchHappening(searchKeyword)}
                         placeholder="Search happenings, fellows"
                         placeholderTextColor={"rgba(255,255,255,1)"}
                     />
@@ -967,7 +989,7 @@ const Home = () => {
                     <FilterIcon />
                 </TouchableOpacity>
             </View>
-            <View style={{ marginLeft: "4%", flexDirection: 'row', marginTop: 20, width: "100%", marginBottom: 10 }}>
+            {/* <View style={{ marginLeft: "4%", flexDirection: 'row', marginTop: 20, width: "100%", marginBottom: 10 }}>
                 <FlatList
                     contentContainerStyle={{ paddingRight: 50 }}
                     showsHorizontalScrollIndicator={false}
@@ -984,7 +1006,7 @@ const Home = () => {
                         </TouchableOpacity>
                     )}
                 />
-            </View>
+            </View> */}
             <ScrollView
                 refreshControl={
                     <RefreshControl
@@ -1700,7 +1722,7 @@ const Home = () => {
             />
 
 
-            {/* {loading && <Loader />} */}
+            {loading && <Loader />}
             <DropdownAlert ref={(ref) => alertRef = ref} />
         </View>
     )

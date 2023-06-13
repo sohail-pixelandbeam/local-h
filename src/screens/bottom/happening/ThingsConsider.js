@@ -123,21 +123,22 @@ const ThingsConsider = () => {
                     })
                     }
                 </View>
-                <TouchableOpacity
-                    onPress={() => {
-                        if (isGuest) {
-                            setLoginModal(true);
-                            return;
-                        }
-                        navigate('TypeHappening')
-                    }}
-                    activeOpacity={0.9}
-                    style={[styles.agreeBtn, { paddingBottom: 20 }]}>
-                    <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Agree and Continue</Text>
-                    <NextIcon style={{ marginLeft: 10 }} />
-                </TouchableOpacity>
+
                 <View style={{ height: 400 }} />
             </ScrollView>
+            <TouchableOpacity
+                onPress={() => {
+                    if (isGuest) {
+                        setLoginModal(true);
+                        return;
+                    }
+                    navigate('TypeHappening')
+                }}
+                activeOpacity={0.9}
+                style={[styles.agreeBtn, { paddingBottom: 20 }]}>
+                <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Agree and Continue</Text>
+                <NextIcon style={{ marginLeft: 10 }} />
+            </TouchableOpacity>
 
 
 
