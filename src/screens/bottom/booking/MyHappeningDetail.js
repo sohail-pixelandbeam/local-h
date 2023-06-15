@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { StatusBar, View, Text, Image, SafeAreaView, StyleSheet, TouchableOpacity, TextInput, ScrollView, } from 'react-native'
 import ReactNativeModal from 'react-native-modal'
 import { goBack } from '../../../../Navigations'
-import { BackIcon, ChatIcon, NextIcon, RequestSubmittedSvg } from '../../../components/Svgs'
+import { BackIcon, ChatIcon, CrossIcon, NextIcon, RequestSubmittedSvg } from '../../../components/Svgs'
 import { fonts } from '../../../constants/fonts'
 import { capitalizeFirstLetter } from '../../../utils/functions'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
@@ -112,8 +112,8 @@ const MyHappeningDetails = (props) => {
 
     function doRemoveFellow() {
 
-        if(removingReason.length<3){
-            alertRef.alertWithType('error','Error','Please enter a valid removing reason');
+        if (removingReason.length < 3) {
+            alertRef.alertWithType('error', 'Error', 'Please enter a valid removing reason');
             return;
         }
         const body = {
@@ -130,7 +130,7 @@ const MyHappeningDetails = (props) => {
                     alertRef.alertWithType('success', 'Success', data.message);
                     setRemovedNext(true);
                     getHostingDetails();
-                    
+
                 }
                 else {
                     alertRef.alertWithType('error', 'Error', data.message);
@@ -174,15 +174,17 @@ const MyHappeningDetails = (props) => {
                                         </>
                                         :
                                         <>
-                                            <Text style={styles.bookingDate}>Tue, 29 Mar - Online</Text>
+                                            <Text style={styles.bookingDate}>{params.startingDate} - {params.happeningOnLocation ? "On Location" : "Online"}</Text>
                                             <Text style={styles.bookingTime}>{params.startTime} - {params?.endTime}</Text>
+                                            {/* <Text style={styles.bookingDate}>Tue, 29 Mar - Online</Text>
+                                            <Text style={styles.bookingTime}>{params.startTime} - {params?.endTime}</Text> */}
                                         </>
                                 }
 
                                 <Text style={styles.peopleWhoJoinedText}>{capitalizeFirstLetter(params.happeningTitle)}</Text>
                             </View>
                             <Image
-                                source={{uri:params?.addPhotosOfYourHappening[0]}}
+                                source={{ uri: params?.addPhotosOfYourHappening[0] }}
                                 style={{ width: "30%", height: 75, borderRadius: 21, }}
                             />
 
@@ -363,9 +365,19 @@ const MyHappeningDetails = (props) => {
                 // isVisible={true}
                 backdropOpacity={0.5}
             >
+
+
+
                 {
                     removedNext ?
                         <View style={{ width: "100%", alignSelf: 'center', backgroundColor: 'white', padding: 15, paddingVertical: 25, borderRadius: 12 }}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setRemoveModal(false);
+                                }}
+                                style={styles.crossBtn}>
+                                <CrossIcon />
+                            </TouchableOpacity>
                             <Text style={{ fontFamily: fonts.PBo, fontSize: 21, color: '#FFA183' }}>Your request to
                                 remove the fellow
                                 has been submitted.{"\n"}{"\n"}
@@ -380,10 +392,19 @@ const MyHappeningDetails = (props) => {
                                 style={{ width: 90, height: 31, alignItems: 'center', justifyContent: 'center', borderRadius: 20, backgroundColor: '#5B4DBC', alignSelf: 'flex-end', marginTop: 30 }}>
                                 <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: "white" }}>Next</Text>
                             </TouchableOpacity>
+
                         </View>
                         :
 
                         <View style={{ width: "100%", alignSelf: 'center', backgroundColor: 'white', padding: 15, borderRadius: 12 }}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setRemoveModal(false);
+                                }}
+                                style={styles.crossBtn}>
+                                <CrossIcon />
+                            </TouchableOpacity>
+
                             <Text style={{ fontFamily: fonts.PBo, fontSize: 21, color: '#FFA183' }}>Remove fellow from{"\n"}Happening?</Text>
                             <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760', marginTop: 15 }}>Please enter reason</Text>
                             <TextInput
@@ -468,7 +489,12 @@ const styles = StyleSheet.create({
     },
     inActiveTab: {
         width: "27%", height: 98, alignSelf: 'center', alignItems: 'center', justifyContent: 'center', borderRadius: 32, borderWidth: 1, borderColor: '#5B4DBC', backgroundColor: 'white', marginLeft: 15
-    }
+    },
+
+    crossBtn: {
+        position: 'absolute', top: -20, right: -20, width: 43, height: 43, borderRadius: 43 / 2,
+        backgroundColor: 'white', elevation: 2, alignItems: 'center', justifyContent: 'center'
+    },
 
 })
 export default MyHappeningDetails

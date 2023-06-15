@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StatusBar, View, Text, Image, SafeAreaView, StyleSheet, TouchableOpacity, TextInput, ScrollView, } from 'react-native'
 import { goBack } from '../../../../Navigations'
 import { BackIcon, ChatIcon, NextIcon, RequestSubmittedSvg } from '../../../components/Svgs'
@@ -7,6 +7,7 @@ import { apiRequest } from '../../../utils/apiCalls'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
 import DropdownAlert from 'react-native-dropdownalert'
 import Loader from '../../../utils/Loader'
+import { Context } from '../../../Context/DataContext'
 
 
 
@@ -18,7 +19,13 @@ const BookingCancelling = (props) => {
     const [reason, setReason] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const { state } = useContext(Context);
+
+    // console.log(state.userData._id)
+
     const params = props.route.params.params;
+    const cancelRoute = props.route.params?.cancelRoute == 'booking' ? 'booking/fellowCanCancleBooking' : 'happening/cancel-happening';
+
 
     function doCancelHappening() {
 
@@ -31,7 +38,7 @@ const BookingCancelling = (props) => {
             cancelHappeningResion: reason
         }
         setLoading(true);
-        apiRequest(body, 'happening/cancel-happening')
+        apiRequest(body, cancelRoute)
             .then(data => {
                 setLoading(false);
                 if (data.status) {
@@ -42,6 +49,34 @@ const BookingCancelling = (props) => {
                 setLoading(false)
             })
 
+    }
+
+    function doCancelBooking() {
+
+        if (reason.length < 3) {
+            alertRef.alertWithType('error', 'Error', 'Please enter a valid cancelling reason');
+            return
+        }
+
+        const body = {
+            // cancelHappeningResion: reason,
+            userId: state.userData._id,
+            happeningId: params?._id,
+            bookingId: props.route.params?.bookingId
+        }
+
+        setLoading(true);
+        apiRequest(body, cancelRoute, 'PUT')
+            .then(data => {
+                console.log('the booking ', data)
+                setLoading(false);
+                if (data.status || data.bookingId) {
+                    setCacnelled(true);
+                }
+            })
+            .catch(err => {
+                setLoading(false)
+            })
     }
 
     useEffect(() => {
@@ -99,7 +134,7 @@ const BookingCancelling = (props) => {
                             textAlignVertical="top"
                         /> */}
                         <TouchableOpacity
-                            onPress={() => doCancelHappening()}
+                            onPress={() => props.route.params?.cancelRoute == 'booking' ? doCancelBooking() : doCancelHappening()}
                             style={{ width: 90, height: 31, alignItems: 'center', justifyContent: 'center', borderRadius: 20, backgroundColor: '#5B4DBC', alignSelf: 'flex-end', marginTop: 30 }}>
                             <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: "white" }}>Cancel</Text>
                         </TouchableOpacity>

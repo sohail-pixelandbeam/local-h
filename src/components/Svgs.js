@@ -1979,8 +1979,8 @@ export function DirectionArrow(props) {
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
-      width={7.583}
-      height={6.822}
+      width={props.width ?? 7.583}
+      height={props.width ?? 6.822}
       viewBox="0 0 7.583 6.822"
       {...props}
     >

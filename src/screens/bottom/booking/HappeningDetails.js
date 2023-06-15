@@ -144,6 +144,8 @@ const HappeningDetails = (props) => {
     };
 
 
+    console.log('happeningDetails?.happeningOnline', happeningDetails);
+    // console.log('happeningDetails?.happeningOnLocation', happeningDetails?.happeningOnLocation);
 
     return (
         <View style={{ backgroundColor: '#ffffff', flex: 1, }}>

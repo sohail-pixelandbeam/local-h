@@ -192,7 +192,7 @@ const SDGLinked = (props) => {
             console.log('reqObj', state.happeningDraft)
             // reqObj.UserId = loginData?._id;
             // reqObj.userProfileId = profileData?._id;
-            reqObj.happeningOnLocation = true;
+            // reqObj.happeningOnLocation = false;
             reqObj.AgreeAndContinue = true;
             reqObj.whatSDGIsThisHappeningLinkedTo = selected;
             // whatMakesYouIdealTohostThisHappening = "Nothing";

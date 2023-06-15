@@ -128,7 +128,7 @@ const AllBookings = (props) => {
                                         happeningDetails?.approvedFellow?.map((v, i) => {
                                             // console.log('fellowLength', fellowLength)
                                             return (
-                                                <View style={{ flexDirection: 'row', marginT }}>
+                                                <View style={{ flexDirection: 'row', marginTtop:10 }}>
                                                     <Text style={[styles.peopleWhoJoinedText]}>{v?.profileAndTimeline?.userId?.firstName ?? ""} </Text>
                                                     {/* {fellowLength !== i + 1 && v?.profileAndTimeline?.userId?.firstName && <Text style={[styles.peopleWhoJoinedText]}>, </Text>} */}
                                                 </View>

@@ -11,10 +11,13 @@ import HappeningStep from '../../../../common/HappeningStep'
 import { BackIcon, HappeningLocationIcon, LOCALCOMMUNITIES, LocationIcon, MarkerIcon, MarkerIcon1, NextIcon, NONCOMMERCIALACTIVITIES, OnlineHappeningIcon, RELIABLENONPROFITS, SUPPORTICON, TickIcon, WELFAREICON } from '../../../../components/Svgs'
 import { acolors } from '../../../../constants/colors'
 import { fonts } from '../../../../constants/fonts'
-import { getHOLPreviousScreen, useForceUpdate } from '../../../../utils/functions'
+import { getHOLPreviousScreen, getUserLocation, useForceUpdate } from '../../../../utils/functions'
 import Loader from '../../../../utils/Loader'
 import { GooglePlacesAutocomplete } from "fiction-places-autocomplete";
 import { Context } from '../../../../Context/DataContext'
+import AlertMsg from '../../../../common/AlertMsg'
+import GetLocation from 'react-native-get-location'
+import { useIsFocused } from '@react-navigation/native'
 
 
 //  NEXT SCREEN Duration1;
@@ -24,6 +27,7 @@ var addressTextInputRef;
 
 const Location1 = (props) => {
 
+    const isFocused = useIsFocused();
     const { state, setLocationHappeningData } = useContext(Context)
     const forceUpdate = useForceUpdate();
     const googleMapsKey = "AIzaSyCBRIKQu3tgtuEIhUAkIRy1N8pHu_wFYBk"
@@ -31,6 +35,8 @@ const Location1 = (props) => {
     const [confirmPopup, setConfirmPopup] = useState(false);
     const [locationDescription, setLocationDescription] = useState('');
     const [selectOnMap, setSelectOnMap] = useState(false);
+
+    const [gpsSettingsPopup, setGpsSettingPopup] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [userCoords, setUserCoords] = useState({
@@ -129,72 +135,67 @@ const Location1 = (props) => {
 
 
 
-
     async function handleUserLocation(locationObj) {
 
-        setLoading(true);
-        if (!locationObj) {
-            let status = await requestLocationPermission()
-            if (status !== 'granted') {
-                Alert.alert('Permission to access location was denied');
-                return;
+        try {
+            setLoading(true);
+
+            let loc = await getUserLocation();
+            if (loc?.error == '1') {
+                setGpsSettingPopup(true);
+                return
             }
 
-            Geolocation.getCurrentPosition((position) => {
-                const locationObj = {
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                    latitudeDelta: 0.01,
-                    longitudeDelta: 0.01,
-                    locationTitle: ''
-                }
-                console.log('this is obj', locationObj)
-                setUserCoords(locationObj)
-                forceUpdate();
-            })
-        }
-        else {
+            const locationObj = {
+                latitude: loc.latitude,
+                longitude: loc.longitude,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+                locationTitle: ''
+            }
             setUserCoords(locationObj)
+        
+            var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + locationObj?.latitude + "," + locationObj?.longitude + "&key=" + googleMapsKey;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify([]),
+            })
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    setLoading(false)
+                    console.log("I get:");
+                    console.log(responseJson.status)
+
+                    if (responseJson.status == "OK") {
+                        const address_components = responseJson.results[0].address_components;
+                        // let state = address_components[address_components.length - 2].long_name;
+                        const country = address_components[address_components.length - 1].long_name;
+                        const city = address_components[address_components.length - 3].long_name;
+                        const address = responseJson.results[0].formatted_address;
+                        setUserAddress({
+                            ...userAddress,
+                            address: address,
+                            city: city,
+                            country: country
+                        });
+                        // forceUpdate();
+                        // console.log(userAddress)
+                    }
+
+                })
+                .catch((error) => {
+                    setLoading(false)
+                });
             forceUpdate();
         }
-
-        var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + userCoords?.latitude + "," + userCoords?.longitude + "&key=" + googleMapsKey;
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify([]),
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                setLoading(false)
-                console.log("I get:");
-                console.log(responseJson.status)
-
-                if (responseJson.status == "OK") {
-                    const address_components = responseJson.results[0].address_components;
-                    // let state = address_components[address_components.length - 2].long_name;
-                    const country = address_components[address_components.length - 1].long_name;
-                    const city = address_components[address_components.length - 3].long_name;
-                    const address = responseJson.results[0].formatted_address;
-                    setUserAddress({
-                        ...userAddress,
-                        address: address,
-                        city: city,
-                        country: country
-                    });
-                    // forceUpdate();
-                    // console.log(userAddress)
-                }
-
-            })
-            .catch((error) => {
-                setLoading(false)
-            });
-        forceUpdate();
+        catch (err) {
+            setLoading(false)
+        }
     }
 
     function next() {
@@ -233,18 +234,8 @@ const Location1 = (props) => {
     }
 
     useEffect(() => {
-        Geolocation.getCurrentPosition((position) => {
-            const locationObj = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.1,
-                locationTitle: ''
-            }
-            setUserCoords(locationObj)
-            forceUpdate();
-        })
-    }, [])
+        handleUserLocation();
+    }, [isFocused])
 
 
 
@@ -334,7 +325,7 @@ const Location1 = (props) => {
                                                 setUserCoords(region)
                                             }}
                                             region={userCoords}
-                                            provider={Platform.OS == 'android'&& PROVIDER_GOOGLE}
+                                            provider={Platform.OS == 'android' && PROVIDER_GOOGLE}
                                             style={{ width: '100%', height: '100%' }}
                                         >
                                             <Marker
@@ -456,7 +447,25 @@ const Location1 = (props) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            
+
+
+            <AlertMsg
+                heading={"Please enable location to see nearby happenings"}
+                desc=""
+                isCross={true}
+                renderBtn={true}
+                // descStyle={{ lineHeight: 22, color: '#5D5760', fontFamily: fonts.PSBo }}
+                btnTitle="Enable"
+                state={gpsSettingsPopup}
+                onBackdropPress={() => setGpsSettingPopup(false)}
+                onPress={() => {
+                    setGpsSettingPopup(false)
+                    GetLocation.openGpsSettings();
+                }}
+                containerStyle={{ paddingHorizontal: 25, paddingBottom: 50, paddingTop: 10 }}
+            />
+
+
             <HappeningHeader
                 heading={"Where’s this happening?"}
                 desc={"Provide the location information "}

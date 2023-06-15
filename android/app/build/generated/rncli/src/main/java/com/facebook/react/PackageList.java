@@ -30,7 +30,7 @@ import com.github.douglasjunior.reactNativeGetLocation.ReactNativeGetLocationPac
 // react-native-image-picker
 import com.imagepicker.ImagePickerPackage;
 // react-native-maps
-import com.airbnb.android.react.maps.MapsPackage;
+import com.rnmaps.maps.MapsPackage;
 // react-native-pager-view
 import com.reactnativepagerview.PagerViewPackage;
 // react-native-push-notification

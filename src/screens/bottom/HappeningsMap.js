@@ -23,6 +23,7 @@ import GetLocation from 'react-native-get-location';
 import { useIsFocused } from '@react-navigation/core';
 
 import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
 var alertRef;
@@ -36,8 +37,8 @@ const HappeningsMap = () => {
     const { state, setUserGlobal, userProfileData } = useContext(Context);
     const isFocused = useIsFocused();
     const [userSelectedLocation, setUserSelectedLocation] = useState({
-        latitude: 52.75126,
-        longitude: 37.618423,
+        latitude: 0,
+        longitude: 0,
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
         locationTitle: ''
@@ -54,6 +55,10 @@ const HappeningsMap = () => {
     const userData = state.userData;
     const profileData = state.profileData;
 
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const [calloutIndex, setCalloutIndex] = useState(0)
+
+
     const nearByData = [
         { lat: 33.643497198724, lng: 73.088168073446, title: "Mughees" },
         { lat: 33.651148023765, lng: 73.077061381191, title: "Mughees Abbas" },
@@ -62,17 +67,35 @@ const HappeningsMap = () => {
     ];
 
 
-    async function getHappeningDataFromServer(lat, lng) {
+    async function getHappeningDataFromServer() {
 
         setLoading(true);
-        const body = {
-            latitude: lat,
-            longitude: lng
-        }
+        // const body = {
+        //     latitude: lat,
+        //     longitude: lng
+        // }
+        // allHappeningOnMapLocation
+        apiRequest('', 'showAllhappning', "GET")
 
-        apiRequest(body, 'geotagging/allHappeningOnMapLocation', "GET")
             .then(data => {
                 setLoading(false);
+                let data1 = data.data;
+
+                for (let key in data1) {
+
+                    if (data1[key].location?.coordinates?.length) {
+                        setCalloutParams(data1[key]);
+                        setCalloutIndex(key);
+                        setUserSelectedLocation({
+                            latitude: data1[key].location?.coordinates[0],
+                            longitude: data1[key].location?.coordinates[1],
+                            latitudeDelta: 0.1,
+                            longitudeDelta: 0.1,
+                            locationTitle: ''
+                        })
+                        break
+                    }
+                }
                 setHappeningData(data.data ?? []);
             })
             .catch(err => {
@@ -89,9 +112,34 @@ const HappeningsMap = () => {
             longitude: lng
         }
 
-        apiRequest(body, 'geotagging/allHappeningOnMapLocation', "GET")
+        apiRequest(body, 'geotagging/GetAllNearestHappening', "GET")
             .then(data => {
                 setLoading(false);
+
+                var found = false;
+                let data1 = data.data;
+
+                for (let key in data1) {
+                    if (data1[key].location?.coordinates?.length) {
+                        found = true
+                        setCalloutParams(data1[key]);
+                        setCalloutIndex(key);
+                        setUserSelectedLocation({
+                            latitude: data1[key].location?.coordinates[0],
+                            longitude: data1[key].location?.coordinates[1],
+                            latitudeDelta: 0.1,
+                            longitudeDelta: 0.1,
+                            locationTitle: ''
+                        })
+                        break
+                    }
+                }
+                if (!found) {
+                    setCalloutParams([]);
+                    setCalloutIndex(0);
+                }
+
+
                 setHappeningData(data.data ?? []);
             })
             .catch(err => {
@@ -130,6 +178,92 @@ const HappeningsMap = () => {
 
     }
 
+
+    function doFilter(body) {
+        setLoading(true)
+        const obj = {
+            ...body,
+            happeningOnLocation: true
+        }
+        apiRequest(obj, 'search-and-filter/search-happenings', 'GET')
+            .then(data => {
+                // console.log('data___', data)
+                setLoading(false)
+                if (data.status) {
+
+                    var found = false;
+                    let data1 = data.data;
+
+                    for (let key in data1) {
+                        if (data1[key].location?.coordinates?.length) {
+                            found = true
+                            setCalloutParams(data1[key]);
+                            setCalloutIndex(key);
+                            setUserSelectedLocation({
+                                latitude: data1[key].location?.coordinates[0],
+                                longitude: data1[key].location?.coordinates[1],
+                                latitudeDelta: 0.1,
+                                longitudeDelta: 0.1,
+                                locationTitle: ''
+                            })
+                            break
+                        }
+                    }
+                    if (!found) {
+                        setCalloutParams([]);
+                        setCalloutIndex(0);
+                    }
+                    setHappeningData(data?.data.reverse());
+                }
+
+            })
+    }
+
+    function searchHappening(keyword) {
+        const body = {
+            keyword: keyword,
+            happeningOnLocation: true
+        }
+        setLoading(true)
+        apiRequest(body, 'search-and-filter/search-happenings', 'GET')
+            .then(data => {
+                setLoading(false)
+                if (data.status) {
+                    var found = false;
+                    let data1 = data.data;
+
+                    for (let key in data1) {
+                        if (data1[key].location?.coordinates?.length) {
+                            found = true
+                            setCalloutParams(data1[key]);
+                            setCalloutIndex(key);
+                            setUserSelectedLocation({
+                                latitude: data1[key].location?.coordinates[0],
+                                longitude: data1[key].location?.coordinates[1],
+                                latitudeDelta: 0.1,
+                                longitudeDelta: 0.1,
+                                locationTitle: ''
+                            })
+                            break
+                        }
+                    }
+                    if (!found) {
+                        setCalloutParams([]);
+                        setCalloutIndex(0);
+                    }
+
+                    happeningData(data?.data.reverse());
+                }
+            })
+            .catch(err => {
+                setLoading(false)
+            })
+
+    }
+
+
+
+
     useEffect(() => {
         // getLocation()
         getHappeningDataFromServer()
@@ -158,7 +292,7 @@ const HappeningsMap = () => {
             />
 
 
-            <View style={{ flexDirection: 'row', width: "90%", alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
+            {/* <View style={{ flexDirection: 'row', width: "90%", alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
                 <TouchableOpacity onPress={() => goBack()} >
                     <BackIcon color="black" />
                 </TouchableOpacity>
@@ -168,10 +302,12 @@ const HappeningsMap = () => {
                         source={{ uri: profileData?.profileImage }} // require('../../assets/img1.png')
                     />
                 }
-            </View>
+            </View> */}
             <View style={{ width: "90%", alignSelf: 'center', marginTop: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
                 <View style={{ width: "86%" }}>
                     <TextInput
+                        onChangeText={(v) => setSearchKeyword(v)}
+                        onSubmitEditing={() => searchHappening(searchKeyword)}
                         style={styles.textbox}
                         placeholder="Search happenings or location"
                         placeholderTextColor={"rgba(255,255,255,1)"}
@@ -240,7 +376,6 @@ const HappeningsMap = () => {
                                         pinColor={acolors.primary}
                                         description=""
                                         onPress={() => {
-                                            console.log("pressed")
                                             setIsCalloutModal(true)
                                             forceUpdate();
                                             setCalloutParams(v)
@@ -261,7 +396,7 @@ const HappeningsMap = () => {
                 </MapView>
 
                 <TouchableOpacity
-                    onPress={()=>getNearbyHappenings()}
+                    onPress={() => getLocation()}
                     style={{ position: 'absolute', width: "44%", flexDirection: 'row', top: 20, right: 20, alignSelf: 'center', padding: 10, backgroundColor: '#5b4dbc', borderRadius: 10, alignItems: 'center', justifyContent: 'center', }}
                 >
                     <Entypo
@@ -282,6 +417,7 @@ const HappeningsMap = () => {
                     activeOpacity={0.8}
                     onPress={() => navigateFromStack('BookingStack', 'HappeningDetails', calloutParams)}
                     style={{ width: "85%", height: "14%", backgroundColor: 'white', alignSelf: 'center', bottom: 100, position: 'absolute', borderRadius: 20 }}>
+
                     <View style={{ flexDirection: 'row', width: "100%", flex: 1 }}>
                         <Image
                             style={{ width: "37%", height: "100%", borderTopLeftRadius: 20, borderBottomLeftRadius: 20, resizeMode: 'stretch', }}
@@ -318,9 +454,31 @@ const HappeningsMap = () => {
                         </View>
                     </View>
 
+
+                    <TouchableOpacity
+                        onPress={() => {
+                            let x = parseInt(calloutIndex) + 1;
+                            if (x == happeningData.length) x = 0;
+                            setCalloutParams(happeningData[x]);
+                            setCalloutIndex(x)
+                            setUserSelectedLocation({
+                                latitude: happeningData[x].location?.coordinates[0],
+                                longitude: happeningData[x].location?.coordinates[1],
+                                latitudeDelta: 0.1,
+                                longitudeDelta: 0.1,
+                                locationTitle: ''
+                            })
+                        }}
+                        style={{ position: 'absolute', width: "7%", right: 0, height: "100%", alignItems: 'center', justifyContent: 'center' }}
+                    >
+                        <AntDesign name='right' color={"black"} />
+
+                    </TouchableOpacity>
+
                 </TouchableOpacity>
             }
             <HappeningFilterModal
+                onDone={doFilter}
                 isVisible={filterModal}
                 filterType={filterType}
                 setIsVisible={() => setFilterModal(false)}

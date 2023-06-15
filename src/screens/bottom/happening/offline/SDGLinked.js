@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, BackHandler } from 'react-native'
 import { navigate } from '../../../../../Navigations'
 import HappeningHeader from '../../../../common/HappeningHeader'
@@ -18,7 +18,7 @@ import { urls } from '../../../../utils/Api_urls'
 
 var alertRef;
 
-const   SDGLinked = (props) => {
+const SDGLinked = (props) => {
 
 
     const forceUpdate = useForceUpdate();
@@ -123,7 +123,11 @@ const   SDGLinked = (props) => {
             whatSDGIsThisHappeningLinkedTo: selected
         }
         setLocationHappeningData(obj);
-        doUploadImages();
+        if (state.locationHappeningDraft.addPhotosOfYourHappening) {
+            doSubmitHappening(state.locationHappeningDraft.addPhotosOfYourHappening)
+
+        }
+        else doUploadImages();
 
         // navigate('TermsAndLaws')
     }
@@ -146,11 +150,11 @@ const   SDGLinked = (props) => {
                     console.log('the data of images === ----', data);
                     // setLoading(false)
                     if (data.status) {
-                        // const obj = {
-                        //     ...state.locationHappeningDraft,
-                        //     addPhotosOfYourHappening: data?.data
-                        // }
-                        // setLocationHappeningData(obj);
+                        const obj = {
+                            ...state.locationHappeningDraft,
+                            addPhotosOfYourHappening: data?.data
+                        }
+                        setLocationHappeningData(obj);
                         doSubmitHappening(data?.data);
 
                     }
@@ -218,6 +222,9 @@ const   SDGLinked = (props) => {
     }
 
 
+    useEffect(() => {
+        setLoading(false)
+    }, [])
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>

@@ -54,7 +54,9 @@ const Profile = (props) => {
 
     // "Timeline",
     const tabs = ["Profile", "My Hostings", "Bookings",];
+
     const happeningStatuses = ["underReview", "approved", "rejected", "cancelled"];
+
     const happeningStatusesText = {
         underReview: {
             status: "Under Review",
@@ -72,13 +74,11 @@ const Profile = (props) => {
 
     }
 
-
     async function uploadPic() {
         const res = await uploadSingleFile();
         setProfilePic(res);
 
     }
-
 
     function makeFromToMonthDate(item) {
 
@@ -89,7 +89,6 @@ const Profile = (props) => {
         if (startingDate && endingDate) return startingDate?.substring(startingDate?.length, startingDate?.length - 2) + " " + getMonth;
         else return "12-25\n Dec";
     }
-
 
     async function doEditProfile(v) {
 
@@ -189,8 +188,9 @@ const Profile = (props) => {
             .then(data => {
                 setLoading(false);
                 setRefreshing(false);
+
                 // if (data.status) {
-                setMyBookings(data?.data)
+                setMyBookings(data?.data.reverse())
                 // }
             })
             .catch(err => {
@@ -259,11 +259,14 @@ const Profile = (props) => {
                 // [{ status: 'Confirmed' }, { status: 'Pending' }, { status: 'Cancelled' },
                 // { status: 'awaiting 4 fellows' }, { status: 'Rejected' }, { status: 'Cancellation request pending' }]
                 myBookings?.map((v, i) => {
+
                     let fellowLength = v?.fellow?.length;
                     let happening = v.booking?.happeningId;
                     const date = new Date(happening?.startingDate)
                     const dayOfWeek = daysOfWeek[(date.getDay() + 1) % 7];
-                    const dateString = dayOfWeek + ", " + date.getDate() + " " + months[date.getMonth()]
+                    const dateString = dayOfWeek + ", " + date.getDate() + " " + months[date.getMonth()];
+                    if (i == 0) console.log(happening?.happeningOnLocation)
+
                     return (
                         <View
                             key={i}
@@ -311,7 +314,7 @@ const Profile = (props) => {
                                             switch (v.booking.status) {
 
                                                 case 'approved':
-                                                    navigateFromStack('BookingStack', 'ConfirmHappeningStatus')
+                                                    navigateFromStack('BookingStack', 'ConfirmHappeningStatus', v)
                                                     return;
                                                 case 'pending':
                                                     setBookingStatusAlertMsg('The host needs to approve your join request for the booking. ')
@@ -325,7 +328,7 @@ const Profile = (props) => {
                                                 case 'Cancellation request pending':
                                                     setBookingStatusAlertMsg('Your cancellation request is under review.')
                                                     break
-                                                case 'Cancelled':
+                                                case 'cancelled':
                                                     setBookingStatusAlertMsg('This booking has been cancelled by you.')
                                                     break
                                                 default: break
@@ -336,7 +339,7 @@ const Profile = (props) => {
                                         }}
 
                                         style={[styles.bookingStatusContainer, v.booking.status !== 'approved' && { borderColor: '#E53535' }]}>
-                                        <Text style={[styles.bookingStatus, v.booking.status !== 'approved' && { color: '#E53535' }]}>{v.booking.status == 'Reject' ? 'Rejected' : capitalizeFirstLetter(v.booking?.status)}</Text>
+                                        <Text style={[styles.bookingStatus, v.booking.status !== 'approved' && { color: '#E53535' }]}>{v.booking.status == 'Reject' ? 'Rejected' : capitalizeFirstLetter(v.booking?.status)} </Text>
                                         {v.booking.status !== 'approved' ?
                                             <InfoIcon color="#E53535" />
 
@@ -346,17 +349,23 @@ const Profile = (props) => {
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{ width: "49%", marginLeft: 10 }}>
-                                    <Image
-                                        source={{ uri: happening?.addPhotosOfYourHappening[0] }}
-                                        style={{ width: "100%", height: 103, borderRadius: 21, }}
-                                    />
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            navigateFromStack('BookingStack', 'HappeningDetails', happening)
+                                        }}
+                                    >
+                                        <Image
+                                            source={{ uri: happening?.addPhotosOfYourHappening[0] }}
+                                            style={{ width: "100%", height: 103, borderRadius: 21, }}
+                                        />
+                                    </TouchableOpacity>
                                     <Text style={[styles.bookingTitle, { width: "90%" }]}>{happening?.happeningTitle}</Text>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
                                         <Image
                                             style={{ width: 33, height: 33, borderRadius: 33 / 2, marginRight: 10 }}
                                             source={{ uri: happening?.userProfileId?.profileImage }}
                                         />
-                                        <Text style={styles.hostedBy}>Hosted by{"\n"}{happening?.userProfileId?.userId?.firstName + " " + happening?.userProfileId?.userId?.lastName}</Text>
+                                        <Text style={[styles.hostedBy, { width: "80%" }]}>Hosted by{"\n"}{happening?.userProfileId?.userId?.firstName + " " + happening?.userProfileId?.userId?.lastName}</Text>
                                     </View>
                                 </View>
 

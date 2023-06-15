@@ -161,7 +161,6 @@ const HappeningStack = () => (
     initialRouteName="Profile"
   >
     <Stack.Screen name="Profile" component={Profile} />
-
     <Stack.Screen name="ViewAllReviews" component={ViewAllReviews} />
     <Stack.Screen name="ThingsConsider" component={ThingsConsider} />
     <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
