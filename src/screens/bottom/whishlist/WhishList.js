@@ -22,8 +22,10 @@ const WhishList = () => {
     const [createWishListModal, setCreateWishListModal] = useState(false);
     const [wishListName, setWishListName] = useState('');
     const [wishList, setWishList] = useState([]);
+
     const [isDeletedModal, setIsDeleteModal] = useState(false);
     const [deletedId, setDeletedId] = useState('');
+
     const [newWhishListName, setNewWhishListName] = useState('');
 
 
@@ -60,7 +62,7 @@ const WhishList = () => {
         setCreateWishListModal(false)
         apiRequest('', 'wishlist/wishlist-list', 'GET')
             .then(data => {
-                console.log('whishListdata====', data)
+                // console.log('whishListdata====', data.data[0])
                 setLoading(false);
                 if (data.status == true) {
                     setWhishListsGlobal(data.data ? data.data.reverse() : []);
@@ -69,7 +71,6 @@ const WhishList = () => {
                     alertRef.alertWithType('error', 'Error', data.message);
                     return
                 }
-
             })
     }
 
@@ -144,10 +145,14 @@ const WhishList = () => {
                         style={{ padding: 10 }}>
                         <BackIcon color="#5B4DBC" />
                     </TouchableOpacity>
-                    <Image
-                        source={{ uri: state.profileData?.profileImage }}
-                        style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
-                    />
+                    <TouchableOpacity
+                        onPress={() => navigate('Profilee')}
+                    >
+                        <Image
+                            source={{ uri: state.profileData?.profileImage }}
+                            style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
+                        />
+                    </TouchableOpacity>
                 </View>
                 {
                     state.whishLists.length ?
@@ -155,15 +160,22 @@ const WhishList = () => {
                         <ScrollView contentContainerStyle={{ paddingBottom: 350 }} showsVerticalScrollIndicator={false} >
                             {
                                 state.whishLists?.map((v, i) => {
+                                    // console.log('v.happeningId[0].addPhotosOfYourHappening[0]', v.happeningId[0].addPhotosOfYourHappening[0])
                                     return (
                                         <TouchableOpacity
                                             style={[styles.shadow, { width: "95%", alignSelf: 'center', padding: 10, paddingVertical: 20, borderRadius: 10, marginTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}
                                             onPress={() => navigate('AllWishList', v)}
                                         >
-                                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10 }}>{v.wishlistName}</Text>
+                                            {
+                                                v.happeningId && v.happeningId[0] &&
+                                                <Image
+                                                    style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
+                                                    source={{ uri: v.happeningId[0].addPhotosOfYourHappening[0] }}
+                                                />
+                                            }
+                                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10, width: "70%" }}>{v.wishlistName}</Text>
                                             <TouchableOpacity
                                                 onPress={() => {
-                                                    console.log('v._id', v._id)
                                                     setDeletedId(v._id);
                                                     setIsDeleteModal(true)
                                                 }}
@@ -186,14 +198,14 @@ const WhishList = () => {
                                 <Text style={[{ fontFamily: fonts.PRe, fontSize: 21, color: '#000000' }]}>and it’ll appear here.</Text>
                             </View>
 
-                            {/* <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', marginTop: 20 }}>
+                            <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', marginTop: 20 }}>
                                 <TouchableOpacity
                                     onPress={() => setCreateWishListModal(true)}
                                     style={{ width: 63, height: 52, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', alignItems: 'center', justifyContent: 'center' }}>
                                     <PlusIcon />
                                 </TouchableOpacity>
                                 <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760', marginLeft: 10, }}>Create New</Text>
-                            </View> */}
+                            </View>
                         </>
                 }
                 {/* {
@@ -286,7 +298,7 @@ const WhishList = () => {
                         placeholder='Summer Plans 2022'
                         placeholderTextColor={'#7B7B7B'}
                         style={{ width: "100%", height: 44, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', paddingHorizontal: 12, fontFamily: fonts.PRe, fontSize: 12, color: '#222222', marginTop: 20 }}
-                        // maxLength={50}
+                    // maxLength={50}
                     />
                     {/* <Text style={{ fontFamily: fonts.PRe, fontSize: 12, color: '#7B7B7B', marginTop: 5 }}>50 characters maximum</Text> */}
                     <TouchableOpacity

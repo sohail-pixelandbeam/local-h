@@ -1,7 +1,7 @@
 // importing local storage
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useCallback } from 'react';
-import { Alert, BackHandler, Linking, PermissionsAndroid, Platform, Share } from 'react-native';
+import { Alert, BackHandler, Dimensions, Linking, PermissionsAndroid, PixelRatio, Platform, Share } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import { urls } from './Api_urls';
 import Geolocation from '@react-native-community/geolocation';
@@ -10,6 +10,8 @@ import { useRoute } from '@react-navigation/native';
 import { launchImageLibrary } from 'react-native-image-picker';
 
 import GetLocation from 'react-native-get-location'
+
+const { height, width } = Dimensions.get('window');
 
 
 
@@ -281,6 +283,18 @@ export function getHOLPreviousScreen(currentScreenName) {
 export const capitalizeFirstLetter = (str) => {
   if (str) return str?.charAt(0)?.toUpperCase() + str.slice(1);
 };
+
+
+export function getHeight(h) {
+  const elemHeight = parseFloat(h);
+  return PixelRatio.roundToNearestPixel((height * elemHeight) / 100);
+}
+
+export function getWidth(w) {
+  const elemWidth = parseFloat(w);
+  return PixelRatio.roundToNearestPixel((width * elemWidth) / 100);
+}
+
 
 
 // export async function uploadMultipleFiles(fileType = 'photo') {

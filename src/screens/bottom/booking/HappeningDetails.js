@@ -3,13 +3,13 @@ import { View, Text, SafeAreaView, Image, TouchableOpacity, Dimensions, StatusBa
 import DropdownAlert from 'react-native-dropdownalert'
 import { FlatList } from 'react-native-gesture-handler'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
-import { goBack, navigate, navigateFromStack } from '../../../../Navigations'
+import { goBack, navigate, navigateFromStack, navigateReplace } from '../../../../Navigations'
 import CarouselDots from '../../../components/CarouselDots'
 import { BackIcon, CalenderHappeningIcon, ClockHappeningIcon, DrinksIcon, FoodIcon, HappeningLocationIconSmall, HeartIcon, HeartWhiteIcon, InfoIcon, MarkerIcon1, MaxFellowsIcon, PIcon, RattingStartIcon, ToiletIcon, WifiIcon } from '../../../components/Svgs'
 import { acolors } from '../../../constants/colors'
 import { fonts } from '../../../constants/fonts'
 import { apiRequest } from '../../../utils/apiCalls'
-import { months, retrieveItem } from '../../../utils/functions'
+import { getWidth, months, retrieveItem } from '../../../utils/functions'
 import Loader from '../../../utils/Loader'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
 
@@ -19,7 +19,10 @@ const HappeningDetails = (props) => {
 
 
     let item = props.route.params?.params ?? props.route.params ?? null;
-    // console.log('item', item)
+
+    const [happeningLikeThis, setHappeningLikeThis] = useState([]);
+    const [happeningNearby, setHappeningNearBy] = useState([]);
+
     const languageForYourHappening = item?.languageSpokenAtHappening?.toString();
     const languageForYourHappeningArr = item?.languageSpokenAtHappening
     const { width: screenWidth } = Dimensions.get("window");
@@ -52,7 +55,6 @@ const HappeningDetails = (props) => {
 
         if (scrollViewRef.current && textRef.current) {
             textRef.current.measure((x, y, width, height, pageX, pageY) => {
-                console.log('height', height, '   pageY', pageY)
                 // Calculate the target position
                 const targetPosition = pageY + height + 20;
 
@@ -82,17 +84,15 @@ const HappeningDetails = (props) => {
     function getHappeningDetails() {
 
         setLoading(true);
-        console.log('item', item)
         apiRequest('', 'getHappningDetails/' + item?._id, "GET")
             .then(data => {
                 setLoading(false);
-                console.log('here is the dataasdasdasd', data.data.remaningDayHappening)
+                console.log('here is the dataasdasdasd', data.data)
                 if (data.status) {
-
-                    // let startTime = data.data?.startTime;
-                    // let endTime = data.data?.endTime;
                     setHappeningDetails(data.data.happningDetails);
                     setRemaningDays(data.data?.remaningDayHappening ?? []);
+                    setHappeningLikeThis(data.data.happeningsLikeThis)
+                    setHappeningNearBy(data.data.happeningsNearby)
                     // console.log(data.data[1].addSkills)
                 }
             })
@@ -144,19 +144,13 @@ const HappeningDetails = (props) => {
     };
 
 
-    console.log('happeningDetails?.happeningOnline', happeningDetails);
-    // console.log('happeningDetails?.happeningOnLocation', happeningDetails?.happeningOnLocation);
 
     return (
         <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
-            <GeneralStatusBar backgroundColor='transparent' />
+            <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
             <DropdownAlert ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
-            {/* <TouchableOpacity
-                onPress={() => goBack()}
-                style={{ position: 'absolute', top: 40, width: 34, height: 34, borderRadius: 34 / 2, backgroundColor: 'rgba(0.5,0.5,0.5,0.5)', alignItems: 'center', justifyContent: 'center' }}>
-                <BackIcon />
-            </TouchableOpacity> */}
+
             <ScrollView
                 ref={scrollViewRef}
                 // onScroll={handleScroll}
@@ -180,7 +174,7 @@ const HappeningDetails = (props) => {
                             <View
                                 style={{
                                     width: screenWidth,
-                                    paddingVertical: 10,
+                                    paddingBottom: 10,
                                     alignSelf: "center",
                                     justifyContent: "center",
                                     alignItems: "center",
@@ -202,7 +196,7 @@ const HappeningDetails = (props) => {
                     <CarouselDots
                         selectedIndex={indicator2}
                         count={happeningDetails?.addPhotosOfYourHappening?.length}
-                        style={{ alignSelf: "center", marginTop: 10 }}
+                        style={{ alignSelf: "center", marginTop: -30 }}
                     />
                     {/* <ScrollView contentContainerStyle={{ paddingBottom: 800 }}> */}
                     <View style={{ width: '85%', alignSelf: 'center' }}>
@@ -216,9 +210,9 @@ const HappeningDetails = (props) => {
                             /> */}
                         </View>
                         {
-                            happeningDetails?.conformHappeningLocation &&
+                            !happeningDetails?.happeningOnline &&
 
-                            <View style={{ flexDirection: 'row', width: "50%", justifyContent: 'space-between' }}>
+                            <View style={{ flexDirection: 'row', width: "50%", justifyContent: 'space-between', marginTop: 10 }}>
                                 <View style={{ flexDirection: 'row', }}>
                                     <HappeningLocationIconSmall width={12} height={18} style={{ marginTop: 5 }} />
                                     <Text numberOfLines={2} style={[styles.regulareText, { marginLeft: 5 }]}>{happeningDetails?.conformHappeningLocation}</Text>
@@ -234,11 +228,19 @@ const HappeningDetails = (props) => {
                         <View style={[styles.sepearatorHorizontal, { marginTop: 20 }]} />
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
-                            <Image
-                                style={{ width: 60, height: 60, borderRadius: 60 / 2, marginRight: 10 }}
-                                source={{ uri: happeningDetails?.userProfileId?.profileImage }}
-                            // source={require('../../../static_assets/profileImg.png')}
-                            />
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigate('ProfilePublicView', {
+                                        data: happeningDetails
+                                    })
+                                }}
+                            >
+                                <Image
+                                    style={{ width: 60, height: 60, borderRadius: 60 / 2, marginRight: 10 }}
+                                    source={{ uri: happeningDetails?.userProfileId?.profileImage }}
+                                // source={require('../../../static_assets/profileImg.png')}
+                                />
+                            </TouchableOpacity>
                             <View>
                                 <Text style={styles.xxSmallSemiBoldText}>Hosted by</Text>
                                 <Text style={[styles.headingText, { fontSize: 12, marginTop: 0 }]}>{happeningDetails?.userProfileId?.userId?.firstName.concat(' ' + happeningDetails?.userProfileId?.userId?.lastName)}</Text>
@@ -254,7 +256,7 @@ const HappeningDetails = (props) => {
 
                         <View style={[styles.sepearatorHorizontal.backgroundColor, { marginTop: 15 }]} />
 
-                        <View style={[styles.happeningDetilsInfo1, { marginTop: 15 }]}>
+                        <View style={[styles.happeningDetilsInfo1, { marginTop: 15, }]}>
                             <View style={{ alignItems: 'center' }}>
                                 <CalenderHappeningIcon />
                                 <Text style={[styles.labelBoldText, { marginTop: 2 }]}>{makeFromToMonthDate()}</Text>
@@ -317,79 +319,35 @@ const HappeningDetails = (props) => {
 
                         <Text style={[styles.headingText, { marginTop: 15 }]}>What will the fellows get back?</Text>
                         <Text style={[styles.regulareText, { marginTop: 0 }]}>{happeningDetails?.whatFellowsGet}</Text>
-                        {!happeningDetails?.happeningOnline &&
-                            <>
-                                <Text style={[styles.headingText, { marginTop: 15 }]}>Location</Text>
-                                <View
-                                    pointerEvents='none'
-                                    style={{ flex: 1, alignSelf: 'center', width: '100%', height: 200, borderRadius: 30, overflow: 'hidden', marginTop: 25 }}>
-                                    <MapView
-                                        ref={ref => map = ref}
-                                        showsUserLocation={false}
-                                        showsMyLocationButton={false}
-                                        region={{
-                                            latitude: happeningDetails?.location?.coordinates[0] ?? 0,
-                                            longitude: happeningDetails?.location?.coordinates[1] ?? 0,
-                                            latitudeDelta: 0.01,
-                                            longitudeDelta: 0.01,
-                                            locationTitle: ''
-                                        }}
-                                        provider={PROVIDER_GOOGLE}
-                                        userLocationAnnotationTitle={null}
-                                        style={{ width: '100%', height: '100%', }}
-                                    // onPress={() => setIsCalloutModal(false)}
-                                    >
 
-                                        {/* <Marker
-                                            coordinate={{
-                                                latitude: happeningDetails?.location?.coordinates[0] ?? 0,
-                                                longitude: happeningDetails?.location?.coordinates[1] ?? 0,
-                                                latitudeDelta: 0.1,
-                                                longitudeDelta: 0.1,
-                                            }}
-                                            pinColor={acolors.primary}
-                                            description="custom"
-                                            onPress={() => {
-                                                // setIsCalloutModal(true)
-                                                // setCalloutParams(v)
-                                            }}
-
-                                        >
-                                            <MarkerIcon1 />
-                                        </Marker> */}
-                                        {/* <Text style={{ color: '#121212', fontSize: 10, fontFamily: fonts.PBo, }}>{v.title}</Text> */}
-
-                                    </MapView>
-                                </View>
-                                <View onPress={() => console.log(happeningDetails)}
-                                    style={{ width: "100%", alignSelf: 'center', backgroundColor: 'white', elevation: 2, borderRadius: 18, paddingHorizontal: 10, paddingVertical: 10, marginTop: -25 }}>
-                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 15, color: '#1A1A20', marginTop: 5 }}>{happeningDetails?.conformHappeningLocation}</Text>
-                                    <Text style={{ fontFamily: fonts.PRe, fontSize: 8, color: '#9E9DA6', marginTop: 2 }}>{happeningDetails?.city}, {happeningDetails?.country}</Text>
-                                </View>
-                            </>}
 
                         {
-                            !happeningDetails?.happeningOnline && happeningDetails?.whatAreTheFacilitiesAtYourHappening?.length > 0 &&
+                            !happeningDetails?.happeningOnline && happeningDetails?.Facilities?.length > 0 &&
                             <>
                                 <Text style={[styles.headingText, { marginTop: 15 }]}>Facilities</Text>
-                                <View style={[styles.happeningDetilsInfo1, { opacity: 1 }]}>
+                                <View style={[styles.happeningDetilsInfo1, { opacity: 1, flexWrap: 'wrap', justifyContent: 'flex-start' }]}>
                                     {
-                                        happeningDetails?.whatAreTheFacilitiesAtYourHappening?.map((v, i) => {
+                                        happeningDetails?.Facilities?.map((v, i) => {
+                                            let Icon = facilitesArr.find((item) => item.title.toLowerCase() == v.toLowerCase());
+
+
                                             // let Icon = v.icon
                                             return (
-                                                <TouchableOpacity
-                                                    onPress={() => console.log(happeningDetails?.whatAreTheFacilitiesAtYourHappening)}
+                                                <View
+                                                    // onPress={() => console.log(happeningDetails?.whatAreTheFacilitiesAtYourHappening)}
                                                     key={i}
                                                     // disabled={!providingFacilities}
                                                     // onPress={() => addRemoveFacilities(v.title)}
                                                     style={{ alignItems: 'center', marginLeft: 20, marginTop: 5 }}>
                                                     <View style={{ width: 50, height: 50, borderRadius: 50 / 2, backgroundColor: '#5B4DBC', alignItems: 'center', justifyContent: 'center' }}>
-                                                        <Text style={{ color: 'white', fontSize: 18, fontFamily: fonts.PSBo, textTransform: 'capitalize' }}>{v[0]}</Text>
-                                                        {/* <Icon color={"#fff"} /> */}
+
+                                                        {Icon ? <Icon.icon color={"#fff"} /> :
+                                                            <Text style={{ color: 'white', fontSize: 18, fontFamily: fonts.PSBo, textTransform: 'capitalize' }}>{v[0]}</Text>
+                                                        }
                                                     </View>
                                                     <Text style={{ fontFamily: fonts.MSBo, fontSize: 11, color: '#222222', marginTop: 2, textTransform: 'capitalize' }}>{v}</Text>
 
-                                                </TouchableOpacity>
+                                                </View>
                                             )
                                         })
                                     }
@@ -410,12 +368,14 @@ const HappeningDetails = (props) => {
                                 // navigateFromStack('', 'HappeningStack', 'ProfilePublicView')
                             }}
                             style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
+
                             <Image
                                 style={{ width: 60, height: 60, borderRadius: 60 / 2, marginRight: 10 }}
                                 source={{ uri: happeningDetails?.userProfileId?.profileImage }}
                             // source={require('../../../static_assets/profileImg.png')}
                             />
-                            <View>
+
+                            <View style={{ width: "90%" }}>
                                 <Text style={styles.headingText}>About the Host{"\n"}{happeningDetails?.userProfileId?.userId?.firstName + " " + happeningDetails?.userProfileId?.userId?.lastName}</Text>
                             </View>
                         </TouchableOpacity>
@@ -459,6 +419,58 @@ const HappeningDetails = (props) => {
                             <>
                                 <Text style={[styles.headingText, { marginTop: 15 }]}>About the Location :</Text>
                                 <Text style={[styles.regulareText, { marginTop: 10 }]}>{happeningDetails?.discribeTheLocaltion}</Text>
+
+
+                                <>
+                                    {/* <Text style={[styles.headingText, { marginTop: 15 }]}>Location</Text> */}
+                                    <View
+                                        pointerEvents='none'
+                                        style={{ flex: 1, alignSelf: 'center', width: '100%', height: 200, borderRadius: 30, overflow: 'hidden', marginTop: 25 }}>
+                                        <MapView
+                                            ref={ref => map = ref}
+                                            showsUserLocation={false}
+                                            showsMyLocationButton={false}
+                                            region={{
+                                                latitude: happeningDetails?.location?.coordinates[0] ?? 0,
+                                                longitude: happeningDetails?.location?.coordinates[1] ?? 0,
+                                                latitudeDelta: 0.01,
+                                                longitudeDelta: 0.01,
+                                                locationTitle: ''
+                                            }}
+                                            provider={PROVIDER_GOOGLE}
+                                            userLocationAnnotationTitle={null}
+                                            style={{ width: '100%', height: '100%', }}
+                                        // onPress={() => setIsCalloutModal(false)}
+                                        >
+
+                                            {/* <Marker
+                                            coordinate={{
+                                                latitude: happeningDetails?.location?.coordinates[0] ?? 0,
+                                                longitude: happeningDetails?.location?.coordinates[1] ?? 0,
+                                                latitudeDelta: 0.1,
+                                                longitudeDelta: 0.1,
+                                            }}
+                                            pinColor={acolors.primary}
+                                            description="custom"
+                                            onPress={() => {
+                                                // setIsCalloutModal(true)
+                                                // setCalloutParams(v)
+                                            }}
+
+                                        >
+                                            <MarkerIcon1 />
+                                        </Marker> */}
+                                            {/* <Text style={{ color: '#121212', fontSize: 10, fontFamily: fonts.PBo, }}>{v.title}</Text> */}
+
+                                        </MapView>
+                                    </View>
+                                    <View onPress={() => console.log(happeningDetails)}
+                                        style={{ width: "100%", alignSelf: 'center', backgroundColor: 'white', elevation: 2, borderRadius: 18, paddingHorizontal: 10, paddingVertical: 10, marginTop: -25 }}>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 15, color: '#1A1A20', marginTop: 5 }}>{happeningDetails?.conformHappeningLocation}</Text>
+                                        <Text style={{ fontFamily: fonts.PRe, fontSize: 8, color: '#9E9DA6', marginTop: 2 }}>{happeningDetails?.city}, {happeningDetails?.country}</Text>
+                                    </View>
+                                </>
+
                             </>
                         }
                         {/* {
@@ -537,24 +549,64 @@ const HappeningDetails = (props) => {
                                 </View>
                             </View>
                         </View> */}
-                        {/* MORE HAPPENING */}
+                        {/* Happening like this */}
                         <View>
-                            {/* <View style={{ width: "100%", alignSelf: 'center', }}>
+                            <View style={{ width: "100%", alignSelf: 'center', }}>
                                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20, justifyContent: 'space-between' }}>
-                                    <Text style={styles.headingText}>Happenings at this location</Text>
-                                    <TouchableOpacity style={{ padding: 10 }} >
+                                    <Text style={styles.headingText}>Happenings like this</Text>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            navigateFromStack('BookingStack', 'SeeAllHappeningsToday', {
+                                                title: "Happenings like this",
+                                                data: happeningLikeThis
+                                            })
+                                        }}
+                                        style={{ padding: 10 }} >
                                         <Text style={styles.seeAll}>See all</Text>
                                     </TouchableOpacity>
+                                </View>
+
+                                <View style={{ width: "100%" }}>
+                                    <FlatList
+                                        showsHorizontalScrollIndicator={false}
+                                        horizontal={true}
+                                        data={happeningLikeThis}
+                                        renderItem={({ item, index }) => {
+                                            return (
+                                                <TouchableOpacity
+                                                    key={index}
+                                                    onPress={() => navigateReplace('HappeningDetails', item)}
+                                                    style={{ width: getWidth(40), marginLeft: 10, }}
+                                                >
+                                                    <Image
+                                                        source={{ uri: item.addPhotosOfYourHappening[0] }}
+                                                        style={styles.listImg}
+                                                    />
+
+                                                    <Text style={styles.listTile}>{item.happeningTitle}</Text>
+                                                </TouchableOpacity>
+                                            )
+                                        }}
+                                    />
+                                </View>
+                            </View>
+
+
+                            {/* <View style={{ width: "100%", alignSelf: 'center', }}>
+                                <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20, justifyContent: 'space-between' }}>
+                                    <Text style={styles.headingText}>More Happenings{"\n"}nearby this location</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
 
                                     {
-                                        [{ img: require('../../../assets/bg_color.png'), title: "Maintenance of Olive Trees", distance: "5 Miles Away" }, { img: require('../../../assets/bg_color-2.png'), title: "Help to make sanitation pads for school girls", distance: 'Dusseldorf, Germany' }]
+                                        [
+                                            { img: require('../../../assets/bg_color.png'), title: "Maintenance of Olive Trees", distance: "5 Miles Away" },
+                                            { img: require('../../../assets/bg_color-2.png'), title: "Help to make sanitation pads for school girls", distance: 'Dusseldorf, Germany' }
+                                        ]
                                             .map((item, index) => (
-                                                <TouchableOpacity
+                                                <View
                                                     key={index}
-                                                    // onPress={() => navigate('BookingStack')}
-                                                    style={{ width: "49%", }}>
+                                                    style={{ width: "48%", }}>
                                                     <Image
                                                         source={item.img}
                                                         style={styles.listImg}
@@ -574,11 +626,54 @@ const HappeningDetails = (props) => {
                                                     </View>
                                                     <Text style={styles.listTile}>{item.title}</Text>
                                                     <Text style={styles.distanceText}>{item.distance}</Text>
-                                                </TouchableOpacity>
+                                                </View>
                                             ))
                                     }
                                 </View>
                             </View> */}
+                        </View>
+                        {/* Happenings nearby */}
+                        <View>
+                            <View style={{ width: "100%", alignSelf: 'center', }}>
+                                <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20, justifyContent: 'space-between' }}>
+                                    <Text style={styles.headingText}>Happenings nearby</Text>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            navigateFromStack('BookingStack', 'SeeAllHappeningsToday', {
+                                                title: "Happenings like this",
+                                                data: happeningLikeThis
+                                            })
+                                        }}
+                                        style={{ padding: 10 }} >
+                                        <Text style={styles.seeAll}>See all</Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                                <View style={{ width: "100%" }}>
+                                    <FlatList
+                                        showsHorizontalScrollIndicator={false}
+                                        horizontal={true}
+                                        data={happeningNearby}
+                                        renderItem={({ item, index }) => {
+                                            return (
+                                                <TouchableOpacity
+                                                    key={index}
+                                                    onPress={() => navigateReplace('HappeningDetails', item)}
+                                                    style={{ width: getWidth(40), marginLeft: 10, }}
+                                                >
+                                                    <Image
+                                                        source={{ uri: item.addPhotosOfYourHappening[0] }}
+                                                        style={styles.listImg}
+                                                    />
+                                                    <Text style={styles.listTile}>{item.happeningTitle}</Text>
+
+                                                </TouchableOpacity>
+                                            )
+                                        }}
+                                    />
+                                </View>
+                            </View>
+
 
                             {/* <View style={{ width: "100%", alignSelf: 'center', }}>
                                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20, justifyContent: 'space-between' }}>
@@ -644,6 +739,11 @@ const HappeningDetails = (props) => {
                     </TouchableOpacity> */}
                 </View>
             </View>
+            <TouchableOpacity
+                onPress={() => goBack()}
+                style={{ position: 'absolute', top: 40, width: 34, left: 10, height: 34, borderRadius: 34 / 2, backgroundColor: 'rgba(0.5,0.5,0.5,0.5)', alignItems: 'center', justifyContent: 'center' }}>
+                <BackIcon />
+            </TouchableOpacity>
         </View >
     )
 }
@@ -687,7 +787,7 @@ const styles = StyleSheet.create({
         width: "35%", alignItems: 'center', justifyContent: 'center', height: 23.48, borderRadius: 18, backgroundColor: '#5B4DBC'
     },
     listImg: {
-        width: "100%", height: 231, borderRadius: 25, resizeMode: 'stretch'
+        width: "100%", height: 231, borderRadius: 25,
     },
     ratingCircleActive: {
         width: 7, height: 7, backgroundColor: '#f4327f', borderRadius: 7 / 2, marginLeft: 3
@@ -699,7 +799,8 @@ const styles = StyleSheet.create({
         color: '#5d5760', fontFamily: fonts.PMe, fontSize: 7, marginLeft: 5
     },
     listTile: {
-        color: '#5d5760', fontFamily: fonts.PMe, fontSize: 13,
+        // color: '#5d5760', fontFamily: fonts.PMe, fontSize: 13,
+        color: '#5d5760', fontFamily: fonts.PMe, fontSize: 13, marginTop: 5
     },
     distanceText: {
         textShadowColor: 'rgba(0, 0, 0, 0.25)', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 10, color: '#5d5760', fontFamily: fonts.PMe, fontSize: 6, letterSpacing: 0.3,

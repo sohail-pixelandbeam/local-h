@@ -9,6 +9,7 @@ import { Context } from '../../Context/DataContext';
 import { apiRequest } from '../../utils/apiCalls';
 import { capitalizeFirstLetter, retrieveItem } from '../../utils/functions';
 import GeneralStatusBar from '../../components/GernalStatusBar';
+import Loader from '../../utils/Loader';
 
 const ProfilePublicView = (props) => {
 
@@ -16,11 +17,13 @@ const ProfilePublicView = (props) => {
     const { state } = useContext(Context);
     const [profileData, setProfileData] = useState({});
     const [loading, setLoading] = useState(false);
+    const userId = props.route.params?.data?.userProfileId?.userId?._id ?? props.route.params?.params?.data?.userProfileId?.userId?._id ?? ''
 
     async function getUserToken() {
         let token = await retrieveItem('login_data');
         return token?.token;
     }
+
 
 
     async function getProfileDetails(refreshing = false) {
@@ -30,11 +33,11 @@ const ProfilePublicView = (props) => {
         //     "userId": props.route.params?.data?.userProfileId?.userId?._id,
         //     "token": await getUserToken()
         // }
-        const url = 'publicProfile/' + props.route.params?.data?.userProfileId?.userId?._id
+        const url = 'publicProfile/' + userId
         console.log('url', url)
         apiRequest('', url, 'GET')
             .then(data => {
-                console.log('data ===', data)
+                // console.log('data ===', data)
                 setLoading(false);
                 if (data.status) {
                     setProfileData(data.data)
@@ -55,6 +58,9 @@ const ProfilePublicView = (props) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
+            {
+                loading && <Loader />
+            }
             <GeneralStatusBar backgroundColor='#fff' />
             <View style={{ width: "90%", alignSelf: 'center' }}>
                 <View>
@@ -72,7 +78,7 @@ const ProfilePublicView = (props) => {
                     profileData?.address !== 'Not Provided' &&
                     <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 20 }}>
                         <HappeningLocationIconSmall width={11} height={14} />
-                        <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5 }}>{capitalizeFirstLetter(profileData.address)}</Text>
+                        <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5 }}>{capitalizeFirstLetter(profileData?.address)}</Text>
                     </View>
                 }
                 <Text style={[{ fontFamily: fonts.PBo, fontSize: 30, color: '#FFA183', marginTop: 5, alignSelf: 'center' }]}>{profileData?.userId?.firstName + " " + profileData?.userId?.lastName}</Text>

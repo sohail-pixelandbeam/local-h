@@ -282,13 +282,31 @@ const Profile = (props) => {
                                     <View style={{ flexDirection: 'row', marginLeft: 10 }}>
                                         {
                                             v.fellow.map((v, i) => {
+                                                
                                                 return (
-                                                    <>
+                                                    <TouchableOpacity
+                                                        onPress={() => {
+                                                       
+                                                            const body = {
+                                                                data: {
+                                                                    userProfileId: {
+                                                                        userId: {
+                                                                            _id: v?.profileAndTimeline?.userId?._id
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                            }
+                                                            // console.log(body?.data?.userProfileId?.userId)
+                                                            // return;
+                                                            navigateFromStack('BookingStack', 'ProfilePublicView', body)
+                                                        }}
+                                                    >
                                                         <Image
                                                             style={{ width: 40, height: 40, borderRadius: 20, marginLeft: -15 }}
                                                             source={{ uri: v?.profileAndTimeline?.profileImage }}
                                                         />
-                                                    </>
+                                                    </TouchableOpacity>
                                                 )
                                             })
                                         }
@@ -361,10 +379,19 @@ const Profile = (props) => {
                                     </TouchableOpacity>
                                     <Text style={[styles.bookingTitle, { width: "90%" }]}>{happening?.happeningTitle}</Text>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
-                                        <Image
-                                            style={{ width: 33, height: 33, borderRadius: 33 / 2, marginRight: 10 }}
-                                            source={{ uri: happening?.userProfileId?.profileImage }}
-                                        />
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                const body = {
+                                                    data: happening
+                                                }
+                                                navigateFromStack('BookingStack', 'ProfilePublicView', body)
+                                            }}
+                                        >
+                                            <Image
+                                                style={{ width: 33, height: 33, borderRadius: 33 / 2, marginRight: 10 }}
+                                                source={{ uri: happening?.userProfileId?.profileImage }}
+                                            />
+                                        </TouchableOpacity>
                                         <Text style={[styles.hostedBy, { width: "80%" }]}>Hosted by{"\n"}{happening?.userProfileId?.userId?.firstName + " " + happening?.userProfileId?.userId?.lastName}</Text>
                                     </View>
                                 </View>
@@ -539,11 +566,15 @@ const Profile = (props) => {
             <View
                 style={{ width: 115, height: 115, alignSelf: 'center' }}
             >
-                <Image
-                    style={{ width: 115, height: 115, borderRadius: 115 / 2, borderWidth: 5, borderColor: acolors.primary, alignSelf: 'center', marginTop: 20 }}
-                    source={{ uri: isEditProfile == true && profilePic?.uri ? profilePic.uri : profileData?.userProfile?.profileImage }}
-                // source={{ uri: profilePic.uri ?? profileData?.userProfile?.profileImage }}
-                />
+                <TouchableOpacity
+                    onPress={() => setSelectedTab('Profile')}
+                >
+                    <Image
+                        style={{ width: 115, height: 115, borderRadius: 115 / 2, borderWidth: 5, borderColor: acolors.primary, alignSelf: 'center', marginTop: 20 }}
+                        source={{ uri: isEditProfile == true && profilePic?.uri ? profilePic.uri : profileData?.userProfile?.profileImage }}
+                    // source={{ uri: profilePic.uri ?? profileData?.userProfile?.profileImage }}
+                    />
+                </TouchableOpacity>
                 {isEditProfile &&
                     <TouchableOpacity
                         disabled={!isEditProfile}

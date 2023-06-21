@@ -9,6 +9,7 @@ import Loader from '../../../utils/Loader';
 import GeneralStatusBar from '../../../components/GernalStatusBar';
 import { acolors } from '../../../constants/colors';
 import { apiRequest } from '../../../utils/apiCalls';
+import AlertMsg from '../../../common/AlertMsg';
 
 
 var alertRef;
@@ -16,13 +17,15 @@ const AllWishList = ({ route }) => {
 
     const [loading, setLoading] = useState(false);
     const [whishlist, setWhishList] = useState(route.params);
+
+    const [isDeletedModal, setIsDeleteModal] = useState(false);
     const [deletedId, setDeletedId] = useState('');
 
     const { state } = useContext(Context);
 
 
     function getWhishListsDetails() {
-        apiRequest({wishlistId: whishlist._id}, 'wishlist/view-wishlist-details', 'POST')
+        apiRequest({ wishlistId: whishlist._id }, 'wishlist/view-wishlist-details', 'POST')
             .then(data => {
                 setLoading(false);
                 if (data.status == true) {
@@ -40,7 +43,7 @@ const AllWishList = ({ route }) => {
         setLoading(true)
         const body = {
             wishlistId: whishlist._id,
-            happeningId: id
+            happeningId: id ?? deletedId
         }
         apiRequest(body, 'wishlist/reomve-single-wishlist-item',)
             .then(data => {
@@ -58,6 +61,46 @@ const AllWishList = ({ route }) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
+
+            <AlertMsg
+                heading={"Are you sure you want to delete the wishlist ?"}
+                isCross={false}
+                desc=""
+                renderBtn={false}
+                // descStyle={{ lineHeight: 22, color: '#5D5760', fontFamily: fonts.PSBo }}
+                btnTitle="Done"
+                state={isDeletedModal}
+                onBackdropPress={() => setIsDeleteModal(false)}
+                onPress={() => setIsDeleteModal(false)}
+                containerStyle={{ paddingHorizontal: 25, paddingBottom: 20, paddingTop: 10, width: "85%" }}
+                children={(
+                    <View style={{ flexDirection: 'row', width: "100%", marginTop: 20, justifyContent: 'flex-end' }}>
+                        <TouchableOpacity
+                            style={[styles.popupBtn]}
+                            onPress={() => setIsDeleteModal(false)}
+                        >
+                            <Text style={styles.popupBtnTitle}>{"No"}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.popupBtn, { borderWidth: 1, borderColor: '#5B4DBC', backgroundColor: 'white', marginLeft: 15 }]}
+                            onPress={() => {
+                                // setDeletedId(v._id);
+                                // setIsDeleteModal(true)
+                                setIsDeleteModal(false)
+                                doDel();
+                                
+                            }}
+                        >
+                            <Text style={[styles.popupBtnTitle, { color: '#5B4DBC' }]}>{"Yes"}</Text>
+                        </TouchableOpacity>
+
+                    </View>
+                )
+                }
+            />
+
+
+
             <GeneralStatusBar backgroundColor='white' />
             <DropdownAlert ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
@@ -144,7 +187,10 @@ const AllWishList = ({ route }) => {
 
                                         <TouchableOpacity
                                             onPress={() => {
-                                                doDel(item._id);
+                                                setDeletedId(item._id);
+                                                setIsDeleteModal(true)
+
+                                                // doDel(item._id);
                                             }}
                                             style={{ position: 'absolute', top: 5, right: 5, padding: 10, }}>
                                             <TrashIcon width={30} height={20} color={'white'} />
@@ -241,6 +287,15 @@ const styles = StyleSheet.create({
     distanceText: {
         textShadowColor: 'rgba(0, 0, 0, 0.25)', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 10, color: '#5d5760', fontFamily: fonts.PMe, fontSize: 6, letterSpacing: 0.3,
     },
+
+    popupBtn: {
+        width: "30%", height: 34, borderRadius: 20, backgroundColor: '#5b4dbc',
+        alignItems: 'center', justifyContent: 'center'
+    },
+    popupBtnTitle: {
+        color: '#ffffff', fontFamily: fonts.PSBo, fontSize: 9,
+    },
+
 })
 
 export default AllWishList

@@ -20,7 +20,7 @@ const TypeHappening = () => {
             // 'GroupSizeHappeningL'
         },
         {
-            Svg: OnlineHappeningIcon, title: "Online/Remote Happening", desc: "Organize an online get-together using Zoom, Team, and so on. Or ask a friend to assist you from a distant location.",
+            Svg: OnlineHappeningIcon, title: "Online/Remote Happening", desc: "Organize an online get-together using Zoom, Team, and so on. Or ask a fellow to assist you from a distant location.",
             navigate: 'MainScreenO'
         },
 

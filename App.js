@@ -88,6 +88,7 @@ import ActivateAccountVerifyOTP from './src/screens/bottom/Settings/DeactivateSc
 import GetVerified from './src/screens/bottom/Settings/GetVerified';
 import GetVerifiedDetails from './src/screens/bottom/Settings/GetVerifiedDetails';
 import VerificationSubmitted from './src/screens/bottom/Settings/VerificationSubmitted';
+import StoryDetails from './src/screens/bottom/booking/StoryDetails';
 
 
 
@@ -429,6 +430,7 @@ function App() {
             <Stack.Screen name="DReason" component={DReason} />
             <Stack.Screen name="DFinal" component={DFinal} />
             <Stack.Screen name="AccountDeActivated" component={AccountDeActivated} />
+            <Stack.Screen name="StoryDetails" component={StoryDetails} />
             
           </Stack.Navigator>
         }

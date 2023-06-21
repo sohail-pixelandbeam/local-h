@@ -13,7 +13,7 @@ import { acolors } from '../../constants/colors';
 import Modal from "react-native-modal";
 import PrivacyPicker from '../../components/PrivacyPicker';
 
-import { getUserLocation, retrieveItem, storeItem, uploadSingleFile, useForceUpdate } from '../../utils/functions';
+import { getUserLocation, getWidth, retrieveItem, storeItem, uploadSingleFile, useForceUpdate } from '../../utils/functions';
 import Loader from '../../utils/Loader';
 import DropdownAlert from 'react-native-dropdownalert';
 import { urls } from '../../utils/Api_urls';
@@ -24,6 +24,8 @@ import RangeSlider from 'rn-range-slider';
 import { navigate, navigateFromStack } from '../../../Navigations';
 import HappeningFilterModal from '../../common/HappeningFilterModal';
 import GeneralStatusBar from '../../components/GernalStatusBar';
+import { useIsFocused } from '@react-navigation/native'
+
 
 
 
@@ -32,6 +34,8 @@ var modalAlertRef;
 var textInputRef;
 const Home = () => {
 
+
+    const isFocused = useIsFocused();
 
     const forceUpdate = useForceUpdate();
     const { state, setUserGlobal, userProfileData, setHappeningSubmissionDataGlobal, setWhishListsGlobal } = useContext(Context)
@@ -59,7 +63,6 @@ const Home = () => {
     const [profileData, setProfileData] = useState();
     const [yearsArr, setYearArr] = useState([]);
     const [ccArr, setCcArr] = useState([]); // COUNTRY CODES ARRAY
-
 
     // Preferences Popup
     const [distanceUnit, setDistanceUnit] = useState('miles')
@@ -110,6 +113,8 @@ const Home = () => {
 
     const [searchKeyword, setSearchKeyword] = useState('');
 
+    const [localStories, setLocalStories] = useState([]);
+
 
     async function getProfileDetails() {
         setLoading(true);
@@ -134,6 +139,49 @@ const Home = () => {
             })
     };
 
+    async function getHappeningDataFromServer(refresh = false) {
+
+        if (!refresh) setLoading(true);
+        // const userLocation = await getUserLocation();
+        // const reqObj = { latitude: userLocation?.latitude, longitude: userLocation?.longitude, };
+        // showAllhappning
+        // setLoading(true);
+        apiRequest('', 'showAllhappning', "GET")
+            .then(data => {
+                setLoading(false);
+                setRefreshing(false)
+                if (data.status) {
+                    let data1 = data?.data
+                    setAllHappenings(data1?.reverse());
+                    // setHappeningTodayData(data.today);
+                    // setHappeningNearbyData(data.nearHappenings)
+                }
+
+            })
+            .catch(err => {
+                console.log('errorr', err)
+                setLoading(false)
+            })
+    }
+
+
+    async function getLocalStories(refresh = false) {
+        if (!refresh) setLoading(true);
+        apiRequest('', 'get-all-blog', "GET")
+            .then(data => {
+                setLoading(false);
+                setRefreshing(false)
+                if (data.status) {
+                    let data1 = data?.data
+                    setLocalStories(data1?.reverse());
+                }
+            })
+            .catch(err => {
+                console.log('errorr', err)
+                setLoading(false)
+            })
+    }
+
 
     async function getHappeningSubmissionData(refresh = false) {
 
@@ -151,6 +199,74 @@ const Home = () => {
             })
     }
 
+    const createNewWhishList = (isAddHappeningToWhishList = false) => {
+        if (newWhishListName == '') {
+            alertRef.alertWithType('error', 'Error', 'Pleas enter whishlist name');
+            return;
+        }
+        setLoading(true)
+        const body = {
+            wishlistName: newWhishListName
+        };
+        apiRequest(body, 'wishlist/create-new-wishlist')
+            .then(data => {
+                if (isAddHappeningToWhishList && data.status) {
+                    addHappeningToWhishList(data.data);
+                    setLoading(false)
+                    return;
+                }
+                else {
+                    setCreateWishListModal(false);
+                    alertRef.alertWithType('error', 'Error', data.message);
+
+                }
+                setLoading(false);
+            })
+    }
+
+    function addHappeningToWhishList(whisList) {
+
+        setLoading(true);
+        setCreateWishListModal(false)
+        const body = {
+            wishlistId: whisList._id ?? wishlistId,
+            happeningId: whishListHappeningId,
+            wishlistName: whisList?.wishlistName
+        }
+        apiRequest(body, 'wishlist/save-wishlist-item')
+            .then(data => {
+                setLoading(false);
+                if (data.status == true) {
+                    alertRef.alertWithType('success', 'Success', 'Happening added in wishlist');
+                    getHappeningDataFromServer();
+                    getWhishLists();
+                    return
+                }
+                else {
+                    alertRef.alertWithType('error', 'Error', data.message);
+                    return
+                }
+
+            })
+    }
+
+    function getWhishLists() {
+
+        setCreateWishListModal(false)
+        apiRequest('', 'wishlist/wishlist-list', 'GET')
+            .then(data => {
+                setLoading(false);
+                if (data.status == true) {
+                    setWhishListsGlobal(data.data ? data.data.reverse() : []);
+                }
+                else {
+                    alertRef.alertWithType('error', 'Error', data.message);
+                    return
+                }
+
+            })
+    }
+
 
     function getBioWordCount(text) {
         if (text == "") {
@@ -159,31 +275,6 @@ const Home = () => {
         }
         let count = text.trim().split(/\s+/).length
         setBioCount(count)
-    }
-
-    async function getHappeningDataFromServer(refresh = false) {
-
-        if (!refresh) setLoading(true);
-        // const userLocation = await getUserLocation();
-        // const reqObj = { latitude: userLocation?.latitude, longitude: userLocation?.longitude, };
-        // showAllhappning
-        setLoading(true);
-        apiRequest('', 'showAllhappning', "GET")
-            .then(data => {
-                setLoading(false);
-                setRefreshing(false)
-                if (data.status) {
-                    let data1 = data?.data
-                    setAllHappenings(data1?.reverse());
-                    // setHappeningTodayData(data.today);
-                    // setHappeningNearbyData(data.nearHappenings)
-                }
-
-            })
-            .catch(err => {
-                console.log('errorr', err)
-                setLoading(false)
-            })
     }
 
     function makeStaticArrays() {
@@ -391,74 +482,9 @@ const Home = () => {
         let loc = await getUserLocation();
     }
 
-    const createNewWhishList = (isAddHappeningToWhishList = false) => {
 
-        if (newWhishListName == '') {
-            alertRef.alertWithType('error', 'Error', 'Pleas enter whishlist name');
-            return;
-        }
-        setLoading(true)
-        const body = {
-            wishlistName: newWhishListName
-        };
-        apiRequest(body, 'wishlist/create-new-wishlist')
-            .then(data => {
-                if (isAddHappeningToWhishList && data.status) {
-                    addHappeningToWhishList(data.data);
-                    setLoading(false)
-                    return;
-                }
-                else {
-                    setCreateWishListModal(false);
-                    alertRef.alertWithType('error', 'Error', data.message);
 
-                }
-                setLoading(false);
-            })
-    }
 
-    function addHappeningToWhishList(whisList) {
-
-        setLoading(true);
-        setCreateWishListModal(false)
-        const body = {
-            wishlistId: whisList._id ?? wishlistId,
-            happeningId: whishListHappeningId,
-            wishlistName: whisList?.wishlistName
-        }
-        apiRequest(body, 'wishlist/save-wishlist-item')
-            .then(data => {
-                setLoading(false);
-                if (data.status == true) {
-                    alertRef.alertWithType('success', 'Success', 'Happening added in wishlist');
-                    getHappeningDataFromServer();
-                    getWhishLists();
-                    return
-                }
-                else {
-                    alertRef.alertWithType('error', 'Error', data.message);
-                    return
-                }
-
-            })
-    }
-
-    function getWhishLists() {
-
-        setCreateWishListModal(false)
-        apiRequest('', 'wishlist/wishlist-list', 'GET')
-            .then(data => {
-                setLoading(false);
-                if (data.status == true) {
-                    setWhishListsGlobal(data.data ? data.data.reverse() : []);
-                }
-                else {
-                    alertRef.alertWithType('error', 'Error', data.message);
-                    return
-                }
-
-            })
-    }
 
     function doFilter(body) {
 
@@ -502,7 +528,10 @@ const Home = () => {
 
 
     useEffect(() => {
+        // setPopup1(false)
+        // setPopupCases()
         getHappeningDataFromServer();
+        getLocalStories()
         getHappeningSubmissionData();
         retrieveItem('login_data')
             .then(data => {
@@ -533,6 +562,11 @@ const Home = () => {
 
 
     }, [])
+
+    useEffect(() => {
+        getHappeningDataFromServer(true);
+        getLocalStories(true)
+    }, [isFocused])
 
 
 
@@ -775,33 +809,35 @@ const Home = () => {
             {/* <CrossBtn /> */}
             <Text style={styles.popupHeading}>Themes you like</Text>
             <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>choose min of  three themes you like</Text>
-            <ScrollView style={{ flexDirection: 'row', maxHeight: 300, flexWrap: 'wrap' }}>
-                {
-                    // ["Business Support", "Clean Energy and Air", "Community Work", "Construction Work ", "Art", "Harvesting & Farming", "Health & Medical", "Land Conservation", "Marine Protection"]
-                    state.happeningSubmissionData?.happeningTheme?.map((v, i) => {
-                        return (
-                            <TouchableOpacity
-                                key={i}
-                                onPress={() => {
-                                    let arr = themesLike;
-                                    if (arr.includes(v)) {
-                                        let foundIndex = arr.indexOf(v);
-                                        arr.splice(foundIndex, 1);
-                                    }
-                                    else {
-                                        arr.push(v)
-                                    }
-                                    setThemesLike(arr);
-                                    forceUpdate();
+            <ScrollView>
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                    {
+                        // ["Business Support", "Clean Energy and Air", "Community Work", "Construction Work ", "Art", "Harvesting & Farming", "Health & Medical", "Land Conservation", "Marine Protection"]
+                        state.happeningSubmissionData?.happeningTheme?.map((v, i) => {
+                            return (
+                                <TouchableOpacity
+                                    key={i}
+                                    onPress={() => {
+                                        let arr = themesLike;
+                                        if (arr.includes(v)) {
+                                            let foundIndex = arr.indexOf(v);
+                                            arr.splice(foundIndex, 1);
+                                        }
+                                        else {
+                                            arr.push(v)
+                                        }
+                                        setThemesLike(arr);
+                                        forceUpdate();
 
-                                }}
-                                style={[styles.themePickerContainer, { backgroundColor: themesLike?.includes(v) ? "#5b4dbc" : "white" }]}>
-                                <Text style={{ color: themesLike.includes(v) ? "white" : "#5b4dbc", fontFamily: fonts.MRe, fontSize: 8, }}>{v?.happeningThemeName}</Text>
-                            </TouchableOpacity>
-                        )
-                    })
+                                    }}
+                                    style={[styles.themePickerContainer, { backgroundColor: themesLike?.includes(v) ? "#5b4dbc" : "white" }]}>
+                                    <Text style={{ color: themesLike.includes(v) ? "white" : "#5b4dbc", fontFamily: fonts.MRe, fontSize: 8, }}>{v?.happeningThemeName}</Text>
+                                </TouchableOpacity>
+                            )
+                        })
 
-                }
+                    }
+                </View>
             </ScrollView>
             <PopupButton
                 onPress={() => {
@@ -946,50 +982,66 @@ const Home = () => {
         <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
             <GeneralStatusBar
                 backgroundColor='white'
+                barStyle='dark-content'
             />
+            <TouchableOpacity
+                onPress={() => Keyboard.dismiss()}
+                activeOpacity={1}
+            >
+                {
+                    loginData &&
 
-
-
-
-            {
-                loginData &&
-
-                <View style={{ flexDirection: 'row', width: "90%", alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <View>
-                        <Text style={styles.hi}>Hi<Text style={styles.julesRobinson}> {loginData?.firstName} {loginData?.lastName} </Text></Text>
-                        <Text style={styles.discoverWhat}>Discover what’s happening</Text>
+                    <View style={{ flexDirection: 'row', width: "90%", alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <View>
+                            <Text style={styles.hi}>Hi<Text style={styles.julesRobinson}> {loginData?.firstName} {loginData?.lastName} </Text></Text>
+                            <Text style={styles.discoverWhat}>Discover what’s happening</Text>
+                        </View>
+                        {profileData?.profileImage &&
+                            <TouchableOpacity
+                                onPress={() => navigate('Profilee')}
+                            >
+                                <Image
+                                    style={styles.avator}
+                                    source={{ uri: profileData?.profileImage }} // require('../../assets/img1.png')
+                                />
+                            </TouchableOpacity>
+                        }
                     </View>
-                    {profileData?.profileImage &&
-                        <Image
-                            style={styles.avator}
-                            source={{ uri: profileData?.profileImage }} // require('../../assets/img1.png')
+                }
+                <View style={{ width: "90%", alignSelf: 'center', marginTop: loginData ? 10 : 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+                    <View style={{ width: "92%", }}>
+                        <TextInput
+                            style={styles.textbox}
+                            onChangeText={(v) => setSearchKeyword(v)}
+                            value={searchKeyword}
+                            onSubmitEditing={() => searchHappening(searchKeyword)}
+                            placeholder="Search happenings, fellows"
+                            placeholderTextColor={"rgba(255,255,255,1)"}
                         />
-                    }
-                </View>
-            }
-            <View style={{ width: "90%", alignSelf: 'center', marginTop: loginData ? 30 : 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                <View style={{ width: "92%" }}>
-                    <TextInput
-                        style={styles.textbox}
-                        onChangeText={(v) => setSearchKeyword(v)}
-                        onSubmitEditing={() => searchHappening(searchKeyword)}
-                        placeholder="Search happenings, fellows"
-                        placeholderTextColor={"rgba(255,255,255,1)"}
-                    />
-                    <TouchableOpacity style={{ position: 'absolute', right: 15, top: 15, }}>
-                        <SearchIcon />
+                        {
+                            searchKeyword.length > 0 ?
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    onPress={() => setSearchKeyword('')}
+                                    style={{ position: 'absolute', right: 15, top: 15, }}>
+                                    <Entypo name='cross' size={25} color="white" />
+                                </TouchableOpacity>
+                                :
+                                <TouchableOpacity style={{ position: 'absolute', right: 25, top: 15, }}>
+                                    <SearchIcon />
+                                </TouchableOpacity>
+                        }
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setFilterType('All');
+                            setFilterModal(true);
+                        }}
+                        style={{ marginRight: 10 }}>
+                        <FilterIcon />
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                    onPress={() => {
-                        setFilterType('All');
-                        setFilterModal(true);
-                    }}
-                    style={{ marginRight: 10 }}>
-                    <FilterIcon />
-                </TouchableOpacity>
-            </View>
-            {/* <View style={{ marginLeft: "4%", flexDirection: 'row', marginTop: 20, width: "100%", marginBottom: 10 }}>
+                {/* <View style={{ marginLeft: "4%", flexDirection: 'row', marginTop: 20, width: "100%", marginBottom: 10 }}>
                 <FlatList
                     contentContainerStyle={{ paddingRight: 50 }}
                     showsHorizontalScrollIndicator={false}
@@ -1007,77 +1059,152 @@ const Home = () => {
                     )}
                 />
             </View> */}
-            <ScrollView
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />
-                }
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 200 }} >
-                <View style={{ width: "85%", alignSelf: 'center', }}>
-                    <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20, justifyContent: 'space-between' }}>
-                        {/* <Text style={styles.headingText}>Happening Today</Text> */}
-                        <Text style={styles.headingText}>Happenings</Text>
-                        {/* <TouchableOpacity
-                            onPress={() => {
-                                // console.log(happeningTodayData)
-                                navigateFromStack('BookingStack', 'SeeAllHappeningsToday', happeningTodayData)
-                            }}
-                            style={{ padding: 10 }} >
-                            <Text style={styles.seeAll}>See all</Text>
-                        </TouchableOpacity> */}
-                    </View>
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: "100%", justifyContent: 'space-between', marginTop: 10 }}>
 
-                        {
-                            // [{ img: require('../../assets/bg_color.png'), title: "Maintenance of Olive Trees", distance: "5 Miles Away" }, { img: require('../../assets/bg_color-2.png'), title: "Help to make sanitation pads for school girls", distance: 'Dusseldorf, Germany' }]
-                            allHappenings?.map((item, index) => {
-                                // if (index > 1) return;
+                <View style={{ width: "85%", alignSelf: 'center', }}>
+                    <Text style={[styles.headingText, { marginVertical: 15, }]}>Happenings</Text>
+                </View>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ paddingBottom: 450 }} >
+                    <View style={{ width: "85%", alignSelf: 'center', }}>
+                        {/* <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 0, justifyContent: 'space-between' }}> */}
+                        {/* <Text style={styles.headingText}>Happening Today</Text> */}
+
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigateFromStack('BookingStack', 'SeeAllHappeningsToday', {
+                                    title: "Happenings",
+                                    data: allHappenings
+                                })
+                            }}
+                            style={{ padding: 10, alignSelf: 'flex-end' }} >
+                            <Text style={styles.seeAll}>See all</Text>
+                        </TouchableOpacity>
+                        {/* </View> */}
+
+
+                        <View style={{ width: "100%" }}>
+                            <FlatList
+                                showsHorizontalScrollIndicator={false}
+                                horizontal={true}
+                                data={allHappenings}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <TouchableOpacity
+                                            key={index}
+                                            onPress={() => loginData ? navigateFromStack('BookingStack', 'HappeningDetails', item) : navigate('HappeningDetails', item)}
+                                            style={{ width: getWidth(40), marginLeft: 10, }}
+                                        >
+                                            <Image
+                                                source={{ uri: item.addPhotosOfYourHappening[0] }}
+                                                style={styles.listImg}
+                                            />
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    setWhishListHappeningId(item._id)
+                                                    if (!item.isFavorite) {
+                                                        setCreateWishListModal(true)
+                                                    }
+                                                }}
+                                                style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
+                                                {
+                                                    item.isFavorite ?
+                                                        <HeartFilled color={'red'} />
+                                                        :
+                                                        <HeartWhiteIcon color={"white"} />
+                                                }
+
+                                            </TouchableOpacity>
+                                            {/* <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
+                                    {
+                                        [1, 2, 3, 4, 5].map((v, i) => (
+                                            <View style={i == 4 ? styles.ratingCircleInActive : styles.ratingCircleActive}></View>
+                                        ))
+                                    }
+                                    <Text style={styles.ratingsText}>34 Ratings</Text>
+                                </View> */}
+                                            <Text style={styles.listTile}>{item.happeningTitle}</Text>
+                                            {/* <Text style={styles.distanceText}>{item.distance}</Text> */}
+                                        </TouchableOpacity>
+                                    )
+                                }}
+                            />
+                        </View>
+                        {/* <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: "100%", justifyContent: 'space-between', marginTop: 10 }}>
+                            {
+                                allHappenings?.map((item, index) => {
+                                    // if (index > 1) return;
+                                    return (
+                                        <TouchableOpacity
+                                            key={index}
+                                            onPress={() => loginData ? navigateFromStack('BookingStack', 'HappeningDetails', item) : navigate('HappeningDetails', item)}
+                                            style={{ width: "48%", }}>
+                                            <Image
+                                                source={{ uri: item.addPhotosOfYourHappening[0] }}
+                                                style={styles.listImg}
+                                            />
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    setWhishListHappeningId(item._id)
+                                                    if (!item.isFavorite) {
+                                                        setCreateWishListModal(true)
+                                                    }
+                                                }}
+                                                style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
+                                                {
+                                                    item.isFavorite ?
+                                                        <HeartFilled color={'red'} />
+                                                        :
+                                                        <HeartWhiteIcon color={"white"} />
+                                                }
+
+                                            </TouchableOpacity>
+                                            <Text style={styles.listTile}>{item.happeningTitle}</Text>
+                                            <Text style={styles.distanceText}>{item.distance}</Text>
+                                        </TouchableOpacity>
+                                    )
+                                })
+                            }
+
+
+
+
+                        </View> */}
+                    </View>
+
+                    <View style={{ width: "85%", alignSelf: 'center', }}>
+                        <Text style={[styles.headingText, { marginVertical: 15, }]}>Local Stories</Text>
+                        <FlatList
+                            showsHorizontalScrollIndicator={false}
+                            horizontal={true}
+                            data={localStories}
+                            renderItem={({ item, index }) => {
                                 return (
                                     <TouchableOpacity
                                         key={index}
-                                        onPress={() => loginData ? navigateFromStack('BookingStack', 'HappeningDetails', item) : navigate('HappeningDetails', item)}
-                                        style={{ width: "48%", }}>
+                                        onPress={() => navigate('StoryDetails', item)}
+                                        style={{ width: getWidth(40), marginLeft: 10, }}
+                                    >
                                         <Image
-                                            source={{ uri: item.addPhotosOfYourHappening[0] }}
+                                            source={{ uri: item.blog_photo[0] }}
                                             style={styles.listImg}
                                         />
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                setWhishListHappeningId(item._id)
-                                                if (!item.isFavorite) {
-                                                    setCreateWishListModal(true)
-                                                }
-                                            }}
-                                            style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
-                                            <HeartFilled color={item.isFavorite ? 'red' : "rgba(0,0,0,0.5)"} />
-                                            {/* <HeartWhiteIcon color={item.isFavorite ? 'red' : "rgba(0,0,0,0.8)"} /> */}
-
-                                        </TouchableOpacity>
-                                        {/* <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
-                                            {
-                                                [1, 2, 3, 4, 5].map((v, i) => (
-                                                    <View style={i == 4 ? styles.ratingCircleInActive : styles.ratingCircleActive}></View>
-                                                ))
-                                            }
-                                            <Text style={styles.ratingsText}>34 Ratings</Text>
-                                        </View> */}
-                                        <Text style={styles.listTile}>{item.happeningTitle}</Text>
-                                        <Text style={styles.distanceText}>{item.distance}</Text>
+                                        <Text style={styles.listTile}>{item.blog_top_head_line}</Text>
                                     </TouchableOpacity>
                                 )
-                            })
-                        }
+                            }}
 
-
-
-
+                        />
                     </View>
-                </View>
 
-                {/* <View style={{ width: "85%", alignSelf: 'center', }}>
+
+                    {/* <View style={{ width: "85%", alignSelf: 'center', }}>
                     <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20, justifyContent: 'space-between' }}>
                         <Text style={styles.headingText}>Happening Nearby</Text>
                         <TouchableOpacity style={{ padding: 10 }} >
@@ -1085,7 +1212,6 @@ const Home = () => {
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', justifyContent: 'space-between' }}>
-
                         {
                             nearbyHappenings?.map((item, index) => (
                                 <View style={{ width: "48%", }}>
@@ -1118,115 +1244,115 @@ const Home = () => {
 
                     </View>
                 </View> */}
-            </ScrollView>
+                </ScrollView>
 
-            <Modal
-                isVisible={popup1}
-                avoidKeyboard={true}
-                backdropColor="#171515"
-                backdropOpacity={0.5}
-                style={{ margin: 0, }}
-                onBackdropPress={() => Keyboard.dismiss()}
-                // onBackdropPress={() => setPopup1(!popup1)}
-                animationOut="slideOutDown"
-            >
-                <DropdownAlert ref={(ref) => modalAlertRef = ref} />
-                {modalLoading && <Loader />}
-                {
-                    // popupCases == 1 ?
-                    //     <LanguagePopup />
-                    //     :
-                    popupCases == 1 ?
-                        <AddPicturePopup />
-                        :
-                        popupCases == 2 ? <View
-                            pointerEvents='box-none'
-                            style={[styles.popupContainer, { paddingBottom: 10 }]}>
-                            <BackPopupBtn />
-                            {/* <CrossBtn /> */}
-                            <Text style={styles.popupHeading}>Your Bio</Text>
-                            <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>Share your interests, hobbies, talents, and reasons for waking up in the morning. Share a little about your life, where you live, your education, or your profession in general so that when you meet other members, they already have a feel of who you are.</Text>
-                            <View
-                                style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
-                                <TextInput
-                                    placeholder=''
-                                    keyboardType="default"
-                                    returnKeyType="done"
-                                    value={bio}
-                                    // onKeyPress={() => Keyboard.dismiss()}
-                                    multiline={true}
-                                    onChangeText={(v) => {
-                                        setBio(v)
-                                        getBioWordCount(v)
+                <Modal
+                    isVisible={popup1}
+                    avoidKeyboard={true}
+                    backdropColor="#171515"
+                    backdropOpacity={0.5}
+                    style={{ margin: 0, }}
+                    onBackdropPress={() => Keyboard.dismiss()}
+                    // onBackdropPress={() => setPopup1(!popup1)}
+                    animationOut="slideOutDown"
+                >
+                    <DropdownAlert ref={(ref) => modalAlertRef = ref} />
+                    {modalLoading && <Loader />}
+                    {
+                        // popupCases == 1 ?
+                        //     <LanguagePopup />
+                        //     :
+                        popupCases == 1 ?
+                            <AddPicturePopup />
+                            :
+                            popupCases == 2 ? <View
+                                pointerEvents='box-none'
+                                style={[styles.popupContainer, { paddingBottom: 10 }]}>
+                                <BackPopupBtn />
+                                {/* <CrossBtn /> */}
+                                <Text style={styles.popupHeading}>Your Bio</Text>
+                                <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>Share your interests, hobbies, talents, and reasons for waking up in the morning. Share a little about your life, where you live, your education, or your profession in general so that when you meet other members, they already have a feel of who you are.</Text>
+                                <View
+                                    style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+                                    <TextInput
+                                        placeholder=''
+                                        keyboardType="default"
+                                        returnKeyType="done"
+                                        value={bio}
+                                        // onKeyPress={() => Keyboard.dismiss()}
+                                        multiline={true}
+                                        onChangeText={(v) => {
+                                            setBio(v)
+                                            getBioWordCount(v)
+                                        }}
+                                        placeholderTextColor={"#7b7b7b"}
+                                        textAlignVertical="top"
+                                        style={{
+                                            width: "100%", height: 140, borderRadius: 10, paddingTop: 10, borderColor: '#2a2a2a', borderWidth: 1,
+                                            fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10,
+                                        }}
+                                    />
+                                    <Text style={{ backgroundColor: 'white', position: 'absolute', bottom: 5, right: 20, fontSize: 12, color: "#2A2A2A", fontFamily: fonts.MRe, }}>{bioCount ?? 0}/150</Text>
+                                </View>
+                                <PopupButton
+                                    onPress={() => {
+                                        if (bioCount < 50 || bioCount > 150) {
+                                            modalAlertRef.alertWithType('error', "Error", 'Bio must be min 50 to 150 words')
+                                            return
+                                        }
+
+                                        let data = {
+                                            bio: bio,
+                                            nextCase: 3
+                                        }
+                                        saveTempProfileDataToLocal('bio', data)
+                                        setPopupCases(3)
                                     }}
-                                    placeholderTextColor={"#7b7b7b"}
-                                    textAlignVertical="top"
-                                    style={{
-                                        width: "100%", height: 140, borderRadius: 10, paddingTop: 10, borderColor: '#2a2a2a', borderWidth: 1,
-                                        fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10,
-                                    }}
+                                    btnStyle={{ position: 'relative', marginTop: 130, alignSelf: 'flex-end' }}
+                                    title="Next"
                                 />
-                                <Text style={{ backgroundColor: 'white', position: 'absolute', bottom: 5, right: 20, fontSize: 12, color: "#2A2A2A", fontFamily: fonts.MRe, }}>{bioCount ?? 0}/150</Text>
                             </View>
-                            <PopupButton
-                                onPress={() => {
-                                    if (bioCount < 50 || bioCount > 150) {
-                                        modalAlertRef.alertWithType('error', "Error", 'Bio must be min 50 to 150 words')
-                                        return
-                                    }
 
-                                    let data = {
-                                        bio: bio,
-                                        nextCase: 3
-                                    }
-                                    saveTempProfileDataToLocal('bio', data)
-                                    setPopupCases(3)
-                                }}
-                                btnStyle={{ position: 'relative', marginTop: 130, alignSelf: 'flex-end' }}
-                                title="Next"
-                            />
-                        </View>
-
-                            : popupCases == 3 ?
-                                <AddDateOfBirthPopup />
-                                :
-                                popupCases == 4 ?
-                                    <Under18Popup />
+                                : popupCases == 3 ?
+                                    <AddDateOfBirthPopup />
                                     :
-                                    popupCases == 5 ? // LINK YOUR PHONE POPUP
-                                        <View style={[styles.popupContainer, { paddingBottom: 10, }]}>
-                                            <BackPopupBtn />
-                                            {/* <CrossBtn /> */}
-                                            <Text style={styles.popupHeading}>Link your phone</Text>
-                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 50 }}>
-                                                <View style={{
-                                                    flexDirection: 'row', width: "23%", height: 40, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1, alignItems: 'center',
-                                                }}>
-                                                    <PrivacyPicker
-                                                        selected={{ title: countryCode }}
-                                                        data={ccArr}
-                                                        onValueChange={(i, v) => {
-                                                            setCountryCode('+' + v.title);
+                                    popupCases == 4 ?
+                                        <Under18Popup />
+                                        :
+                                        popupCases == 5 ? // LINK YOUR PHONE POPUP
+                                            <View style={[styles.popupContainer, { paddingBottom: 10, }]}>
+                                                <BackPopupBtn />
+                                                {/* <CrossBtn /> */}
+                                                <Text style={styles.popupHeading}>Link your phone</Text>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 50 }}>
+                                                    <View style={{
+                                                        flexDirection: 'row', width: "23%", height: 40, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1, alignItems: 'center',
+                                                    }}>
+                                                        <PrivacyPicker
+                                                            selected={{ title: countryCode }}
+                                                            data={ccArr}
+                                                            onValueChange={(i, v) => {
+                                                                setCountryCode('+' + v.title);
+                                                            }}
+                                                            titleStyle={{ fontFamily: fonts.PRe }}
+                                                        />
+                                                    </View>
+                                                    <TextInput
+                                                        placeholder=''
+                                                        autoFocus={true}
+                                                        value={phn}
+                                                        onChangeText={setPhone}
+                                                        keyboardType='number-pad'
+                                                        placeholderTextColor={"#7b7b7b"}
+                                                        style={{
+                                                            width: "75%", height: 40, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
+                                                            fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10,
                                                         }}
-                                                        titleStyle={{ fontFamily: fonts.PRe }}
                                                     />
                                                 </View>
-                                                <TextInput
-                                                    placeholder=''
-                                                    autoFocus={true}
-                                                    value={phn}
-                                                    onChangeText={setPhone}
-                                                    keyboardType='number-pad'
-                                                    placeholderTextColor={"#7b7b7b"}
-                                                    style={{
-                                                        width: "75%", height: 40, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
-                                                        fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10,
-                                                    }}
-                                                />
-                                            </View>
-                                            {/* <Text style={{ fontFamily: fonts.MRe, fontSize: 12, color: acolors.grey, marginTop: 10 }}>Country Code</Text> */}
-                                            {/* <Text style={styles.popupHeading}>Please enter the OTP</Text> */}
-                                            {/* <TextInput
+                                                {/* <Text style={{ fontFamily: fonts.MRe, fontSize: 12, color: acolors.grey, marginTop: 10 }}>Country Code</Text> */}
+                                                {/* <Text style={styles.popupHeading}>Please enter the OTP</Text> */}
+                                                {/* <TextInput
                                                 placeholder=''
                                                 placeholderTextColor={"#7b7b7b"}
                                                 style={{
@@ -1234,112 +1360,112 @@ const Home = () => {
                                                     fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10,
                                                 }}
                                             /> */}
-                                            <PopupButton
-                                                onPress={() => {
-                                                    if (phn?.length < 10) {
-                                                        modalAlertRef.alertWithType('error', "Error", 'Please enter a valid 10 digit phone no')
-                                                        return
-                                                    }
-                                                    if (!countryCode) {
-                                                        modalAlertRef.alertWithType('error', "Error", 'Please select your country code');
-                                                        return
-                                                    }
-                                                    let data = {
-                                                        phoneNumber: phn,
-                                                        nextCase: 6
-                                                    }
-                                                    saveTempProfileDataToLocal('phoneNumber', data)
-                                                    setPopupCases(6)
-                                                }}
-                                                btnStyle={{ position: 'relative', marginTop: 130, alignSelf: 'flex-end' }}
-                                                title="Next"
-                                            />
-                                        </View>
-                                        :
-                                        popupCases == 6 ? // GENDER, LANGUAGES KNOWN, PROFESSION POPUP
-                                            <View style={[styles.popupContainer, { paddingBottom: 10 }]}>
-                                                <BackPopupBtn />
-                                                {/* <CrossBtn /> */}
-                                                <Text style={styles.popupHeading}>Gender</Text>
-                                                <View style={{ flexDirection: 'row', width: "100%", marginTop: 12, }}>
-                                                    <TouchableOpacity
-                                                        onPress={() => setGender('Male')}
-                                                        style={styles.genderSelectionContainer}>
-                                                        <View style={[styles.genderRadioBtn, { backgroundColor: gender == "Male" ? "#fea082" : "rgba(255, 161, 131,0.4)" }]}>
-                                                            {gender == "Male" && <TickIcon width={9} height={7} />}
-                                                        </View>
-                                                        <Text style={styles.genderText}>Male</Text>
-                                                    </TouchableOpacity>
-                                                    <TouchableOpacity
-                                                        onPress={() => setGender('Female')}
-                                                        style={styles.genderSelectionContainer}>
-                                                        <View style={[styles.genderRadioBtn, { backgroundColor: gender == "Female" ? "#fea082" : "rgba(255, 161, 131,0.4)" }]}>
-                                                            {gender == "Female" && <TickIcon width={9} height={7} />}
-                                                        </View>
-                                                        <Text style={styles.genderText}>Female</Text>
-                                                    </TouchableOpacity>
-                                                </View>
-                                                <View style={{ flexDirection: 'row', width: "100%", marginTop: 12, }}>
-                                                    <TouchableOpacity
-                                                        onPress={() => setGender('Other')}
-                                                        style={styles.genderSelectionContainer}>
-                                                        <View style={[styles.genderRadioBtn, { backgroundColor: gender == "Other" ? "#fea082" : "rgba(255, 161, 131,0.4)" }]}>
-                                                            {gender == "Other" && <TickIcon width={9} height={7} />}
-                                                        </View>
-                                                        <Text style={styles.genderText}>Other</Text>
-                                                    </TouchableOpacity>
-                                                    <TouchableOpacity
-                                                        onPress={() => setGender('Rather not Say')}
-                                                        style={styles.genderSelectionContainer}>
-                                                        <View style={[styles.genderRadioBtn, { backgroundColor: gender == "Rather not Say" ? "#fea082" : "rgba(255, 161, 131,0.4)" }]}>
-                                                            {gender == "Rather not Say" && <TickIcon width={9} height={7} />}
-                                                        </View>
-                                                        <Text style={styles.genderText}>Rather not Say</Text>
-                                                    </TouchableOpacity>
-                                                </View>
-                                                <Text style={styles.popupHeading}>Languages Known</Text>
-                                                <Text style={{
-                                                    marginTop: 10, color: '#241414', fontFamily: fonts.MRe, fontSize: 12,
-                                                }}>What languages you speak</Text>
-                                                <View>
-                                                    <TextInput
-                                                        ref={input => { textInputRef = input }}
-                                                        onChangeText={setLanguageKnown}
-                                                        placeholderTextColor={"#7b7b7b"}
-                                                        onSubmitEditing={() => {
-                                                            if (languageKnown.length > 1) {
-                                                                forceUpdate();
-                                                                doMakeKnownLanguages();
-                                                                textInputRef.clear();
-                                                            }
-                                                        }}
-                                                        onBlur={() => {
-                                                            if (languageKnown.length > 3) {
-                                                                setLanguageKnown('');
-                                                                forceUpdate();
-                                                                doMakeKnownLanguages();
-                                                                textInputRef.clear();
-                                                            }
-                                                        }}
-                                                        style={{
-                                                            width: "100%", height: 47, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
-                                                            fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10, marginTop: 10
-                                                        }}
-                                                    />
-                                                    <TouchableOpacity
-                                                        onPress={() => {
-                                                            if (languageKnown.length > 3) {
-                                                                setLanguageKnown('');
-                                                                forceUpdate();
-                                                                doMakeKnownLanguages();
-                                                                textInputRef.clear();
-                                                            }
-                                                        }}
-                                                        style={{ position: 'absolute', padding: 10, marginTop: 0, right: 0 }}>
-                                                        <Text style={{ fontSize: 34, color: '#241414', fontFamily: fonts.MRe, }}>+</Text>
-                                                    </TouchableOpacity>
-                                                </View>
-                                                {/* <View style={{ marginTop: 10}}>
+                                                <PopupButton
+                                                    onPress={() => {
+                                                        if (phn?.length < 10) {
+                                                            modalAlertRef.alertWithType('error', "Error", 'Please enter a valid 10 digit phone no')
+                                                            return
+                                                        }
+                                                        if (!countryCode) {
+                                                            modalAlertRef.alertWithType('error', "Error", 'Please select your country code');
+                                                            return
+                                                        }
+                                                        let data = {
+                                                            phoneNumber: phn,
+                                                            nextCase: 6
+                                                        }
+                                                        saveTempProfileDataToLocal('phoneNumber', data)
+                                                        setPopupCases(6)
+                                                    }}
+                                                    btnStyle={{ position: 'relative', marginTop: 130, alignSelf: 'flex-end' }}
+                                                    title="Next"
+                                                />
+                                            </View>
+                                            :
+                                            popupCases == 6 ? // GENDER, LANGUAGES KNOWN, PROFESSION POPUP
+                                                <View style={[styles.popupContainer, { paddingBottom: 10 }]}>
+                                                    <BackPopupBtn />
+                                                    {/* <CrossBtn /> */}
+                                                    <Text style={styles.popupHeading}>Gender</Text>
+                                                    <View style={{ flexDirection: 'row', width: "100%", marginTop: 12, }}>
+                                                        <TouchableOpacity
+                                                            onPress={() => setGender('Male')}
+                                                            style={styles.genderSelectionContainer}>
+                                                            <View style={[styles.genderRadioBtn, { backgroundColor: gender == "Male" ? "#fea082" : "rgba(255, 161, 131,0.4)" }]}>
+                                                                {gender == "Male" && <TickIcon width={9} height={7} />}
+                                                            </View>
+                                                            <Text style={styles.genderText}>Male</Text>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity
+                                                            onPress={() => setGender('Female')}
+                                                            style={styles.genderSelectionContainer}>
+                                                            <View style={[styles.genderRadioBtn, { backgroundColor: gender == "Female" ? "#fea082" : "rgba(255, 161, 131,0.4)" }]}>
+                                                                {gender == "Female" && <TickIcon width={9} height={7} />}
+                                                            </View>
+                                                            <Text style={styles.genderText}>Female</Text>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row', width: "100%", marginTop: 12, }}>
+                                                        <TouchableOpacity
+                                                            onPress={() => setGender('Other')}
+                                                            style={styles.genderSelectionContainer}>
+                                                            <View style={[styles.genderRadioBtn, { backgroundColor: gender == "Other" ? "#fea082" : "rgba(255, 161, 131,0.4)" }]}>
+                                                                {gender == "Other" && <TickIcon width={9} height={7} />}
+                                                            </View>
+                                                            <Text style={styles.genderText}>Other</Text>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity
+                                                            onPress={() => setGender('Rather not Say')}
+                                                            style={styles.genderSelectionContainer}>
+                                                            <View style={[styles.genderRadioBtn, { backgroundColor: gender == "Rather not Say" ? "#fea082" : "rgba(255, 161, 131,0.4)" }]}>
+                                                                {gender == "Rather not Say" && <TickIcon width={9} height={7} />}
+                                                            </View>
+                                                            <Text style={styles.genderText}>Rather not Say</Text>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                    <Text style={styles.popupHeading}>Languages Known</Text>
+                                                    <Text style={{
+                                                        marginTop: 10, color: '#241414', fontFamily: fonts.MRe, fontSize: 12,
+                                                    }}>What languages you speak</Text>
+                                                    <View>
+                                                        <TextInput
+                                                            ref={input => { textInputRef = input }}
+                                                            onChangeText={setLanguageKnown}
+                                                            placeholderTextColor={"#7b7b7b"}
+                                                            onSubmitEditing={() => {
+                                                                if (languageKnown.length > 1) {
+                                                                    forceUpdate();
+                                                                    doMakeKnownLanguages();
+                                                                    textInputRef.clear();
+                                                                }
+                                                            }}
+                                                            onBlur={() => {
+                                                                if (languageKnown.length > 3) {
+                                                                    setLanguageKnown('');
+                                                                    forceUpdate();
+                                                                    doMakeKnownLanguages();
+                                                                    textInputRef.clear();
+                                                                }
+                                                            }}
+                                                            style={{
+                                                                width: "100%", height: 47, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
+                                                                fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10, marginTop: 10
+                                                            }}
+                                                        />
+                                                        <TouchableOpacity
+                                                            onPress={() => {
+                                                                if (languageKnown.length > 3) {
+                                                                    setLanguageKnown('');
+                                                                    forceUpdate();
+                                                                    doMakeKnownLanguages();
+                                                                    textInputRef.clear();
+                                                                }
+                                                            }}
+                                                            style={{ position: 'absolute', padding: 10, marginTop: 0, right: 0 }}>
+                                                            <Text style={{ fontSize: 34, color: '#241414', fontFamily: fonts.MRe, }}>+</Text>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                    {/* <View style={{ marginTop: 10}}>
                                                 <TextInput
                                                     placeholder=''
                                                     
@@ -1361,340 +1487,359 @@ const Home = () => {
                                                 </TouchableOpacity>
                                             </View> */}
 
-                                                <View style={{ flexDirection: 'row', width: "100%", marginTop: 10 }}>
-                                                    {
-                                                        languageKnownArr.map((v, i) => {
-                                                            return (
-                                                                <View
-                                                                    key={i}
-                                                                    style={{
-                                                                        paddingHorizontal: 8, height: 28, borderRadius: 18, backgroundColor: '#b9b1f0', flexDirection: 'row', alignItems: 'center',
-                                                                    }}>
-                                                                    <Text style={{ color: '#ffffff', fontFamily: fonts.MRe, fontSize: 8, }}>{v}</Text>
-                                                                    <TouchableOpacity
-                                                                        onPress={() => doSpliceLanguageKnown(v)}
-                                                                    >
-                                                                        <Text style={{ color: '#ffffff', fontFamily: fonts.MMe, fontSize: 9, marginLeft: 4 }}>X</Text>
-                                                                    </TouchableOpacity>
-                                                                </View>
-                                                            )
-                                                        })
-                                                    }
+                                                    <View style={{ flexDirection: 'row', width: "100%", marginTop: 10 }}>
+                                                        {
+                                                            languageKnownArr.map((v, i) => {
+                                                                return (
+                                                                    <View
+                                                                        key={i}
+                                                                        style={{
+                                                                            paddingHorizontal: 8, height: 28, borderRadius: 18, backgroundColor: '#b9b1f0', flexDirection: 'row', alignItems: 'center',
+                                                                        }}>
+                                                                        <Text style={{ color: '#ffffff', fontFamily: fonts.MRe, fontSize: 8, }}>{v}</Text>
+                                                                        <TouchableOpacity
+                                                                            onPress={() => doSpliceLanguageKnown(v)}
+                                                                        >
+                                                                            <Text style={{ color: '#ffffff', fontFamily: fonts.MMe, fontSize: 9, marginLeft: 4 }}>X</Text>
+                                                                        </TouchableOpacity>
+                                                                    </View>
+                                                                )
+                                                            })
+                                                        }
 
-                                                    {/* <View style={{
+                                                        {/* <View style={{
                                                 paddingHorizontal: 8, height: 28, borderRadius: 18, backgroundColor: '#b9b1f0', flexDirection: 'row', alignItems: 'center', marginLeft: 10,
                                             }}>
                                                 <Text style={{ color: '#ffffff', fontFamily: fonts.MRe, fontSize: 8, }}>Dutch</Text>
                                                 <Text style={{ color: '#ffffff', fontFamily: fonts.MMe, fontSize: 9, marginLeft: 4 }}>X</Text>
                                             </View> */}
-                                                </View>
-                                                <Text style={styles.popupHeading}>Profession</Text>
-                                                <TextInput
-                                                    placeholder=''
-                                                    value={profession}
-                                                    onChangeText={setProfession}
-                                                    placeholderTextColor={"#7b7b7b"}
-                                                    style={{
-                                                        width: "100%", height: 38, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
-                                                        fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10, marginTop: 5
-                                                    }}
-                                                />
-                                                <PopupButton
-                                                    onPress={() => {
-                                                        Keyboard.dismiss()
-                                                        if (languageKnownArr.length == 0) {
-                                                            modalAlertRef.alertWithType('error', "Error", "Please enter atleast one language")
-                                                            return;
-                                                        }
-                                                        if (profession?.length < 3 || !profession) {
-                                                            modalAlertRef.alertWithType('error', "Error", "Please enter a valid profession")
-                                                            return;
-                                                        }
-                                                        let data = {
-                                                            LanguagesKnown: languageKnownArr,
-                                                            nextCase: 7
-                                                        }
-
-                                                        let keyAndValues = {
-                                                            "LanguagesKnown": data,
-                                                            "gender": gender,
-                                                            "profession": profession
-                                                        }
-
-
-                                                        saveTempProfileDataToLocal(keyAndValues);
-                                                        // saveTempProfileDataToLocal('gender', gender);
-                                                        // saveTempProfileDataToLocal('profession', profession);
-                                                        setPopupCases(7)
-                                                    }}
-                                                    btnStyle={{ position: 'relative', marginTop: 50, alignSelf: 'flex-end' }}
-                                                    title="Next"
-                                                />
-                                            </View>
-                                            :
-                                            popupCases == 7 ? // ADD SKILLS
-                                                <View style={[styles.popupContainer, { paddingBottom: 20 }]}>
-                                                    <BackPopupBtn />
-                                                    {/* <CrossBtn /> */}
-                                                    <Text style={styles.popupHeading}>Add skills</Text>
-                                                    <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>choose the best skills and qualifications you have</Text>
-                                                    <View>
-                                                        <TextInput
-                                                            placeholder=''
-                                                            ref={(ref) => textInputRef = ref}
-                                                            placeholderTextColor={"#7b7b7b"}
-                                                            onChangeText={(v) => setSkill(v)}
-                                                            style={{
-                                                                width: "100%", height: 47, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
-                                                                fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10, marginTop: 10
-                                                            }}
-                                                        />
-                                                        <TouchableOpacity
-                                                            onPress={() => {
-                                                                if (skill.length > 0) {
-                                                                    textInputRef.clear();
-                                                                    doMakeSkills()
-                                                                }
-
-                                                            }}
-                                                            style={{ position: 'absolute', padding: 10, marginTop: 0, right: 0 }}>
-                                                            <Text style={{ fontSize: 34, color: '#241414', fontFamily: fonts.MRe, }}>+</Text>
-                                                        </TouchableOpacity>
-                                                        <View style={{ flexDirection: 'row', width: "100%", marginTop: 10, flexWrap: 'wrap' }}>
-                                                            {
-
-                                                                skillsArr.map((v, i) => {
-                                                                    return (
-                                                                        <View
-                                                                            key={i}
-                                                                            style={{
-                                                                                paddingHorizontal: 8, height: 28, borderRadius: 18, backgroundColor: '#b9b1f0', flexDirection: 'row', alignItems: 'center', marginLeft: 10, marginTop: 10
-                                                                            }}>
-                                                                            <Text style={{ color: '#ffffff', fontFamily: fonts.MRe, fontSize: 8, }}>{v}</Text>
-                                                                            <TouchableOpacity
-                                                                                onPress={() => doSpliceSkills(v)}
-                                                                            >
-                                                                                <Text style={{ color: '#ffffff', fontFamily: fonts.MMe, fontSize: 9, marginLeft: 10 }}>X</Text>
-                                                                            </TouchableOpacity>
-                                                                        </View>
-                                                                    )
-                                                                })
+                                                    </View>
+                                                    <Text style={styles.popupHeading}>Profession</Text>
+                                                    <TextInput
+                                                        placeholder=''
+                                                        value={profession}
+                                                        onChangeText={setProfession}
+                                                        placeholderTextColor={"#7b7b7b"}
+                                                        style={{
+                                                            width: "100%", height: 38, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
+                                                            fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10, marginTop: 5
+                                                        }}
+                                                    />
+                                                    <PopupButton
+                                                        onPress={() => {
+                                                            Keyboard.dismiss()
+                                                            if (languageKnownArr.length == 0) {
+                                                                modalAlertRef.alertWithType('error', "Error", "Please enter atleast one language")
+                                                                return;
                                                             }
-                                                        </View>
+                                                            if (profession?.length < 3 || !profession) {
+                                                                modalAlertRef.alertWithType('error', "Error", "Please enter a valid profession")
+                                                                return;
+                                                            }
+                                                            let data = {
+                                                                LanguagesKnown: languageKnownArr,
+                                                                nextCase: 7
+                                                            }
+
+                                                            let keyAndValues = {
+                                                                "LanguagesKnown": data,
+                                                                "gender": gender,
+                                                                "profession": profession
+                                                            }
 
 
-                                                    </View>
-                                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 150, width: "95%", alignSelf: 'center' }}>
-                                                        {/* <TouchableOpacity>
-                                                            <Text style={{ color: '#5b4dbc', fontFamily: fonts.MSBo, fontSize: 12, }}>I’ll do it later</Text>
-                                                        </TouchableOpacity> */}
-                                                        <PopupButton
-                                                            onPress={() => {
-                                                                if (skillsArr.length == 0) {
-                                                                    modalAlertRef.alertWithType('error', "Error", "Please enter atleast one skill");
-                                                                    return;
-                                                                }
-                                                                let data = {
-                                                                    addSkills: skillsArr,
-                                                                    nextCase: 8
-                                                                }
-                                                                saveTempProfileDataToLocal('addSkills', data)
-                                                                setPopupCases(8)
-                                                            }}
-                                                            btnStyle={{ position: 'relative', top: 0, right: 0 }}
-                                                            title="Next"
-                                                        />
-
-                                                    </View>
-                                                </View >
+                                                            saveTempProfileDataToLocal(keyAndValues);
+                                                            // saveTempProfileDataToLocal('gender', gender);
+                                                            // saveTempProfileDataToLocal('profession', profession);
+                                                            setPopupCases(7)
+                                                        }}
+                                                        btnStyle={{ position: 'relative', marginTop: 50, alignSelf: 'flex-end' }}
+                                                        title="Next"
+                                                    />
+                                                </View>
                                                 :
-                                                popupCases == 8 ?
-                                                    <ThemesLikePopup />
-                                                    :
-                                                    // popupCases == 9 ?
-                                                    //     <LinkSocialPopup />
-                                                    //     :
-                                                    popupCases == 9 || popupCases == 10 ? // PREFERENCE POPUP
-                                                        <View style={[styles.popupContainer, { paddingBottom: 10, paddingHorizontal: 20 }]} >
-                                                            <BackPopupBtn />
-                                                            {/* <CrossBtn /> */}
-                                                            <Text style={styles.popupHeading}>Preferences</Text>
-                                                            <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>Set your app preferences</Text>
-                                                            <View style={styles.linkSocialRowView}>
-                                                                <Text style={styles.linkSocialTitle}>Display my profile{"\n"}to everyone</Text>
-                                                                <Switch
-                                                                    trackColor={{ false: "#767577", true: "rgba(0,0,0,0.5)" }}
-                                                                    thumbColor={displayProfile ? "#ffa183" : "#f4f3f4"}
-                                                                    onValueChange={() => setDisplayProfile(!displayProfile)}
-                                                                    value={displayProfile}
-                                                                    // thumbColor={"#fffffff"}
-                                                                    ios_backgroundColor="#3e3e3e"
-                                                                />
-                                                            </View>
-                                                            <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>* Your Profile Information can’t be hidden
-                                                                to hosts and fellows you have bookings
-                                                                with</Text>
-                                                            <View style={styles.linkSocialRowView}>
-                                                                <Text style={styles.linkSocialTitle}>Alert when happenings{"\n"}are near me</Text>
-                                                                <Switch
-                                                                    trackColor={{ false: "#767577", true: "rgba(0,0,0,0.5)" }}
-                                                                    thumbColor={alertHappening ? "#ffa183" : "#f4f3f4"}
-                                                                    onValueChange={() => setAlertHappening(!alertHappening)}
-                                                                    value={alertHappening}
-                                                                    // thumbColor={"#fffffff"}
-                                                                    ios_backgroundColor="#3e3e3e"
-                                                                />
-                                                            </View>
-                                                            {/* <Text style={{ color: '#5d5760', fontFamily: fonts.PSBo, fontSize: 17, alignSelf: 'center', marginTop: 20 }}>6 Miles</Text> */}
+                                                popupCases == 7 ? // ADD SKILLS
+                                                    <View style={[styles.popupContainer, { paddingBottom: 20 }]}>
+                                                        <BackPopupBtn />
+                                                        {/* <CrossBtn /> */}
+                                                        <Text style={styles.popupHeading}>Add skills</Text>
+                                                        <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>choose the best skills and qualifications you have</Text>
+                                                        <View>
                                                             <TextInput
-                                                                placeholder={distanceUnit}
-                                                                value={distance}
-                                                                onChangeText={setDistance}
-                                                                keyboardType='number-pad'
+                                                                placeholder=''
+                                                                ref={(ref) => textInputRef = ref}
                                                                 placeholderTextColor={"#7b7b7b"}
+                                                                onChangeText={(v) => setSkill(v)}
                                                                 style={{
-                                                                    width: "90%", height: 40, textTransform: 'capitalize', marginVertical: 15, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
-                                                                    fontSize: 14, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10,
+                                                                    width: "100%", height: 47, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
+                                                                    fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10, marginTop: 10
                                                                 }}
                                                             />
-                                                            {/* <Image
+                                                            <TouchableOpacity
+                                                                onPress={() => {
+                                                                    if (skill.length > 0) {
+                                                                        textInputRef.clear();
+                                                                        doMakeSkills()
+                                                                    }
+
+                                                                }}
+                                                                style={{ position: 'absolute', padding: 10, marginTop: 0, right: 0 }}>
+                                                                <Text style={{ fontSize: 34, color: '#241414', fontFamily: fonts.MRe, }}>+</Text>
+                                                            </TouchableOpacity>
+                                                            <View style={{ flexDirection: 'row', width: "100%", marginTop: 10, flexWrap: 'wrap' }}>
+                                                                {
+
+                                                                    skillsArr.map((v, i) => {
+                                                                        return (
+                                                                            <View
+                                                                                key={i}
+                                                                                style={{
+                                                                                    paddingHorizontal: 8, height: 28, borderRadius: 18, backgroundColor: '#b9b1f0', flexDirection: 'row', alignItems: 'center', marginLeft: 10, marginTop: 10
+                                                                                }}>
+                                                                                <Text style={{ color: '#ffffff', fontFamily: fonts.MRe, fontSize: 8, }}>{v}</Text>
+                                                                                <TouchableOpacity
+                                                                                    onPress={() => doSpliceSkills(v)}
+                                                                                >
+                                                                                    <Text style={{ color: '#ffffff', fontFamily: fonts.MMe, fontSize: 9, marginLeft: 10 }}>X</Text>
+                                                                                </TouchableOpacity>
+                                                                            </View>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </View>
+
+
+                                                        </View>
+                                                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 150, width: "95%", alignSelf: 'center' }}>
+                                                            {/* <TouchableOpacity>
+                                                            <Text style={{ color: '#5b4dbc', fontFamily: fonts.MSBo, fontSize: 12, }}>I’ll do it later</Text>
+                                                        </TouchableOpacity> */}
+                                                            <PopupButton
+                                                                onPress={() => {
+                                                                    if (skillsArr.length == 0) {
+                                                                        modalAlertRef.alertWithType('error', "Error", "Please enter atleast one skill");
+                                                                        return;
+                                                                    }
+                                                                    let data = {
+                                                                        addSkills: skillsArr,
+                                                                        nextCase: 8
+                                                                    }
+                                                                    saveTempProfileDataToLocal('addSkills', data)
+                                                                    setPopupCases(8)
+                                                                }}
+                                                                btnStyle={{ position: 'relative', top: 0, right: 0 }}
+                                                                title="Next"
+                                                            />
+
+                                                        </View>
+                                                    </View >
+                                                    :
+                                                    popupCases == 8 ?
+                                                        <ThemesLikePopup />
+                                                        :
+                                                        // popupCases == 9 ?
+                                                        //     <LinkSocialPopup />
+                                                        //     :
+                                                        popupCases == 9 || popupCases == 10 ? // PREFERENCE POPUP
+                                                            <View style={[styles.popupContainer, { paddingBottom: 10, paddingHorizontal: 20 }]} >
+                                                                <BackPopupBtn />
+                                                                {/* <CrossBtn /> */}
+                                                                <Text style={styles.popupHeading}>Preferences</Text>
+                                                                <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>Set your app preferences</Text>
+                                                                <View style={styles.linkSocialRowView}>
+                                                                    <Text style={styles.linkSocialTitle}>Display my profile{"\n"}to everyone</Text>
+                                                                    <Switch
+                                                                        trackColor={{ false: "#767577", true: "rgba(0,0,0,0.5)" }}
+                                                                        thumbColor={displayProfile ? "#ffa183" : "#f4f3f4"}
+                                                                        onValueChange={() => setDisplayProfile(!displayProfile)}
+                                                                        value={displayProfile}
+                                                                        // thumbColor={"#fffffff"}
+                                                                        ios_backgroundColor="#3e3e3e"
+                                                                    />
+                                                                </View>
+                                                                <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>* Your Profile Information can’t be hidden
+                                                                    to hosts and fellows you have bookings
+                                                                    with</Text>
+                                                                <View style={styles.linkSocialRowView}>
+                                                                    <Text style={styles.linkSocialTitle}>Alert when happenings{"\n"}are near me</Text>
+                                                                    <Switch
+                                                                        trackColor={{ false: "#767577", true: "rgba(0,0,0,0.5)" }}
+                                                                        thumbColor={alertHappening ? "#ffa183" : "#f4f3f4"}
+                                                                        onValueChange={() => setAlertHappening(!alertHappening)}
+                                                                        value={alertHappening}
+                                                                        // thumbColor={"#fffffff"}
+                                                                        ios_backgroundColor="#3e3e3e"
+                                                                    />
+                                                                </View>
+                                                                {/* <Text style={{ color: '#5d5760', fontFamily: fonts.PSBo, fontSize: 17, alignSelf: 'center', marginTop: 20 }}>6 Miles</Text> */}
+                                                                <TextInput
+                                                                    placeholder={distanceUnit}
+                                                                    value={distance}
+                                                                    onChangeText={setDistance}
+                                                                    keyboardType='number-pad'
+                                                                    placeholderTextColor={"#7b7b7b"}
+                                                                    style={{
+                                                                        width: "90%", height: 40, textTransform: 'capitalize', marginVertical: 15, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
+                                                                        fontSize: 14, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10,
+                                                                    }}
+                                                                />
+                                                                {/* <Image
                                                                     style={{ marginVertical: -15, alignSelf: 'center' }}
                                                                     source={require('../../static_assets/bar.png')}
                                                                 /> */}
-                                                            <View style={{ flexDirection: 'row', width: "30%", height: 18, alignSelf: 'center', backgroundColor: 'white', borderWidth: 1, borderRadius: 20, borderColor: '#707070' }}>
-                                                                <TouchableOpacity
-                                                                    onPress={() => setDistanceUnit('Miles')}
-                                                                    style={{ width: "50%", height: "100%", alignItems: 'center', justifyContent: 'center', backgroundColor: distanceUnit == 'miles' ? '#5b4dbc' : "white", borderRadius: 20 }}>
-                                                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: distanceUnit == 'miles' ? 'white' : "#5b4dbc" }}>Miles</Text>
-                                                                </TouchableOpacity>
-                                                                <TouchableOpacity
-                                                                    onPress={() => setDistanceUnit('Kms')}
-                                                                    style={{ width: "50%", height: "100%", alignItems: 'center', justifyContent: 'center', backgroundColor: distanceUnit == 'Kms' ? '#5b4dbc' : "white", borderRadius: 20 }}>
-                                                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: distanceUnit == 'Kms' ? 'white' : "#5b4dbc" }}>Kms</Text>
-                                                                </TouchableOpacity>
+                                                                <View style={{ flexDirection: 'row', width: "30%", height: 18, alignSelf: 'center', backgroundColor: 'white', borderWidth: 1, borderRadius: 20, borderColor: '#707070' }}>
+                                                                    <TouchableOpacity
+                                                                        onPress={() => setDistanceUnit('Miles')}
+                                                                        style={{ width: "50%", height: "100%", alignItems: 'center', justifyContent: 'center', backgroundColor: distanceUnit == 'miles' ? '#5b4dbc' : "white", borderRadius: 20 }}>
+                                                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: distanceUnit == 'miles' ? 'white' : "#5b4dbc" }}>Miles</Text>
+                                                                    </TouchableOpacity>
+                                                                    <TouchableOpacity
+                                                                        onPress={() => setDistanceUnit('Kms')}
+                                                                        style={{ width: "50%", height: "100%", alignItems: 'center', justifyContent: 'center', backgroundColor: distanceUnit == 'Kms' ? '#5b4dbc' : "white", borderRadius: 20 }}>
+                                                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: distanceUnit == 'Kms' ? 'white' : "#5b4dbc" }}>Kms</Text>
+                                                                    </TouchableOpacity>
 
-                                                            </View>
-                                                            <PopupButton
-                                                                onPress={() => {
-                                                                    if (distance == "" && alertHappening) {
-                                                                        modalAlertRef.alertWithType('error', "Error", "Please enter distance")
-                                                                        return
-                                                                    }
-                                                                    doUploadProfileData();
-                                                                }}
-                                                                btnStyle={{ position: 'relative', alignSelf: 'flex-end', marginTop: 30 }}
-                                                                title="Next"
-                                                            />
-                                                        </View >
-                                                        :
-                                                        popupCases == 11 ?
-                                                            <FinishPopup />
-                                                            :
-                                                            <View style={styles.popupContainer}>
-                                                                <Text style={styles.popupHeading}>Hey Jules!</Text>
-                                                                <Text style={styles.popupHeading}>You are under  12 years old. Unfortunately, You cannot have a Local Happinez account!</Text>
+                                                                </View>
                                                                 <PopupButton
-                                                                    onPress={() => setPopup1(false)}
+                                                                    onPress={() => {
+                                                                        if (distance == "" && alertHappening) {
+                                                                            modalAlertRef.alertWithType('error', "Error", "Please enter distance")
+                                                                            return
+                                                                        }
+                                                                        doUploadProfileData();
+                                                                    }}
+                                                                    btnStyle={{ position: 'relative', alignSelf: 'flex-end', marginTop: 30 }}
                                                                     title="Next"
                                                                 />
-                                                            </View>
+                                                            </View >
+                                                            :
+                                                            popupCases == 11 ?
+                                                                <FinishPopup />
+                                                                :
+                                                                <View style={styles.popupContainer}>
+                                                                    <Text style={styles.popupHeading}>Hey Jules!</Text>
+                                                                    <Text style={styles.popupHeading}>You are under  12 years old. Unfortunately, You cannot have a Local Happinez account!</Text>
+                                                                    <PopupButton
+                                                                        onPress={() => setPopup1(false)}
+                                                                        title="Next"
+                                                                    />
+                                                                </View>
 
-                }
+                    }
 
 
 
-            </Modal>
+                </Modal>
 
-            <KeyboardAvoidingView
-                behavior='position'
-            >
-                <Modal
-                    isVisible={createWishListModal}
-                    style={{ margin: 0, alignItems: 'flex-end', justifyContent: 'flex-end' }}
+                <KeyboardAvoidingView
+                    behavior='position'
                 >
-                    {loading && <Loader />}
-                    <GeneralStatusBar />
+                    <Modal
+                        isVisible={createWishListModal}
+                        style={{ margin: 0, alignItems: 'flex-end', justifyContent: 'flex-end' }}
+                        onBackdropPress={() => {
+                            Keyboard.dismiss()
+                        }}
 
-                    <View style={{ alignSelf: 'flex-end', backgroundColor: 'white', width: "100%", borderTopRightRadius: 15, borderTopLeftRadius: 15, padding: 20, minHeight: 400 }}>
+                    >
 
-                        <View style={{ width: "100%", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760' }}>Name this Wishlist</Text>
+
+
+                        {loading && <Loader />}
+                        <GeneralStatusBar barStyle='dark-content' />
+
+                        <View style={{ alignSelf: 'flex-end', backgroundColor: 'white', width: "100%", borderTopRightRadius: 15, borderTopLeftRadius: 15, padding: 20, minHeight: 400 }}>
                             <TouchableOpacity
-                                onPress={() => {
-                                    setCreateWishListModal(false)
-                                    setIsCreateNewWishlist(false)
-                                }}
-                                style={{ width: 28, height: 28, borderRadius: 28 / 2, backgroundColor: '#F08F8F', alignItems: 'center', justifyContent: 'center' }}>
-                                <Text style={{ fontFamily: fonts.MBo, color: '#241414', fontSize: 14, marginTop: -2 }}>x</Text>
-                            </TouchableOpacity>
-                        </View>
+                                onPress={() => Keyboard.dismiss()}
+                                activeOpacity={1}
+                            >
 
-
-                        {
-                            isCreateNewWishlist ?
-                                <View style={{ height: 400 }}>
-
-                                    <TextInput
-                                        onChangeText={setNewWhishListName}
-                                        placeholder='e.g. Summer Plans 2022'
-                                        placeholderTextColor={'#7B7B7B'}
-                                        style={{ width: "100%", height: 44, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', paddingHorizontal: 12, fontFamily: fonts.PRe, fontSize: 12, color: '#222222', marginTop: 20 }}
-                                    // maxLength={50}
-                                    />
-                                    {/* <Text style={{ fontFamily: fonts.PRe, fontSize: 12, color: '#7B7B7B', marginTop: 5 }}>50 characters maximum</Text> */}
+                                <View style={{ width: "100%", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760' }}>Name this Wishlist</Text>
                                     <TouchableOpacity
                                         onPress={() => {
-                                            createNewWhishList(true);
-                                            // setCreateNewWishList(false) 
+                                            setCreateWishListModal(false)
+                                            setIsCreateNewWishlist(false)
                                         }}
-                                        style={{ width: 157, height: 36, backgroundColor: '#5B4DBC', borderRadius: 25, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginTop: 50 }}>
-                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#FFFFFF', }}>Create & add</Text>
+                                        style={{ width: 28, height: 28, borderRadius: 28 / 2, backgroundColor: '#F08F8F', alignItems: 'center', justifyContent: 'center' }}>
+
+                                        <Text style={{ fontFamily: fonts.MBo, color: '#241414', fontSize: 14, marginTop: -2 }}>x</Text>
                                     </TouchableOpacity>
-
-
-
-
                                 </View>
-                                :
 
-                                <>
-                                    <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', marginTop: 20 }}>
+                            </TouchableOpacity>
+                            {
+                                isCreateNewWishlist ?
+                                    <View style={{ height: 400 }}>
+
+                                        <TextInput
+                                            onChangeText={setNewWhishListName}
+                                            placeholder='e.g. Summer Plans 2022'
+                                            placeholderTextColor={'#7B7B7B'}
+                                            style={{ width: "100%", height: 44, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', paddingHorizontal: 12, fontFamily: fonts.PRe, fontSize: 12, color: '#222222', marginTop: 20 }}
+                                        // maxLength={50}
+                                        />
+                                        {/* <Text style={{ fontFamily: fonts.PRe, fontSize: 12, color: '#7B7B7B', marginTop: 5 }}>50 characters maximum</Text> */}
                                         <TouchableOpacity
-                                            onPress={() => { setIsCreateNewWishlist(true) }}
-                                            style={{ width: 63, height: 52, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', alignItems: 'center', justifyContent: 'center' }}>
-                                            <PlusIcon />
+                                            onPress={() => {
+                                                createNewWhishList(true);
+                                                // setCreateNewWishList(false) 
+                                            }}
+                                            style={{ width: 157, height: 36, backgroundColor: '#5B4DBC', borderRadius: 25, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginTop: 50 }}>
+                                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#FFFFFF', }}>Create & add</Text>
                                         </TouchableOpacity>
-                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760', marginLeft: 10, }}>Create New</Text>
+
+
+
+
                                     </View>
-                                    {state.whishLists && state.whishLists.length > 0 && <Text style={{ fontFamily: fonts.PSBo, fontSize: 15, color: '#5D5760', marginTop: 10, }}>or select from existing</Text>}
-                                    <View style={{ maxHeight: 400 }}>
-                                        <ScrollView contentContainerStyle={{ paddingBottom: 30 }} >
-                                            {
-                                                state.whishLists?.map((v, i) => {
-                                                    return (
-                                                        <TouchableOpacity
-                                                            onPress={() => addHappeningToWhishList(v)}
-                                                            style={[styles.shadow, { width: "95%", alignSelf: 'center', padding: 10, paddingVertical: 20, borderRadius: 10, marginTop: 20, flexDirection: 'row', alignItems: 'center' }]}
-                                                        // onPress={() => navigate('AllWishList')}
-                                                        >
-                                                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10 }}>{v.wishlistName}</Text>
-                                                        </TouchableOpacity>
-                                                        // <TouchableOpacity style={{ paddingVertical: 10, borderBottomWidth: 1, borderColor: acolors.lighGrey }}>
-                                                        //     <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#2A2A2A', }}>{v.wishlistName}</Text>
-                                                        // </TouchableOpacity>
-                                                    )
-                                                })
-                                            }
-                                        </ScrollView>
-                                    </View>
-                                    {/* <TouchableOpacity
+                                    :
+
+                                    <>
+                                        <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', marginTop: 20 }}>
+                                            <TouchableOpacity
+                                                onPress={() => { setIsCreateNewWishlist(true) }}
+                                                style={{ width: 63, height: 52, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', alignItems: 'center', justifyContent: 'center' }}>
+                                                <PlusIcon />
+                                            </TouchableOpacity>
+                                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760', marginLeft: 10, }}>Create New</Text>
+                                        </View>
+                                        {state.whishLists && state.whishLists.length > 0 && <Text style={{ fontFamily: fonts.PSBo, fontSize: 15, color: '#5D5760', marginTop: 10, }}>or select from existing</Text>}
+                                        <View style={{ maxHeight: 400 }}>
+                                            <ScrollView contentContainerStyle={{ paddingBottom: 30 }} >
+                                                {
+                                                    state.whishLists?.map((v, i) => {
+                                                        return (
+                                                            <TouchableOpacity
+                                                                onPress={() => addHappeningToWhishList(v)}
+                                                                style={[styles.shadow, { width: "95%", alignSelf: 'center', padding: 10, paddingVertical: 20, borderRadius: 10, marginTop: 20, flexDirection: 'row', alignItems: 'center' }]}
+                                                            // onPress={() => navigate('AllWishList')}
+                                                            >
+                                                                {
+                                                                    v.happeningId && v.happeningId[0] &&
+                                                                    <Image
+                                                                        style={{ width: 40, height: 40, borderRadius: 40 / 2 }}
+                                                                        source={{ uri: v.happeningId[0].addPhotosOfYourHappening[0] }}
+                                                                    />
+                                                                }
+                                                                <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10 }}>{v.wishlistName}</Text>
+                                                            </TouchableOpacity>
+                                                            // <TouchableOpacity style={{ paddingVertical: 10, borderBottomWidth: 1, borderColor: acolors.lighGrey }}>
+                                                            //     <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#2A2A2A', }}>{v.wishlistName}</Text>
+                                                            // </TouchableOpacity>
+                                                        )
+                                                    })
+                                                }
+                                            </ScrollView>
+                                        </View>
+                                        {/* <TouchableOpacity
                                         style={[styles.shadow, { shadowColor: 'rgba(0,0,0,0.8)', padding: 10, borderRadius: 10, marginTop: 20, width: "100%", flexDirection: 'row', alignItems: 'center' }]}
                                     // onPress={() => navigate('AllWishList')}
                                     >
                                         <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10 }}>Summer Plans Wishlist</Text>
                                     </TouchableOpacity> */}
 
-                                    {/* <TouchableOpacity
+                                        {/* <TouchableOpacity
                                         style={[styles.shadow, { shadowColor: 'rgba(0,0,0,0.8)', padding: 10, borderRadius: 10, marginTop: 20, width: "100%", flexDirection: 'row', alignItems: 'center' }]}
                                     // onPress={() => navigate('AllWishList')}
                                     >
@@ -1706,25 +1851,27 @@ const Home = () => {
                                         </View>
                                         <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10 }}>Winter Plans Wishlist</Text>
                                     </TouchableOpacity> */}
-                                </>
-                        }
+                                    </>
+                            }
 
 
-                    </View>
-                </Modal>
-            </KeyboardAvoidingView>
+                        </View>
 
-            <HappeningFilterModal
-                onDone={doFilter}
-                isVisible={filterModal}
-                filterType={filterType}
-                setIsVisible={() => setFilterModal(false)}
-            />
+                    </Modal>
+                </KeyboardAvoidingView>
+
+                <HappeningFilterModal
+                    onDone={doFilter}
+                    isVisible={filterModal}
+                    filterType={filterType}
+                    setIsVisible={() => setFilterModal(false)}
+                />
 
 
-            {loading && <Loader />}
-            <DropdownAlert ref={(ref) => alertRef = ref} />
-        </View>
+                {loading && <Loader />}
+                <DropdownAlert ref={(ref) => alertRef = ref} />
+            </TouchableOpacity>
+        </View >
     )
 }
 
@@ -1780,7 +1927,12 @@ const styles = StyleSheet.create({
         color: '#5d5760', fontFamily: fonts.PMe, fontSize: 13, marginTop: 5
     },
     distanceText: {
-        textShadowColor: 'rgba(0, 0, 0, 0.25)', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 10, color: '#5d5760', fontFamily: fonts.PMe, fontSize: 6, letterSpacing: 0.3,
+        textShadowColor: 'rgba(0, 0, 0, 0.25)',
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 10,
+        color: '#5d5760',
+        fontFamily: fonts.PMe,
+        fontSize: 6, letterSpacing: 0.3,
     },
     popupContainer: {
         width: "80%", paddingBottom: 60,
