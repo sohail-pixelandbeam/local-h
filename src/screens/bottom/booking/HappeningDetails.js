@@ -429,7 +429,10 @@ const HappeningDetails = (props) => {
                                     {/* <Text style={[styles.headingText, { marginTop: 15 }]}>Location</Text> */}
                                     <View
                                         pointerEvents='none'
-                                        style={{ flex: 1, alignSelf: 'center', width: '100%', height: 200, borderRadius: 30, overflow: 'hidden', marginTop: 25 }}>
+                                        style={{
+                                            flex: 1, alignSelf: 'center', width: '100%',
+                                            height: 200, borderRadius: 30, overflow: 'hidden', marginTop: 25,
+                                        }}>
                                         <MapView
                                             ref={ref => map = ref}
                                             showsUserLocation={false}
@@ -447,26 +450,33 @@ const HappeningDetails = (props) => {
                                         // onPress={() => setIsCalloutModal(false)}
                                         >
 
-                                            {/* <Marker
-                                            coordinate={{
-                                                latitude: happeningDetails?.location?.coordinates[0] ?? 0,
-                                                longitude: happeningDetails?.location?.coordinates[1] ?? 0,
-                                                latitudeDelta: 0.1,
-                                                longitudeDelta: 0.1,
-                                            }}
-                                            pinColor={acolors.primary}
-                                            description="custom"
-                                            onPress={() => {
-                                                // setIsCalloutModal(true)
-                                                // setCalloutParams(v)
-                                            }}
 
-                                        >
-                                            <MarkerIcon1 />
-                                        </Marker> */}
+                                            {/* <Marker
+                                                coordinate={{
+                                                    latitude: happeningDetails?.location?.coordinates[0] ?? 0,
+                                                    longitude: happeningDetails?.location?.coordinates[1] ?? 0,
+                                                    latitudeDelta: 0.1,
+                                                    longitudeDelta: 0.1,
+                                                }}
+                                                pinColor={acolors.primary}
+                                                description="custom"
+                                                onPress={() => {
+                                                    // setIsCalloutModal(true)
+                                                    // setCalloutParams(v)
+                                                }}
+
+                                            > */}
+
+                                            {/* </Marker> */}
                                             {/* <Text style={{ color: '#121212', fontSize: 10, fontFamily: fonts.PBo, }}>{v.title}</Text> */}
 
                                         </MapView>
+                                        <View style={{
+                                            width: 80, height: 80, alignItems: 'center', justifyContent: 'center',
+                                            marginTop: -150, alignSelf: 'center', backgroundColor: acolors.mapPointerBg, borderRadius: 50
+                                        }}>
+                                            <MarkerIcon1 width={25} height={29} />
+                                        </View>
                                     </View>
                                     <View onPress={() => console.log(happeningDetails)}
                                         style={{ width: "100%", alignSelf: 'center', backgroundColor: 'white', elevation: 2, borderRadius: 18, paddingHorizontal: 10, paddingVertical: 10, marginTop: -25 }}>
@@ -722,8 +732,8 @@ const HappeningDetails = (props) => {
 
                     </View>
                     {/* </ScrollView> */}
-                </SafeAreaView>
-            </ScrollView>
+                </SafeAreaView >
+            </ScrollView >
             <View style={{ position: 'absolute', top: Platform.OS == 'ios' ? 30 : 10, }}>
                 <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between', width: Dimensions.get('window').width, }}>
 

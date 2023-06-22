@@ -8,14 +8,14 @@ import { fonts } from '../../constants/fonts';
 import { acolors } from '../../constants/colors';
 import Modal, { ReactNativeModal } from "react-native-modal";
 
-import { getUserLocation, months, retrieveItem, storeItem, uploadSingleFile, useForceUpdate } from '../../utils/functions';
+import { getHeight, getUserLocation, months, retrieveItem, storeItem, uploadSingleFile, useForceUpdate } from '../../utils/functions';
 import Loader from '../../utils/Loader';
 import DropdownAlert from 'react-native-dropdownalert';
 import { urls } from '../../utils/Api_urls';
 import { apiRequest } from '../../utils/apiCalls';
 import { Context } from '../../Context/DataContext'
 import MapView, { Callout, PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import { goBack, navigateFromStack } from '../../../Navigations';
+import { goBack, navigate, navigateFromStack } from '../../../Navigations';
 import HappeningFilterModal from '../../common/HappeningFilterModal';
 import GeneralStatusBar from '../../components/GernalStatusBar';
 import AlertMsg from '../../common/AlertMsg';
@@ -67,6 +67,8 @@ const HappeningsMap = () => {
     const [newWhishListName, setNewWhishListName] = useState('');
     const [wishlistId, setWishlistId] = useState('');
 
+    const [foundTheseModal, setFoundTheseModal] = useState(false);
+
 
 
 
@@ -89,7 +91,7 @@ const HappeningsMap = () => {
         apiRequest('', 'geotagging/allHappeningOnMapLocation', "GET")
 
             .then(data => {
-                console.log('data.data',data.data)
+                console.log('data.data', data.data)
                 setLoading(false);
                 let data1 = data.data;
 
@@ -244,6 +246,7 @@ const HappeningsMap = () => {
             .then(data => {
                 setLoading(false)
                 if (data.status) {
+                    setFoundTheseModal(true);
                     var found = false;
                     let data1 = data.data;
 
@@ -268,7 +271,7 @@ const HappeningsMap = () => {
                         setCalloutIndex(0);
                     }
 
-                    happeningData(data?.data.reverse());
+                    setHappeningData(data?.data.reverse());
                 }
             })
             .catch(err => {
@@ -335,7 +338,64 @@ const HappeningsMap = () => {
     useEffect(() => {
         // getLocation()
         getHappeningDataFromServer()
-    }, [isFocused])
+    }, [isFocused]);
+
+
+    const FoundTheseModalView = () => {
+        return (
+            <ReactNativeModal
+                isVisible={foundTheseModal}
+                style={{ margin: 0, alignItems: 'flex-end' }}
+                swipeDirection={'down'}
+                onSwipeComplete={() => setFoundTheseModal(false)}
+                onBackdropPress={() => setFilterModal(false)}
+                propagateSwipe={true}
+            >
+                <View style={{ width: "100%", height: getHeight(80), borderTopRightRadius: 20, borderTopLeftRadius: 20, backgroundColor: 'white', alignSelf: 'flex-end', bottom: 0, position: 'absolute', paddingHorizontal: 25, paddingTop: 20 }}>
+                    <View style={{
+                        width: 70,
+                        height: 5,
+                        borderRadius: 10,
+                        backgroundColor: '#EFEFEF',
+                        alignSelf: 'center',
+                        marginTop: -10
+                    }} />
+                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 18, color: '#222222', marginTop: 15 }}>We found these</Text>
+
+                    <FlatList
+                        columnWrapperStyle={{ justifyContent: 'space-between' }}
+                        showsVerticalScrollIndicator={false}
+                        numColumns={2}
+                        data={happeningData}
+                        contentContainerStyle={{ paddingBottom: 120 }}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setFoundTheseModal(false);
+                                        navigate('HappeningDetails', item)
+                                    }}
+                                    style={{ width: "48%", marginRight: 10, marginTop: 20 }}>
+                                    <Image
+                                        source={{ uri: item?.addPhotosOfYourHappening[0] }}
+                                        style={styles.listImg}
+                                    />
+
+                                    <Text style={styles.listTile}>{item?.happeningTitle}</Text>
+                                    <Text style={styles.distanceText}>{item?.distance}</Text>
+                                </TouchableOpacity>
+                            )
+                        }}
+
+                    />
+
+
+
+                </View>
+
+            </ReactNativeModal>
+        )
+    }
 
 
 
@@ -343,6 +403,7 @@ const HappeningsMap = () => {
 
     return (
         <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
+            <FoundTheseModalView />
             {loading && <Loader />}
             <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
             <AlertMsg
@@ -376,16 +437,39 @@ const HappeningsMap = () => {
             </View> */}
             <View style={{ width: "90%", alignSelf: 'center', marginTop: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
                 <View style={{ width: "86%" }}>
-                    <TextInput
-                        onChangeText={(v) => setSearchKeyword(v)}
-                        onSubmitEditing={() => searchHappening(searchKeyword)}
-                        style={styles.textbox}
-                        placeholder="Search happenings or location"
-                        placeholderTextColor={"rgba(255,255,255,1)"}
-                    />
-                    <TouchableOpacity style={{ position: 'absolute', right: 15, top: 10, }}>
-                        <SearchIcon />
-                    </TouchableOpacity>
+                    <View style={{ width: "92%", marginBottom: 10 }}>
+
+                        <TextInput
+                            ref={textInputRef}
+                            onChangeText={(v) => setSearchKeyword(v)}
+                            onSubmitEditing={() => searchHappening(searchKeyword)}
+                            style={styles.textbox}
+                            placeholder="Search happenings or location"
+                            placeholderTextColor={"rgba(255,255,255,1)"}
+                        />
+
+                        {
+                            searchKeyword.length > 0 ?
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    onPress={() => {
+                                        textInputRef.clear();
+                                        setSearchKeyword('');
+                                    }}
+                                    style={{ position: 'absolute', right: 15, top: 8, }}>
+                                    <Entypo name='cross' size={25} color="white" />
+                                </TouchableOpacity>
+                                :
+                                <TouchableOpacity style={{ position: 'absolute', right: 25, top: 12, }}>
+                                    <SearchIcon />
+                                </TouchableOpacity>
+                        }
+
+
+                        {/* <TouchableOpacity style={{ position: 'absolute', right: 15, top: 10, }}>
+                            <SearchIcon />
+                        </TouchableOpacity> */}
+                    </View>
                 </View>
                 <TouchableOpacity
                     onPress={() => {
@@ -455,7 +539,6 @@ const HappeningsMap = () => {
 
                                         >
                                             <MarkerIcon />
-                                            {/* <Text style={{ color: '#121212', fontSize: 10, fontFamily: fonts.PBo, }}>{v.title}</Text> */}
                                         </Marker>
                                     )
                                 }
@@ -467,6 +550,10 @@ const HappeningsMap = () => {
 
                     </MapView>
                 }
+
+
+                {/* <Text style={{ color: '#121212', fontSize: 10, fontFamily: fonts.PBo, }}>{v.title}</Text> */}
+
                 <TouchableOpacity
                     onPress={() => getLocation()}
                     style={{ position: 'absolute', width: "44%", flexDirection: 'row', top: 20, right: 20, alignSelf: 'center', padding: 10, backgroundColor: '#5b4dbc', borderRadius: 10, alignItems: 'center', justifyContent: 'center', }}
@@ -523,16 +610,18 @@ const HappeningsMap = () => {
                                     </TouchableOpacity>
                                 }
                                 <TouchableOpacity
-                                    onPress={() => {
-                                        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
-                                        const latLng = `${calloutParams?.location?.coordinates[0]},${calloutParams?.location?.coordinates[1]}`;
-                                        const label = calloutParams?.happeningTitle;
-                                        const url = Platform.select({
-                                            ios: `${scheme}${label}@${latLng}`,
-                                            android: `${scheme}${latLng}(${label})`
-                                        });
-                                        Linking.openURL(url);
-                                    }}
+                                    onPress={() => navigateFromStack('BookingStack', 'HappeningDetails', calloutParams)}
+
+                                    // onPress={() => {
+                                    //     const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+                                    //     const latLng = `${calloutParams?.location?.coordinates[0]},${calloutParams?.location?.coordinates[1]}`;
+                                    //     const label = calloutParams?.happeningTitle;
+                                    //     const url = Platform.select({
+                                    //         ios: `${scheme}${label}@${latLng}`,
+                                    //         android: `${scheme}${latLng}(${label})`
+                                    //     });
+                                    //     Linking.openURL(url);
+                                    // }}
                                     style={{ flexDirection: 'row', alignItems: 'center', padding: 10, marginTop: -10, marginRight: -5 }}>
                                     <Text style={{ fontFamily: fonts.PBo, fontSize: 9, color: '#5B4DBC', marginRight: 5 }}>View happening</Text>
                                     <DirectionArrow />
@@ -545,7 +634,8 @@ const HappeningsMap = () => {
                     <TouchableOpacity
                         onPress={() => {
                             let x = parseInt(calloutIndex) + 1;
-                            if (x == happeningData.length) x = 0;
+                            if (x == happeningData.length - 1) x = 0;
+                            
 
                             if (happeningData[x].location?.coordinates[0]) {
                                 setCalloutParams(happeningData[x]);
@@ -721,6 +811,13 @@ const styles = StyleSheet.create({
     },
     headingText: {
         color: '#5d5760', fontFamily: fonts.PSBo, fontSize: 20,
+    },
+    listImg: {
+        width: "100%", height: 231, borderRadius: 25,
+        // resizeMode: 'stretch',
+    },
+    listTile: {
+        color: '#5d5760', fontFamily: fonts.PMe, fontSize: 13, marginTop: 10
     },
 
 });

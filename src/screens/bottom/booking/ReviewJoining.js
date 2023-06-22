@@ -154,8 +154,8 @@ const ReviewJoining = (props) => {
                                     showsUserLocation={false}
                                     showsMyLocationButton={false}
                                     region={{
-                                        latitude: params?.location?.coordinates[0] ?? 0,
-                                        longitude: params?.location?.coordinates[1] ?? 0,
+                                        latitude: params?.location?.coordinates[0] ?? 0.37111,
+                                        longitude: params?.location?.coordinates[1] ?? 0.7222,
                                         latitudeDelta: 0.01,
                                         longitudeDelta: 0.01,
                                         locationTitle: ''
@@ -166,7 +166,7 @@ const ReviewJoining = (props) => {
                                 // onPress={() => setIsCalloutModal(false)}
                                 >
 
-                                    <Marker
+                                    {/* <Marker
                                         coordinate={{
                                             latitude: params?.location?.coordinates[0] ?? 0,
                                             longitude: params?.location?.coordinates[1] ?? 0,
@@ -182,10 +182,17 @@ const ReviewJoining = (props) => {
 
                                     >
                                         <MarkerIcon1 />
-                                        {/* <Text style={{ color: '#121212', fontSize: 10, fontFamily: fonts.PBo, }}>{v.title}</Text> */}
-                                    </Marker>
+                                        <Text style={{ color: '#121212', fontSize: 10, fontFamily: fonts.PBo, }}>{v.title}</Text>
+                                    </Marker> */}
 
                                 </MapView>
+                                <View style={{
+                                    width: 80, height: 80, alignItems: 'center', justifyContent: 'center',
+                                    marginTop: -150, alignSelf: 'center', backgroundColor: acolors.mapPointerBg, borderRadius: 50
+                                }}>
+                                    <MarkerIcon1 width={25} height={29} />
+                                </View>
+
                             </View>
                             <View onPress={() => console.log(params)}
                                 style={{

@@ -188,7 +188,7 @@ const SDGLinked = (props) => {
             const profileData = await retrieveItem('profile_data');
 
             // const date = new Date();
-            console.log('profileData', profileData);
+            // console.log('profileData', profileData);
             let reqObj = Object.assign({}, state.locationHappeningDraft);
             reqObj.AgreeAndContinue = true;
             // reqObj.UserId = loginData?._id;
@@ -197,14 +197,19 @@ const SDGLinked = (props) => {
             reqObj.happeningOnLocation = true;
             reqObj.happeningAccessibility = "nothing";
             reqObj.fellowMustComeAlone = true;
-            reqObj.addPhotosOfYourHappening = happeningImages
+            reqObj.addPhotosOfYourHappening = happeningImages;
+            // reqObj.location.coordinates[0] = 122.406417;
+            // reqObj.location.coordinates[1] = 37.785834;
+
+            
+            console.log(reqObj.location.coordinates[0])
             // reqObj.daysOfWeek = null;
             // console.log(reqObj.daysOfWeek);
 
             apiRequest(reqObj, 'happening/createHappeningOnLocation')
                 .then(data => {
                     setLoading(false)
-                    console.log('data-------asd', data)
+                    // console.log('data-------asd', data)
                     if (data.status) {
                         navigate('SuccessfullySubmitted');
                     }

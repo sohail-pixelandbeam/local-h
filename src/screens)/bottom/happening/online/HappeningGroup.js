@@ -53,7 +53,7 @@ const HappeningGroup = (props) => {
             return;
         }
 
-        if (minPeopleRequiredForTheHappenig > maxPeopleAllowedAtAGivenTime) {
+        if (parseInt( minPeopleRequiredForTheHappenig) >parseInt( maxPeopleAllowedAtAGivenTime)) {
             alertRef.alertWithType('error', "Error", "Min fellows required should not be greater than max fellows required");
             return;
         }

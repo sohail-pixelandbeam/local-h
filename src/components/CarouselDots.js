@@ -14,13 +14,17 @@ const CarouselDots = (props) => {
         <View key={index + 1}
           style={[
             styles.dotsContainer,
-            { marginLeft: 13, marginRight: 16 }]}
+            // { marginLeft: 13, marginRight: 16 }
+          ]
+          }
         >
           <View style={{
-            backgroundColor: acolors.primary,
+            // backgroundColor: acolors.primary,
             alignSelf: 'center',
-            width: 34,
-            height: 6,
+            width: 10,
+            height: 10,
+            borderRadius:5,
+            backgroundColor:'white',
             borderRadius: 6,
           }} />
         </View>
@@ -31,9 +35,15 @@ const CarouselDots = (props) => {
         <View key={index + 1}
           style={[styles.dotsContainer]}>
           <View style={{
-            width: 20,
-            height: 4,
-            backgroundColor: 'grey',
+            width:10,
+            height:10,
+            borderRadius:5,
+            borderWidth:0.5,
+            borderColor:'grey',
+            backgroundColor:'rgba(255,255,255,0.2)',
+            // width: 20,
+            // height: 4,
+            // backgroundColor: 'grey',
             borderRadius: 50,
             alignItems: 'center',
             justifyContent: 'center'
@@ -68,6 +78,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: "space-between",
+    backgroundColor:'rgba(255,255,255,0.3)',
+    borderRadius:10,
     marginHorizontal: 25,
     marginTop: 15,
     marginBottom: 15,
@@ -75,7 +87,7 @@ const styles = StyleSheet.create({
   },
   labelText: {},
   dotsContainer: {
-    marginRight: 4,
+    // marginRight: 4,
     width: 20,
     height: 20,
     justifyContent: "center",

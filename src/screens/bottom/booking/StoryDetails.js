@@ -9,7 +9,7 @@ import { BackIcon, CalenderHappeningIcon, ClockHappeningIcon, DrinksIcon, FoodIc
 import { acolors } from '../../../constants/colors'
 import { fonts } from '../../../constants/fonts'
 import { apiRequest } from '../../../utils/apiCalls'
-import { months, retrieveItem } from '../../../utils/functions'
+import { getHeight, getWidth, months, retrieveItem } from '../../../utils/functions'
 import Loader from '../../../utils/Loader'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
 
@@ -89,9 +89,10 @@ const StoryDetails = (props) => {
                 <FlatList
                     ref={ref}
                     data={item?.blog_photo}
-                    pagingEnabled
-                    onMomentumScrollEnd={(e) => onScrollEnd2(e)}
+                    // pagingEnabled
+                    // onMomentumScrollEnd={(e) => onScrollEnd2(e)}
                     horizontal
+                    scrollEnabled={false}
                     showsHorizontalScrollIndicator={false}
                     scrollEventThrottle={1900}
                     renderItem={({ item }) => {
@@ -117,11 +118,11 @@ const StoryDetails = (props) => {
 
 
                 <SafeAreaView style={{ marginTop: 22, backgroundColor: 'white', marginTop: -40, borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
-                    <CarouselDots
+                    {/* <CarouselDots
                         selectedIndex={indicator2}
                         count={happeningDetails?.addPhotosOfYourHappening?.length}
                         style={{ alignSelf: "center", marginTop: -30 }}
-                    />
+                    /> */}
                     {/* <ScrollView contentContainerStyle={{ paddingBottom: 800 }}> */}
                     <View style={{ width: '85%', alignSelf: 'center' }}>
                         <View style={{ flexDirection: 'row', width: "100%", marginTop: 15 }}>
@@ -160,6 +161,25 @@ const StoryDetails = (props) => {
 
                         <Text style={styles.headLine}>{item.blog_middle_head_line}</Text>
                         <Text style={styles.headLineDesc}>{item.blog_middle_head_line_description}</Text>
+
+                        <FlatList
+                            ref={ref}
+                            style={{ marginLeft: -getWidth(3), marginTop: getHeight(1.5),borderRadius:10 }}
+                            data={item?.blog_photo}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            renderItem={({ item }) => {
+                                return (
+                                    <Image
+                                        source={{ uri: item }}
+                                        style={{ height: getHeight(20), resizeMode: 'cover', top: 0, width: getWidth(53), borderRadius: 10, marginLeft: getWidth(3) }}
+                                    />
+
+                                );
+                            }}
+                        />
+
+
                         <Text style={styles.headLine}>{item.blog_bottom_head_line}</Text>
                         <Text style={styles.headLineDesc}>{item.blog_bottom_head_line_description}</Text>
                         <TouchableOpacity
@@ -190,11 +210,11 @@ const styles = StyleSheet.create({
     headingText: {
         color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 16
     },
-    
+
     xxSmallSemiBoldText: {
         color: '#766BC3', fontFamily: fonts.PSBo, fontSize: 10
     },
-        
+
     sepearatorHorizontal: {
         backgroundColor: '#E5E3E3', width: "100%", height: 1, borderRadius: 2
     },

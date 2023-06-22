@@ -37,11 +37,12 @@ const GoingWith = (props) => {
     }
     function addChildren() {
         setChildrens((child) => {
-            if ((child + 1) > 5) {
-                alertRef.alertWithType('info', "", `You can bring max 5 childrens`)
-                return child
-            }
-            else return child + 1
+            // if ((child + 1) > 5) {
+            //     alertRef.alertWithType('info', "", `You can bring max 5 childrens`)
+            //     return child
+            // }
+            // else return 
+            return child + 1
         })
     }
 
