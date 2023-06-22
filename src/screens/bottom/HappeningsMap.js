@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import {
     StyleSheet, View, Text, TouchableOpacity, Image,
     TextInput, FlatList, ScrollView, StatusBar, SafeAreaView, Platform, Switch, RefreshControl, Linking, Dimensions
 } from 'react-native'
-import { BackIcon, CrossIcon, DirectionArrow, FilterIcon, HeartBtmIcon, HeartWhiteIcon, MarkerIcon, PlusIcon, SearchIcon, TickIcon, TickIconWhite } from '../../components/Svgs'
+import { BackIcon, CrossIcon, DirectionArrow, FilterIcon, HeartBtmIcon, HeartFilled, HeartWhiteIcon, MarkerIcon, PlusIcon, SearchIcon, TickIcon, TickIconWhite } from '../../components/Svgs'
 import { fonts } from '../../constants/fonts';
 import { acolors } from '../../constants/colors';
 import Modal, { ReactNativeModal } from "react-native-modal";
@@ -24,6 +24,7 @@ import { useIsFocused } from '@react-navigation/core';
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 
 
 var alertRef;
@@ -44,6 +45,7 @@ const HappeningsMap = () => {
         locationTitle: ''
     });
 
+    const mapViewRef = useRef();
     const [isCalloutModal, setIsCalloutModal] = useState(false);
     const [calloutParams, setCalloutParams] = useState([]);
 
@@ -56,7 +58,16 @@ const HappeningsMap = () => {
     const profileData = state.profileData;
 
     const [searchKeyword, setSearchKeyword] = useState('');
-    const [calloutIndex, setCalloutIndex] = useState(0)
+    const [calloutIndex, setCalloutIndex] = useState(0);
+
+    const [whishListHappeningId, setWhishListHappeningId] = useState('');
+    const [createWishListModal, setCreateWishListModal] = useState(false);
+    const [isCreateNewWishlist, setIsCreateNewWishlist] = useState(false);
+    const [createNewWishList, setCreateNewWishList] = useState([])
+    const [newWhishListName, setNewWhishListName] = useState('');
+    const [wishlistId, setWishlistId] = useState('');
+
+
 
 
     const nearByData = [
@@ -75,9 +86,10 @@ const HappeningsMap = () => {
         //     longitude: lng
         // }
         // allHappeningOnMapLocation
-        apiRequest('', 'showAllhappning', "GET")
+        apiRequest('', 'geotagging/allHappeningOnMapLocation', "GET")
 
             .then(data => {
+                console.log('data.data',data.data)
                 setLoading(false);
                 let data1 = data.data;
 
@@ -87,15 +99,17 @@ const HappeningsMap = () => {
                         setCalloutParams(data1[key]);
                         setCalloutIndex(key);
                         setUserSelectedLocation({
+                            ...userSelectedLocation,
                             latitude: data1[key].location?.coordinates[0],
                             longitude: data1[key].location?.coordinates[1],
-                            latitudeDelta: 0.1,
-                            longitudeDelta: 0.1,
+                            // latitudeDelta: 0.1,
+                            // longitudeDelta: 0.1,
                             locationTitle: ''
                         })
                         break
                     }
                 }
+
                 setHappeningData(data.data ?? []);
             })
             .catch(err => {
@@ -125,10 +139,11 @@ const HappeningsMap = () => {
                         setCalloutParams(data1[key]);
                         setCalloutIndex(key);
                         setUserSelectedLocation({
+                            ...userSelectedLocation,
                             latitude: data1[key].location?.coordinates[0],
                             longitude: data1[key].location?.coordinates[1],
-                            latitudeDelta: 0.1,
-                            longitudeDelta: 0.1,
+                            // latitudeDelta: 0.1,
+                            // longitudeDelta: 0.1,
                             locationTitle: ''
                         })
                         break
@@ -238,10 +253,11 @@ const HappeningsMap = () => {
                             setCalloutParams(data1[key]);
                             setCalloutIndex(key);
                             setUserSelectedLocation({
+                                ...userSelectedLocation,
                                 latitude: data1[key].location?.coordinates[0],
                                 longitude: data1[key].location?.coordinates[1],
-                                latitudeDelta: 0.1,
-                                longitudeDelta: 0.1,
+                                // latitudeDelta: 0.1,
+                                // longitudeDelta: 0.1,
                                 locationTitle: ''
                             })
                             break
@@ -262,12 +278,67 @@ const HappeningsMap = () => {
     }
 
 
+    const createNewWhishList = (isAddHappeningToWhishList = false) => {
+
+        if (newWhishListName == '') {
+            alertRef.alertWithType('error', 'Error', 'Pleas enter whishlist name');
+            return;
+        }
+        setLoading(true)
+        const body = {
+            wishlistName: newWhishListName
+        };
+        apiRequest(body, 'wishlist/create-new-wishlist')
+            .then(data => {
+                if (isAddHappeningToWhishList && data.status) {
+                    addHappeningToWhishList(data.data);
+                    setLoading(false)
+                    return;
+                }
+                else {
+                    setCreateWishListModal(false);
+                    alertRef.alertWithType('error', 'Error', data.message);
+
+                }
+                setLoading(false);
+            })
+    }
+
+    function addHappeningToWhishList(whisList) {
+
+        setLoading(true);
+        setCreateWishListModal(false)
+        const body = {
+            wishlistId: whisList._id ?? wishlistId,
+            happeningId: whishListHappeningId,
+            wishlistName: whisList?.wishlistName
+        }
+        apiRequest(body, 'wishlist/save-wishlist-item')
+            .then(data => {
+                setLoading(false);
+                if (data.status == true) {
+                    alertRef.alertWithType('success', 'Success', 'Happening added in wishlist');
+                    getHappeningDataFromServer();
+                    getWhishLists();
+                    return
+                }
+                else {
+                    alertRef.alertWithType('error', 'Error', data.message);
+                    return
+                }
+
+            })
+    }
+
 
 
     useEffect(() => {
         // getLocation()
         getHappeningDataFromServer()
     }, [isFocused])
+
+
+
 
 
     return (
@@ -347,54 +418,55 @@ const HappeningsMap = () => {
 
             <View style={{ flex: 1, alignSelf: 'center', width: '100%', borderRadius: 30, overflow: 'hidden', marginTop: 25 }}>
 
-                <MapView
-                    ref={ref => map = ref}
-                    showsUserLocation={true}
-                    // showsMyLocationButton={true}
-                    region={userSelectedLocation}
-                    provider={PROVIDER_GOOGLE}
-                    userLocationAnnotationTitle={null}
-                    style={{ width: '100%', height: '87%', }}
-                    onPress={() => setIsCalloutModal(false)}
-                >
-                    {
-                        happeningData?.map((v, i) => {
-                            if (v?.location?.coordinates) {
-                                return (
-                                    <Marker
-                                        key={i}
-                                        title={v.happeningTitle}
-                                        coordinate={{
-                                            latitude: v.location?.coordinates[0],
-                                            //  parseInt(v.sal_lat),
-                                            longitude: v.location?.coordinates[1],
-                                            // parseInt(v.sal_lng),
-                                            latitudeDelta: 0.1,
-                                            longitudeDelta: 0.1,
-                                            // locationTitle: 'asd'
-                                        }}
-                                        pinColor={acolors.primary}
-                                        description=""
-                                        onPress={() => {
-                                            setIsCalloutModal(true)
-                                            forceUpdate();
-                                            setCalloutParams(v)
-                                        }}
+                {isFocused &&
+                    <MapView
+                        ref={mapViewRef}
+                        showsUserLocation={true}
+                        // showsMyLocationButton={true}
+                        region={userSelectedLocation}
+                        provider={PROVIDER_GOOGLE}
+                        userLocationAnnotationTitle={null}
+                        style={{ width: '100%', height: '87%', flex: 1 }}
+                        onPress={() => setIsCalloutModal(false)}
+                    >
+                        {
+                            happeningData?.map((v, i) => {
+                                if (v?.location?.coordinates) {
+                                    return (
+                                        <Marker
+                                            key={i}
+                                            title={v.happeningTitle}
+                                            coordinate={{
+                                                latitude: v.location?.coordinates[0],
+                                                //  parseInt(v.sal_lat),
+                                                longitude: v.location?.coordinates[1],
+                                                // parseInt(v.sal_lng),
+                                                latitudeDelta: 0.1,
+                                                longitudeDelta: 0.1,
+                                                // locationTitle: 'asd'
+                                            }}
+                                            pinColor={acolors.primary}
+                                            description=""
+                                            onPress={() => {
+                                                setIsCalloutModal(true)
+                                                forceUpdate();
+                                                setCalloutParams(v)
+                                            }}
 
-                                    >
-                                        <MarkerIcon />
-                                        {/* <Text style={{ color: '#121212', fontSize: 10, fontFamily: fonts.PBo, }}>{v.title}</Text> */}
-                                    </Marker>
-                                )
+                                        >
+                                            <MarkerIcon />
+                                            {/* <Text style={{ color: '#121212', fontSize: 10, fontFamily: fonts.PBo, }}>{v.title}</Text> */}
+                                        </Marker>
+                                    )
+                                }
+                                else return null
                             }
-                            else return null
+
+                            )
                         }
 
-                        )
-                    }
-
-                </MapView>
-
+                    </MapView>
+                }
                 <TouchableOpacity
                     onPress={() => getLocation()}
                     style={{ position: 'absolute', width: "44%", flexDirection: 'row', top: 20, right: 20, alignSelf: 'center', padding: 10, backgroundColor: '#5b4dbc', borderRadius: 10, alignItems: 'center', justifyContent: 'center', }}
@@ -416,7 +488,7 @@ const HappeningsMap = () => {
                 <TouchableOpacity
                     activeOpacity={0.8}
                     onPress={() => navigateFromStack('BookingStack', 'HappeningDetails', calloutParams)}
-                    style={{ width: "85%", height: "14%", backgroundColor: 'white', alignSelf: 'center', bottom: 100, position: 'absolute', borderRadius: 20 }}>
+                    style={{ width: "88%", height: "14%", backgroundColor: 'white', alignSelf: 'center', bottom: 90, position: 'absolute', borderRadius: 20 }}>
 
                     <View style={{ flexDirection: 'row', width: "100%", flex: 1 }}>
                         <Image
@@ -432,9 +504,24 @@ const HappeningsMap = () => {
                             </View>
                             <View style={{ width: "60%", height: 1.5, backgroundColor: 'rgba(112,112,112,0.2)', marginVertical: 7 }} />
                             <View style={{ width: "60%", flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 5 }}>
-                                <TouchableOpacity>
-                                    <HeartBtmIcon width={16.98} height={15.71} color="#5B4DBC" />
-                                </TouchableOpacity>
+                                {
+                                    state.userData._id &&
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setWhishListHappeningId(calloutParams._id)
+                                            if (!calloutParams.isFavorite) {
+                                                setCreateWishListModal(true)
+                                            }
+                                        }}
+                                    >
+                                        {
+                                            calloutParams.isFavorite ?
+                                                <HeartFilled color={'red'} />
+                                                :
+                                                <HeartWhiteIcon color={"grey"} />
+                                        }
+                                    </TouchableOpacity>
+                                }
                                 <TouchableOpacity
                                     onPress={() => {
                                         const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
@@ -459,24 +546,139 @@ const HappeningsMap = () => {
                         onPress={() => {
                             let x = parseInt(calloutIndex) + 1;
                             if (x == happeningData.length) x = 0;
-                            setCalloutParams(happeningData[x]);
-                            setCalloutIndex(x)
-                            setUserSelectedLocation({
-                                latitude: happeningData[x].location?.coordinates[0],
-                                longitude: happeningData[x].location?.coordinates[1],
-                                latitudeDelta: 0.1,
-                                longitudeDelta: 0.1,
-                                locationTitle: ''
-                            })
+
+                            if (happeningData[x].location?.coordinates[0]) {
+                                setCalloutParams(happeningData[x]);
+                                setCalloutIndex(x)
+                                setUserSelectedLocation({
+                                    ...userSelectedLocation,
+                                    latitude: happeningData[x].location?.coordinates[0],
+                                    longitude: happeningData[x].location?.coordinates[1],
+                                    // latitudeDelta: 0.1,
+                                    // longitudeDelta: 0.1,
+                                    locationTitle: ''
+                                })
+                                return;
+                            }
                         }}
                         style={{ position: 'absolute', width: "7%", right: 0, height: "100%", alignItems: 'center', justifyContent: 'center' }}
                     >
                         <AntDesign name='right' color={"black"} />
-
                     </TouchableOpacity>
 
                 </TouchableOpacity>
             }
+
+            <KeyboardAvoidingView
+                behavior='position'
+            >
+                <Modal
+                    isVisible={createWishListModal}
+                    style={{ margin: 0, alignItems: 'flex-end', justifyContent: 'flex-end' }}
+                >
+                    {loading && <Loader />}
+                    <GeneralStatusBar />
+
+                    <View style={{ alignSelf: 'flex-end', backgroundColor: 'white', width: "100%", borderTopRightRadius: 15, borderTopLeftRadius: 15, padding: 20, minHeight: 400 }}>
+
+                        <View style={{ width: "100%", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760' }}>Name this Wishlist</Text>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setCreateWishListModal(false)
+                                    setIsCreateNewWishlist(false)
+                                }}
+                                style={{ width: 28, height: 28, borderRadius: 28 / 2, backgroundColor: '#F08F8F', alignItems: 'center', justifyContent: 'center' }}>
+                                <Text style={{ fontFamily: fonts.MBo, color: '#241414', fontSize: 14, marginTop: -2 }}>x</Text>
+                            </TouchableOpacity>
+                        </View>
+
+
+                        {
+                            isCreateNewWishlist ?
+                                <View style={{ height: 400 }}>
+
+                                    <TextInput
+                                        onChangeText={setNewWhishListName}
+                                        placeholder='e.g. Summer Plans 2022'
+                                        placeholderTextColor={'#7B7B7B'}
+                                        style={{ width: "100%", height: 44, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', paddingHorizontal: 12, fontFamily: fonts.PRe, fontSize: 12, color: '#222222', marginTop: 20 }}
+                                    // maxLength={50}
+                                    />
+                                    {/* <Text style={{ fontFamily: fonts.PRe, fontSize: 12, color: '#7B7B7B', marginTop: 5 }}>50 characters maximum</Text> */}
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            createNewWhishList(true);
+                                            // setCreateNewWishList(false) 
+                                        }}
+                                        style={{ width: 157, height: 36, backgroundColor: '#5B4DBC', borderRadius: 25, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginTop: 50 }}>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#FFFFFF', }}>Create & add</Text>
+                                    </TouchableOpacity>
+
+
+
+
+                                </View>
+                                :
+
+                                <>
+                                    <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', marginTop: 20 }}>
+                                        <TouchableOpacity
+                                            onPress={() => { setIsCreateNewWishlist(true) }}
+                                            style={{ width: 63, height: 52, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', alignItems: 'center', justifyContent: 'center' }}>
+                                            <PlusIcon />
+                                        </TouchableOpacity>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760', marginLeft: 10, }}>Create New</Text>
+                                    </View>
+                                    {state.whishLists && state.whishLists.length > 0 && <Text style={{ fontFamily: fonts.PSBo, fontSize: 15, color: '#5D5760', marginTop: 10, }}>or select from existing</Text>}
+                                    <View style={{ maxHeight: 400 }}>
+                                        <ScrollView contentContainerStyle={{ paddingBottom: 30 }} >
+                                            {
+                                                state.whishLists?.map((v, i) => {
+                                                    return (
+                                                        <TouchableOpacity
+                                                            onPress={() => addHappeningToWhishList(v)}
+                                                            style={[styles.shadow, { width: "95%", alignSelf: 'center', padding: 10, paddingVertical: 20, borderRadius: 10, marginTop: 20, flexDirection: 'row', alignItems: 'center' }]}
+                                                        // onPress={() => navigate('AllWishList')}
+                                                        >
+                                                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10 }}>{v.wishlistName}</Text>
+                                                        </TouchableOpacity>
+                                                        // <TouchableOpacity style={{ paddingVertical: 10, borderBottomWidth: 1, borderColor: acolors.lighGrey }}>
+                                                        //     <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#2A2A2A', }}>{v.wishlistName}</Text>
+                                                        // </TouchableOpacity>
+                                                    )
+                                                })
+                                            }
+                                        </ScrollView>
+                                    </View>
+                                    {/* <TouchableOpacity
+                                        style={[styles.shadow, { shadowColor: 'rgba(0,0,0,0.8)', padding: 10, borderRadius: 10, marginTop: 20, width: "100%", flexDirection: 'row', alignItems: 'center' }]}
+                                    // onPress={() => navigate('AllWishList')}
+                                    >
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10 }}>Summer Plans Wishlist</Text>
+                                    </TouchableOpacity> */}
+
+                                    {/* <TouchableOpacity
+                                        style={[styles.shadow, { shadowColor: 'rgba(0,0,0,0.8)', padding: 10, borderRadius: 10, marginTop: 20, width: "100%", flexDirection: 'row', alignItems: 'center' }]}
+                                    // onPress={() => navigate('AllWishList')}
+                                    >
+                                        <View style={{ borderWidth: 1, borderColor: '#2A2A2A', width: "40%", borderRadius: 15, padding: 1 }}>
+                                            <Image
+                                                style={{ width: "100%", borderRadius: 10, height: 92 }}
+                                                source={require('../../static_assets/wishListImg.png')}
+                                            />
+                                        </View>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10 }}>Winter Plans Wishlist</Text>
+                                    </TouchableOpacity> */}
+                                </>
+                        }
+
+
+                    </View>
+                </Modal>
+            </KeyboardAvoidingView>
+
+
             <HappeningFilterModal
                 onDone={doFilter}
                 isVisible={filterModal}

@@ -131,7 +131,7 @@ const StoryDetails = (props) => {
 
                         <View style={[styles.sepearatorHorizontal, { marginTop: 20 }]} />
 
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
+                        {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
                             <TouchableOpacity
                                 onPress={() => {
                                     navigate('ProfilePublicView', {
@@ -155,8 +155,8 @@ const StoryDetails = (props) => {
                                     <Text style={[styles.xxSmallSemiBoldText, { marginLeft: 10, color: '#5B4DBC' }]}>Typically replies in 30 mins</Text>
                                 </View>
                             </View>
-                        </View>
-                        <View style={[styles.sepearatorHorizontal, { marginTop: 20 }]} />
+                        </View> */}
+                        {/* <View style={[styles.sepearatorHorizontal, { marginTop: 20 }]} /> */}
 
                         <Text style={styles.headLine}>{item.blog_middle_head_line}</Text>
                         <Text style={styles.headLineDesc}>{item.blog_middle_head_line_description}</Text>

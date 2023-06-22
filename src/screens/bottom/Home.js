@@ -29,6 +29,7 @@ import { useIsFocused } from '@react-navigation/native'
 
 
 
+
 var alertRef;
 var modalAlertRef;
 var textInputRef;
@@ -36,6 +37,7 @@ const Home = () => {
 
 
     const isFocused = useIsFocused();
+
 
     const forceUpdate = useForceUpdate();
     const { state, setUserGlobal, userProfileData, setHappeningSubmissionDataGlobal, setWhishListsGlobal } = useContext(Context)
@@ -146,12 +148,13 @@ const Home = () => {
         // const reqObj = { latitude: userLocation?.latitude, longitude: userLocation?.longitude, };
         // showAllhappning
         // setLoading(true);
-        apiRequest('', 'showAllhappning', "GET")
+        apiRequest('', 'happening/getAllHappning', "GET")
             .then(data => {
+                console.log(data.data)
                 setLoading(false);
                 setRefreshing(false)
                 if (data.status) {
-                    let data1 = data?.data
+                    let data1 = data?.data;
                     setAllHappenings(data1?.reverse());
                     // setHappeningTodayData(data.today);
                     // setHappeningNearbyData(data.nearHappenings)
@@ -530,6 +533,8 @@ const Home = () => {
     useEffect(() => {
         // setPopup1(false)
         // setPopupCases()
+        // setPopup1(false)
+        // setPopupCases()
         getHappeningDataFromServer();
         getLocalStories()
         getHappeningSubmissionData();
@@ -809,6 +814,7 @@ const Home = () => {
             {/* <CrossBtn /> */}
             <Text style={styles.popupHeading}>Themes you like</Text>
             <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>choose min of  three themes you like</Text>
+
             <ScrollView>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                     {
@@ -835,6 +841,12 @@ const Home = () => {
                                 </TouchableOpacity>
                             )
                         })
+                        // }}
+                        // style={[styles.themePickerContainer, { backgroundColor: themesLike?.includes(v) ? "#5b4dbc" : "white" }]}>
+                        // <Text style={{ color: themesLike.includes(v) ? "white" : "#5b4dbc", fontFamily: fonts.MRe, fontSize: 8, }}>{v?.happeningThemeName}</Text>
+                        // </TouchableOpacity>
+                        // )
+                        // })
 
                     }
                 </View>
@@ -980,17 +992,67 @@ const Home = () => {
 
     return (
         <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
-            <GeneralStatusBar
-                backgroundColor='white'
-                barStyle='dark-content'
-            />
+            <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
+
             <TouchableOpacity
+                disabled={true}
                 onPress={() => Keyboard.dismiss()}
                 activeOpacity={1}
             >
                 {
                     loginData &&
 
+                    <View style={{ flexDirection: 'row', width: "90%", alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <View>
+                            <Text style={styles.hi}>Hi<Text style={styles.julesRobinson}> {loginData?.firstName} {loginData?.lastName} </Text></Text>
+                            <Text style={styles.discoverWhat}>Discover what’s happening</Text>
+                        </View>
+                        {profileData?.profileImage &&
+                            <TouchableOpacity
+                                onPress={() => navigate('Profilee')}
+                            >
+                                <Image
+                                    style={styles.avator}
+                                    source={{ uri: profileData?.profileImage }} // require('../../assets/img1.png')
+                                />
+                            </TouchableOpacity>
+                        }
+                    </View>
+                }
+                <View style={{ width: "90%", alignSelf: 'center', marginTop: loginData ? 10 : 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+                    <View style={{ width: "92%", }}>
+                        <TextInput
+                            style={styles.textbox}
+                            onChangeText={(v) => setSearchKeyword(v)}
+                            value={searchKeyword}
+                            onSubmitEditing={() => searchHappening(searchKeyword)}
+                            placeholder="Search happenings, fellows"
+                            placeholderTextColor={"rgba(255,255,255,1)"}
+                        />
+                        {
+                            searchKeyword.length > 0 ?
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    onPress={() => setSearchKeyword('')}
+                                    style={{ position: 'absolute', right: 15, top: 15, }}>
+                                    <Entypo name='cross' size={25} color="white" />
+                                </TouchableOpacity>
+                                :
+                                <TouchableOpacity style={{ position: 'absolute', right: 25, top: 15, }}>
+                                    <SearchIcon />
+                                </TouchableOpacity>
+                        }
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setFilterType('All');
+                            setFilterModal(true);
+                        }}
+                        style={{ marginRight: 10 }}>
+                        <FilterIcon />
+                    </TouchableOpacity>
+                </View>
+                {/* <View style={{ marginLeft: "4%", flexDirection: 'row', marginTop: 20, width: "100%", marginBottom: 10 }}>
                     <View style={{ flexDirection: 'row', width: "90%", alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
                         <View>
                             <Text style={styles.hi}>Hi<Text style={styles.julesRobinson}> {loginData?.firstName} {loginData?.lastName} </Text></Text>
@@ -1060,9 +1122,6 @@ const Home = () => {
                 />
             </View> */}
 
-                <View style={{ width: "85%", alignSelf: 'center', }}>
-                    <Text style={[styles.headingText, { marginVertical: 15, }]}>Happenings</Text>
-                </View>
                 <ScrollView
                     refreshControl={
                         <RefreshControl
@@ -1076,18 +1135,23 @@ const Home = () => {
                         {/* <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 0, justifyContent: 'space-between' }}> */}
                         {/* <Text style={styles.headingText}>Happening Today</Text> */}
 
-                        <TouchableOpacity
-                            onPress={() => {
-                                navigateFromStack('BookingStack', 'SeeAllHappeningsToday', {
-                                    title: "Happenings",
-                                    data: allHappenings
-                                })
-                            }}
-                            style={{ padding: 10, alignSelf: 'flex-end' }} >
-                            <Text style={styles.seeAll}>See all</Text>
-                        </TouchableOpacity>
-                        {/* </View> */}
 
+                        {/* </View> */}
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: "100%", alignSelf: 'center', }}>
+                            {/* <View style={{ width: "85%", alignSelf: 'center', }}> */}
+                            <Text style={[styles.headingText, { marginVertical: 15, }]}>Happenings</Text>
+                            {/* </View> */}
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigateFromStack('BookingStack', 'SeeAllHappeningsToday', {
+                                        title: "Happenings",
+                                        data: allHappenings
+                                    })
+                                }}
+                                style={{ padding: 10, alignSelf: 'flex-end' }} >
+                                <Text style={styles.seeAll}>See all</Text>
+                            </TouchableOpacity>
+                        </View>
 
                         <View style={{ width: "100%" }}>
                             <FlatList
@@ -1244,7 +1308,11 @@ const Home = () => {
 
                     </View>
                 </View> */}
+                    {/* </ScrollView> */}
                 </ScrollView>
+
+
+
 
                 <Modal
                     isVisible={popup1}
@@ -1737,37 +1805,25 @@ const Home = () => {
                     <Modal
                         isVisible={createWishListModal}
                         style={{ margin: 0, alignItems: 'flex-end', justifyContent: 'flex-end' }}
-                        onBackdropPress={() => {
-                            Keyboard.dismiss()
-                        }}
-
                     >
-
-
-
                         {loading && <Loader />}
-                        <GeneralStatusBar barStyle='dark-content' />
+                        {/* <GeneralStatusBar backgroundColor='white' barStyle='dark-content' /> */}
 
                         <View style={{ alignSelf: 'flex-end', backgroundColor: 'white', width: "100%", borderTopRightRadius: 15, borderTopLeftRadius: 15, padding: 20, minHeight: 400 }}>
-                            <TouchableOpacity
-                                onPress={() => Keyboard.dismiss()}
-                                activeOpacity={1}
-                            >
 
-                                <View style={{ width: "100%", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760' }}>Name this Wishlist</Text>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            setCreateWishListModal(false)
-                                            setIsCreateNewWishlist(false)
-                                        }}
-                                        style={{ width: 28, height: 28, borderRadius: 28 / 2, backgroundColor: '#F08F8F', alignItems: 'center', justifyContent: 'center' }}>
+                            <View style={{ width: "100%", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+                                <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760' }}>Name this Wishlist</Text>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setCreateWishListModal(false)
+                                        setIsCreateNewWishlist(false)
+                                    }}
+                                    style={{ width: 28, height: 28, borderRadius: 28 / 2, backgroundColor: '#F08F8F', alignItems: 'center', justifyContent: 'center' }}>
+                                    <Text style={{ fontFamily: fonts.MBo, color: '#241414', fontSize: 14, marginTop: -2 }}>x</Text>
+                                </TouchableOpacity>
+                            </View>
 
-                                        <Text style={{ fontFamily: fonts.MBo, color: '#241414', fontSize: 14, marginTop: -2 }}>x</Text>
-                                    </TouchableOpacity>
-                                </View>
 
-                            </TouchableOpacity>
                             {
                                 isCreateNewWishlist ?
                                     <View style={{ height: 400 }}>
@@ -1815,13 +1871,6 @@ const Home = () => {
                                                                 style={[styles.shadow, { width: "95%", alignSelf: 'center', padding: 10, paddingVertical: 20, borderRadius: 10, marginTop: 20, flexDirection: 'row', alignItems: 'center' }]}
                                                             // onPress={() => navigate('AllWishList')}
                                                             >
-                                                                {
-                                                                    v.happeningId && v.happeningId[0] &&
-                                                                    <Image
-                                                                        style={{ width: 40, height: 40, borderRadius: 40 / 2 }}
-                                                                        source={{ uri: v.happeningId[0].addPhotosOfYourHappening[0] }}
-                                                                    />
-                                                                }
                                                                 <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10 }}>{v.wishlistName}</Text>
                                                             </TouchableOpacity>
                                                             // <TouchableOpacity style={{ paddingVertical: 10, borderBottomWidth: 1, borderColor: acolors.lighGrey }}>
@@ -1856,10 +1905,16 @@ const Home = () => {
 
 
                         </View>
-
                     </Modal>
                 </KeyboardAvoidingView>
 
+
+                <HappeningFilterModal
+                    onDone={doFilter}
+                    isVisible={filterModal}
+                    filterType={filterType}
+                    setIsVisible={() => setFilterModal(false)}
+                />
                 <HappeningFilterModal
                     onDone={doFilter}
                     isVisible={filterModal}
@@ -1870,7 +1925,7 @@ const Home = () => {
 
                 {loading && <Loader />}
                 <DropdownAlert ref={(ref) => alertRef = ref} />
-            </TouchableOpacity>
+            </TouchableOpacity >
         </View >
     )
 }

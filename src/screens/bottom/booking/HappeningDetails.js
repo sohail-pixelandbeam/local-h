@@ -86,7 +86,9 @@ const HappeningDetails = (props) => {
         setLoading(true);
         apiRequest('', 'getHappningDetails/' + item?._id, "GET")
             .then(data => {
+
                 setLoading(false);
+                console.log('here is the dataasdasdasd', data.data)
                 console.log('here is the dataasdasdasd', data.data)
                 if (data.status) {
                     setHappeningDetails(data.data.happningDetails);
@@ -151,6 +153,7 @@ const HappeningDetails = (props) => {
             <DropdownAlert ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 
+
             <ScrollView
                 ref={scrollViewRef}
                 // onScroll={handleScroll}
@@ -174,6 +177,7 @@ const HappeningDetails = (props) => {
                             <View
                                 style={{
                                     width: screenWidth,
+                                    paddingBottom: 10,
                                     paddingBottom: 10,
                                     alignSelf: "center",
                                     justifyContent: "center",
@@ -256,7 +260,7 @@ const HappeningDetails = (props) => {
 
                         <View style={[styles.sepearatorHorizontal.backgroundColor, { marginTop: 15 }]} />
 
-                        <View style={[styles.happeningDetilsInfo1, { marginTop: 15, }]}>
+                        <View style={[styles.happeningDetilsInfo1, { marginTop: 15 }]}>
                             <View style={{ alignItems: 'center' }}>
                                 <CalenderHappeningIcon />
                                 <Text style={[styles.labelBoldText, { marginTop: 2 }]}>{makeFromToMonthDate()}</Text>

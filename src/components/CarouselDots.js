@@ -3,12 +3,19 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { acolors } from '../constants/colors';
 
 const CarouselDots = (props) => {
+
   const dots = [];
+
   for (let index = 0; index < props.count; index++) {
+
     if (props.selectedIndex === index) {
+
       dots.push(
-        <View key={index + 1} style={[styles.dotsContainer,
-        { marginLeft: 13, marginRight: 16 }]}>
+        <View key={index + 1}
+          style={[
+            styles.dotsContainer,
+            { marginLeft: 13, marginRight: 16 }]}
+        >
           <View style={{
             backgroundColor: acolors.primary,
             alignSelf: 'center',
@@ -30,13 +37,17 @@ const CarouselDots = (props) => {
             borderRadius: 50,
             alignItems: 'center',
             justifyContent: 'center'
-          }} />
+          }}
+          />
         </View>
       );
     }
   }
   return (
-    <View style={{ ...styles.container, ...props.style }}>
+    <View style={{
+      ...styles.container,
+      ...props.style
+    }}>
       <View style={{ flexDirection: 'row' }}>
         {dots}
       </View>
@@ -62,7 +73,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     height: 'auto',
   },
-
   labelText: {},
   dotsContainer: {
     marginRight: 4,
