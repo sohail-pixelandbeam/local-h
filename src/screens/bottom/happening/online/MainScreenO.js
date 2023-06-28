@@ -43,6 +43,8 @@ import HappeningLanguages1 from './HappeningLanguages1';
 import { navigate, navigateFromStack } from '../../../../../Navigations';
 import CustomTabBar from '../../../../common/CustomTabBar';
 import GeneralStatusBar from '../../../../components/GernalStatusBar';
+import Duration from './Duration';
+import DurationRepeat from './DurationRepeat';
 
 
 const components = [
@@ -60,7 +62,10 @@ const components = [
     { label: "Media", name: "Images1", component: Images1, params: { step: "9" } },
     { label: "Media", name: "Images2", component: Images2, params: { step: "" } },
     // { label: "Ideal Host", name: "AboutHost", component: AboutHost, params: { step: "7" } },
-    { label: "Duration", name: "Duration1", component: Duration1, params: { step: "10" } },
+    { label: "Duration", name: "Duration", component: Duration, params: { step: "10" } },
+    { label: "Duration1", name: "Duration1", component: Duration1, params: { step: "10" } },
+    { label: "DurationRepeat", name: "DurationRepeat", component: DurationRepeat, params: { step: "10" } },
+
     { label: "Languages Spoken", name: "HappeningLanguages", component: HappeningLanguages, params: { step: "11" } },
     // { label: "Happening Languages", name: "HappeningLanguages1", component: HappeningLanguages1, params: { step: "10" } },
     { label: "Skills Required", name: "HappeningSkills", component: HappeningSkills, params: { step: "12" } },

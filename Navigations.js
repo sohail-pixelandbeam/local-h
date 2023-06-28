@@ -39,3 +39,11 @@ export const navigateReplace = (screen, params) => {
     navigationRef.current && navigationRef.current.dispatch(StackActions.replace(screen, params));
 
 }
+
+// IT WILL RESET ALL THE PREVIOUS SCREENS
+export const navigateReset = (route, params) => {
+    navigationRef.current && navigationRef.current.dispatch(CommonActions.reset({
+        index: 0, // Specifies the index of the screen you want to navigate to
+        routes: [{ name: route, params: params }], 
+    }));
+}

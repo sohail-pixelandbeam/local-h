@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { SafeAreaView, StatusBar, View, Image, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList, Platform, } from 'react-native'
+import { SafeAreaView, StatusBar, View, Image, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList, Platform, TouchableOpacityComponent, } from 'react-native'
 
 import { Context } from '../../Context/DataContext';
 import { capitalizeFirstLetter, months, retrieveItem, storeItem, uploadSingleFile, useForceUpdate } from '../../utils/functions'
@@ -9,7 +9,7 @@ import { acolors } from '../../constants/colors';
 import { fonts } from '../../constants/fonts';
 import { navigate, navigateFromStack } from '../../../Navigations';
 import { changeLoggedIn } from '../../../Common';
-import { ArrowForward, DonationIcon, EditPencilIcon, HappeningLocationIconSmall, InfoIcon, LocationIcon, NextIcon, RecursionIcon, SettingsIcon } from '../../components/Svgs';
+import { ArrowForward, CrossIcon, DonationIcon, EditPencilIcon, HappeningLocationIconSmall, InfoIcon, LocationIcon, NextIcon, RecursionIcon, SettingsIcon } from '../../components/Svgs';
 import AlertMsg from '../../common/AlertMsg';
 import { apiRequest } from '../../utils/apiCalls';
 import ProfileTab from './ProfileTab';
@@ -20,6 +20,7 @@ import EditProfile from './EditProfile';
 import { urls } from '../../utils/Api_urls';
 import GeneralStatusBar from '../../components/GernalStatusBar';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import ReactNativeModal from 'react-native-modal';
 
 
 
@@ -45,7 +46,8 @@ const Profile = (props) => {
 
     const [isEditProfile, setEditProfile] = useState(false);
     const [profilePic, setProfilePic] = useState(''); // WHEN EDITING THE PROFILE
-
+    const [fellows, setFellows] = useState([]);
+    const [seeAllModal, setSeeAllModal] = useState(false);
     const [isGuest, setIsGuest] = useState(false);
 
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -282,11 +284,11 @@ const Profile = (props) => {
                                     <View style={{ flexDirection: 'row', marginLeft: 10 }}>
                                         {
                                             v.fellow.map((v, i) => {
-                                                
+
                                                 return (
                                                     <TouchableOpacity
                                                         onPress={() => {
-                                                       
+
                                                             const body = {
                                                                 data: {
                                                                     userProfileId: {
@@ -324,7 +326,18 @@ const Profile = (props) => {
                                             })
                                         }
                                     </View>
-                                    <Text style={styles.seeAll}>See all</Text>
+                                    {
+                                        v.fellow?.length > 0 &&
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                setFellows(v.fellow);
+                                                setSeeAllModal(true);
+
+                                            }}
+                                        >
+                                            <Text style={styles.seeAll}>See all</Text>
+                                        </TouchableOpacity>
+                                    }
                                     <TouchableOpacity
                                         onPress={() => {
                                             // console.log('v.booking.status',v)
@@ -476,6 +489,61 @@ const Profile = (props) => {
             />
         </>
     )
+
+    const CrossBtn = () => (
+        <TouchableOpacity
+            onPress={() => {
+                setSeeAllModal(false);
+            }}
+            style={[styles.crossBtn, styles.shadow]}>
+            <CrossIcon />
+        </TouchableOpacity>
+    )
+
+
+    const SeeAllModalView = () => {
+        return <ReactNativeModal
+            isVisible={seeAllModal}
+        >
+            <View style={[styles.shadow, { width: '100%', borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15, }]}>
+                <CrossBtn />
+                <Text style={[styles.heading, { marginTop: 10 }]}>Fellows</Text>
+                {
+                    fellows.length && fellows.map((v, i) => {
+                        return (
+                            <>
+
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        const body = {
+                                            data: {
+                                                userProfileId: {
+                                                    userId: {
+                                                        _id: v?.profileAndTimeline?.userId?._id
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                        setSeeAllModal(false);
+                                        navigateFromStack('BookingStack', 'ProfilePublicView', body);
+                                    }}
+                                    style={[{ width: '100%', flexDirection: 'row', alignItems: 'center', marginTop: 10 }]}>
+                                    <Image
+                                        style={{ width: 42, height: 42, borderRadius: 42 / 2 }}
+                                        source={{ uri: v?.profileAndTimeline?.profileImage }}
+                                    />
+                                    <Text style={{ fontFamily: fonts.PBo, fontSize: 12, color: "#2A2A2A", marginLeft: 10 }}>{v?.profileAndTimeline?.userId?.firstName} {v?.profileAndTimeline?.userId?.lastName} </Text>
+                                </TouchableOpacity>
+                            </>
+                        )
+                    })
+
+                }
+            </View>
+
+        </ReactNativeModal>
+    }
 
 
     if (isGuest) {
@@ -712,6 +780,7 @@ const Profile = (props) => {
 
 
             <DropdownAlert ref={(ref) => alertRef = ref} />
+            <SeeAllModalView />
         </View>
     )
 }
@@ -776,9 +845,16 @@ const styles = StyleSheet.create({
     popupBtnTitle: {
         color: '#ffffff', fontFamily: fonts.PSBo, fontSize: 9,
     },
-
+    heading: {
+        color: '#675AC1', fontFamily: fonts.PBo, fontSize: 29, marginTop: 20,
+    },
+    crossBtn: {
+        position: 'absolute', top: -20, right: -10, width: 43, height: 43, borderRadius: 43 / 2,
+        backgroundColor: 'white', elevation: 2, alignItems: 'center', justifyContent: 'center',
+    },
 
 
 
 })
 export default Profile
+

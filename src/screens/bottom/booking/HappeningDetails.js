@@ -12,6 +12,7 @@ import { apiRequest } from '../../../utils/apiCalls'
 import { getWidth, months, retrieveItem } from '../../../utils/functions'
 import Loader from '../../../utils/Loader'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
+import ImageSlider from '../../../components/ImageSlider'
 
 
 var alertRef;
@@ -39,7 +40,6 @@ const HappeningDetails = (props) => {
     const [indicator2, setIndicator2] = useState(0);
     const [user, setUser] = useState([]);
     const [remaningDays, setRemaningDays] = useState([]);
-
 
 
     const facilitesArr = [
@@ -209,6 +209,14 @@ const HappeningDetails = (props) => {
                                 ref={textRef}
                                 // onLayout={handleScroll}
                                 style={[styles.title, { width: "80%" }]}>{happeningDetails?.happeningTitle}</Text>
+                            {
+                                happeningDetails.whatSDGIsThisHappeningLinkedTo &&
+                                <ImageSlider
+                                    size={50}
+                                    // imageLeftMost={{borderRadius:20}}
+                                    images={happeningDetails.whatSDGIsThisHappeningLinkedTo}
+                                />
+                            }
                             {/* <Image
                                 source={require('../../../static_assets/fish.png')}
                             /> */}

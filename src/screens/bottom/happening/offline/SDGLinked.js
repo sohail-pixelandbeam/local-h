@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, BackHandler } from 'react-native'
-import { navigate } from '../../../../../Navigations'
+import { navigate, navigateReset } from '../../../../../Navigations'
 import HappeningHeader from '../../../../common/HappeningHeader'
 import { BackIcon, LOCALCOMMUNITIES, NextIcon, NONCOMMERCIALACTIVITIES, RELIABLENONPROFITS, SUPPORTICON, WELFAREICON } from '../../../../components/Svgs'
 import { acolors } from '../../../../constants/colors'
@@ -201,27 +201,28 @@ const SDGLinked = (props) => {
             // reqObj.location.coordinates[0] = 122.406417;
             // reqObj.location.coordinates[1] = 37.785834;
 
-            
-            console.log(reqObj.location.coordinates[0])
+
+            // console.log(reqObj.location.coordinates[0])
             // reqObj.daysOfWeek = null;
             // console.log(reqObj.daysOfWeek);
 
             apiRequest(reqObj, 'happening/createHappeningOnLocation')
                 .then(data => {
                     setLoading(false)
-                    // console.log('data-------asd', data)
+                    console.log('data-------asd', data)
                     if (data.status) {
-                        navigate('SuccessfullySubmitted');
+                        navigateReset('SuccessfullySubmitted');
                     }
                     else alertRef.alertWithType('error', 'Error', data.message);
                 })
-                .catch(erro => {
+                .catch((erro) => {
                     setLoading(false)
                     console.log(erro)
                 })
             return;
         }
         catch (err) {
+            console.log('try error', err)
             setLoading(false)
         }
     }

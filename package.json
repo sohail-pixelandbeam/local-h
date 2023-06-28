@@ -47,6 +47,7 @@
     "react-native-safearea-height": "^1.0.6",
     "react-native-screens": "^3.17.0",
     "react-native-svg": "^13.2.0",
+    "react-native-swiper": "^1.6.0",
     "react-native-tab-view": "^3.2.1",
     "react-native-vector-icons": "^9.2.0",
     "rn-range-slider": "^2.2.2",

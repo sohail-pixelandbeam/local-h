@@ -14,7 +14,7 @@ const ConfirmHappeningStatus = (props) => {
     const happeningDetail = params.booking?.happeningId ?? {};
     const fellows = params?.fellow;
 
-    console.log('params___', params.booking)
+    
 
 
 
@@ -140,8 +140,9 @@ const ConfirmHappeningStatus = (props) => {
 
                     </View>
                     <Text style={{ fontFamily: fonts.PRe, fontSize: 13, color: '#5D5760', marginTop: 10 }}>{happeningDetail?.happeningTitle}</Text>
-                    <Text style={[styles.heading, { marginTop: 10 }]}>Fellows</Text>
                     {/* <Text style={{ fontFamily: fonts.PBo, fontSize: 12, color: '#626161', marginTop: 0 }}>{fellows?.length} Fellows</Text> */}
+
+                    <Text style={[styles.heading, { marginTop: 10 }]}>Fellows</Text>
                     {
                         fellows.length && fellows.map((v, i) => {
                             return (

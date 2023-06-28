@@ -135,10 +135,17 @@ const HappeningSkills = (props) => {
                                 ref={(ref) => textInputRef = ref}
                                 placeholderTextColor={"#7b7b7b"}
                                 onChangeText={(v) => setSkill(v)}
+                                onSubmitEditing={() => {
+                                    if (skill.length > 1) {
+                                        textInputRef.clear();
+                                        doMakeSkills();
+                                    }
+                                }}
                                 style={{
                                     width: "100%", height: 47, borderRadius: 10, borderColor: '#2a2a2a', borderWidth: 1,
                                     fontSize: 12, color: "#7b7b7b", fontFamily: fonts.MRe, paddingHorizontal: 10, marginTop: 10
                                 }}
+
                             />
                             <TouchableOpacity
                                 onPress={() => {

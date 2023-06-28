@@ -1,6 +1,6 @@
 
 import Geolocation from '@react-native-community/geolocation'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, ScrollView, TextInput, PermissionsAndroid, Alert, Dimensions, BackHandler, Platform } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
@@ -30,6 +30,7 @@ const Location1 = (props) => {
     const isFocused = useIsFocused();
     const { state, setLocationHappeningData } = useContext(Context)
     const forceUpdate = useForceUpdate();
+    const mapViewRef = useRef();
     const googleMapsKey = "AIzaSyCBRIKQu3tgtuEIhUAkIRy1N8pHu_wFYBk"
 
     const [confirmPopup, setConfirmPopup] = useState(false);
@@ -228,7 +229,7 @@ const Location1 = (props) => {
             // }
         }
         setLocationHappeningData(obj);
-        navigate('Duration1')
+        navigate('Duration')
 
 
     }
@@ -316,16 +317,19 @@ const Location1 = (props) => {
                                     <View style={{
                                         position: "relative", marginTop: 30, borderTopLeftRadius: 10, overflow: "hidden", borderTopRightRadius: 10,
                                     }}>
+
+
+                                        
                                         <MapView
-                                            ref={ref => map = ref}
+                                            ref={mapViewRef}
                                             initialRegion={userCoords}
                                             showsUserLocation={true}
                                             showsMyLocationButton={true}
-                                            onRegionChangeComplete={region => {
-                                                setUserCoords(region)
-                                            }}
+                                            // onRegionChangeComplete={region => {
+                                            //     setUserCoords(region)
+                                            // }}
                                             region={userCoords}
-                                            provider={Platform.OS == 'android' && PROVIDER_GOOGLE}
+                                            provider={PROVIDER_GOOGLE}
                                             style={{ width: '100%', height: '100%' }}
                                         >
                                             <Marker
@@ -670,4 +674,3 @@ const styles = StyleSheet.create({
 })
 
 export default Location1
-

@@ -422,10 +422,8 @@ const Home = () => {
                             renderItem={({ item, index }) => {
                                 return (
                                     <TouchableOpacity
-                                        onPress={() => {
-                                            setFoundTheseModal(false);
-                                            navigate('HappeningDetails', item)
-                                        }}
+                                        onPress={() => loginData ? navigateFromStack('BookingStack', 'HappeningDetails', item) : navigate('HappeningDetails', item)}
+
                                         style={{ width: "48%", marginRight: 10, marginTop: 20 }}>
                                         <Image
                                             source={{ uri: item?.addPhotosOfYourHappening[0] }}
