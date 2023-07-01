@@ -4,19 +4,25 @@ import { } from 'react-native-gesture-handler';
 import { navigate } from '../../../Navigations';
 import { RattingStartIcon } from '../../components/Svgs';
 import { fonts } from '../../constants/fonts';
+import ImageSliderModal from '../../components/ImageSliderModal';
 
 const ProfileTab = (props) => {
 
     const [tabs, setTabs] = useState('host');
     const item = props.data;
     const photos = Array.isArray(item?.userHappeningPhotos) ? item?.userHappeningPhotos[0]?.addPhotosOfYourHappening ?? [] : [];
+
+    const [imageSliderModal, setImageSliderModal] = useState(false);
+    const [initialSliderIndex, setInitialSliderIndex] = useState(false);
+
+
     return (
         <View style={{ flex: 1, }}>
 
             <View style={[styles.shadow, { backgroundColor: 'white', width: "100%", borderRadius: 12, paddingHorizontal: 10, paddingTop: 10, paddingBottom: 20, marginTop: 10, }]}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: "100%" }}>
                     <Text style={[styles.aboutHeading, { marginTop: 0 }]}>Bio</Text>
-                    <TouchableOpacity onPress={() => props?.onPressEdit() }>
+                    <TouchableOpacity onPress={() => props?.onPressEdit()}>
                         <Text style={{ fontFamily: fonts.PBo, fontSize: 15, color: '#5A4CBA', textDecorationLine: 'underline' }}>Edit</Text>
                     </TouchableOpacity>
                 </View>
@@ -103,17 +109,34 @@ const ProfileTab = (props) => {
                         // [require('../../static_assets/p2.png'), require('../../static_assets/p3.png'), require('../../static_assets/p3.png'), require('../../static_assets/p2.png')].
                         photos?.map((v, i) => {
                             return (
-                                <Image
+                                <TouchableOpacity
                                     key={i}
-                                    style={{ width: "40%", marginLeft: 5, height: 120, aspectRatio: 2 / 2, marginTop: 10, borderRadius: 10 }}
-                                    source={{ uri: v }}
-                                />
+                                    style={{ width: "40%" }}
+                                    onPress={() => {
+                                        setInitialSliderIndex(i);
+                                        setImageSliderModal(true)
+                                    }}>
+                                    <Image
+
+                                        style={{ width: "100%", marginLeft: 5, height: 120, aspectRatio: 2 / 2, marginTop: 10, borderRadius: 10 }}
+                                        source={{ uri: v }}
+                                    />
+                                </TouchableOpacity>
                             )
                         })
 
                     }
                 </View>
             </View>
+
+            <ImageSliderModal
+                data={photos}
+                isVisible={imageSliderModal}
+                initialScrollIndex={initialSliderIndex}
+                onClose={() => setImageSliderModal(false)}
+            />
+
+
 
         </View>
 

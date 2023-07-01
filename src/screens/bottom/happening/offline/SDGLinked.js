@@ -202,7 +202,7 @@ const SDGLinked = (props) => {
             // reqObj.location.coordinates[1] = 37.785834;
 
 
-            // console.log(reqObj.location.coordinates[0])
+            console.log('asdasdasdasdasd', reqObj)
             // reqObj.daysOfWeek = null;
             // console.log(reqObj.daysOfWeek);
 

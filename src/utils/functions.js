@@ -252,10 +252,11 @@ export async function getUserLocation() {
     Geolocation.getCurrentPosition(
       (position) => {
         // const { latitude, longitude } = position.coords;
+        console.log('i get the location')
         resolve(position.coords);
       },
       (error) => {
-
+        console.log('i get the error')
         // GetLocation.openGpsSettings();
         // Geolocation.openGPs
         // Alert.alert("Please enable location to see nearby happenings")

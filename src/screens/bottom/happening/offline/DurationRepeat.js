@@ -128,7 +128,7 @@ const DurationRepeat = (props) => {
         }
 
         var body = {
-            ...state.happeningDraft,
+            ...state.locationHappeningDraft,
             startTime: fromTime,
             endTime: toTime,
             startingDate: repeat?.startingDate,
@@ -147,7 +147,7 @@ const DurationRepeat = (props) => {
                 body.repeat = '1';
             }
         }
-        setHappeningData(body);
+        setLocationHappeningData(body);
         navigate('HappeningLanguages')
         return;
     }

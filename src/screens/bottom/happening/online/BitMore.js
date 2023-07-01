@@ -43,7 +43,7 @@ const BitMore = (props) => {
             return;
         }
         if (needToBring == "") {
-            alertRef.alertWithType('error', "Error", "Please enter `How will you communicate with fellows` ")
+            alertRef.alertWithType('error', "Error", "Please enter `What fellows need to bring` ")
             return;
         }
         // if (onlineMeetingLink == "") {

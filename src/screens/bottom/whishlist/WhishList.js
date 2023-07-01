@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Image, TextInput, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Image, TextInput, ScrollView, RefreshControl } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
 import ReactNativeModal from 'react-native-modal';
 import { goBack, navigate } from '../../../../Navigations';
@@ -12,6 +12,8 @@ import Loader from '../../../utils/Loader';
 import GeneralStatusBar from '../../../components/GernalStatusBar';
 import { TrashIcon } from '../../../components/Svgs';
 import AlertMsg from '../../../common/AlertMsg';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 var alertRef;
 var textInputRef;
@@ -28,7 +30,7 @@ const WhishList = () => {
 
     const [newWhishListName, setNewWhishListName] = useState('');
 
-
+    const [refreshing, setRefreshing] = useState(false);
 
     const { state, setWhishListsGlobal } = useContext(Context);
 
@@ -58,7 +60,7 @@ const WhishList = () => {
             })
     }
 
-    function getWhishLists() {
+    function getWhishLists(isRefresh = false) {
         setCreateWishListModal(false)
         apiRequest('', 'wishlist/wishlist-list', 'GET')
             .then(data => {
@@ -156,39 +158,63 @@ const WhishList = () => {
                 </View>
                 {
                     state.whishLists.length ?
+                        <View style={{ height: "83%" }}>
 
-                        <ScrollView contentContainerStyle={{ paddingBottom: 350 }} showsVerticalScrollIndicator={false} >
-                            {
-                                state.whishLists?.map((v, i) => {
-                                    // console.log('v.happeningId[0].addPhotosOfYourHappening[0]', v.happeningId[0].addPhotosOfYourHappening[0])
-                                    return (
-                                        <TouchableOpacity
-                                            style={[styles.shadow, { width: "95%", alignSelf: 'center', padding: 10, paddingVertical: 20, borderRadius: 10, marginTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}
-                                            onPress={() => navigate('AllWishList', v)}
-                                        >
-                                            {
-                                                v.happeningId && v.happeningId[0] &&
-                                                <Image
-                                                    style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
-                                                    source={{ uri: v.happeningId[0].addPhotosOfYourHappening[0] }}
-                                                />
-                                            }
-                                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10, width: "70%" }}>{v.wishlistName}</Text>
+
+                            <ScrollView
+                                refreshControl={
+                                    <RefreshControl
+                                        refreshing={refreshing}
+                                        onRefresh={() => getWhishLists(true)}
+                                    />
+                                }
+                                contentContainerStyle={{ paddingBottom: 250 }} showsVerticalScrollIndicator={false} >
+                                {
+                                    state.whishLists?.map((v, i) => {
+                                        // console.log('v.happeningId[0].addPhotosOfYourHappening[0]', v.happeningId[0].addPhotosOfYourHappening[0])
+                                        return (
                                             <TouchableOpacity
-                                                onPress={() => {
-                                                    setDeletedId(v._id);
-                                                    setIsDeleteModal(true)
-                                                }}
-                                                style={{ padding: 10 }}>
-                                                <TrashIcon color={acolors.grey} />
+                                                style={[styles.shadow, { width: "95%", alignSelf: 'center', padding: 10, paddingVertical: 20, borderRadius: 10, marginTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}
+                                                onPress={() => navigate('AllWishList', v)}
+                                            >
+                                                {
+                                                    v.happeningId && v.happeningId[0] &&
+                                                    <Image
+                                                        style={{ width: 50, height: 50, borderRadius: 50 / 2 }}
+                                                        source={{ uri: v.happeningId[0].addPhotosOfYourHappening[0] }}
+                                                    />
+                                                }
+                                                <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#2A2A2A', marginLeft: 10, width: "70%" }}>{v.wishlistName}</Text>
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        setDeletedId(v._id);
+                                                        setIsDeleteModal(true)
+                                                    }}
+                                                    style={{ padding: 10 }}>
+                                                    <TrashIcon color={acolors.grey} />
+                                                </TouchableOpacity>
                                             </TouchableOpacity>
-                                        </TouchableOpacity>
 
-                                    )
-                                })
-                            }
+                                        )
+                                    })
+                                }
 
-                        </ScrollView>
+                            </ScrollView>
+                            <View style={{ position: 'absolute', bottom: 0, backgroundColor: 'white', width: "100%" }}>
+                                <View style={{ marginLeft: 10 }}>
+                                    <Text style={[{ fontFamily: fonts.PRe, fontSize: 21, color: '#000000' }]}>Create new<Text style={[{ fontFamily: fonts.PRe, fontSize: 21, color: '#FFA183' }]}> Wishlist</Text></Text>
+                                </View>
+
+                                <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', marginTop: 20 }}>
+                                    <TouchableOpacity
+                                        onPress={() => setCreateWishListModal(true)}
+                                        style={{ width: 63, height: 52, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', alignItems: 'center', justifyContent: 'center' }}>
+                                        <PlusIcon />
+                                    </TouchableOpacity>
+                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760', marginLeft: 10, }}>Create New</Text>
+                                </View>
+                            </View>
+                        </View>
                         : <>
 
 
@@ -277,13 +303,15 @@ const WhishList = () => {
 
             </View>
 
+
             <ReactNativeModal
                 isVisible={createWishListModal}
-                style={{ margin: 0, }}
+                style={{ margin: 0, justifyContent: 'flex-end' }}
             >
                 <DropdownAlert ref={(ref) => alertRef = ref} />
                 {loading && <Loader />}
-                <View style={{ position: 'absolute', bottom: 0, alignSelf: 'flex-end', backgroundColor: 'white', width: "100%", height: 350, borderTopRightRadius: 15, borderTopLeftRadius: 15, padding: 20 }}>
+
+                <View style={{ alignSelf: 'flex-end', backgroundColor: 'white', width: "100%", height: 550, borderTopRightRadius: 15, borderTopLeftRadius: 15, padding: 20 }}>
                     <View style={{ width: "100%", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                         <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760' }}>Name this Wishlist</Text>
                         <TouchableOpacity
@@ -292,6 +320,7 @@ const WhishList = () => {
                             <Text style={{ fontFamily: fonts.MBo, color: '#241414', fontSize: 14, marginTop: -2 }}>x</Text>
                         </TouchableOpacity>
                     </View>
+
                     <TextInput
                         ref={(ref) => textInputRef = ref}
                         onChangeText={setNewWhishListName}
@@ -300,6 +329,7 @@ const WhishList = () => {
                         style={{ width: "100%", height: 44, borderRadius: 12, borderWidth: 1, borderColor: '#2A2A2A', paddingHorizontal: 12, fontFamily: fonts.PRe, fontSize: 12, color: '#222222', marginTop: 20 }}
                     // maxLength={50}
                     />
+
                     {/* <Text style={{ fontFamily: fonts.PRe, fontSize: 12, color: '#7B7B7B', marginTop: 5 }}>50 characters maximum</Text> */}
                     <TouchableOpacity
                         onPress={() => {
@@ -307,10 +337,11 @@ const WhishList = () => {
                             // setWishList([1]);
                             setCreateWishListModal(false)
                         }}
-                        style={{ width: 107, height: 36, backgroundColor: '#5B4DBC', borderRadius: 25, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginTop: 100 }}>
+                        style={{ width: 107, height: 36, backgroundColor: '#5B4DBC', borderRadius: 25, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginTop: 20 }}>
                         <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#FFFFFF', }}>Create</Text>
                     </TouchableOpacity>
                 </View>
+
 
 
             </ReactNativeModal>

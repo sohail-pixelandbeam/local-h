@@ -17,11 +17,13 @@ import HappeningStep from '../../../../common/HappeningStep'
 
 
 
+var alertRef;
+
 const CC3 = (props) => {
 
 
-    const [hostedPoint, setHostedPoint] = useState(1);
-    const [hostedPointTitle, setHostedPointTitle] = useState('Yes, I have hosted projects before and felt comfortable in doing so.');
+    const [hostedPoint, setHostedPoint] = useState(0);
+    const [hostedPointTitle, setHostedPointTitle] = useState('');
     const [errorPopup, setErrorPopup] = useState(false)
 
     const forceUpdate = useForceUpdate();
@@ -37,6 +39,12 @@ const CC3 = (props) => {
 
 
     function next() {
+
+
+        if (hostedPointTitle == '') {
+            alertRef.alertWithType('error', 'Error', 'Please select option');
+            return;
+        }
 
         const obj = {
             ...state.happeningDraft,
@@ -136,7 +144,7 @@ const CC3 = (props) => {
 
             </View>
             <HappeningStep
-                nextText = {"Next"}
+                nextText={"Next"}
                 onPress={() => {
                     if (hostedPoint == 3) {
                         setErrorPopup(true);
@@ -158,6 +166,8 @@ const CC3 = (props) => {
                 </View>
             </TouchableOpacity> */}
             <ErrorPopupModal />
+            <DropdownAlert ref={(ref) => alertRef = ref} />
+
         </View>
     )
 }

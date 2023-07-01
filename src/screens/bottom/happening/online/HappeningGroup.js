@@ -64,10 +64,10 @@ const HappeningGroup = (props) => {
 
         const obj = {
             ...state.happeningDraft,
-            minAgeToParticipate: minAgeToParticipate,
-            minPeopleRequiredForTheHappenig: minPeopleRequiredForTheHappenig,
-            maxPeopleAllowedAtAGivenTime: maxPeopleAllowedAtAGivenTime,
-            maxPeopleThatAFellowCanBring: maxPeopleThatAFellowCanBring,
+            minAgeToParticipate: parseInt(minAgeToParticipate),
+            minPeopleRequiredForTheHappenig: parseInt(minPeopleRequiredForTheHappenig),
+            maxPeopleAllowedAtAGivenTime: parseInt(maxPeopleAllowedAtAGivenTime),
+            maxPeopleThatAFellowCanBring: parseInt(maxPeopleThatAFellowCanBring),
             fellowMustComeAlone: fellowMustComeAlone,
         }
 

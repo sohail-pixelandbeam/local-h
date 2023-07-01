@@ -200,7 +200,7 @@ const SDGLinked = (props) => {
             // reqObj.userProfileId = profileData?._id;
             reqObj.happeningOnline = true;
             reqObj.haveYouHostedOnlineMeetingsBefore = true;
-            if (images) reqObj.whatSDGIsThisHappeningLinkedTo = images;
+            reqObj.addPhotosOfYourHappening = images;
 
             // reqObj.happeningAccessibility = "nothing";
             // reqObj.fellowMustComeAlone = true;

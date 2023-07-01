@@ -119,10 +119,10 @@ const Home = () => {
                 setRefreshing(false)
                 if (data.status) {
                     let data1 = data?.data;
-                    console.log('_____________data______________', data1)
-                    setAllHappenings(data1?.allHappenings.reverse());
+                    setAllHappenings(data1?.allHappenings);
                     setHappeningForYou(data1.happeningsLikeYou);
                     setTodayHappening(data1.todaysHappenings);
+                    if (!data1.allHappenings) setAllHappenings(data.data ?? []);
                     // setHappeningTodayData(data.today);
                     // setHappeningNearbyData(data.nearHappenings)
                 }
@@ -140,9 +140,9 @@ const Home = () => {
         apiRequest('', 'get-all-blog', "GET")
             .then(data => {
                 setLoading(false);
-                setRefreshing(false)
+                setRefreshing(false);
                 if (data.status) {
-                    let data1 = data?.data
+                    let data1 = data?.data;
                     setLocalStories(data1?.reverse());
                 }
             })
@@ -702,57 +702,60 @@ const Home = () => {
 
 
 
+                    {
+                        todayHappening?.length ?
+                            <>
 
 
-                    <View style={{ width: "85%", alignSelf: 'center', }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: "100%", alignSelf: 'center', marginVertical: 15, alignItems: 'center' }}>
-                            {/* <View style={{ width: "85%", alignSelf: 'center', }}> */}
-                            <Text style={[styles.headingText]}>Happening <Text style={styles.heading2ndText}>Today</Text> </Text>
-                            {/* </View> */}
-                            <TouchableOpacity
-                                onPress={() => {
-                                    navigateFromStack('BookingStack', 'SeeAllHappeningsToday', {
-                                        title: "Happening today",
-                                        data: todayHappening
-                                    })
-                                }}
-                                style={{ padding: 10, alignSelf: 'flex-end' }} >
-                                <Text style={styles.seeAll}>See all</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style={{ width: "100%" }}>
-                            <FlatList
-                                showsHorizontalScrollIndicator={false}
-                                horizontal={true}
-                                data={todayHappening}
-                                renderItem={({ item, index }) => {
-                                    return (
+                                <View style={{ width: "85%", alignSelf: 'center', }}>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: "100%", alignSelf: 'center', marginVertical: 15, alignItems: 'center' }}>
+                                        {/* <View style={{ width: "85%", alignSelf: 'center', }}> */}
+                                        <Text style={[styles.headingText]}>Happening <Text style={styles.heading2ndText}>Today</Text> </Text>
+                                        {/* </View> */}
                                         <TouchableOpacity
-                                            key={index}
-                                            onPress={() => loginData ? navigateFromStack('BookingStack', 'HappeningDetails', item) : navigate('HappeningDetails', item)}
-                                            style={{ width: getWidth(40), marginLeft: 10, }}
-                                        >
-                                            <Image
-                                                source={{ uri: item.addPhotosOfYourHappening[0] }}
-                                                style={styles.listImg}
-                                            />
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    setWhishListHappeningId(item._id)
-                                                    if (!item.isFavorite) {
-                                                        setCreateWishListModal(true)
-                                                    }
-                                                }}
-                                                style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
-                                                {
-                                                    item.isFavorite ?
-                                                        <HeartFilled color={'red'} />
-                                                        :
-                                                        <HeartWhiteIcon color={"white"} />
-                                                }
-                                            </TouchableOpacity>
-                                            {/* <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
+                                            onPress={() => {
+                                                navigateFromStack('BookingStack', 'SeeAllHappeningsToday', {
+                                                    title: "Happening today",
+                                                    data: todayHappening
+                                                })
+                                            }}
+                                            style={{ padding: 10, alignSelf: 'flex-end' }} >
+                                            <Text style={styles.seeAll}>See all</Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                    <View style={{ width: "100%" }}>
+                                        <FlatList
+                                            showsHorizontalScrollIndicator={false}
+                                            horizontal={true}
+                                            data={todayHappening}
+                                            renderItem={({ item, index }) => {
+                                                return (
+                                                    <TouchableOpacity
+                                                        key={index}
+                                                        onPress={() => loginData ? navigateFromStack('BookingStack', 'HappeningDetails', item) : navigate('HappeningDetails', item)}
+                                                        style={{ width: getWidth(40), marginLeft: 10, }}
+                                                    >
+                                                        <Image
+                                                            source={{ uri: item.addPhotosOfYourHappening[0] }}
+                                                            style={styles.listImg}
+                                                        />
+                                                        <TouchableOpacity
+                                                            onPress={() => {
+                                                                setWhishListHappeningId(item._id)
+                                                                if (!item.isFavorite) {
+                                                                    setCreateWishListModal(true)
+                                                                }
+                                                            }}
+                                                            style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
+                                                            {
+                                                                item.isFavorite ?
+                                                                    <HeartFilled color={'red'} />
+                                                                    :
+                                                                    <HeartWhiteIcon color={"white"} />
+                                                            }
+                                                        </TouchableOpacity>
+                                                        {/* <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
                                     {
                                         [1, 2, 3, 4, 5].map((v, i) => (
                                             <View style={i == 4 ? styles.ratingCircleInActive : styles.ratingCircleActive}></View>
@@ -760,14 +763,14 @@ const Home = () => {
                                     }
                                     <Text style={styles.ratingsText}>34 Ratings</Text>
                                 </View> */}
-                                            <Text style={styles.listTile}>{item.happeningTitle}</Text>
-                                            {/* <Text style={styles.distanceText}>{item.distance}</Text> */}
-                                        </TouchableOpacity>
-                                    )
-                                }}
-                            />
-                        </View>
-                        {/* <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: "100%", justifyContent: 'space-between', marginTop: 10 }}>
+                                                        <Text style={styles.listTile}>{item.happeningTitle}</Text>
+                                                        {/* <Text style={styles.distanceText}>{item.distance}</Text> */}
+                                                    </TouchableOpacity>
+                                                )
+                                            }}
+                                        />
+                                    </View>
+                                    {/* <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: "100%", justifyContent: 'space-between', marginTop: 10 }}>
                             {
                                 allHappenings?.map((item, index) => {
                                     // if (index > 1) return;
@@ -807,7 +810,13 @@ const Home = () => {
 
 
                         </View> */}
-                    </View>
+
+                                </View>
+
+                            </>
+                            : null
+                    }
+
 
                     <View style={{ width: "85%", alignSelf: 'center', }}>
                         <Text style={[styles.headingText, { marginVertical: 15, }]}>Local<Text style={styles.heading2ndText}> Stories</Text></Text>
@@ -837,61 +846,64 @@ const Home = () => {
                         />
                     </View>
 
-                    <View style={{ width: "85%", alignSelf: 'center', }}>
-                        {/* <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 0, justifyContent: 'space-between' }}> */}
-                        {/* <Text style={styles.headingText}>Happening Today</Text> */}
+                    {
+                        happeningForYou?.length ?
+
+                            <View style={{ width: "85%", alignSelf: 'center', }}>
+                                {/* <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 0, justifyContent: 'space-between' }}> */}
+                                {/* <Text style={styles.headingText}>Happening Today</Text> */}
 
 
-                        {/* </View> */}
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: "100%", alignSelf: 'center', marginVertical: 15, alignItems: 'center' }}>
-                            {/* <View style={{ width: "85%", alignSelf: 'center', }}> */}
-                            <Text style={[styles.headingText,]}>Happenings <Text style={styles.heading2ndText}>for you</Text> </Text>
-                            {/* </View> */}
-                            <TouchableOpacity
-                                onPress={() => {
-                                    navigateFromStack('BookingStack', 'SeeAllHappeningsToday', {
-                                        title: "Happenings for you",
-                                        data: happeningForYou
-                                    })
-                                }}
-                                style={{ alignSelf: 'flex-end' }} >
-                                <Text style={styles.seeAll}>See all</Text>
-                            </TouchableOpacity>
-                        </View>
+                                {/* </View> */}
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: "100%", alignSelf: 'center', marginVertical: 15, alignItems: 'center' }}>
+                                    {/* <View style={{ width: "85%", alignSelf: 'center', }}> */}
+                                    <Text style={[styles.headingText,]}>Happenings <Text style={styles.heading2ndText}>for you</Text> </Text>
+                                    {/* </View> */}
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            navigateFromStack('BookingStack', 'SeeAllHappeningsToday', {
+                                                title: "Happenings for you",
+                                                data: happeningForYou
+                                            })
+                                        }}
+                                        style={{ alignSelf: 'flex-end' }} >
+                                        <Text style={styles.seeAll}>See all</Text>
+                                    </TouchableOpacity>
+                                </View>
 
-                        <View style={{ width: "100%" }}>
-                            <FlatList
-                                showsHorizontalScrollIndicator={false}
-                                horizontal={true}
-                                data={happeningForYou}
-                                renderItem={({ item, index }) => {
-                                    return (
-                                        <TouchableOpacity
-                                            key={index}
-                                            onPress={() => loginData ? navigateFromStack('BookingStack', 'HappeningDetails', item) : navigate('HappeningDetails', item)}
-                                            style={{ width: getWidth(40), marginLeft: 10, }}
-                                        >
-                                            <Image
-                                                source={{ uri: item.addPhotosOfYourHappening[0] }}
-                                                style={styles.listImg}
-                                            />
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    setWhishListHappeningId(item._id)
-                                                    if (!item.isFavorite) {
-                                                        setCreateWishListModal(true)
-                                                    }
-                                                }}
-                                                style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
-                                                {
-                                                    item.isFavorite ?
-                                                        <HeartFilled color={'red'} />
-                                                        :
-                                                        <HeartWhiteIcon color={"white"} />
-                                                }
+                                <View style={{ width: "100%" }}>
+                                    <FlatList
+                                        showsHorizontalScrollIndicator={false}
+                                        horizontal={true}
+                                        data={happeningForYou}
+                                        renderItem={({ item, index }) => {
+                                            return (
+                                                <TouchableOpacity
+                                                    key={index}
+                                                    onPress={() => loginData ? navigateFromStack('BookingStack', 'HappeningDetails', item) : navigate('HappeningDetails', item)}
+                                                    style={{ width: getWidth(40), marginLeft: 10, }}
+                                                >
+                                                    <Image
+                                                        source={{ uri: item.addPhotosOfYourHappening[0] }}
+                                                        style={styles.listImg}
+                                                    />
+                                                    <TouchableOpacity
+                                                        onPress={() => {
+                                                            setWhishListHappeningId(item._id)
+                                                            if (!item.isFavorite) {
+                                                                setCreateWishListModal(true)
+                                                            }
+                                                        }}
+                                                        style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
+                                                        {
+                                                            item.isFavorite ?
+                                                                <HeartFilled color={'red'} />
+                                                                :
+                                                                <HeartWhiteIcon color={"white"} />
+                                                        }
 
-                                            </TouchableOpacity>
-                                            {/* <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
+                                                    </TouchableOpacity>
+                                                    {/* <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
                                     {
                                         [1, 2, 3, 4, 5].map((v, i) => (
                                             <View style={i == 4 ? styles.ratingCircleInActive : styles.ratingCircleActive}></View>
@@ -899,14 +911,14 @@ const Home = () => {
                                     }
                                     <Text style={styles.ratingsText}>34 Ratings</Text>
                                 </View> */}
-                                            <Text style={styles.listTile}>{item.happeningTitle}</Text>
-                                            {/* <Text style={styles.distanceText}>{item.distance}</Text> */}
-                                        </TouchableOpacity>
-                                    )
-                                }}
-                            />
-                        </View>
-                        {/* <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: "100%", justifyContent: 'space-between', marginTop: 10 }}>
+                                                    <Text style={styles.listTile}>{item.happeningTitle}</Text>
+                                                    {/* <Text style={styles.distanceText}>{item.distance}</Text> */}
+                                                </TouchableOpacity>
+                                            )
+                                        }}
+                                    />
+                                </View>
+                                {/* <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: "100%", justifyContent: 'space-between', marginTop: 10 }}>
                             {
                                 allHappenings?.map((item, index) => {
                                     // if (index > 1) return;
@@ -946,11 +958,11 @@ const Home = () => {
 
 
                         </View> */}
-                    </View>
+                            </View>
 
 
-
-
+                            : null
+                    }
 
                     {/* <View style={{ width: "85%", alignSelf: 'center', }}>
                     <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20, justifyContent: 'space-between' }}>

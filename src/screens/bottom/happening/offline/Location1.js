@@ -1,7 +1,7 @@
 
 import Geolocation from '@react-native-community/geolocation'
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, ScrollView, TextInput, PermissionsAndroid, Alert, Dimensions, BackHandler, Platform } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, ScrollView, TextInput, PermissionsAndroid, Alert, Dimensions, BackHandler, Platform, AppState } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import ReactNativeModal from 'react-native-modal'
@@ -27,9 +27,9 @@ var addressTextInputRef;
 
 const Location1 = (props) => {
 
+    const forceUpdate = useForceUpdate();
     const isFocused = useIsFocused();
     const { state, setLocationHappeningData } = useContext(Context)
-    const forceUpdate = useForceUpdate();
     const mapViewRef = useRef();
     const googleMapsKey = "AIzaSyCBRIKQu3tgtuEIhUAkIRy1N8pHu_wFYBk"
 
@@ -128,20 +128,27 @@ const Location1 = (props) => {
     }
 
 
-    // React.useEffect(() => {
-    //     BackHandler.addEventListener('hardwareBackPress', function () {
-    //         return true;
-    //     })
-    // }, []);
+    useEffect(() => {
+
+        const subscription = AppState.addEventListener('change', async nextAppState => {
+            if (nextAppState == 'active') {
+                forceUpdate();
+                handleUserLocation()
+            }
+        })
+        return () => {
+            subscription.remove();
+        };
+
+    }, []);
 
 
-
-    async function handleUserLocation(locationObj) {
+    async function handleUserLocation(locationBody) {
 
         try {
             setLoading(true);
+            let loc = locationBody ?? await getUserLocation();
 
-            let loc = await getUserLocation();
             if (loc?.error == '1') {
                 setGpsSettingPopup(true);
                 return
@@ -155,7 +162,7 @@ const Location1 = (props) => {
                 locationTitle: ''
             }
             setUserCoords(locationObj)
-        
+
             var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + locationObj?.latitude + "," + locationObj?.longitude + "&key=" + googleMapsKey;
 
             fetch(url, {
@@ -233,6 +240,10 @@ const Location1 = (props) => {
 
 
     }
+
+
+
+
 
     useEffect(() => {
         handleUserLocation();
@@ -319,7 +330,7 @@ const Location1 = (props) => {
                                     }}>
 
 
-                                        
+
                                         <MapView
                                             ref={mapViewRef}
                                             initialRegion={userCoords}
@@ -430,8 +441,7 @@ const Location1 = (props) => {
                     </View>
                     <TouchableOpacity
                         onPress={() => {
-                            forceUpdate();
-                            // console.log(userSelectedLocation)
+                            // forceUpdate();
                             handleUserLocation(userCoords);
                             setSelectOnMap(false)
 

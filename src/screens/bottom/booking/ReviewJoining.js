@@ -233,6 +233,7 @@ const ReviewJoining = (props) => {
             }]}>
                 <TouchableOpacity
                     onPress={() => {
+                        props.navigation.popToTop();
                         // storeItem('login_data', '');
                         // storeItem('profile_data', '');
                         // changeLoggedIn.changeNow(2);

@@ -56,7 +56,7 @@ const Images1 = (props) => {
             happeningImages: formData
         }
         setHappeningData(obj);
-        navigate('Duration1');
+        navigate('Duration');
         return;
 
         try {

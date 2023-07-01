@@ -5,14 +5,14 @@ import { FlatList } from 'react-native-gesture-handler'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import { goBack, navigate, navigateFromStack, navigateReplace } from '../../../../Navigations'
 import CarouselDots from '../../../components/CarouselDots'
-import { BackIcon, CalenderHappeningIcon, ClockHappeningIcon, DrinksIcon, FoodIcon, HappeningLocationIconSmall, HeartIcon, HeartWhiteIcon, InfoIcon, MarkerIcon1, MaxFellowsIcon, PIcon, RattingStartIcon, ToiletIcon, WifiIcon } from '../../../components/Svgs'
+import { BackIcon, CalenderHappeningIcon, ChatIcon, ClockHappeningIcon, DrinksIcon, FoodIcon, HappeningLocationIconSmall, HeartIcon, HeartWhiteIcon, InfoIcon, MarkerIcon1, MaxFellowsIcon, PIcon, RattingStartIcon, ToiletIcon, WifiIcon } from '../../../components/Svgs'
 import { acolors } from '../../../constants/colors'
 import { fonts } from '../../../constants/fonts'
 import { apiRequest } from '../../../utils/apiCalls'
 import { getWidth, months, retrieveItem } from '../../../utils/functions'
 import Loader from '../../../utils/Loader'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
-import ImageSlider from '../../../components/ImageSlider'
+import ImageSliderModal from '../../../components/ImageSliderModal'
 
 
 var alertRef;
@@ -23,7 +23,7 @@ const HappeningDetails = (props) => {
 
     const [happeningLikeThis, setHappeningLikeThis] = useState([]);
     const [happeningNearby, setHappeningNearBy] = useState([]);
-
+    const sdgFlatlistRef = useRef()
     const languageForYourHappening = item?.languageSpokenAtHappening?.toString();
     const languageForYourHappeningArr = item?.languageSpokenAtHappening
     const { width: screenWidth } = Dimensions.get("window");
@@ -35,12 +35,57 @@ const HappeningDetails = (props) => {
 
     const [scrollEnabled, setScrollEnabled] = useState(true);
 
+
     const [loading, setLoading] = useState(false);
     const [happeningDetails, setHappeningDetails] = useState({});
     const [indicator2, setIndicator2] = useState(0);
     const [user, setUser] = useState([]);
     const [remaningDays, setRemaningDays] = useState([]);
+    const [imageSliderModal, setImageSliderModal] = useState(false);
+    const [initialSliderIndex, setInitialSliderIndex] = useState(false);
 
+    const activeSDGIndex = useRef(0);
+
+    // const [activeSDGIndex, setActiveSDGIndex] = useState(0);
+
+
+    // const autoScrollSDG = () => {
+    //     if (sdgFlatlistRef.current) {
+
+    //         const offset = activeSDGIndex * 70;
+    //         sdgFlatlistRef.current?.scrollToOffset({ offset });
+    //         if (activeSDGIndex + 1 == happeningDetails?.addPhotosOfYourHappening?.length - 1) setActiveSDGIndex(0);
+    //         setActiveSDGIndex(activeSDGIndex + 1);
+    //         // setSelectedAlphabet(alphabet)
+    //     }
+    // };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+
+            const offset = activeSDGIndex.current * 80;
+            sdgFlatlistRef.current?.scrollToOffset({ offset: offset, animated: true });
+
+            if (activeSDGIndex.current == happeningDetails?.whatSDGIsThisHappeningLinkedTo?.length) {
+                sdgFlatlistRef.current?.scrollToOffset({ offset: 0, animated: true });
+                activeSDGIndex.current = 0;
+                return;
+            }
+            activeSDGIndex.current = activeSDGIndex.current + 1
+
+        }, 2000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [happeningDetails?.addPhotosOfYourHappening]);
+
+
+    useEffect(() => {
+        setInterval(() => {
+            // autoScrollSDG();
+        }, 1000);
+    }, [])
 
     const facilitesArr = [
         { title: "WI-FI", icon: WifiIcon },
@@ -88,8 +133,7 @@ const HappeningDetails = (props) => {
             .then(data => {
 
                 setLoading(false);
-                console.log('here is the dataasdasdasd', data.data)
-                console.log('here is the dataasdasdasd', data.data)
+
                 if (data.status) {
                     setHappeningDetails(data.data.happningDetails);
                     setRemaningDays(data.data?.remaningDayHappening ?? []);
@@ -172,9 +216,14 @@ const HappeningDetails = (props) => {
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     scrollEventThrottle={1900}
-                    renderItem={({ item }) => {
+                    renderItem={({ item, index }) => {
                         return (
-                            <View
+                            <TouchableOpacity
+                                activeOpacity={0.8}
+                                onPress={() => {
+                                    setInitialSliderIndex(index);
+                                    setImageSliderModal(true)
+                                }}
                                 style={{
                                     width: screenWidth,
                                     paddingBottom: 10,
@@ -190,7 +239,7 @@ const HappeningDetails = (props) => {
                                     style={{ height: 300, resizeMode: 'cover', top: 0, width: "100%" }}
                                 />
 
-                            </View>
+                            </TouchableOpacity>
                         );
                     }}
                 />
@@ -211,11 +260,24 @@ const HappeningDetails = (props) => {
                                 style={[styles.title, { width: "80%" }]}>{happeningDetails?.happeningTitle}</Text>
                             {
                                 happeningDetails.whatSDGIsThisHappeningLinkedTo &&
-                                <ImageSlider
-                                    size={50}
-                                    // imageLeftMost={{borderRadius:20}}
-                                    images={happeningDetails.whatSDGIsThisHappeningLinkedTo}
-                                />
+                                <View style={{ width: 80 }}>
+                                    <FlatList
+                                        data={happeningDetails.whatSDGIsThisHappeningLinkedTo}
+                                        horizontal={true}
+                                        ref={sdgFlatlistRef}
+                                        pagingEnabled={true}
+                                        style={{ width: 80 }}
+                                        renderItem={({ item, index }) => {
+                                            return (
+                                                <Image
+                                                    style={{ width: 80, height: 80, borderRadius: 10 }}
+                                                    source={{ uri: item }}
+                                                />
+                                            )
+                                        }}
+                                    />
+                                </View>
+
                             }
                             {/* <Image
                                 source={require('../../../static_assets/fish.png')}
@@ -401,11 +463,18 @@ const HappeningDetails = (props) => {
                                 {
                                     happeningDetails?.addPhotosOfYourHappening?.map((v, i) => {
                                         return (
-                                            <Image
-                                                key={i}
-                                                style={{ width: "40%", marginLeft: 5, height: 120, aspectRatio: 2 / 2, marginTop: 10, borderRadius: 10 }}
-                                                source={{ uri: v }}
-                                            />
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    setInitialSliderIndex(i);
+                                                    setImageSliderModal(true)
+                                                }}
+                                            >
+                                                <Image
+                                                    key={i}
+                                                    style={{ width: "40%", marginLeft: 5, height: 120, aspectRatio: 2 / 2, marginTop: 10, borderRadius: 10 }}
+                                                    source={{ uri: v }}
+                                                />
+                                            </TouchableOpacity>
                                         )
                                     })
 
@@ -519,7 +588,7 @@ const HappeningDetails = (props) => {
 
                         {/* <Text style={{ color: '#FFFFFF', fontFamily: fonts.PSBo, fontSize: 9 }}>Join  Every Thurdsay</Text> */}
 
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             // disabled
                             onPress={() => {
                                 if (!user) {
@@ -539,7 +608,14 @@ const HappeningDetails = (props) => {
                             }} //SelectDate
                             style={{ width: "100%", alignSelf: 'center', alignItems: 'center', justifyContent: 'center', height: 43.48, borderRadius: 18, backgroundColor: '#5B4DBC', marginTop: 20 }}>
                             <Text style={{ color: '#FFFFFF', fontFamily: fonts.PSBo, fontSize: 14 }}>Join Happening</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
+
+
+
+
+
+
+
                         {/* <Text style={[styles.headingText, { marginTop: 15 }]}>Choose from avaliable dates</Text>
                         <View style={{ width: "90%", padding: 20, borderWidth: 1, borderColor: '#40054F', borderRadius: 20, marginTop: 10 }}>
                             <Text style={[styles.headingText, { fontSize: 10 }]}>Tue, 29 Mar</Text>
@@ -766,6 +842,58 @@ const HappeningDetails = (props) => {
                 style={{ position: 'absolute', top: 40, width: 34, left: 10, height: 34, borderRadius: 34 / 2, backgroundColor: 'rgba(0.5,0.5,0.5,0.5)', alignItems: 'center', justifyContent: 'center' }}>
                 <BackIcon />
             </TouchableOpacity>
+
+            <ImageSliderModal
+                data={happeningDetails?.addPhotosOfYourHappening}
+                isVisible={imageSliderModal}
+                initialScrollIndex={initialSliderIndex}
+                onClose={() => setImageSliderModal(false)}
+            />
+
+            <View style={[styles.shadow, { backgroundColor: 'white', width: "100%", alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', position: 'absolute', bottom: 0, alignItems: 'center', paddingVertical: 20, paddingHorizontal: 20, borderTopRightRadius: 15, borderTopLeftRadius: 15 }]}>
+                <View
+                    style={{ flexDirection: 'row', alignItems: 'center', }}>
+                    <ChatIcon />
+                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 16, color: '#5B4DBC', marginLeft: 10 }}>Chat with{"\n"}host</Text>
+                </View>
+
+                <TouchableOpacity
+                    // disabled
+                    onPress={() => {
+                        if (!user) {
+                            navigate('AuthStack')
+                            return;
+                        }
+                        if (remaningDays?.length > 1) {
+                            navigate('SelectDate', {
+                                dates: remaningDays,
+                                happening: happeningDetails
+                            })
+                            return;
+                        }
+                        navigate('BeforeYouJoin', {
+                            data: happeningDetails
+                        })
+                    }} //SelectDate
+                    style={{
+                        width: "50%", alignSelf: 'center', alignItems: 'center', justifyContent: 'center',
+                        borderRadius: 18, backgroundColor: '#5B4DBC', height: 43.48,
+                    }}>
+                    <Text style={{ color: '#FFFFFF', fontFamily: fonts.PSBo, fontSize: 14 }}>Join Happening</Text>
+                </TouchableOpacity>
+
+                {/* <TouchableOpacity
+                    onPress={() => navigate('BookingCancelling', {
+                        params: happeningDetail,
+                        cancelRoute: 'booking',
+                        bookingId: params.booking._id
+                    })}
+                >
+                    <Text style={{ color: '#5B4DBC', fontFamily: fonts.PSBo, fontSize: 10, textDecorationLine: 'underline' }}>cancel booking</Text>
+                </TouchableOpacity> */}
+            </View>
+
+
         </View >
     )
 }

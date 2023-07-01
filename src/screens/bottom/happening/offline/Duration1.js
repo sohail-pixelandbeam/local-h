@@ -59,7 +59,7 @@ const Duration1 = (props) => {
         }
 
         var body = {
-            ...state.happeningDraft,
+            ...state.locationHappeningDraft,
             startTime: fromTime,
             endTime: toTime,
             startingDate: dateOfDuration,

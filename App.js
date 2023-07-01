@@ -389,6 +389,7 @@ function App() {
             <Stack.Screen name="AccountDeActivated" component={AccountDeActivated} />
             <Stack.Screen name="ActivateAccountVerifyOTP" component={ActivateAccountVerifyOTP} />
             <Stack.Screen name="StoryDetails" component={StoryDetails} />
+            <Stack.Screen name="BookingStack" component={BookingStack} />
 
 
           </Stack.Navigator>

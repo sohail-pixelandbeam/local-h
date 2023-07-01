@@ -1,4 +1,4 @@
-import { StackActions } from '@react-navigation/native';
+import { CommonActions, StackActions } from '@react-navigation/native';
 import React from 'react'
 // import { CommonActions } from '@react-navigation/native';
 

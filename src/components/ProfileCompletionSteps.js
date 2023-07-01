@@ -954,7 +954,7 @@ const ProfileCompletionSteps = () => {
                             <BackPopupBtn />
                             {/* <CrossBtn /> */}
                             <Text style={styles.popupHeading}>Your Bio</Text>
-                            <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>Share your interests, hobbies, talents, and reasons for waking up in the morning. Share a little about your life, where you live, your education, or your profession in general so that when you meet other members, they already have a feel of who you are.</Text>
+                            <Text style={{ color: '#241414', fontFamily: fonts.MRe, fontSize: 12, }}>Tell something about yourself, your organization (if any) and share a link to your organization</Text>
                             <View
                                 style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                                 <TextInput

@@ -99,7 +99,7 @@ export default function GetVerified({ navigation }) {
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
             <View style={styles.containerMain}>
-                <View style={{ flexDirection: 'row', width: "90%", alignItems: 'center',alignSelf:'center', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', width: "90%", alignItems: 'center', alignSelf: 'center', justifyContent: 'space-between' }}>
                     <TouchableOpacity
                         onPress={() => goBack()}>
                         <BackIcon color="#5B4DBC" />
@@ -150,14 +150,17 @@ export default function GetVerified({ navigation }) {
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <View style={{ height: 80 }}></View>
+                    {/* <View style={{ height: 80 }}></View> */}
+                   
                 </ScrollView>
-                <View style={styles.footer}>
-                    <Btn label="Done" onPress={goNext} />
-                </View>
+
+
                 <DropdownAlert ref={(ref) => alertRef = ref} />
                 {loading && <Loader />}
             </View>
+            <View style={styles.footer}>
+                        <Btn label="Done" onPress={goNext} />
+                    </View>
         </View>
     );
 }
@@ -165,12 +168,13 @@ export default function GetVerified({ navigation }) {
 const styles = StyleSheet.create({
     containerMain: {
         backgroundColor: 'white',
-        height: '100%',
+        flex:1,
+        // height: '100%',
     },
     containerUpper: {
         padding: 20,
         backgroundColor: 'white',
-        height: '92%',
+        // height: '102%',
     },
     footer: {
         backgroundColor: 'white',
@@ -189,6 +193,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.43,
         shadowRadius: 9.51,
         elevation: 15,
+        position:'absolute',
+        bottom:0,
+        width:"100%"
     },
     imgUploadBox: {
         alignItems: 'center',

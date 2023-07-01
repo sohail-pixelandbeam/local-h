@@ -185,7 +185,7 @@ const HappeningsMap = () => {
             setGpsSettingPopup(true);
             return
         }
-        getNearbyHappenings(loc?.latitude, loc?.longitude)
+        // getNearbyHappenings(loc?.latitude, loc?.longitude)
         setUserSelectedLocation({
             ...userSelectedLocation,
             latitude: loc?.latitude,

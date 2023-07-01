@@ -17,6 +17,7 @@ import { urls } from '../../../../utils/Api_urls'
 import TipsButton from '../../../../components/TipsButton'
 import GeneralStatusBar from '../../../../components/GernalStatusBar'
 import { apiRequest } from '../../../../utils/apiCalls'
+import ImageSliderModal from '../../../../components/ImageSliderModal'
 
 
 
@@ -29,6 +30,11 @@ const EditPhotos = (props) => {
     const [loading, setLoading] = useState(false);
     const [media, setMedia] = useState(props.route.params?.addPhotosOfYourHappening);
     const [deletedPhotos, setDeletedPhotos] = useState([]);
+
+    const [imageSliderModal, setImageSliderModal] = useState(false);
+    const [initialSliderIndex, setInitialSliderIndex] = useState(false);
+
+
     const forceUpdate = useForceUpdate();
 
 
@@ -189,10 +195,17 @@ const EditPhotos = (props) => {
                                         style={{
                                             width: 48, height: 48, borderRadius: 16, borderWidth: 1, borderColor: '#5B4DBC', backgroundColor: 'white', marginLeft: 10, marginTop: 10
                                         }}>
-                                        <Image
-                                            style={{ width: "100%", height: "100%", borderRadius: 16, }}
-                                            source={{ uri: v?.uri ? v.uri : v }}
-                                        />
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                setInitialSliderIndex(i);
+                                                setImageSliderModal(true)
+                                            }}
+                                        >
+                                            <Image
+                                                style={{ width: "100%", height: "100%", borderRadius: 16, }}
+                                                source={{ uri: v?.uri ? v.uri : v }}
+                                            />
+                                        </TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={() => {
                                                 let arr = media;
@@ -231,6 +244,12 @@ const EditPhotos = (props) => {
 
             <DropdownAlert ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
+            <ImageSliderModal
+                data={media}
+                isVisible={imageSliderModal}
+                initialScrollIndex={initialSliderIndex}
+                onClose={() => setImageSliderModal(false)}
+            />
 
         </View>
     )
