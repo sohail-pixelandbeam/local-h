@@ -244,7 +244,7 @@ function App() {
         name="HappeningsMap" component={HappeningsMap}
       /> */}
 
-      {loggedIn == 1 &&
+      {/* {loggedIn == 1 &&
         <Tab.Screen
           options={() => ({
             tabBarLabel: () => null,
@@ -252,7 +252,7 @@ function App() {
           })}
           name="Profile" component={Chat}
         />
-      }
+      } */}
       {loggedIn == 1 &&
         <Tab.Screen
           options={() => ({
