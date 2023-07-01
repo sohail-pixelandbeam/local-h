@@ -175,7 +175,11 @@ export function WallBtmIcon(props) {
           />
         </Pattern>
       </Defs>
-      <Path fill="url(#a)" d="M0 0H21V22H0z" />
+      <Path
+        data-name="App-Icon-abstract-no-continent"
+        fill="url(#a)"
+        d="M0 0H21V22H0z"
+      />
     </Svg>
   )
 }

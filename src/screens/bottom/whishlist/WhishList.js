@@ -306,12 +306,12 @@ const WhishList = () => {
 
             <ReactNativeModal
                 isVisible={createWishListModal}
-                style={{ margin: 0, justifyContent: 'flex-end' }}
+                style={{ margin: 0 }}
             >
                 <DropdownAlert ref={(ref) => alertRef = ref} />
                 {loading && <Loader />}
 
-                <View style={{ alignSelf: 'flex-end', backgroundColor: 'white', width: "100%", height: 550, borderTopRightRadius: 15, borderTopLeftRadius: 15, padding: 20 }}>
+                <View style={{ position: 'absolute', bottom: 0, backgroundColor: 'white', width: "100%", height: 550, borderTopRightRadius: 15, borderTopLeftRadius: 15, padding: 20 }}>
                     <View style={{ width: "100%", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                         <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760' }}>Name this Wishlist</Text>
                         <TouchableOpacity

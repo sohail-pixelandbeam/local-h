@@ -150,28 +150,31 @@ const GoingWith = (props) => {
                 <NextIcon style={{ marginLeft: 10 }} />
             </TouchableOpacity>
 
-            <HappeningStep
-                onPress={() => {
-                    let data = props.route.params?.data;
-                    data.childrens = childrens
-                    if (selectedYoungsters) {
-                        let arr = [];
-                        for (let key of selectedYoungsters) {
-                            arr.push(key.userId._id)
-                        }
-                        console.log('arr', arr)
-                        data.youngsters = arr;
-                    }
-                    navigate('ReviewJoining', {
-                        data: data,
-                        fellowWantToComeAlone: selectedYoungsters[0] ? false : true,
-                    })
-                }}
-                showStep={false}
-                // containerStyle={{ alignItems: 'flex-end', flexDirection: 'column', justifyContent: 'center' }}
-                nextText={"Next"}
-            />
+            {
+                childrens > 0 &&
 
+                <HappeningStep
+                    onPress={() => {
+                        let data = props.route.params?.data;
+                        data.childrens = childrens
+                        if (selectedYoungsters) {
+                            let arr = [];
+                            for (let key of selectedYoungsters) {
+                                arr.push(key.userId._id)
+                            }
+                            console.log('arr', arr)
+                            data.youngsters = arr;
+                        }
+                        navigate('ReviewJoining', {
+                            data: data,
+                            fellowWantToComeAlone: selectedYoungsters[0] ? false : true,
+                        })
+                    }}
+                    showStep={false}
+                    // containerStyle={{ alignItems: 'flex-end', flexDirection: 'column', justifyContent: 'center' }}
+                    nextText={"Next"}
+                />
+            }
             <ReactNativeModal
                 isVisible={addDateModal}
                 onBackdropPress={() => setAddDateModal(false)}

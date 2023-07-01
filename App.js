@@ -180,6 +180,24 @@ const HappeningStack = () => (
 )
 
 
+const SettingsStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{ headerShown: false }}
+
+    >
+
+      <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+      <Stack.Screen name="ViewAllReviews" component={ViewAllReviews} />
+      <Stack.Screen name="ThingsConsider" component={ThingsConsider} />
+      <Stack.Screen name="PersonalInfo" component={PersonalInfo} />
+      <Stack.Screen name="NotificationSettings" component={NotificationSettings} />
+      <Stack.Screen name="TranslationSettings" component={TranslationSettings} />
+      <Stack.Screen name="LoginSecuritySettings" component={LoginSecuritySettings} />
+    </Stack.Navigator>
+  )
+}
+
 
 
 
@@ -259,7 +277,7 @@ function App() {
             tabBarLabel: () => null,
             tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
           })}
-          name="SettingsStack" component={SettingsScreen}
+          name="SettingsStack" component={SettingsStack}
         />
 
       }
@@ -409,6 +427,7 @@ function App() {
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="BottomTabs" component={TabNavigator} />
             <Stack.Screen name="TypeHappening" component={TypeHappening} />
+            <Stack.Screen name="HappeningDetails" component={HappeningDetails} />
             {/* MainScreen0 CONTAINS ONLINE LOCATION HAPPENING SCREENS */}
             <Stack.Screen name="MainScreenL" component={MainScreenL} />
             {/* MainScreen0 CONTAINS ONLINE ONLINE HAPPENING SCREENS */}
