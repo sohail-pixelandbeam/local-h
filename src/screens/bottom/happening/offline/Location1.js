@@ -128,19 +128,7 @@ const Location1 = (props) => {
     }
 
 
-    useEffect(() => {
-
-        const subscription = AppState.addEventListener('change', async nextAppState => {
-            if (nextAppState == 'active') {
-                forceUpdate();
-                handleUserLocation()
-            }
-        })
-        return () => {
-            subscription.remove();
-        };
-
-    }, []);
+   
 
 
     async function handleUserLocation(locationBody) {
@@ -246,8 +234,22 @@ const Location1 = (props) => {
 
 
     useEffect(() => {
-        handleUserLocation();
-    }, [isFocused])
+        // handleUserLocation();
+    }, [isFocused]);
+
+    useEffect(() => {
+
+        const subscription = AppState.addEventListener('change', async nextAppState => {
+            if (nextAppState == 'active') {
+                forceUpdate();
+                handleUserLocation()
+            }
+        })
+        return () => {
+            subscription.remove();
+        };
+
+    }, []);
 
 
 

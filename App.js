@@ -1,4 +1,4 @@
-import { View, Text, Settings } from 'react-native';
+import { View, Text, Settings, Image } from 'react-native';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 // import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -14,7 +14,7 @@ import Verifysuccess from './src/screens/auth/verifysuccess';
 import Toomanyattempt from './src/screens/auth/toomanyattempt';
 import Home from './src/screens/bottom/Home';
 
-import { ChatBtmIcon, HeartBtmIcon, LocationBtmIcon, LocationBtmIconFocused, ProfileBtmIcon, SearchBtmIcon } from "./src/components/Svgs";
+import { ChatBtmIcon, HeartBtmIcon, LocationBtmIcon, LocationBtmIconFocused, ProfileBtmIcon, SearchBtmIcon, SettingsIcon, WallBtmIcon } from "./src/components/Svgs";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import ThingsConsider from './src/screens/bottom/happening/ThingsConsider';
 import TypeHappening from './src/screens/bottom/happening/TypeHappening';
@@ -169,7 +169,7 @@ const HappeningStack = () => (
     <Stack.Screen name="NotificationSettings" component={NotificationSettings} />
     <Stack.Screen name="TranslationSettings" component={TranslationSettings} />
     <Stack.Screen name="LoginSecuritySettings" component={LoginSecuritySettings} />
-    
+
     {/* <Stack.Screen name="TypeHappening" component={TypeHappening} />
     LOCATION HAPPENING SCREENS
     <Stack.Screen name="GroupSizeHappeningL" component={GroupSizeHappeningL} />
@@ -223,8 +223,18 @@ function App() {
         />
       }
       {/* {() => Favourites()} */}
-
+      {/* {loggedIn == 1 && */}
       <Tab.Screen
+        options={() => ({
+          tabBarLabel: () => null,
+          tabBarIcon: ({ color }) => <Image source={require('./src/assets/wallIcon.png')} style={{ tintColor: color }} />,
+        })}
+        name="Profilee" component={HappeningStack}
+      />
+      {/* } */}
+      {/* {() => Favourites()} */}
+
+      {/* <Tab.Screen
         options={() => ({
           tabBarLabel: () => null,
           tabBarIcon: ({ color, focused }) => (
@@ -232,26 +242,27 @@ function App() {
           ),
         })}
         name="HappeningsMap" component={HappeningsMap}
-      />
-
-
-      {/* <Tab.Screen
-        options={() => ({
-          tabBarLabel: () => null,
-          tabBarIcon: ({ color }) => <ChatBtmIcon color={color} />,
-        })}
-        name="Profile" component={Chat}
       /> */}
 
-      <Tab.Screen
-        options={() => ({
-          tabBarLabel: () => null,
-          tabBarIcon: ({ color }) => <ProfileBtmIcon color={color} />,
-        })}
-        name="Profilee" component={HappeningStack}
-      />
+      {loggedIn == 1 &&
+        <Tab.Screen
+          options={() => ({
+            tabBarLabel: () => null,
+            tabBarIcon: ({ color }) => <ChatBtmIcon color={color} />,
+          })}
+          name="Profile" component={Chat}
+        />
+      }
+      {loggedIn == 1 &&
+        <Tab.Screen
+          options={() => ({
+            tabBarLabel: () => null,
+            tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
+          })}
+          name="SettingsStack" component={SettingsScreen}
+        />
 
-
+      }
 
     </Tab.Navigator>
   );
@@ -390,7 +401,7 @@ function App() {
             <Stack.Screen name="ActivateAccountVerifyOTP" component={ActivateAccountVerifyOTP} />
             <Stack.Screen name="StoryDetails" component={StoryDetails} />
             <Stack.Screen name="BookingStack" component={BookingStack} />
-
+            <Stack.Screen name="HappeningsMap" component={HappeningsMap} />
 
           </Stack.Navigator>
         }{
@@ -433,7 +444,8 @@ function App() {
             <Stack.Screen name="DFinal" component={DFinal} />
             <Stack.Screen name="AccountDeActivated" component={AccountDeActivated} />
             <Stack.Screen name="StoryDetails" component={StoryDetails} />
-            
+            <Stack.Screen name="HappeningsMap" component={HappeningsMap} />
+
           </Stack.Navigator>
         }
 

@@ -422,6 +422,11 @@ const HappeningsMap = () => {
 
                 containerStyle={{ paddingHorizontal: 25, paddingBottom: 50, paddingTop: 10 }}
             />
+            <TouchableOpacity 
+                onPress={()=>goBack()}
+                style={{paddingHorizontal:10,marginLeft:10}}>
+                <BackIcon color="black" />
+            </TouchableOpacity>
 
 
             {/* <View style={{ flexDirection: 'row', width: "90%", alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -575,7 +580,7 @@ const HappeningsMap = () => {
                 <TouchableOpacity
                     activeOpacity={0.8}
                     onPress={() => navigateFromStack('BookingStack', 'HappeningDetails', calloutParams)}
-                    style={{ width: "88%", height: "14%", backgroundColor: 'white', alignSelf: 'center', bottom: 90, position: 'absolute', borderRadius: 20 }}>
+                    style={{ width: "88%", height: "14%", backgroundColor: 'white', alignSelf: 'center', bottom: 20, position: 'absolute', borderRadius: 20 }}>
 
                     <View style={{ flexDirection: 'row', width: "100%", flex: 1 }}>
                         <Image
@@ -635,7 +640,7 @@ const HappeningsMap = () => {
                         onPress={() => {
                             let x = parseInt(calloutIndex) + 1;
                             if (x == happeningData.length - 1) x = 0;
-                            
+
 
                             if (happeningData[x].location?.coordinates[0]) {
                                 setCalloutParams(happeningData[x]);

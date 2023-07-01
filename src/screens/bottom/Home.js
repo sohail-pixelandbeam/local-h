@@ -4,7 +4,7 @@ import {
     TextInput, FlatList, ScrollView, StatusBar, SafeAreaView, Platform, Switch, RefreshControl, Keyboard,
     KeyboardAvoidingView
 } from 'react-native'
-import { BackIcon, CrossIcon, EditPencilIcon, FilterIcon, HeartWhiteIcon, PlusIcon, SearchIcon, TickIcon, TickIconWhite, HeartFilled } from '../../components/Svgs'
+import { BackIcon, CrossIcon, EditPencilIcon, FilterIcon, HeartWhiteIcon, PlusIcon, SearchIcon, TickIcon, TickIconWhite, HeartFilled, LocationIcon, HappeningLocationIconSmall } from '../../components/Svgs'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Entypo from 'react-native-vector-icons/Entypo'
 
@@ -1133,6 +1133,15 @@ const Home = () => {
                 {loading && <Loader />}
                 <DropdownAlert ref={(ref) => alertRef = ref} />
             </TouchableOpacity >
+            <TouchableOpacity
+                onPress={()=>navigate('HappeningsMap')}
+                style={{...styles.shadow, width: getWidth(25), height: getHeight(4), borderRadius: 30, backgroundColor: acolors.primaryLight, position: 'absolute', bottom: getHeight(12), alignSelf: 'center', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
+
+            >
+                <Text style={{ color: 'white', fontSize: 14, fontFamily: fonts.PMe }}>Map</Text>
+                <HappeningLocationIconSmall color="white" width={10} height={15} style={{marginLeft:5}} />
+
+            </TouchableOpacity>
         </View >
     )
 }

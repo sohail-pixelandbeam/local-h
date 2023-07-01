@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView, StatusBar, View, Image, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList, Platform, TouchableOpacityComponent, } from 'react-native'
 
 import { Context } from '../../Context/DataContext';
-import { capitalizeFirstLetter, months, retrieveItem, storeItem, uploadSingleFile, useForceUpdate } from '../../utils/functions'
+import { capitalizeFirstLetter, getHeight, months, retrieveItem, storeItem, uploadSingleFile, useForceUpdate } from '../../utils/functions'
 import Loader from '../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import { acolors } from '../../constants/colors';
@@ -51,6 +51,8 @@ const Profile = (props) => {
     const [isGuest, setIsGuest] = useState(false);
 
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+    const loginData = state.userData;
 
 
 
@@ -172,6 +174,7 @@ const Profile = (props) => {
         // console.log('getMyHosting/' + state.userData._id)
         apiRequest('', 'auth/getUserDetails', 'GET')
             .then(data => {
+
                 setLoading(false);
                 if (data.status) {
                     setProfileData(data.data)
@@ -213,9 +216,6 @@ const Profile = (props) => {
     }
 
     useEffect(() => {
-
-
-
         setLoading(true);
         retrieveItem('login_data')
             .then(data => {
@@ -631,7 +631,29 @@ const Profile = (props) => {
             />
 
 
-            <View
+            {
+
+                <View style={{ flexDirection: 'row', width: "90%", alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <View>
+                        <Text style={styles.hi}>Hi<Text style={styles.julesRobinson}> {loginData?.firstName} {loginData?.lastName} </Text></Text>
+                        <Text style={styles.discoverWhat}>Discover what’s happening</Text>
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => navigate('Profilee')}
+                    >
+                        <Image
+                            style={styles.avator}
+                            source={{ uri: state.profileData?.profileImage }} // require('../../assets/img1.png')
+                        />
+                    </TouchableOpacity>
+                </View>
+            }
+            <View style={{ width: "90%", alignSelf: 'center',marginTop:getHeight(3),marginBottom:getHeight(2) }}>
+                <Text style={{ fontFamily: fonts.PBo, fontSize: 28, color: acolors.primary }}>My Wall</Text>
+            </View>
+
+
+            {/* <View
                 style={{ width: 115, height: 115, alignSelf: 'center' }}
             >
                 <TouchableOpacity
@@ -652,9 +674,9 @@ const Profile = (props) => {
                     </TouchableOpacity>
 
                 }
-            </View>
+            </View> */}
 
-            {
+            {/* {
                 !isEditProfile &&
                 <TouchableOpacity
                     onPress={() => navigate('SettingsScreen')}
@@ -662,7 +684,7 @@ const Profile = (props) => {
                     <SettingsIcon />
                     <Text style={{ fontFamily: fonts.PRe, fontSize: 10, color: '#000000', marginTop: 2 }}>Settings</Text>
                 </TouchableOpacity>
-            }
+            } */}
             {/* <TouchableOpacity
                     onPress={() => navigate('DonationAmount')}
                     style={{ position: 'absolute', top: 20, left: 20, alignItems: 'center' }}>
@@ -681,12 +703,12 @@ const Profile = (props) => {
                 </>
             }
 
-            {profileData?.userProfile?.address !== "Not Provided" || profileData?.userProfile?.address !== '' && <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 30 }}>
+            {/* {profileData?.userProfile?.address !== "Not Provided" || profileData?.userProfile?.address !== '' && <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 30 }}>
                 <HappeningLocationIconSmall width={11} height={14} />
                 <Text style={{ fontFamily: fonts.MSBo, fontSize: 9, color: '#5B4DBC', marginLeft: 5, }}>{profileData?.userProfile?.address} </Text>
             </View>
-            }
-            <Text style={[styles.headingText, { marginTop: 5, alignSelf: 'center', marginTop: 20 }]}>{profileData?.userProfile?.userId?.firstName.concat(' ' + profileData?.userProfile?.userId?.lastName)}</Text>
+            } */}
+            {/* <Text style={[styles.headingText, { marginTop: 5, alignSelf: 'center', marginTop: 20 }]}>{profileData?.userProfile?.userId?.firstName.concat(' ' + profileData?.userProfile?.userId?.lastName)}</Text> */}
             <View style={{ width: "90%", alignSelf: 'center', marginTop: 10 }}>
                 {
                     !isEditProfile &&
@@ -851,6 +873,20 @@ const styles = StyleSheet.create({
     crossBtn: {
         position: 'absolute', top: -20, right: -10, width: 43, height: 43, borderRadius: 43 / 2,
         backgroundColor: 'white', elevation: 2, alignItems: 'center', justifyContent: 'center',
+    },
+
+    hi: { color: '#000000', fontFamily: fonts.PSBo, fontSize: 18 },
+    julesRobinson: {
+        fontFamily: fonts.PSBo, color: '#ffa183', fontSize: 18
+    },
+    discoverWhat: {
+        color: '#5d5760', fontFamily: fonts.PRe, fontSize: 13,
+        // lineHeight: 36,
+    },
+    avator: {
+        width: 56, height: 56, opacity: 0.86, borderRadius: 56 / 2,
+        // borderColor: '#7e73c9',
+        // borderWidth: 5,
     },
 
 

@@ -43,10 +43,10 @@ import DurationRepeat from './DurationRepeat';
 const components = [
     // { label: "a bit more", name: "BitMore", component: BitMore, params: { step: "2" } },
 
-    // { label: "Group Size", name: "GroupSizeHappeningL", component: GroupSizeHappeningL },
-    // { label: "Media", name: "Images1", component: Images1, params: { step: "8" } },
-    // { label: "Happening Location", name: "Location1", component: Location1, params: { step: "10" } },
-    // { label: "Code of Conduct", name: "CC1", component: CC1, params: { step: "1" } },
+    // // { label: "Group Size", name: "GroupSizeHappeningL", component: GroupSizeHappeningL },
+    // // { label: "Media", name: "Images1", component: Images1, params: { step: "8" } },
+    // // { label: "Happening Location", name: "Location1", component: Location1, params: { step: "10" } },
+    // // { label: "Code of Conduct", name: "CC1", component: CC1, params: { step: "1" } },
     { label: "Code of Conduct", name: "CC2", component: CC2, params: { step: "2" } },
     { label: "Code of Conduct", name: "CC3", component: CC3, params: { step: "3" } },
     { label: "Code of Conduct", name: "CC4", component: CC4, params: { step: "4" } },
