@@ -58,7 +58,7 @@ const Profile = (props) => {
 
 
     // "Timeline",
-    const tabs = ["Profile", "My Hostings", "Bookings","Timeline"];
+    const tabs = ["Profile", "My Hostings", "Bookings", "Timeline"];
 
     const happeningStatuses = ["underReview", "approved", "rejected", "cancelled"];
 
@@ -649,10 +649,22 @@ const Profile = (props) => {
                     </TouchableOpacity>
                 </View>
             }
-            <View style={{ width: "90%", alignSelf: 'center',marginTop:getHeight(3),marginBottom:getHeight(2) }}>
+            <View style={{ width: "90%", alignSelf: 'center', marginTop: getHeight(3), marginBottom: getHeight(2) }}>
                 <Text style={{ fontFamily: fonts.PBo, fontSize: 28, color: acolors.primary }}>My Wall</Text>
             </View>
 
+            <TouchableOpacity onPress={() => navigate("ReviewStep1", {
+                happeningId: "64782983acf030ad8211a6d0",
+                location: {
+                    "type": "Point",
+                    "coordinates": [
+                        34.05223511,
+                        -118.24368311
+                    ]
+                },
+            })} >
+                <Text style={{ color: 'black', fontSize: 20, alignSelf: 'center' }} >Fellow Rating & Review</Text>
+            </TouchableOpacity>
 
             {/* <View
                 style={{ width: 115, height: 115, alignSelf: 'center' }}

@@ -89,6 +89,19 @@ import GetVerified from './src/screens/bottom/Settings/GetVerified';
 import GetVerifiedDetails from './src/screens/bottom/Settings/GetVerifiedDetails';
 import VerificationSubmitted from './src/screens/bottom/Settings/VerificationSubmitted';
 import StoryDetails from './src/screens/bottom/booking/StoryDetails';
+import ReviewReportStep1 from './src/screens/bottom/reviewSystem/ReviewReportStep1';
+import ReviewReportStep2 from './src/screens/bottom/reviewSystem/ReviewReportStep2';
+import ReviewReportStep3 from './src/screens/bottom/reviewSystem/ReviewReportStep3';
+import ReviewReportStep4 from './src/screens/bottom/reviewSystem/ReviewReportStep4';
+import ReviewStep1 from './src/screens/bottom/reviewSystem/ReviewStep1';
+import ReviewStep2 from './src/screens/bottom/reviewSystem/ReviewStep2';
+import ReviewStep3 from './src/screens/bottom/reviewSystem/ReviewStep3';
+import ReviewStep4 from './src/screens/bottom/reviewSystem/ReviewStep4';
+import ReviewStep5 from './src/screens/bottom/reviewSystem/ReviewStep5';
+import ReviewStep6 from './src/screens/bottom/reviewSystem/ReviewStep6';
+import ReviewStep7 from './src/screens/bottom/reviewSystem/ReviewStep7';
+import ReviewStep8 from './src/screens/bottom/reviewSystem/ReviewStep8';
+import ReviewStep9 from './src/screens/bottom/reviewSystem/ReviewStep9';
 
 
 
@@ -464,6 +477,20 @@ function App() {
             <Stack.Screen name="GetVerified" component={GetVerified} />
             <Stack.Screen name="GetVerifiedDetails" component={GetVerifiedDetails} />
             <Stack.Screen name="VerificationSubmitted" component={VerificationSubmitted} />
+            {/* Review System Screens */}
+            <Stack.Screen name="ReviewStep1" component={ReviewStep1} />
+            <Stack.Screen name="ReviewStep2" component={ReviewStep2} />
+            <Stack.Screen name="ReviewStep3" component={ReviewStep3} />
+            <Stack.Screen name="ReviewStep4" component={ReviewStep4} />
+            <Stack.Screen name="ReviewStep5" component={ReviewStep5} />
+            <Stack.Screen name="ReviewStep6" component={ReviewStep6} />
+            <Stack.Screen name="ReviewStep7" component={ReviewStep7} />
+            <Stack.Screen name="ReviewStep8" component={ReviewStep8} />
+            <Stack.Screen name="ReviewStep9" component={ReviewStep9} />
+            <Stack.Screen name="ReviewReportStep1" component={ReviewReportStep1} />
+            <Stack.Screen name="ReviewReportStep2" component={ReviewReportStep2} />
+            <Stack.Screen name="ReviewReportStep3" component={ReviewReportStep3} />
+            <Stack.Screen name="ReviewReportStep4" component={ReviewReportStep4} />
             {/* Deactivate screens */}
             <Stack.Screen name="DActiveBooking" component={DActiveBooking} />
             <Stack.Screen name="DReason" component={DReason} />
