@@ -12,6 +12,7 @@ import { changeLoggedIn } from '../../../Common';
 import AlertMsg from '../../common/AlertMsg';
 import { BackIcon } from '../../components/Svgs';
 import { acolors } from '../../constants/colors';
+import AlertPopup from '../../common/AlertPopup';
 
 
 
@@ -161,7 +162,7 @@ const EditPassword = (props) => {
                 </TouchableOpacity>
             </View>
             {loading && <Loader />}
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
 
 
         </View>

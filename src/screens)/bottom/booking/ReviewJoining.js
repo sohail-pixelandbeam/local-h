@@ -16,6 +16,7 @@ import { apiRequest } from '../../../utils/apiCalls'
 import { formatDate, months } from '../../../utils/functions';
 import Loader from '../../../utils/Loader'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
+import AlertPopup from '../../../common/AlertPopup'
 
 
 var alertRef;
@@ -240,7 +241,7 @@ const ReviewJoining = (props) => {
                 </TouchableOpacity>
             </View>
 
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
         </View >
     )
 }

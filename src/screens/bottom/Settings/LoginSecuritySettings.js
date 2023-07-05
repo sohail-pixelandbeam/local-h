@@ -11,6 +11,7 @@ import { Context } from '../../../Context/DataContext';
 import { apiRequest } from '../../../utils/apiCalls';
 import Loader from '../../../utils/Loader';
 import GeneralStatusBar from '../../../components/GernalStatusBar';
+import AlertPopup from '../../../common/AlertPopup';
 
 var alertRef;
 var textInputRef;
@@ -21,6 +22,7 @@ const LoginSecuritySettings = () => {
     const [emailR, setEmailR] = useState(false) // EMAIL REMAINDERS
     const [smsR, setSMSR] = useState(false) // SMS REMAINDERS
 
+    const [devices, setDevices] = useState([]);
 
 
     const { state } = useContext(Context);
@@ -31,12 +33,71 @@ const LoginSecuritySettings = () => {
     }
 
 
+    async function getDevices(refreshing = false) {
+
+        !refreshing && setLoading(true);
+        // console.log('getMyHosting/' + state.userData._id)
+
+        const body = {
+            userEmail: 'mughees.abbas@gmail.com'
+        }
+        apiRequest(body, 'auth/device-history', 'GET')
+            .then(data => {
+                console.log('here are the devices', data);
+                setLoading(false);
+                if (data.status) {
+                    setDevices(data.data);
+                }
+                else alertRef.alertWithType('error', 'Error', data.message);
+
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            })
+    };
+
+
+    async function logoutDevice(refreshing = false, deviceId) {
+
+        !refreshing && setLoading(true);
+        // console.log('getMyHosting/' + state.userData._id)
+
+        const body = {
+            userEmail: 'mughees.abbas@gmail.com',
+            deviceId: deviceId
+        }
+        apiRequest(body, 'auth/logout', 'POST')
+            .then(data => {
+                console.log('here are the devices', data);
+                setLoading(false);
+                if (data.status) {
+                    alertRef.alertWithType('success', 'Success', data.message);
+                    return;
+                }
+                else alertRef.alertWithType('error', 'Error', data.message);
+
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            })
+    };
+
+    useEffect(() => {
+        getDevices();
+    }, [])
+
+
+
+
+
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <GeneralStatusBar backgroundColor='white' barStyle='dark-content' />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
-          
+
             <View style={{ width: "90%", alignSelf: 'center' }}>
 
                 <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', justifyContent: 'space-between', marginTop: 0 }}>
@@ -119,7 +180,7 @@ const LoginSecuritySettings = () => {
 
 
                             <Text style={{ fontFamily: fonts.PSBo, fontSize: 14, color: '#5D5760', marginTop: 10 }}>Device History</Text>
-                            <View style={{ width: "100%", justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 10, marginTop: 10 }}>
+                            {/* <View style={{ width: "100%", justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 10, marginTop: 10 }}>
                                 <View style={{ width: "50%", flexDirection: 'row', alignItems: 'center' }}>
                                     <PCIcon />
                                     <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5D5760', marginLeft: 8 }}>OS X  Chrome</Text>
@@ -127,16 +188,30 @@ const LoginSecuritySettings = () => {
                                 <TouchableOpacity>
                                     <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5B4DBC' }}>Log out device</Text>
                                 </TouchableOpacity>
-                            </View>
-                            <View style={{ width: "100%", justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 10, borderBottomWidth: 1, borderColor: '#707070', marginTop: 0 }}>
-                                <View style={{ width: "50%", flexDirection: 'row', alignItems: 'center' }}>
-                                    <PhoneIcon />
-                                    <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5D5760', marginLeft: 8 }}>Iphone</Text>
-                                </View>
-                                <TouchableOpacity>
-                                    <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5B4DBC' }}>Log out device</Text>
-                                </TouchableOpacity>
-                            </View>
+                            </View> */}
+                            {
+                                devices.map((v, i) => {
+                                    return (
+                                        <View style={{
+                                            width: "100%", justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 10,
+                                            borderBottomWidth: 1, borderColor: '#707070', marginTop: 10
+                                        }}>
+                                            <View style={{ width: "50%", flexDirection: 'row', alignItems: 'center' }}>
+                                                <PhoneIcon />
+                                                <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5D5760', marginLeft: 8 }}>{v.deviceName}</Text>
+                                            </View>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    logoutDevice(false, v.deviceId)
+                                                }}
+                                            >
+                                                <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#5B4DBC' }}>Log out device</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    )
+                                })
+                            }
+
 
                             <View style={{ width: "100%", justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 10, borderBottomWidth: 1, borderColor: '#707070', marginTop: 20 }}>
                                 <View style={{ width: "70%" }}>

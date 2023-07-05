@@ -12,6 +12,7 @@ import { apiRequest } from '../../../utils/apiCalls'
 import { months, retrieveItem } from '../../../utils/functions'
 import Loader from '../../../utils/Loader'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
+import AlertPopup from '../../../common/AlertPopup'
 
 
 var alertRef;
@@ -150,7 +151,7 @@ const HappeningDetails = (props) => {
     return (
         <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
             <GeneralStatusBar backgroundColor='transparent' />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
             {/* <TouchableOpacity
                 onPress={() => goBack()}

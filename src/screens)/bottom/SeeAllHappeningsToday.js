@@ -5,6 +5,7 @@ import { goBack, navigate } from '../../../Navigations';
 import { BackIcon, HeartWhiteIcon } from '../../components/Svgs';
 import { fonts } from '../../constants/fonts';
 import Loader from '../../utils/Loader';
+import AlertPopup from '../../common/AlertPopup';
 
 
 var alertRef;
@@ -22,7 +23,7 @@ const SeeAllHappeningsToday = (props) => {
                 // // translucent={false}
                 backgroundColor={"white"}
             />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 
             <View style={{ width: "85%", alignSelf: 'center' }}>

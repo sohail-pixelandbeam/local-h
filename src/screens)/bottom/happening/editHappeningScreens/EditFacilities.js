@@ -14,6 +14,7 @@ import GeneralStatusBar from '../../../../components/GernalStatusBar'
 import DropdownAlert from 'react-native-dropdownalert'
 import Loader from '../../../../utils/Loader'
 import { apiRequest } from '../../../../utils/apiCalls'
+import AlertPopup from '../../../../common/AlertPopup'
 
 var textInputRef;
 var alertRef;
@@ -217,7 +218,7 @@ const EditFacilities = (props) => {
                     next={false}
                 />
             }
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 
         </View>

@@ -26,6 +26,7 @@ import HappeningFilterModal from '../../common/HappeningFilterModal';
 import GeneralStatusBar from '../../components/GernalStatusBar';
 import { useIsFocused } from '@react-navigation/native'
 import ProfileCompletionSteps from '../../components/ProfileCompletionSteps'
+import AlertPopup from '../../common/AlertPopup'
 
 
 
@@ -207,8 +208,19 @@ const Home = () => {
             .then(data => {
                 setLoading(false);
                 if (data.status == true) {
-                    alertRef.alertWithType('success', 'Success', 'Happening added in wishlist');
-                    getHappeningDataFromServer();
+                    // alertRef.alertWithType('success', 'Success', 'Happening added in wishlist');
+                    // getHappeningDataFromServer();
+
+                    let arr = allHappenings ?? [];
+                    let index = arr.findIndex((v) => v._id == whishListHappeningId);
+                    arr[index].isFavorite = true;
+                    setAllHappenings(arr);
+                    forceUpdate();
+                    getWhishLists();
+                    return;
+
+
+
                     getWhishLists();
                     return
                 }
@@ -620,7 +632,9 @@ const Home = () => {
                                     return (
                                         <TouchableOpacity
                                             key={index}
-                                            onPress={() => loginData ? navigateFromStack('BookingStack', 'HappeningDetails', item) : navigate('HappeningDetails', item)}
+                                            onPress={() => {
+                                                loginData ? navigateFromStack('BookingStack', 'HappeningDetails', item) : navigate('HappeningDetails', item)
+                                            }}
                                             style={{ width: getWidth(40), marginLeft: 10, }}
                                         >
                                             <Image
@@ -1036,6 +1050,7 @@ const Home = () => {
                                     <View style={{ height: 400 }}>
 
                                         <TextInput
+                                            
                                             onChangeText={setNewWhishListName}
                                             placeholder='e.g. Summer Plans 2022'
                                             placeholderTextColor={'#7B7B7B'}
@@ -1131,15 +1146,16 @@ const Home = () => {
 
 
                 {loading && <Loader />}
-                <DropdownAlert ref={(ref) => alertRef = ref} />
+                {/* <AlertPopup ref={(ref) => alertRef = ref} /> */}
+                <AlertPopup ref={(ref) => alertRef = ref} />
             </TouchableOpacity >
             <TouchableOpacity
-                onPress={()=>navigate('HappeningsMap')}
-                style={{...styles.shadow, width: getWidth(25), height: getHeight(4), borderRadius: 30, backgroundColor: acolors.primaryLight, position: 'absolute', bottom: getHeight(12), alignSelf: 'center', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
+                onPress={() => navigate('HappeningsMap')}
+                style={{ ...styles.shadow, width: getWidth(25), height: getHeight(4), borderRadius: 30, backgroundColor: acolors.primaryLight, position: 'absolute', bottom: getHeight(12), alignSelf: 'center', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
 
             >
                 <Text style={{ color: 'white', fontSize: 14, fontFamily: fonts.PMe }}>Map</Text>
-                <HappeningLocationIconSmall color="white" width={10} height={15} style={{marginLeft:5}} />
+                <HappeningLocationIconSmall color="white" width={10} height={15} style={{ marginLeft: 5 }} />
 
             </TouchableOpacity>
         </View >

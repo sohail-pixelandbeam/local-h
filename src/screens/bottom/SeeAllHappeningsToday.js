@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState, } from 'react'
 import {
     StatusBar, SafeAreaView, View, Text, FlatList,
     TouchableOpacity, Image, StyleSheet, Keyboard,
-    ScrollView
+    ScrollView, TextInput
 } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
 import { goBack, navigate } from '../../../Navigations';
@@ -14,6 +14,8 @@ import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/Key
 import ReactNativeModal from 'react-native-modal';
 import { Context } from '../../Context/DataContext';
 import { apiRequest } from '../../utils/apiCalls';
+import AlertPopup from '../../common/AlertPopup';
+import { useForceUpdate } from '../../utils/functions';
 
 
 
@@ -22,16 +24,16 @@ var alertRef;
 const SeeAllHappeningsToday = (props) => {
 
     const [allHappeningsToday, setAllHappenings] = useState(props?.route?.params.params.data);
+    const forceUpdate = useForceUpdate();
 
-    const { state } = useContext(Context)
+    const { state, setWhishListsGlobal } = useContext(Context)
 
     const title = props.route.params?.params?.title
 
     const [loading, setLoading] = useState(false);
 
     const [createWishListModal, setCreateWishListModal] = useState(false);
-    const [wishList, setWishList] = useState([]);
-    const [createNewWishList, setCreateNewWishList] = useState([])
+
     const [isCreateNewWishlist, setIsCreateNewWishlist] = useState(false);
     const [newWhishListName, setNewWhishListName] = useState('');
     const [whishListHappeningId, setWhishListHappeningId] = useState('');
@@ -75,8 +77,11 @@ const SeeAllHappeningsToday = (props) => {
             .then(data => {
                 setLoading(false);
                 if (data.status == true) {
-                    alertRef.alertWithType('success', 'Success', 'Happening added in wishlist');
-                    getHappeningDataFromServer();
+                    let arr = allHappeningsToday ?? [];
+                    let index = arr.findIndex((v) => v._id == whishListHappeningId);
+                    arr[index].isFavorite = true;
+                    setAllHappenings(arr);
+                    forceUpdate();
                     getWhishLists();
                     return
                 }
@@ -124,7 +129,9 @@ const SeeAllHappeningsToday = (props) => {
     }
 
 
-
+    useEffect(() => {
+        getWhishLists()
+    }, [])
 
 
     return (
@@ -132,7 +139,7 @@ const SeeAllHappeningsToday = (props) => {
             <GeneralStatusBar backgroundColor='white' barStyle='dark-content' />
 
 
-            
+
 
             <View style={{ width: "85%", alignSelf: 'center' }}>
                 <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center', justifyContent: 'space-between', marginTop: 0 }}>
@@ -332,7 +339,7 @@ const SeeAllHappeningsToday = (props) => {
 
                 </ReactNativeModal>
             </KeyboardAvoidingView>
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 
 

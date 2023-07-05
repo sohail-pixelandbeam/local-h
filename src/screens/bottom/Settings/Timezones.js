@@ -14,6 +14,7 @@ import moment from 'moment-timezone';
 import GeneralStatusBar from '../../../components/GernalStatusBar';
 import { happeningStyles } from '../happening/styles';
 import { retrieveItem, storeItem } from '../../../utils/functions';
+import AlertPopup from '../../../common/AlertPopup';
 
 
 var alertRef;
@@ -91,7 +92,7 @@ const Timezones = () => {
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
             <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
             <View style={{ width: "90%", alignSelf: 'center' }}>

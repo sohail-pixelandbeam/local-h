@@ -14,6 +14,7 @@ import { getHOLPreviousScreen, storeItem, useForceUpdate } from '../../../../uti
 import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import HappeningStep from '../../../../common/HappeningStep'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 var alertRef;
@@ -123,7 +124,7 @@ const HappeningSkills = (props) => {
                 desc={"skill set of the fellows to join your happening."}
             // headerStyle={{ paddingBottom: 30 }}
             />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
             <View style={styles.contentContainer}>
                 <ScrollView>

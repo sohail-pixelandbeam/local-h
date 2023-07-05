@@ -14,6 +14,7 @@ import { getHOLPreviousScreen, storeItem, useForceUpdate } from '../../../../uti
 import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import HappeningStep from '../../../../common/HappeningStep'
+import AlertPopup from '../../../../common/AlertPopup'
 
 var alertRef;
 
@@ -176,7 +177,7 @@ const CC3 = (props) => {
                 </View>
             </TouchableOpacity> */}
             <ErrorPopupModal />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
         </View>
     )
 }

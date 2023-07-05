@@ -14,6 +14,7 @@ import { apiRequest } from '../../../../utils/apiCalls'
 import { urls } from '../../../../utils/Api_urls'
 import { retrieveItem, useForceUpdate } from '../../../../utils/functions'
 import Loader from '../../../../utils/Loader'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 const TermsAndLaws = (props) => {
@@ -148,7 +149,7 @@ const TermsAndLaws = (props) => {
                 onPress={() => next()}
                 step={props?.route?.params?.step}
             />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
 
 
         </View >

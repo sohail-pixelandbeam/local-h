@@ -15,6 +15,7 @@ import DropdownAlert from 'react-native-dropdownalert'
 import HappeningStep from '../../../../common/HappeningStep'
 import { urls } from '../../../../utils/Api_urls'
 import TipsButton from '../../../../components/TipsButton'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 
@@ -124,7 +125,7 @@ const Images1 = (props) => {
             // headerStyle={{ paddingBottom: 30 }}
             />
             {loading && <Loader />}
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             <View style={styles.contentContainer}>
                 <ScrollView>
 

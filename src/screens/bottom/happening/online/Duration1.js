@@ -18,6 +18,7 @@ import DateTimePicker from 'react-native-date-picker'
 
 import PrivacyPicker from '../../../../components/PrivacyPicker'
 import HappeningStep from '../../../../common/HappeningStep'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 var alertRefInner;
@@ -237,7 +238,7 @@ const Duration1 = (props) => {
 
             {fromTimeModal && <FromDateTimePicker />}
             {toTimeModal && <ToDateTimePicker />}
-            <DropdownAlert ref={(ref) => alertRefInner = ref} />
+            <AlertPopup ref={(ref) => alertRefInner = ref} />
             {loading && <Loader />}
         </View >
     )

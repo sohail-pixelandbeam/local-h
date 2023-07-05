@@ -14,6 +14,7 @@ import { goBack, navigate } from '../../../Navigations';
 import { storeItem, validateEmail } from '../../utils/functions';
 import { apiRequest } from '../../utils/apiCalls';
 import GeneralStatusBar from '../../components/GernalStatusBar';
+import AlertPopup from '../../common/AlertPopup';
 
 
 let alertRef;
@@ -100,7 +101,7 @@ const Signup = ({ navigation }) => {
         <View style={{ flex: 1, backgroundColor: "#35208e" }}>
             <GeneralStatusBar />
             {loading && <Loader />}
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             <View style={{
                 marginTop: 20,
                 flexDirection: 'row',

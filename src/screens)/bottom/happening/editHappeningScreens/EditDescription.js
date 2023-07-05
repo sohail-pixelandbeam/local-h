@@ -15,6 +15,7 @@ import HappeningStep from '../../../../common/HappeningStep'
 import TipsButton from '../../../../components/TipsButton'
 import GeneralStatusBar from '../../../../components/GernalStatusBar'
 import { apiRequest } from '../../../../utils/apiCalls'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 var alertRef;
@@ -116,7 +117,7 @@ const EditDescription = (props) => {
                 onPress={() => next()}
                 showStep={false}
             />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
         </View>
     )

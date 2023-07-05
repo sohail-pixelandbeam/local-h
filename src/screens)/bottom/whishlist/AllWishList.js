@@ -9,6 +9,7 @@ import Loader from '../../../utils/Loader';
 import GeneralStatusBar from '../../../components/GernalStatusBar';
 import { acolors } from '../../../constants/colors';
 import { apiRequest } from '../../../utils/apiCalls';
+import AlertPopup from '../../../common/AlertPopup';
 
 
 var alertRef;
@@ -59,7 +60,7 @@ const AllWishList = ({ route }) => {
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <GeneralStatusBar backgroundColor='white' />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 
 

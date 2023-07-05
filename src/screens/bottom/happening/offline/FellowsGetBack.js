@@ -13,6 +13,7 @@ import { storeItem, useForceUpdate } from '../../../../utils/functions'
 import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import HappeningStep from '../../../../common/HappeningStep'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 var alertRef;
@@ -115,7 +116,7 @@ const FellowsGetBack = (props) => {
                 onPress={() => next()}
                 step={props?.route?.params?.step}
             />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 
         </View>

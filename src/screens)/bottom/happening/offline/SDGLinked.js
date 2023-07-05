@@ -14,6 +14,7 @@ import HappeningStep from '../../../../common/HappeningStep'
 import { apiRequest } from '../../../../utils/apiCalls'
 import GeneralStatusBar from '../../../../components/GernalStatusBar'
 import { urls } from '../../../../utils/Api_urls'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 var alertRef;
@@ -271,7 +272,7 @@ const SDGLinked = (props) => {
                 onPress={() => next()}
                 step={props?.route?.params?.step}
             />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 
         </View >

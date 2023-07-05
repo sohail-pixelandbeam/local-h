@@ -9,6 +9,7 @@ import Loader from '../../utils/Loader';
 import DropdownAlert from 'react-native-dropdownalert';
 import { apiRequest } from '../../utils/apiCalls';
 import { changeLoggedIn } from '../../../Common';
+import AlertPopup from '../../common/AlertPopup';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -213,7 +214,7 @@ const Verifycode = (props) => {
             </ImageBackground>
 
             {loading && <Loader />}
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
 
 
         </View>

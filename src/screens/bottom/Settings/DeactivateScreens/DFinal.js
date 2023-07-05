@@ -15,6 +15,7 @@ import AlertMsg from '../../../../common/AlertMsg';
 import { apiRequest } from '../../../../utils/apiCalls';
 import GeneralStatusBar from '../../../../components/GernalStatusBar';
 import { styles } from './styles';
+import AlertPopup from '../../../../common/AlertPopup';
 
 
 
@@ -102,7 +103,7 @@ const DFinal = ({ route }) => {
             </View>
 
 
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
         </View>
     )
 }

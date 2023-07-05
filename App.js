@@ -1,4 +1,4 @@
-import { View, Text, Settings, Image } from 'react-native';
+import { View, Text, Settings, Image, TextInput, Platform } from 'react-native';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 // import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -202,6 +202,13 @@ const SettingsStack = () => {
 
 
 function App() {
+
+  TextInput.defaultProps = TextInput.defaultProps || {};
+  TextInput.defaultProps.keyboardType = Platform.OS == 'ios' ? 'ascii-capable' : 'visible-password';
+
+
+
+
 
   const forceUpdate = useForceUpdate();
   const [isLogined, setIsLogined] = React.useState(0); // 1 = LOGINED, 2 = NOT LOGINED

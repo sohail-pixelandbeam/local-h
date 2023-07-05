@@ -20,6 +20,7 @@ import DateTimePicker from  'react-native-date-picker'
 // import TimePickercomponent from './timePicker.component'
 import PrivacyPicker from '../../../../components/PrivacyPicker'
 import HappeningStep from '../../../../common/HappeningStep'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 var alertRefInner;
@@ -762,7 +763,7 @@ const Duration1 = (props) => {
 
 
         >
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             <View style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, width: "90%", alignSelf: 'center' }}>
 
                 {
@@ -906,7 +907,7 @@ const Duration1 = (props) => {
                 style={{ margin: 0 }}
 
             >
-                <DropdownAlert ref={(ref) => alertRef = ref} />
+                <AlertPopup ref={(ref) => alertRef = ref} />
                 <View style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, width: "90%", alignSelf: 'center' }}>
                     {
                         weeklyRepeatCalanderModal ?
@@ -1068,7 +1069,7 @@ const Duration1 = (props) => {
 
             {fromTimeModal && <FromDateTimePicker />}
             {toTimeModal && <ToDateTimePicker />}
-            <DropdownAlert ref={(ref) => alertRefInner = ref} />
+            <AlertPopup ref={(ref) => alertRefInner = ref} />
             {loading && <Loader />}
         </View >
     )
@@ -1467,7 +1468,7 @@ export default Duration1
 
 
 //         >
-//             <DropdownAlert ref={(ref) => alertRef = ref} />
+//             <AlertPopup ref={(ref) => alertRef = ref} />
 //             <View style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, width: "90%", alignSelf: 'center' }}>
 
 //                 {
@@ -1965,7 +1966,7 @@ export default Duration1
 //                 style={{ margin: 0 }}
 
 //             >
-//                 <DropdownAlert ref={(ref) => alertRef = ref} />
+//                 <AlertPopup ref={(ref) => alertRef = ref} />
 //                 <View style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, width: "90%", alignSelf: 'center' }}>
 //                     {
 //                         weeklyRepeatCalanderModal ?
@@ -2127,7 +2128,7 @@ export default Duration1
 
 //             {fromTimeModal && <FromDateTimePicker />}
 //             {toTimeModal && <ToDateTimePicker />}
-//             <DropdownAlert ref={(ref) => alertRef = ref} />
+//             <AlertPopup ref={(ref) => alertRef = ref} />
 //             {loading && <Loader />}
 //         </View >
 //     )

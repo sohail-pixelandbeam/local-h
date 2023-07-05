@@ -20,6 +20,7 @@ import { goBack } from '../../../../Navigations';
 import DropdownAlert from 'react-native-dropdownalert';
 import Loader from '../../../utils/Loader';
 import GeneralStatusBar from '../../../components/GernalStatusBar';
+import AlertPopup from '../../../common/AlertPopup';
 
 
 
@@ -155,7 +156,7 @@ export default function GetVerified({ navigation }) {
                 </ScrollView>
 
 
-                <DropdownAlert ref={(ref) => alertRef = ref} />
+                <AlertPopup ref={(ref) => alertRef = ref} />
                 {loading && <Loader />}
             </View>
             <View style={styles.footer}>

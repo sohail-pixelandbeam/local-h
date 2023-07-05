@@ -9,6 +9,7 @@ import GeneralStatusBar from '../../../components/GernalStatusBar'
 import Loader from '../../../utils/Loader'
 import { apiRequest } from '../../../utils/apiCalls'
 import DropdownAlert from 'react-native-dropdownalert'
+import AlertPopup from '../../../common/AlertPopup'
 
 
 var alertRef;
@@ -427,7 +428,7 @@ const MyHappeningDetails = (props) => {
                 }
 
             </ReactNativeModal>
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
 
 
         </View>

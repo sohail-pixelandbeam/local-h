@@ -17,6 +17,7 @@ import { urls } from '../../../../utils/Api_urls'
 import TipsButton from '../../../../components/TipsButton'
 import GeneralStatusBar from '../../../../components/GernalStatusBar'
 import { apiRequest } from '../../../../utils/apiCalls'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 
@@ -229,7 +230,7 @@ const EditPhotos = (props) => {
                 next={false}
             />
 
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 
         </View>

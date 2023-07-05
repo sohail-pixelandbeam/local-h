@@ -7,6 +7,7 @@ import Loader from '../../utils/Loader';
 import DropdownAlert from 'react-native-dropdownalert';
 import { apiRequest } from '../../utils/apiCalls';
 import { navigate } from '../../../Navigations';
+import AlertPopup from '../../common/AlertPopup';
 
 
 
@@ -175,7 +176,7 @@ const ChangePassword = (props) => {
             </ImageBackground>
 
             {loading && <Loader />}
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
 
 
         </ScrollView>

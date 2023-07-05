@@ -40,7 +40,7 @@ const HappeningTheme = (props) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
             <StatusBar
                 backgroundColor={acolors.primary}

@@ -14,6 +14,7 @@ import GeneralStatusBar from '../../../components/GernalStatusBar';
 import PrivacyPicker from '../../../components/PrivacyPicker';
 import { urls } from '../../../utils/Api_urls';
 import { retrieveItem, storeItem } from '../../../utils/functions';
+import AlertPopup from '../../../common/AlertPopup';
 
 var alertRef;
 var textInputRef;
@@ -379,7 +380,7 @@ const PersonalInfo = () => {
                 }
 
             </View>
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
         </View >
     )

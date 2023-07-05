@@ -11,6 +11,7 @@ import { Context } from '../../../Context/DataContext';
 import { apiRequest } from '../../../utils/apiCalls';
 import Loader from '../../../utils/Loader';
 import GeneralStatusBar from '../../../components/GernalStatusBar';
+import AlertPopup from '../../../common/AlertPopup';
 
 var alertRef;
 var textInputRef;
@@ -29,7 +30,7 @@ const TranslationSettings = () => {
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
             <View style={{ width: "90%", alignSelf: 'center' }}>
 

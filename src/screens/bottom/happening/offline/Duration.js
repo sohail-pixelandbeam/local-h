@@ -69,11 +69,11 @@ const Duration = (props) => {
 
             </View>
 
-            <HappeningStep
+            {/* <HappeningStep
                 nextText={"Next"}
                 onPress={() => next()}
                 step={props?.route?.params?.step}
-            />
+            /> */}
         </View>
     )
 }

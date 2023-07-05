@@ -25,6 +25,7 @@ import { navigate, navigateFromStack } from '../../Navigations';
 import HappeningFilterModal from '../common/HappeningFilterModal';
 import GeneralStatusBar from '../components/GernalStatusBar';
 import { useIsFocused } from '@react-navigation/native'
+import AlertPopup from '../common/AlertPopup'
 
 
 
@@ -463,7 +464,7 @@ const ProfileCompletionSteps = () => {
 
 
     useEffect(() => {
-        // setPopup1(true)
+        // setPopup1(false)
         // setPopupCases()
         // setPopup1(false)
         // setPopupCases()
@@ -939,7 +940,7 @@ const ProfileCompletionSteps = () => {
                 // onBackdropPress={() => setPopup1(!popup1)}
                 animationOut="slideOutDown"
             >
-                <DropdownAlert ref={(ref) => modalAlertRef = ref} />
+                <AlertPopup ref={(ref) => modalAlertRef = ref} />
                 {modalLoading && <Loader />}
                 {
                     // popupCases == 1 ?
@@ -1414,7 +1415,7 @@ const ProfileCompletionSteps = () => {
 
             </Modal>
             {loading && <Loader />}
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
         </TouchableOpacity >
 
     )

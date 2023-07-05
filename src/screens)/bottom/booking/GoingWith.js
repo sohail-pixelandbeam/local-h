@@ -13,6 +13,7 @@ import { urls } from '../../../utils/Api_urls'
 import { formatDate, useForceUpdate } from '../../../utils/functions';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
+import AlertPopup from '../../../common/AlertPopup'
 
 
 var textInputRef;
@@ -113,7 +114,7 @@ const GoingWith = (props) => {
         <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
             <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
 
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
 
             <View style={{ width: "90%", alignSelf: 'center' }}>
                 <TouchableOpacity

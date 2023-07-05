@@ -20,6 +20,7 @@ import EditProfile from './EditProfile';
 import { urls } from '../../utils/Api_urls';
 import GeneralStatusBar from '../../components/GernalStatusBar';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import AlertPopup from '../../common/AlertPopup';
 
 
 
@@ -680,7 +681,7 @@ const Profile = (props) => {
             </View>
 
 
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
         </View>
     )
 }

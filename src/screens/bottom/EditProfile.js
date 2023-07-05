@@ -8,6 +8,7 @@ import { RattingStartIcon } from '../../components/Svgs';
 import { fonts } from '../../constants/fonts';
 import { uploadSingleFile, useForceUpdate } from '../../utils/functions';
 import GeneralStatusBar from '../../components/GernalStatusBar';
+import AlertPopup from '../../common/AlertPopup';
 
 
 
@@ -274,7 +275,7 @@ const EditProfile = (props) => {
                     <Text style={styles.popupBtnTitle}>{"Save"}</Text>
                 </TouchableOpacity>
             </View>
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
         </View>
 
     )

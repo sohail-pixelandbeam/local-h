@@ -8,6 +8,7 @@ import GeneralStatusBar from '../../../components/GernalStatusBar'
 import DropdownAlert from 'react-native-dropdownalert'
 import Loader from '../../../utils/Loader'
 import { Context } from '../../../Context/DataContext'
+import AlertPopup from '../../../common/AlertPopup'
 
 
 
@@ -141,7 +142,7 @@ const BookingCancelling = (props) => {
                     </View>
 
                 </ScrollView>
-                <DropdownAlert ref={(ref) => alertRef = ref} />
+                <AlertPopup ref={(ref) => alertRef = ref} />
                 {loading && <Loader />}
 
             </View>

@@ -15,6 +15,7 @@ import { goBack } from '../../../../Navigations';
 import { useFocusEffect } from '@react-navigation/native';
 import { fonts } from '../../../constants/fonts';
 import { AcceptedJoinRequestNotif, EditHappeningNotif, HappeningApprovedNotif, HappeningBookingCancelledNotif, HappeningRejectedNotif, LikedHappeningReview, LikedYourReview, RejectedJoinRequestNotif, ReviewedHappening, SentYouRequestNotif, SomeOneAddedNewHappening, SomeOneCancelledHappeningBookingNotif } from '../../../components/NotificationCards';
+import AlertPopup from '../../../common/AlertPopup';
 
 
 var alertRef;
@@ -115,7 +116,7 @@ const Chat = (props) => {
 
         <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
             <View>
-                <DropdownAlert ref={ref => alertRef = ref} />
+                <AlertPopup ref={ref => alertRef = ref} />
             </View>
             {loading && <Loader />}
 

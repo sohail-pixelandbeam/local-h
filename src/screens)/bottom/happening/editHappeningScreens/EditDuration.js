@@ -22,6 +22,7 @@ import PrivacyPicker from '../../../../components/PrivacyPicker'
 import HappeningStep from '../../../../common/HappeningStep'
 import { apiRequest } from '../../../../utils/apiCalls'
 import GeneralStatusBar from '../../../../components/GernalStatusBar'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 var alertRefInner;
@@ -326,7 +327,7 @@ const EditDuration = (props) => {
 
 
         >
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             <View style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, width: "90%", alignSelf: 'center' }}>
 
                 {
@@ -903,7 +904,7 @@ const EditDuration = (props) => {
                 style={{ margin: 0 }}
 
             >
-                <DropdownAlert ref={(ref) => alertRef = ref} />
+                <AlertPopup ref={(ref) => alertRef = ref} />
                 <View style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, width: "90%", alignSelf: 'center' }}>
                     {
                         weeklyRepeatCalanderModal ?
@@ -1065,7 +1066,7 @@ const EditDuration = (props) => {
 
             {fromTimeModal && <FromDateTimePicker />}
             {toTimeModal && <ToDateTimePicker />}
-            <DropdownAlert ref={(ref) => alertRefInner = ref} />
+            <AlertPopup ref={(ref) => alertRefInner = ref} />
             {loading && <Loader />}
         </View >
     )

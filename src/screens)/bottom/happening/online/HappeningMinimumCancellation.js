@@ -14,6 +14,7 @@ import { storeItem, useForceUpdate } from '../../../../utils/functions'
 import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import HappeningStep from '../../../../common/HappeningStep'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 var alertRef;
@@ -161,7 +162,7 @@ const HappeningMinimumCancellation = (props) => {
                 step={props?.route?.params?.step}
             />
             <RepeatOnPopup />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 
         </View>

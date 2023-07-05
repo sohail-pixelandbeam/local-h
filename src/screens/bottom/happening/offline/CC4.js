@@ -14,6 +14,7 @@ import { Context } from '../../../../Context/DataContext'
 import { urls } from '../../../../utils/Api_urls'
 import { getHOLPreviousScreen, useForceUpdate } from '../../../../utils/functions'
 import HappeningStep from '../../../../common/HappeningStep'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 var alertRef;
@@ -255,7 +256,7 @@ const CC4 = (props) => {
             </TouchableOpacity> */}
             <ErrorPopupModal />
             <ErrorPopupModal4 />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
 
 
             <Modal
@@ -267,7 +268,7 @@ const CC4 = (props) => {
                 // onBackdropPress={() => setPopup1(!popup1)}
                 animationOut="slideOutDown"
             >
-                <DropdownAlert ref={(ref) => modalAlertRef = ref} />
+                <AlertPopup ref={(ref) => modalAlertRef = ref} />
 
                 <View style={[styles.popupContainer, { paddingBottom: 10 }]}>
                     {/* <BackPopupBtn /> */}

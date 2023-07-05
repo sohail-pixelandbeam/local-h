@@ -13,6 +13,7 @@ import { getWidth, months, retrieveItem } from '../../../utils/functions'
 import Loader from '../../../utils/Loader'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
 import ImageSliderModal from '../../../components/ImageSliderModal'
+import AlertPopup from '../../../common/AlertPopup'
 
 
 var alertRef;
@@ -194,7 +195,7 @@ const HappeningDetails = (props) => {
     return (
         <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
             <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 
 

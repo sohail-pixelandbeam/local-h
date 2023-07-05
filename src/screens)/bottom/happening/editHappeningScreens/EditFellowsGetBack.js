@@ -15,6 +15,7 @@ import DropdownAlert from 'react-native-dropdownalert'
 import HappeningStep from '../../../../common/HappeningStep'
 import { apiRequest } from '../../../../utils/apiCalls'
 import GeneralStatusBar from '../../../../components/GernalStatusBar'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 
@@ -133,7 +134,7 @@ const EditFellowsGetBack = (props) => {
                 showStep={false}
 
             />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 
         </View>

@@ -13,6 +13,7 @@ import { getHOLPreviousScreen, storeItem, useForceUpdate } from '../../../../uti
 import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import HappeningStep from '../../../../common/HappeningStep'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 var alertRef;
@@ -137,7 +138,7 @@ const HappeningLanguages1 = (props) => {
                 step={props?.route?.params?.step}
             />
 
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 
         </View>

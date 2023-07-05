@@ -13,6 +13,7 @@ import { storeItem, useForceUpdate } from '../../../../utils/functions'
 import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import HappeningStep from '../../../../common/HappeningStep'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 var alertRef;
@@ -40,7 +41,7 @@ const HappeningTheme = (props) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
             <StatusBar
                 backgroundColor={acolors.primary}

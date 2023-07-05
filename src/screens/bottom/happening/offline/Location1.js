@@ -18,6 +18,7 @@ import { Context } from '../../../../Context/DataContext'
 import AlertMsg from '../../../../common/AlertMsg'
 import GetLocation from 'react-native-get-location'
 import { useIsFocused } from '@react-navigation/native'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 //  NEXT SCREEN Duration1;
@@ -607,7 +608,7 @@ const Location1 = (props) => {
                 </View>
             </TouchableOpacity> */}
             <ConfirmLocationPopup />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
         </View >
     )

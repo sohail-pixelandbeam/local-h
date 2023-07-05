@@ -13,6 +13,7 @@ import Loader from '../../../../utils/Loader'
 import DropdownAlert from 'react-native-dropdownalert'
 import HappeningStep from '../../../../common/HappeningStep'
 import TipsButton from '../../../../components/TipsButton'
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 var alertRef;
@@ -102,7 +103,7 @@ const Description1 = (props) => {
                 step={props?.route?.params?.step}
             />
 
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
         </View>
     )

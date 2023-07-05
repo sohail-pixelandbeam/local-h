@@ -25,6 +25,7 @@ import { navigate, navigateFromStack } from '../../../Navigations';
 import HappeningFilterModal from '../../common/HappeningFilterModal';
 import GeneralStatusBar from '../../components/GernalStatusBar';
 import { useIsFocused } from '@react-navigation/native'
+import AlertPopup from '../../common/AlertPopup'
 
 
 
@@ -1168,7 +1169,7 @@ const Home = () => {
                     // onBackdropPress={() => setPopup1(!popup1)}
                     animationOut="slideOutDown"
                 >
-                    <DropdownAlert ref={(ref) => modalAlertRef = ref} />
+                    <AlertPopup ref={(ref) => modalAlertRef = ref} />
                     {modalLoading && <Loader />}
                     {
                         // popupCases == 1 ?
@@ -1781,7 +1782,7 @@ const Home = () => {
 
 
                 {loading && <Loader />}
-                <DropdownAlert ref={(ref) => alertRef = ref} />
+                <AlertPopup ref={(ref) => alertRef = ref} />
             </TouchableOpacity>
         </View>
     )

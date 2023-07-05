@@ -1,5 +1,7 @@
 const { urls } = require("../utils/Api_urls");
-import { doConsole, formatDate, retrieveItem } from "./../utils/functions"
+import { changeLoggedIn } from "../../Common";
+import { doConsole, formatDate, retrieveItem, storeItem } from "./../utils/functions";
+import DeviceInfo from 'react-native-device-info'
 
 async function doPost(body_data, url_plus) {
 
@@ -31,11 +33,30 @@ async function getUserToken() {
   return token?.token;
 }
 
+async function getDeviceId() {
+  const id = DeviceInfo.getUniqueId();
+  return id;
+}
+async function getDeiviceName() {
+  const id = DeviceInfo.getDeviceName();
+  return id;
+}
+
 export async function apiRequest(body_data, url_plus, method = "POST", userToken) {
 
 
-  if (!body_data) body_data = { token: userToken ?? await getUserToken() }
-  else body_data["token"] = userToken ?? await getUserToken()
+  if (!body_data) {
+    body_data = {
+      token: userToken ?? await getUserToken(),
+      deviceId: await getDeviceId(),
+      deviceName: await getDeiviceName()
+    }
+  }
+  else {
+    body_data["token"] = userToken ?? await getUserToken()
+    body_data["deviceId"] = userToken ?? await getDeviceId()
+    body_data["deviceName"] = userToken ?? await getDeiviceName()
+  }
   // let last_request = new Date();
   // last_request = last_request.getFullYear() + "-" + (last_request.getMonth() + 1) + "-" + last_request.getDate() + " " + last_request.getHours() + ":" + last_request.getMinutes()
   var url;
@@ -63,6 +84,14 @@ export async function apiRequest(body_data, url_plus, method = "POST", userToken
       .then((response) => response.json())
       // .then((response) => response.text())
       .then((responseJson) => {
+        if (responseJson?.is_token_expire) {
+          console.log('responseJson?.is_token_expire', responseJson?.is_token_expire)
+          storeItem('login_data', '');
+          storeItem('profile_data', '');
+          changeLoggedIn.changeNow(2);
+          return;
+        }
+
         // console.log(responseJson)
         return responseJson
       }).catch((error) => {

@@ -21,6 +21,7 @@ import { urls } from '../../utils/Api_urls';
 import GeneralStatusBar from '../../components/GernalStatusBar';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import ReactNativeModal from 'react-native-modal';
+import AlertPopup from '../../common/AlertPopup';
 
 
 
@@ -57,7 +58,7 @@ const Profile = (props) => {
 
 
     // "Timeline",
-    const tabs = ["Profile", "My Hostings", "Bookings",];
+    const tabs = ["Profile", "My Hostings", "Bookings","Timeline"];
 
     const happeningStatuses = ["underReview", "approved", "rejected", "cancelled"];
 
@@ -801,7 +802,7 @@ const Profile = (props) => {
             </View>
 
 
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             <SeeAllModalView />
         </View>
     )

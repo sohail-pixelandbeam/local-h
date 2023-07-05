@@ -16,6 +16,7 @@ import { retrieveItem, useForceUpdate } from '../../../../utils/functions'
 import Loader from '../../../../utils/Loader'
 
 import Geolocation from '@react-native-community/geolocation';
+import AlertPopup from '../../../../common/AlertPopup'
 
 
 var alertRef;
@@ -160,7 +161,7 @@ const TermsAndLaws = (props) => {
                 onPress={() => next()}
                 step={props?.route?.params?.step}
             />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
 
 
         </View >

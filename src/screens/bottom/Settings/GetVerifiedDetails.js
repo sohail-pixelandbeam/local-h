@@ -20,6 +20,7 @@ import { BackIcon } from '../../../components/Svgs';
 import { goBack } from '../../../../Navigations';
 import { apiFormDataRequest } from '../../../utils/apiCalls';
 import Loader from '../../../utils/Loader';
+import AlertPopup from '../../../common/AlertPopup';
 
 
 var alertRef;
@@ -228,7 +229,7 @@ export default function GetVerifiedDetails({ navigation, route }) {
             <View style={styles.footer}>
                 <Btn label="Submit" onPress={onSubmitRequest} />
             </View>
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {isLoading && <Loader />}
         </View>
     );

@@ -133,7 +133,7 @@ const EditFellowsGetBack = (props) => {
                 showStep={false}
 
             />
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
             {loading && <Loader />}
 
         </View>

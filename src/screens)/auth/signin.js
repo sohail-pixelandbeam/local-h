@@ -17,6 +17,7 @@ import { apiRequest } from '../../utils/apiCalls';
 import { goBack, navigate } from '../../../Navigations';
 import { changeLoggedIn } from '../../../Common';
 import GeneralStatusBar from '../../components/GernalStatusBar';
+import AlertPopup from '../../common/AlertPopup';
 
 
 
@@ -204,7 +205,7 @@ const Signin = ({ navigation }) => {
             </ScrollView >
 
             {loading && <Loader />}
-            <DropdownAlert ref={(ref) => alertRef = ref} />
+            <AlertPopup ref={(ref) => alertRef = ref} />
 
 
         </View >

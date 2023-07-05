@@ -155,7 +155,7 @@ export default function GetVerified({ navigation }) {
                 <View style={styles.footer}>
                     <Btn label="Done" onPress={goNext} />
                 </View>
-                <DropdownAlert ref={(ref) => alertRef = ref} />
+                <AlertPopup ref={(ref) => alertRef = ref} />
                 {loading && <Loader />}
             </View>
         </View>
