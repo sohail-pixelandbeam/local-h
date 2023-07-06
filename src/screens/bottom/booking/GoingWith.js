@@ -81,15 +81,15 @@ const GoingWith = (props) => {
                 <TouchableOpacity
                     onPress={() => minusChildren()}
                     style={styles.addMinusBtn}>
-                    <Text style={{ fontFamily: fonts.PRe, fontSize: 11, color: '#5D5760', }}>-</Text>
+                    <Text style={{ fontFamily: fonts.PRe, fontSize: 25, color: '#5D5760', }}>-</Text>
                 </TouchableOpacity>
                 <View style={[styles.shadow, styles.quantityBox]}>
-                    <Text style={styles.headingText}>{childrens}</Text>
+                    <Text style={[styles.headingText,{fontSize:18}]}>{childrens}</Text>
                 </View>
                 <TouchableOpacity
                     onPress={() => addChildren()}
                     style={styles.addMinusBtn}>
-                    <Text style={{ fontFamily: fonts.PRe, fontSize: 11, color: '#5D5760', }}>+</Text>
+                    <Text style={{ fontFamily: fonts.PRe, fontSize: 25, color: '#5D5760', }}>+</Text>
                 </TouchableOpacity>
             </View>
 
@@ -343,11 +343,11 @@ const styles = StyleSheet.create({
     },
 
     addMinusBtn: {
-        width: 20, height: 20, borderRadius: 20 / 2, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#707070'
+        width: 35, height: 35, borderRadius: 35 / 2, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#707070'
     },
 
     quantityBox: {
-        width: 52, height: 37, borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10,
+        width: 52, height: 40, borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10,
     }
 
 

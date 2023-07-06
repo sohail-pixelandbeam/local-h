@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { View, Text, SafeAreaView, Image, TouchableOpacity, Dimensions, StatusBar, ScrollView, StyleSheet } from 'react-native'
 import { Calendar } from 'react-native-calendars'
 import DropdownAlert from 'react-native-dropdownalert'
@@ -13,7 +13,7 @@ import { acolors } from '../../../constants/colors'
 import { fonts } from '../../../constants/fonts'
 import { Context } from '../../../Context/DataContext'
 import { apiRequest } from '../../../utils/apiCalls'
-import { formatDate, months } from '../../../utils/functions';
+import { formatDate, getHeight, months } from '../../../utils/functions';
 import Loader from '../../../utils/Loader'
 import GeneralStatusBar from '../../../components/GernalStatusBar'
 import AlertPopup from '../../../common/AlertPopup'
@@ -34,12 +34,20 @@ const ReviewJoining = (props) => {
     const date = new Date(params.startingDate)
     const dayOfWeek = daysOfWeek[(date.getDay() + 1) % 7];
     const dateString = dayOfWeek + ", " + date.getDate() + " " + months[date.getMonth()]
-    console.log('dateString', dateString)
+
+    const scrollViewRef = useRef(null);
+
+    const scrollToBottom = () => {
+        scrollViewRef.current.scrollToEnd({ animated: true });
+    };
+
+
 
     function doSendRequest() {
 
         if (!agree) {
             alertRef.alertWithType('error', 'Error', 'Please agree to terms and conditions');
+            scrollToBottom();
             return;
         }
 
@@ -104,7 +112,9 @@ const ReviewJoining = (props) => {
                 </TouchableOpacity>
 
                 <Text style={[{ color: '#5A4CBB', fontSize: 23, fontFamily: fonts.PBo, marginTop: 15, marginBottom: 10 }]}>Review your joining</Text>
-                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 260 }} >
+                <ScrollView
+                    ref={scrollViewRef}
+                    showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 260 }} >
                     <View style={{ width: "100%", flexDirection: 'row' }}>
                         <Image
                             source={{ uri: params.addPhotosOfYourHappening[0] }}
@@ -213,7 +223,8 @@ const ReviewJoining = (props) => {
                         source={require('../../../static_assets/location1.png')}
                     /> */}
                     <View style={[styles.shadow, { marginHorizontal: 5, paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, marginTop: 10 }]}>
-                        <Text style={[styles.regulareText, { fontSize: 10, textAlign: 'center' }]}>* This joining can only be cancelled {params?.numberCancellationPeriod} {params?.string} before the start time of happenning.</Text>
+                        {/* <Text style={[styles.regulareText, { fontSize: 10, textAlign: 'center' }]}>* This joining can only be cancelled {params?.numberCancellationPeriod} {params?.string} before the start time of happenning.</Text> */}
+                        <Text style={[styles.regulareText, { fontSize: 10, textAlign: 'center' }]}>* This happening can be cancelled until {params?.numberCancellationPeriod} before the happening</Text>
                     </View>
 
                     <View style={styles.checkboxContainer}>
@@ -228,9 +239,10 @@ const ReviewJoining = (props) => {
 
             </View>
             <View style={[{
-                marginTop: 30, paddingTop: 10, backgroundColor: 'white', flexDirection: 'row',
+
+                marginTop: 30, paddingTop: 10, flexDirection: 'row',
                 justifyContent: 'space-between', width: "90%", paddingHorizontal: 20, alignItems: 'center', paddingBottom: 10, alignSelf: 'center',
-                position: 'absolute', bottom: 40
+                position: 'absolute', bottom: 0, paddingBottom: 40, backgroundColor: 'white'
             }]}>
                 <TouchableOpacity
                     onPress={() => {

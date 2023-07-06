@@ -1,4 +1,4 @@
-import { View, Text, Settings, Image, TextInput, Platform } from 'react-native';
+import { View, Text, Settings, Image, TextInput, Platform, StyleSheet } from 'react-native';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 // import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -29,7 +29,7 @@ import Chat from './src/screens/bottom/chats/Chat';
 import SuccessfullySubmitted from './src/screens/bottom/happening/offline/SuccessfullySubmitted';
 import HappeningApproved from './src/screens/bottom/happening/offline/HappeningApproved';
 import HappeningRejected from './src/screens/bottom/happening/offline/HappeningRejected';
-import { retrieveItem, storeItem, useForceUpdate } from './src/utils/functions';
+import { getHeight, retrieveItem, storeItem, useForceUpdate } from './src/utils/functions';
 import Loader from './src/utils/Loader';
 import ChangePassword from './src/screens/auth/ChangePassword';
 import { Provider } from './src/Context/DataContext';
@@ -89,12 +89,14 @@ import GetVerified from './src/screens/bottom/Settings/GetVerified';
 import GetVerifiedDetails from './src/screens/bottom/Settings/GetVerifiedDetails';
 import VerificationSubmitted from './src/screens/bottom/Settings/VerificationSubmitted';
 import StoryDetails from './src/screens/bottom/booking/StoryDetails';
+import { fonts } from './src/constants/fonts';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
 
 
 const Stack = createStackNavigator();
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 function AuthStack() {
   return (
@@ -217,22 +219,27 @@ function App() {
 
   const TabNavigator = () => (
     <Tab.Navigator
+
       inactiveColor="#aaaaaa"
       activeColor="#5b4dbc"
-      barStyle={{
-        backgroundColor: '#ffffff',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        elevation: 2,
-        position: 'absolute',
-        overflow: 'hidden',
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          height:getHeight(9.5),
+          backgroundColor: '#ffffff',
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          elevation: 2,
+          position: 'absolute',
+          overflow: 'hidden',
+        }
       }}
       shifting={false}
     >
 
       <Tab.Screen
         options={() => ({
-          tabBarLabel: () => null,
+          tabBarLabel: ({ color }) => <Text style={{ ...styles.barText, color: color }}>Explore</Text>,
           tabBarIcon: ({ color }) => <SearchBtmIcon color={color} />,
         })}
         name="Search" component={HomeStack}
@@ -241,7 +248,7 @@ function App() {
       {loggedIn == 1 &&
         <Tab.Screen
           options={() => ({
-            tabBarLabel: () => null,
+            tabBarLabel: ({ color }) => <Text style={{ ...styles.barText, color: color }}>Wishlist</Text>,
             tabBarIcon: ({ color }) => <HeartBtmIcon color={color} />,
           })}
           name="WhishListStack" component={WhishListStack}
@@ -251,7 +258,7 @@ function App() {
       {/* {loggedIn == 1 && */}
       <Tab.Screen
         options={() => ({
-          tabBarLabel: () => null,
+          tabBarLabel: ({ color }) => <Text style={{ ...styles.barText, color: color }}>Profile</Text>,
           tabBarIcon: ({ color }) => <Image source={require('./src/assets/wallIcon.png')} style={{ tintColor: color }} />,
         })}
         name="Profilee" component={HappeningStack}
@@ -281,7 +288,7 @@ function App() {
       {loggedIn == 1 &&
         <Tab.Screen
           options={() => ({
-            tabBarLabel: () => null,
+            tabBarLabel: ({ color, focused }) => <Text style={{ ...styles.barText, color: color }}>Settings</Text>,
             tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
           })}
           name="SettingsStack" component={SettingsStack}
@@ -482,6 +489,13 @@ function App() {
 
 
 }
+
+const styles = StyleSheet.create({
+  barText: {
+    fontFamily: fonts.PMe, fontSize: 12,
+
+  }
+})
 
 export default App;
 

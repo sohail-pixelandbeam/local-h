@@ -567,7 +567,7 @@ const Profile = (props) => {
                 <View style={{ position: 'absolute', bottom: Platform.OS == 'ios' ? 80 : 50, paddingTop: 10, backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-between', width: "100%", paddingHorizontal: 20, elevation: 5, alignItems: 'center', paddingBottom: 10, shadowOffset: { width: 1, height: 1 } }}>
 
                     <TouchableOpacity onPress={() => navigate('AuthStack')}>
-                        <Text style={styles.signOut}>Sign up</Text>
+                        <Text style={styles.signOut}>Sign in</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => navigate('ThingsConsider')}

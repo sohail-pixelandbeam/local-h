@@ -12,6 +12,9 @@ import { apiRequest } from '../../../utils/apiCalls';
 import Loader from '../../../utils/Loader';
 import GeneralStatusBar from '../../../components/GernalStatusBar';
 import AlertPopup from '../../../common/AlertPopup';
+import DeviceInfo from 'react-native-device-info';
+import { storeItem } from '../../../utils/functions';
+import { changeLoggedIn } from '../../../../Common';
 
 var alertRef;
 var textInputRef;
@@ -36,10 +39,8 @@ const LoginSecuritySettings = () => {
     async function getDevices(refreshing = false) {
 
         !refreshing && setLoading(true);
-        // console.log('getMyHosting/' + state.userData._id)
-
         const body = {
-            userEmail: 'mughees.abbas@gmail.com'
+            userEmail: state.userData?.userEmail,
         }
         apiRequest(body, 'auth/device-history', 'GET')
             .then(data => {
@@ -61,21 +62,26 @@ const LoginSecuritySettings = () => {
     async function logoutDevice(refreshing = false, deviceId) {
 
         !refreshing && setLoading(true);
-        // console.log('getMyHosting/' + state.userData._id)
-
         const body = {
-            userEmail: 'mughees.abbas@gmail.com',
+            userEmail: state.userData?.userEmail,
             deviceId: deviceId
         }
-        apiRequest(body, 'auth/logout', 'POST')
-            .then(data => {
-                console.log('here are the devices', data);
-                setLoading(false);
+        apiRequest(body, 'auth/logout')
+            .then(async data => {
                 if (data.status) {
+                    let myId = await DeviceInfo.getUniqueId();
+                    if (deviceId == myId) {
+                        storeItem('login_data', '');
+                        storeItem('profile_data', '');
+                        changeLoggedIn.changeNow(2);
+                        return;
+                    }
+                    getDevices()
                     alertRef.alertWithType('success', 'Success', data.message);
                     return;
                 }
                 else alertRef.alertWithType('error', 'Error', data.message);
+                setLoading(false);
 
             })
             .catch(err => {
