@@ -27,6 +27,8 @@ import GeneralStatusBar from '../../components/GernalStatusBar';
 import { useIsFocused } from '@react-navigation/native'
 import ProfileCompletionSteps from '../../components/ProfileCompletionSteps'
 import AlertPopup from '../../common/AlertPopup'
+import PushNotification from 'react-native-push-notification'
+import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 
 
@@ -82,6 +84,82 @@ const Home = () => {
     const [isSearched, setIsSearched] = useState(false);
 
     const [localStories, setLocalStories] = useState([]);
+
+
+
+    const storePush = (push_id) => {
+        retrieveItem('login_data')
+            .then(data => {
+                if (data) {
+                    const body = {
+                        "userEmail": data?.userEmail,
+                        "pushId": push_id
+                    }
+                    apiRequest(body, 'auth/push-id-notification')
+                        .then(data => {
+                            console.log('push_id data', data)
+                        })
+                }
+            })
+    }
+
+    function getPushToken() {
+        PushNotification.configure({
+            // (optional) Called when Token is generated (iOS and Android)
+            onRegister: function (token) {
+                storePush(token.token)
+                // console.log("TOKEN:", token);
+            },
+
+            // (required) Called when a remote is received or opened, or local notification is opened
+            onNotification: function (notification) {
+                console.log("NOTIFICATION:", notification);
+
+                // process the notification
+
+                // (required) Called when a remote is received or opened, or local notification is opened
+                notification.finish(PushNotificationIOS.FetchResult.NoData);
+            },
+
+            // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
+            onAction: function (notification) {
+                console.log("ACTION:", notification.action);
+                console.log("NOTIFICATION:", notification);
+
+                // process the action
+            },
+
+            // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
+            onRegistrationError: function (err) {
+                console.error(err.message, err);
+            },
+
+            // IOS ONLY (optional): default: all - Permissions to register.
+            permissions: {
+                alert: true,
+                badge: true,
+                sound: true,
+            },
+
+            // Should the initial notification be popped automatically
+            // default: true
+            popInitialNotification: true,
+
+            /**
+             * (optional) default: true
+             * - Specified if permissions (ios) and token (android and ios) will requested or not,
+             * - if not, you must call PushNotificationsHandler.requestPermissions() later
+             * - if you are not using remote notification or do not have Firebase installed, use this:
+             *     requestPermissions: Platform.OS === 'ios'
+             */
+            requestPermissions: true,
+        });
+    }
+
+
+    useEffect(() => {
+        getPushToken()
+    }, [])
 
 
     async function getProfileDetails() {
@@ -1050,7 +1128,7 @@ const Home = () => {
                                     <View style={{ height: 400 }}>
 
                                         <TextInput
-                                            
+
                                             onChangeText={setNewWhishListName}
                                             placeholder='e.g. Summer Plans 2022'
                                             placeholderTextColor={'#7B7B7B'}
