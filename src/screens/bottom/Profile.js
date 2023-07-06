@@ -58,7 +58,7 @@ const Profile = (props) => {
 
 
     // "Timeline",
-    const tabs = ["Profile", "My Hostings", "Bookings","Timeline"];
+    const tabs = ["Profile", "My Hostings", "Bookings", "Timeline", "My Fellowship"];
 
     const happeningStatuses = ["underReview", "approved", "rejected", "cancelled"];
 
@@ -491,6 +491,96 @@ const Profile = (props) => {
         </>
     )
 
+    const FellowShipTab = () => (
+        <>
+            <FlatList
+                data={myBookings}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+                numColumns={2}
+                showsVerticalScrollIndicator={false}
+                columnWrapperStyle={{ justifyContent: 'space-between' }}
+                contentContainerStyle={{ paddingBottom: 500 }}
+                renderItem={({ item, index }) => {
+
+
+                    return (
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            // disabled={true}
+                            onPress={() => {
+                                return;
+                                switch (item.booking?.status) {
+
+                                    case 'approved':
+                                        navigateFromStack('BookingStack', 'ConfirmHappeningStatus', item.booking)
+                                        return;
+                                    case 'pending':
+                                        setBookingStatusAlertMsg('The host needs to approve your join request for the booking. ')
+                                        break
+                                    case 'awaiting 4 fellows':
+                                        navigateFromStack('BookingStack', 'AwaitingFellows')
+                                        return
+                                    case 'Reject':
+                                        setBookingStatusAlertMsg('The host has rejected your request for joining. ')
+                                        break
+                                    case 'Cancellation request pending':
+                                        setBookingStatusAlertMsg('Your cancellation request is under review.')
+                                        break
+                                    case 'cancelled':
+                                        setBookingStatusAlertMsg('This booking has been cancelled by you.')
+                                        break
+                                    default: break
+
+                                }
+                                // setBookingStatusAlert(true)
+
+                            }}
+                            style={{ width: "48%", marginTop: 20, }}>
+                            <View>
+                                <Image
+                                    // source={require('../../static_assets/content.png')}
+                                    source={item.addPhotosOfYourHappening ? { uri: typeof item.addPhotosOfYourHappening[0] == 'string' ? item.addPhotosOfYourHappening[0] : '' } : require('../../static_assets/content.png')}
+                                    style={{ width: '100%', height: 230, borderRadius: 10, }}
+                                />
+                                <View style={[styles.shadow, { position: 'absolute', bottom: 10, width: "85%", alignSelf: 'center', borderRadius: 20, backgroundColor: '#675AC1', }
+                                    // , index == 2 && { backgroundColor: '#FFA183' }, item == 'cancelled' && { backgroundColor: '#D94A55' }
+                                ]}
+                                >
+
+                                    <View style={[{ flexDirection: 'row', height: 35, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: 20, }, item == 'underReview' && { borderWidth: 3, borderColor: '#B9B1F0' }]}>
+                                        <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: item.status == 'happening canceled' ? 'red' : '#675AC1', textTransform: 'capitalize' }}>
+                                            {item.booking?.happeningId?.status == 'happening canceled' ? 'Cancelled' : item.booking?.happeningId?.status?.toLowerCase() == 'approved' ? 'Upcoming' : item.booking?.happeningId?.status}
+                                            {/* {index == 3 || 2 ? "view details" : index == 0 ? "under review" : "2 new requests"} */}
+                                        </Text>
+                                        {/* {index != 0 && <NextIcon />} */}
+                                    </View>
+                                </View>
+                            </View>
+                            <Text style={{ fontFamily: fonts.PMe, fontSize: 12, color: '#5D5760', marginTop: 10 }}>{item.booking?.happeningId?.happeningTitle}</Text>
+                            {
+                                item.booking?.happeningId?.status?.toLowerCase() == 'completed' &&
+
+                                <View
+                                    style={{ position: 'absolute', top: 8, right: 8, width: 100, overflow: 'visible', paddingHorizontal: 10, height: 30, borderRadius: 15, backgroundColor: acolors.primaryLight, borderColor: '#707070', alignItems: 'center', justifyContent: 'center' }}
+                                >
+                                    <Text style={{ fontFamily: fonts.PMe, fontSize: 13, color: 'white' }}>Review</Text>
+
+                                </View>
+                            }
+
+                        </TouchableOpacity>
+                    )
+                }}
+
+            />
+        </>
+    )
+
     const CrossBtn = () => (
         <TouchableOpacity
             onPress={() => {
@@ -649,7 +739,7 @@ const Profile = (props) => {
                     </TouchableOpacity>
                 </View>
             }
-            <View style={{ width: "90%", alignSelf: 'center',marginTop:getHeight(3),marginBottom:getHeight(2) }}>
+            <View style={{ width: "90%", alignSelf: 'center', marginTop: getHeight(3), marginBottom: getHeight(2) }}>
                 <Text style={{ fontFamily: fonts.PBo, fontSize: 28, color: acolors.primary }}>My Wall</Text>
             </View>
 
@@ -717,6 +807,7 @@ const Profile = (props) => {
                     <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                         <ScrollView
                             showsVerticalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={false}
                             horizontal={true}>
                             {
                                 tabs.map((v, i) => {
@@ -754,6 +845,10 @@ const Profile = (props) => {
                 {
                     selectedTab == "My Hostings" &&
                     <HostingTab />
+                }
+                {
+                    selectedTab == "My Fellowship" &&
+                    <FellowShipTab />
                 }
                 {
                     selectedTab == "Profile" &&
