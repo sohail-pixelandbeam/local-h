@@ -44,7 +44,7 @@ export default function ReviewStep8({ route }) {
             .then(data => {
                 if (data.status) {
                     setLoading(true);
-                    navigate('ReviewStep9')
+                    navigate('ReviewStep9', payload)
                 }
                 else {
                     alertRef.alertWithType("error", "Error", data.message);

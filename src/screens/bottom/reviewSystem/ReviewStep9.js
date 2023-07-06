@@ -1,13 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Text, Image, StatusBar, FlatList, ScrollView, BackHandler } from 'react-native'
 import { navigate } from '../../../../Navigations'
 import { acolors } from '../../../constants/colors'
 import { fonts } from '../../../constants/fonts'
 import Btn from '../../../components/verificationComponents/Btn'
+import { retrieveItem, storeItem } from '../../../utils/functions'
 
 
 
-export default function ReviewStep9() {
+export default function ReviewStep9({ route }) {
+
+    const params = route.params;
+
+    const doStoreReviewOnLocal = async () => {
+        let reviews = await retrieveItem('reviews') ?? [];
+        console.log('reviews', reviews);
+        reviews.push(params.happeningId);
+        storeItem('reviews', reviews)
+    }
+    useEffect(() => {
+        doStoreReviewOnLocal();
+    }, [])
 
     return (
         <View style={styles.contentContainer}>

@@ -56,9 +56,10 @@ const Profile = (props) => {
     const loginData = state.userData;
 
 
+    const [tempRev, setTempRev] = useState([]);
 
     // "Timeline",
-    const tabs = ["Profile", "My Hostings", "Bookings", "Timeline", "My Fellowship"];
+    const tabs = ["Profile", "My Hostings", "Bookings", "Timeline", "My Fellowships"];
 
     const happeningStatuses = ["underReview", "approved", "rejected", "cancelled"];
 
@@ -232,6 +233,7 @@ const Profile = (props) => {
             })
 
 
+
         // getLocationByIp();
     }, []);
 
@@ -243,6 +245,10 @@ const Profile = (props) => {
             getMyHostings();
 
         }
+        retrieveItem('reviews')
+            .then(data => {
+                setTempRev(data);
+            })
 
 
     }, [tabs == 'My Hostings', isFocused])
@@ -565,12 +571,23 @@ const Profile = (props) => {
                             {
                                 item.booking?.happeningId?.status?.toLowerCase() == 'completed' &&
 
-                                <View
+                                <TouchableOpacity
+                                    disabled={tempRev.includes(item.booking?.happeningId?._id) ? true : false}
+                                    onPress={() => {
+                                        const body = {
+                                            happeningId: item.booking?.happeningId?._id,
+                                            location: item.booking?.happeningId?.location?.coordinates?.length ? {
+                                                "type": "Point",
+                                                "coordinates": item.booking?.happeningId?.location?.coordinates
+                                            } : null,
+                                        }
+                                        navigate("ReviewStep1", body)
+                                    }}
                                     style={{ position: 'absolute', top: 8, right: 8, width: 100, overflow: 'visible', paddingHorizontal: 10, height: 30, borderRadius: 15, backgroundColor: acolors.primaryLight, borderColor: '#707070', alignItems: 'center', justifyContent: 'center' }}
                                 >
-                                    <Text style={{ fontFamily: fonts.PMe, fontSize: 13, color: 'white' }}>Review</Text>
+                                    <Text style={{ fontFamily: fonts.PMe, fontSize: 13, color: 'white' }}>{tempRev.includes(item.booking?.happeningId?._id) ? "Reviewed" : " Review"}</Text>
 
-                                </View>
+                                </TouchableOpacity>
                             }
 
                         </TouchableOpacity>
@@ -743,15 +760,9 @@ const Profile = (props) => {
                 <Text style={{ fontFamily: fonts.PBo, fontSize: 28, color: acolors.primary }}>My Wall</Text>
             </View>
 
-            <TouchableOpacity onPress={() => navigate("ReviewStep1", {
-                happeningId: "64a693f5721c70864f50d5c1",
-                location: {
-                    "type": "Point",
-                    "coordinates": [24.9888942, 67.09974869999999]
-                },
-            })} >
+            {/* <TouchableOpacity >
                 <Text style={{ color: 'black', fontSize: 20, alignSelf: 'center' }} >Fellow Rating & Review</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             {/* <View
                 style={{ width: 115, height: 115, alignSelf: 'center' }}
@@ -826,6 +837,7 @@ const Profile = (props) => {
                                             onPress={() => {
                                                 v == "My Hostings" && getMyHostings();
                                                 v == "Bookings" && getMyBookings();
+                                                v == "My Fellowships" && getMyBookings();
                                                 setSelectedTab(v)
 
                                             }}
@@ -856,7 +868,7 @@ const Profile = (props) => {
                     <HostingTab />
                 }
                 {
-                    selectedTab == "My Fellowship" &&
+                    selectedTab == "My Fellowships" &&
                     <FellowShipTab />
                 }
                 {

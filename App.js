@@ -291,15 +291,15 @@ function App() {
         name="HappeningsMap" component={HappeningsMap}
       /> */}
 
-      {/* {loggedIn == 1 &&
+      {loggedIn == 1 &&
         <Tab.Screen
           options={() => ({
-            tabBarLabel: () => null,
+            tabBarLabel: ({ color, focused }) => <Text style={{ ...styles.barText, color: color }}>Chats</Text>,
             tabBarIcon: ({ color }) => <ChatBtmIcon color={color} />,
           })}
           name="Profile" component={Chat}
         />
-      } */}
+      }
       {loggedIn == 1 &&
         <Tab.Screen
           options={() => ({

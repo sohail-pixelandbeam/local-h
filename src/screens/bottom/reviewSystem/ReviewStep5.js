@@ -11,18 +11,21 @@ import DropdownAlert from 'react-native-dropdownalert'
 
 var alertRef;
 export default function ReviewStep5({ route }) {
+
     const payload = route.params;
     const [loading, setLoading] = useState(false);
 
-
     const submitReview = () => {
+        navigate('ReviewStep9', payload);
+        return;
         setLoading(true)
         payload.reviewedAt = new Date().toString()
         apiRequest(payload, 'rating-and-review/fellow-review-a-host')
             .then(data => {
                 if (data.status) {
                     setLoading(false);
-                    navigate('ReviewStep9')
+                    navigate('ReviewStep9', payload);
+
                 }
                 else {
                     alertRef.alertWithType("error", "Error", data.message);
