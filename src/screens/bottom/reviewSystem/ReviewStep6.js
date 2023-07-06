@@ -85,13 +85,17 @@ export default function ReviewStep6({ route }) {
                     <View style={{ width: '90%', alignSelf: 'center', }}>
 
                         <TouchableOpacity onPress={() => setSelectedOpt('Extremely accurate')} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <View style={selectedOpt === 'Extremely accurate' ? styles.selected : styles.unselected} ></View>
+                            <View style={styles.unselected}>
+                                <View style={selectedOpt === 'Extremely accurate' && styles.selected} ></View>
+                            </View>
                             <Text style={styles.text} >Extremely accurate</Text>
                         </TouchableOpacity>
                         <View style={styles.line} />
 
                         <TouchableOpacity onPress={() => setSelectedOpt('Mostly accurate')} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <View style={selectedOpt === 'Mostly accurate' ? styles.selected : styles.unselected} ></View>
+                            <View style={styles.unselected}>
+                                <View style={selectedOpt === 'Mostly accurate' && styles.selected} ></View>
+                            </View>
                             <Text style={styles.text} >Mostly accurate</Text>
                         </TouchableOpacity>
                         <View style={styles.btnsBox}>
@@ -108,18 +112,22 @@ export default function ReviewStep6({ route }) {
                         <TextInput value={inputVal} onChangeText={(val) => setInputVal(val)} editable={selectedReasons.includes('other (Specify)')} style={styles.inputStyle} />
 
                         <TouchableOpacity onPress={() => setSelectedOpt('Not at all accurate')} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <View style={selectedOpt === 'Not at all accurate' ? styles.selected : styles.unselected} ></View>
+                            <View style={styles.unselected}>
+                                <View style={selectedOpt === 'Not at all accurate' && styles.selected} ></View>
+                            </View>
                             <Text style={styles.text} >Not at all accurate</Text>
                         </TouchableOpacity>
                         <View style={styles.line} />
 
                         <TouchableOpacity onPress={() => setSelectedOpt("I'm not sure")} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <View style={selectedOpt === "I'm not sure" ? styles.selected : styles.unselected} ></View>
+                            <View style={styles.unselected}>
+                                <View style={selectedOpt === "I'm not sure" && styles.selected} ></View>
+                            </View>
                             <Text style={styles.text}>I'm not sure</Text>
                         </TouchableOpacity>
 
                     </View>
-                    <View style={{ height: 300 }} />
+                    <View style={{ height: 320 }} />
                 </ScrollView>
 
             </View>
@@ -167,21 +175,22 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.16,
         shadowRadius: 1.51,
         elevation: 2,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     selected: {
-        width: 12,
-        height: 12,
+        width: 6,
+        height: 6,
         borderRadius: 6,
-        marginEnd: 10,
         backgroundColor: '#5D5760',
-        shadowColor: '#000000',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.16,
-        shadowRadius: 1.51,
-        elevation: 2,
+        // shadowColor: '#000000',
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 1,
+        // },
+        // shadowOpacity: 0.16,
+        // shadowRadius: 1.51,
+        // elevation: 2,
     },
     agreeBtn: {
         width: "100%", position: 'absolute', bottom: 0, height: 70,

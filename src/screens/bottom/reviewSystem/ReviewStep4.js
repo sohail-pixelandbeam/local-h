@@ -94,7 +94,7 @@ export default function ReviewStep4({ route }) {
             />
             <View style={styles.contentContainer}>
                 <ScrollView>
-                    <View style={{ width: '90%', alignSelf: 'center', }}>
+                    <View style={{ width: '95%', alignSelf: 'center', }}>
 
                         <View style={styles.imgUploadBox}>
                             <TouchableOpacity onPress={selectMultiplePictures} style={styles.plus}>
@@ -186,12 +186,15 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     imgsBox: {
+        width: '100%',
         backgroundColor: 'lightgray',
         borderRadius: 30,
         paddingVertical: 10,
-        paddingHorizontal: 30,
+        paddingHorizontal: 15,
         flexDirection: 'row',
         flexWrap: 'wrap',
+        justifyContent: 'center',
+        marginTop: 20,
     },
     imgBox: {
         width: 50,

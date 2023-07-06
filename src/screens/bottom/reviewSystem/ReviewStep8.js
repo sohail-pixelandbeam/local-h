@@ -89,7 +89,7 @@ export default function ReviewStep8({ route }) {
                             )
                         })}
                     </View>
-                    <View style={{ height: 300 }} ></View>
+                    <View style={{ height: 320 }} ></View>
                 </ScrollView>
 
             </View>
