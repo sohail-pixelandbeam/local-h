@@ -84,6 +84,7 @@ export default function ReviewStep3({ route }) {
                         } else {
                             alertRef.alertWithType('error', "Error", 'Please describe what happened');
                         }
+                        console.log('Step 3', payload)
                     }}
                     style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Next</Text>

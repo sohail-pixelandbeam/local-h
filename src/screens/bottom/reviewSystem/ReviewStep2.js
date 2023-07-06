@@ -124,6 +124,7 @@ export default function ReviewStep2({ route }) {
                         payload.rating_intaction_count = ratingInteraction;
                         payload.rating_punctuality_count = ratingPunctuality;
                         navigate("ReviewStep3", payload)
+                        console.log('Step 2', payload)
                     }}
                     style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Next</Text>

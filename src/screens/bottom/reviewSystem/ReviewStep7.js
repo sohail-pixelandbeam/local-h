@@ -28,6 +28,7 @@ var addressTextInputRef;
 
 
 export default function ReviewStep7({ props, route }) {
+    const payload = route.params;
 
     let [selectedBtn, setSelectedBtn] = useState('Yes')
 
@@ -142,14 +143,15 @@ export default function ReviewStep7({ props, route }) {
                 return
             }
 
-            const locationObj = {
-                latitude: loc.latitude,
-                longitude: loc.longitude,
-                latitudeDelta: 0.01,
-                longitudeDelta: 0.01,
-                locationTitle: ''
-            }
-            setUserCoords(locationObj)
+            // const locationObj = {
+            //     latitude: userCoords.latitude,
+            //     longitude: userCoords.longitude,
+            //     latitudeDelta: 0.01,
+            //     longitudeDelta: 0.01,
+            //     locationTitle: ''
+            // }
+            const locationObj = payload.location;
+            // setUserCoords(locationObj)
             console.log(locationObj, 'ye user ka address ha')
 
             var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + locationObj?.latitude + "," + locationObj?.longitude + "&key=" + googleMapsKey;
@@ -195,6 +197,7 @@ export default function ReviewStep7({ props, route }) {
 
 
     useEffect(() => {
+        setUserCoords(payload.location);
         handleUserLocation();
     }, [isFocused])
 
@@ -284,6 +287,9 @@ export default function ReviewStep7({ props, route }) {
                                             showsMyLocationButton={true}
                                             onRegionChangeComplete={region => {
                                                 setUserCoords(region)
+                                                console.log("selected Region", region)
+                                                setUserCoords(region)
+                                                payload.location = region
                                             }}
                                             region={userCoords}
                                             provider={Platform.OS == 'android' && PROVIDER_GOOGLE}
@@ -346,7 +352,11 @@ export default function ReviewStep7({ props, route }) {
                                                 listView: { backgroundColor: "#fff", },
                                                 description: { fontFamily: fonts.PMe, color: 'black' },
                                                 predefinedPlacesDescription: { color: 'black' },
-                                                container: { width: viewportWidth, alignSelf: "center", zIndex: 55555 }
+                                                container: { width: viewportWidth, alignSelf: "center", zIndex: 55555 },
+                                                textInput: {
+                                                    color: 'black',
+                                                },
+
                                             }}
                                             textInput={{ color: 'black' }}
                                             // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
@@ -509,7 +519,11 @@ export default function ReviewStep7({ props, route }) {
 
             <View style={styles.agreeBtn} >
                 <TouchableOpacity
-                    onPress={() => navigate('ReviewStep8', route.params)}
+                    onPress={() => {
+                        payload.confirmTheHappeningLocation = userAddress?.city + ", " + userAddress?.country;
+                        console.log('Step 7', payload)
+                        navigate('ReviewStep8', payload)
+                    }}
                     style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={{ color: '#292929', fontSize: 14, fontFamily: fonts.MRe }}>Next</Text>
                     <NextIcon style={{ marginLeft: 10 }} />

@@ -61,6 +61,7 @@ export default function ReviewStep6({ route }) {
             payload.extrimely_accurate = true
         } else if (selectedOpt === "Mostly accurate") {
             inputVal && selectedReasons.push(inputVal)
+            selectedReasons = selectedReasons.filter((e) => e !== 'other (Specify)')
             payload.mostly_accurate = selectedReasons;
         } else if (selectedOpt === "Not at all accurate") {
             payload.not_at_all_accurate = true;

@@ -20,7 +20,7 @@ export default function ReviewStep9() {
             <Image source={require('../../../assets/hurrah.png')} style={styles.img} />
 
             <View style={styles.btns} >
-                <Btn label='Done' onPress={() => navigate('ReviewStep1')} style={styles.btn} bgColor={acolors.primaryLight} />
+                <Btn label='Done' onPress={() => navigate('Profile')} style={styles.btn} bgColor={acolors.primaryLight} />
             </View>
 
 

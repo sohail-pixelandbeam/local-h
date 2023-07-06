@@ -654,13 +654,10 @@ const Profile = (props) => {
             </View>
 
             <TouchableOpacity onPress={() => navigate("ReviewStep1", {
-                happeningId: "64782983acf030ad8211a6d0",
+                happeningId: "64a693f5721c70864f50d5c1",
                 location: {
                     "type": "Point",
-                    "coordinates": [
-                        34.05223511,
-                        -118.24368311
-                    ]
+                    "coordinates": [24.9888942, 67.09974869999999]
                 },
             })} >
                 <Text style={{ color: 'black', fontSize: 20, alignSelf: 'center' }} >Fellow Rating & Review</Text>

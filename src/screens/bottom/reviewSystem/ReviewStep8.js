@@ -31,6 +31,7 @@ export default function ReviewStep8({ route }) {
     }
 
     const submitReview = () => {
+        setLoading(true);
         payload.Drinks = options.Drinks;
         payload.Food = options.Food;
         payload.Toilets = options.Toilets;
@@ -42,8 +43,8 @@ export default function ReviewStep8({ route }) {
         apiRequest(payload, 'rating-and-review/fellow-review-a-host')
             .then(data => {
                 if (data.status) {
-                    alertRef.alertWithType('success', "Success", "Request Submitted Successfully")
-                    navigation.navigate('ReviewStep9')
+                    setLoading(true);
+                    navigate('ReviewStep9')
                 }
                 else {
                     alertRef.alertWithType("error", "Error", data.message);
@@ -51,11 +52,9 @@ export default function ReviewStep8({ route }) {
                 }
             })
             .catch(err => {
-
                 setLoading(false)
                 alertRef.alertWithType("error", "Error", "Network Error");
             })
-        // navigate('ReviewStep9')
     }
 
     return (

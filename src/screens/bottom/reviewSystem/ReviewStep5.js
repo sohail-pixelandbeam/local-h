@@ -16,12 +16,13 @@ export default function ReviewStep5({ route }) {
 
 
     const submitReview = () => {
-        console.log(payload)
+        setLoading(true)
+        payload.reviewedAt = new Date().toString()
         apiRequest(payload, 'rating-and-review/fellow-review-a-host')
             .then(data => {
                 if (data.status) {
-                    alertRef.alertWithType('success', "Success", "Request Submitted Successfully")
-                    navigation.navigate('ReviewStep9')
+                    setLoading(false);
+                    navigate('ReviewStep9')
                 }
                 else {
                     alertRef.alertWithType("error", "Error", data.message);
@@ -29,7 +30,6 @@ export default function ReviewStep5({ route }) {
                 }
             })
             .catch(err => {
-
                 setLoading(false)
                 alertRef.alertWithType("error", "Error", "Network Error");
             })

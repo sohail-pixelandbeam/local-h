@@ -18,34 +18,13 @@ export default function ReviewStep1({ route }) {
     const ratingOptions = ['Disappointed', 'Not Bad', 'Good', 'Lovely', 'Super Lovely'];
     const msgs = ["We're sorry, you are dissapointed!", "We're glad you are not dissapointed!", "We're glad you had a good experience!", "We're glad you had a good experience!", "We're glad you had a good experience!",];
 
+
     const payload = {
-        "happeningId": "64782983acf030ad8211a6d0",
-        "rating_experience_count_no": 4,
-        "rating_communication_count": 5,
-        "rating_friendliness_count": 4,
-        "rating_punctuality_count": 3,
-        "rating_intaction_count": 5,
-        "write_a_public_review": "The organizer did a fantastic job.",
         "Add_your_Memories_to_the_Review": [],
         "extrimely_accurate": null,
         "mostly_accurate": [],
         "not_at_all_accurate": null,
         "im_not_sure": null,
-        "location": {
-            "type": "Point",
-            "coordinates": [
-                34.052235,
-                -118.243683
-            ]
-        },
-        "confirmTheHappeningLocation": "Los Angeles, CA",
-        "Drinks": "Yes",
-        "Food": "No",
-        "Toilets": "No",
-        "Wifi": "Yes",
-        "Parking": "No",
-        "wereTheseAmenitiesAtTheHappening": "Yes, all the amenities were provided.",
-        "reviewedAt": "2023-06-14T12:00:00.000Z",
         "isDeleted": false
     }
     return (
@@ -96,9 +75,11 @@ export default function ReviewStep1({ route }) {
                 <TouchableOpacity
                     onPress={() => {
                         payload.happeningId = route.params.happeningId;
-                        payload.location = route.params.location;
+                        payload.location = { "latitude": route.params.location.coordinates[0], "latitudeDelta": 0.01, "locationTitle": "", "longitude": route.params.location.coordinates[1], "longitudeDelta": 0.01 };
                         payload.rating_experience_count_no = selectedRating;
                         navigate('ReviewStep2', payload)
+                        console.log('Step 1', payload)
+
                     }
                     }
                     style={{ flexDirection: 'row', alignItems: 'center' }}>
