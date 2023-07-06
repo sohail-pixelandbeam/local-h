@@ -10,6 +10,7 @@ import DocumentPicker from 'react-native-document-picker';
 import DropdownAlert from 'react-native-dropdownalert';
 import { apiFormDataRequest } from '../../../utils/apiCalls'
 import Loader from '../../../utils/Loader'
+import { uploadMultipleFiles } from '../../../utils/functions'
 var alertRef;
 
 
@@ -22,34 +23,47 @@ export default function ReviewStep4({ route }) {
     const [loading, setLoading] = useState(false);
     const MAX_PHOTOS = 8;
 
-    const selectMultiplePictures = async () => {
-        try {
-            const results = await DocumentPicker.pickMultiple({
-                type: [DocumentPicker.types.images],
-            });
 
-            let updatedPics = [...selectedPics]; // Create a copy of the existing selected pictures
 
-            // Add the newly picked pictures to the updatedPics array
-            updatedPics = updatedPics.concat(results);
-
-            // Limit the selection to a maximum of 8 pictures
-            if (updatedPics.length > MAX_PHOTOS) {
-                updatedPics = updatedPics.slice(0, MAX_PHOTOS);
-                alertRef.alertWithType('warn', "Warning", 'Maximum limit of 8 photos reached');
-
-            }
-
-            // Update the selectedPics state with the updated array
-            setSelectedPics(updatedPics);
-
-            // Do something with the updatedPics array
-        } catch (error) {
-            // Handle any error that occurred during document picking
-            console.log(error);
-            alertRef.alertWithType('error', "Error", 'Sorry, Failed to upload photos.');
+    async function selectMultiplePictures() {
+        const res = await uploadMultipleFiles('allFiles');
+        let arr = res;
+        for (let key in res) {
+            arr.push(res[key])
         }
-    };
+        setSelectedPics(arr);
+        // forceUpdate();
+    }
+
+
+    // const selectMultiplePictures = async () => {
+    //     try {
+    //         const results = await DocumentPicker.pickMultiple({
+    //             type: [DocumentPicker.types.images],
+    //         });
+
+    //         let updatedPics = [...selectedPics]; // Create a copy of the existing selected pictures
+
+    //         // Add the newly picked pictures to the updatedPics array
+    //         updatedPics = updatedPics.concat(results);
+
+    //         // Limit the selection to a maximum of 8 pictures
+    //         if (updatedPics.length > MAX_PHOTOS) {
+    //             updatedPics = updatedPics.slice(0, MAX_PHOTOS);
+    //             alertRef.alertWithType('warn', "Warning", 'Maximum limit of 8 photos reached');
+
+    //         }
+
+    //         // Update the selectedPics state with the updated array
+    //         setSelectedPics(updatedPics);
+
+    //         // Do something with the updatedPics array
+    //     } catch (error) {
+    //         // Handle any error that occurred during document picking
+    //         console.log(error);
+    //         alertRef.alertWithType('error', "Error", 'Sorry, Failed to upload photos.');
+    //     }
+    // };
 
     const savePhotos = () => {
         if (selectedPics.length > 1) {
@@ -57,6 +71,7 @@ export default function ReviewStep4({ route }) {
             apiFormDataRequest(selectedPics, 'imageUpload')
                 .then(data => {
                     if (data.status) {
+                        console.log('this is daa ',data.data)
                         setLoading(false)
                         payload.Add_your_Memories_to_the_Review = data.data;
                         navigate('ReviewStep5', payload)
@@ -105,10 +120,22 @@ export default function ReviewStep4({ route }) {
 
                         <View style={styles.imgsBox}>
                             {
-                                imgs.map((e, i) => {
+                                !selectedPics.length && imgs.map((e, i) => {
                                     return (
                                         <View key={i} style={styles.imgBox} >
                                             {selectedPics[i] && <Image source={{ uri: selectedPics[i].uri }} style={styles.imgStyle} />}
+                                        </View>
+                                    )
+                                })
+                            }
+
+                            {
+                                selectedPics?.map((v, i) => {
+                                    console.log('v', v)
+                                    return (
+                                        <View key={i} style={styles.imgBox} >
+                                            <Image
+                                                source={{ uri: v.uri }} style={styles.imgStyle} />
                                         </View>
                                     )
                                 })
