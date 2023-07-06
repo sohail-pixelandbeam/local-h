@@ -7,5 +7,7 @@ export const acolors = {
     lighGrey: "#DADADA",
     primaryLight: '#5B4DBC',
     storyTitleContainerBg: 'rgba(91, 77, 188,0.7)',
+    mapPointerBg: 'rgba(91, 77, 188,0.5)',
+    theme2: '#FFA183',
     mapPointerBg: 'rgba(91, 77, 188,0.5)'
 }

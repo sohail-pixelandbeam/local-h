@@ -743,6 +743,15 @@ const Profile = (props) => {
                 <Text style={{ fontFamily: fonts.PBo, fontSize: 28, color: acolors.primary }}>My Wall</Text>
             </View>
 
+            <TouchableOpacity onPress={() => navigate("ReviewStep1", {
+                happeningId: "64a693f5721c70864f50d5c1",
+                location: {
+                    "type": "Point",
+                    "coordinates": [24.9888942, 67.09974869999999]
+                },
+            })} >
+                <Text style={{ color: 'black', fontSize: 20, alignSelf: 'center' }} >Fellow Rating & Review</Text>
+            </TouchableOpacity>
 
             {/* <View
                 style={{ width: 115, height: 115, alignSelf: 'center' }}
