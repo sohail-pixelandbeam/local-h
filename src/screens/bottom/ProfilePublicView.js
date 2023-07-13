@@ -17,6 +17,7 @@ const ProfilePublicView = (props) => {
     const { state } = useContext(Context);
     const [profileData, setProfileData] = useState({});
     const [loading, setLoading] = useState(false);
+    const [data, setData] = useState();
     const userId = props.route.params?.data?.userProfileId?.userId?._id ?? props.route.params?.params?.data?.userProfileId?.userId?._id ?? ''
 
     async function getUserToken() {
@@ -34,19 +35,20 @@ const ProfilePublicView = (props) => {
         //     "token": await getUserToken()
         // }
         const url = 'publicProfile/' + userId
-        console.log('url', url)
+        // console.log('url', url)
         apiRequest('', url, 'GET')
             .then(data => {
                 // console.log('data ===', data)
                 setLoading(false);
                 if (data.status) {
+                    setData(data)
                     setProfileData(data.data)
-                    console.log('userDetails isiasdsadasdasaa', data?.data?.userProfile)
+                    // console.log('userDetails isiasdsadasdasaa', data?.data?.userProfile)
                 }
             })
             .catch(err => {
                 setLoading(false)
-                console.log(err)
+                // console.log(err)
             })
     };
 
@@ -99,9 +101,9 @@ const ProfilePublicView = (props) => {
                         <Text style={styles.aboutHeading}>Languages Known</Text>
                         <Text style={styles.aboutDesc}>{profileData?.language?.toString()}</Text>
                     </View>
-                    {/* <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between' }}>
+                    <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between' }}>
                         <Text style={styles.heading}>Reviews</Text>
-                        <View style={{ flexDirection: 'row', width: "50%", alignSelf: 'center', backgroundColor: '#EEEEEE', borderRadius: 40 }}>
+                        {/* <View style={{ flexDirection: 'row', width: "50%", alignSelf: 'center', backgroundColor: '#EEEEEE', borderRadius: 40 }}>
                             <TouchableOpacity
                                 onPress={() => setTabs('host')}
                                 style={{ width: "49%", height: 23, backgroundColor: tabs == 'host' ? '#5B4DBC' : '#EEEEEE', justifyContent: 'center', alignItems: 'center', borderRadius: 40 }}>
@@ -112,15 +114,15 @@ const ProfilePublicView = (props) => {
                                 style={{ width: "49%", height: 23, backgroundColor: tabs == 'fellow' ? '#5B4DBC' : '#EEEEEE', justifyContent: 'center', alignItems: 'center', borderRadius: 40 }}>
                                 <Text style={{ fontFamily: fonts.MSBo, fontSize: 8, color: tabs == 'fellow' ? '#FFFFFF' : '#222' }}>As Fellow</Text>
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
                     </View> 
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <RattingStartIcon style={{ marginTop: -4 }} />
-                        <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: '#F65997', marginLeft: 5 }}>4.8 </Text>
-                        <Text style={{ fontFamily: fonts.PMe, fontSize: 12, color: '#5D5760', marginLeft: 8 }}>68 reviews</Text>
+                        <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: '#F65997', marginLeft: 5 }}>{data?.averageRating} </Text>
+                        <Text style={{ fontFamily: fonts.PMe, fontSize: 12, color: '#5D5760', marginLeft: 8 }}>{data?.fellowReviewAHost?.length} review{data?.fellowReviewAHost?.length>1&&"s"} </Text>
                     </View>
 
-                    {tabs !== 'fellow' &&
+                    {/* {tabs !== 'fellow' &&
                         [{ rattings: 4.8, width: "70%", text: "Communication" }, { rattings: 3.2, width: "60%", text: "Punctuality" }, { rattings: 4.1, width: "65%", text: "Interaction" }, { rattings: 3.8, width: "62%", text: "Friendliness" }]
                             .map((v, i) => (
                                 <View
@@ -134,10 +136,10 @@ const ProfilePublicView = (props) => {
                                     <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: '#5D5760', marginLeft: 10 }}>{v.text}</Text>
                                 </View>
                             ))
-                    }
+                    } */}
 
 
-                    <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between', alignItems: 'center' }}>
+                    {/* <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between', alignItems: 'center' }}>
                         <Image
                             style={{}}
                             source={require('../../static_assets/peopleJoinedImages.png')}
@@ -147,26 +149,36 @@ const ProfilePublicView = (props) => {
                             style={{ width: "32%", height: 23, borderWidth: 1, borderColor: '#707070', justifyContent: 'center', alignItems: 'center', borderRadius: 40 }}>
                             <Text style={{ fontFamily: fonts.PSBo, fontSize: 8, color: '#5B4DBC' }}>show all 68 reviews</Text>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
 
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{ width: "80%", borderRadius: 12, borderWidth: 1, borderRadius: 20, borderColor: '#707070', padding: 10, paddingRight: 15, flexDirection: 'row', marginTop: 20 }}>
-                            <Image
-                                source={require('../../static_assets/p6.png')}
-                            />
-                            <View style={{ width: "81%", marginLeft: 10, }}>
-                                <Text style={{ fontFamily: fonts.PMe, fontSize: 14, color: '#5D5760', }}>What a cool project this was. We spent 6 hours on and in the ocean, in the</Text>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                                        <RattingStartIcon width={12} height={11} style={{ marginTop: -4 }} />
-                                        <Text style={{ fontFamily: fonts.PBo, fontSize: 9, color: '#F65997', marginLeft: 5 }}>4.8 </Text>
-                                    </View>
-                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#5A4CBA', }}>View Replies</Text>
-                                </View>
-                            </View>
+{
+    data?.fellowReviewAHost?.map((v,i)=>{
+        console.log('.use',v.userProfileId)
+        return(
+            <View style={{ flexDirection: 'row' }}>
+            <View style={{ width: "80%", borderRadius: 12, borderWidth: 1, borderRadius: 20, borderColor: '#707070', padding: 10, paddingRight: 15, flexDirection: 'row', marginTop: 20 }}>
+                <Image
+                    source={{uri:v.userProfileId?.profileImage}}
+                    style={{width:40,height:40,borderRadius:20}}
+                    // source={require('../../static_assets/p6.png')}
+                />
+                <View style={{ width: "81%", marginLeft: 10, }}>
+                    <Text style={{ fontFamily: fonts.PMe, fontSize: 14, color: '#5D5760', }}>{v.write_a_public_review}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                            <RattingStartIcon width={12} height={11} style={{ marginTop: -4 }} />
+                            <Text style={{ fontFamily: fonts.PBo, fontSize: 9, color: '#F65997', marginLeft: 5 }}>{v.rating_experience_count_no} </Text>
                         </View>
+                        {/* <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#5A4CBA', }}>View Replies</Text> */}
                     </View>
-*/}
+                </View>
+            </View>
+        </View>
+        )
+    })
+}
+                   
+
                     {/* <Text style={styles.heading}>Photos</Text>
                     <View style={{ flexDirection: 'row', width: "100%" }}>
                         <View style={{ width: "60%", flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>

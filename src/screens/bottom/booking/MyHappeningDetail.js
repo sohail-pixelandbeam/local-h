@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StatusBar, View, Text, Image, SafeAreaView, StyleSheet, TouchableOpacity, TextInput, ScrollView, } from 'react-native'
 import ReactNativeModal from 'react-native-modal'
-import { goBack } from '../../../../Navigations'
+import { goBack, navigate } from '../../../../Navigations'
 import { BackIcon, ChatIcon, CrossIcon, NextIcon, RequestSubmittedSvg } from '../../../components/Svgs'
 import { fonts } from '../../../constants/fonts'
 import { capitalizeFirstLetter } from '../../../utils/functions'
@@ -29,6 +29,7 @@ const MyHappeningDetails = (props) => {
 
     const params = props.route?.params?.params;
 
+    console.log('params___',params);
 
 
 
@@ -150,6 +151,215 @@ const MyHappeningDetails = (props) => {
     }, [])
 
 
+    const RenderDetails = () => {
+        return (
+            <View>
+                <View style={{ flexDirection: 'row', width: "100%", justifyContent: 'center', marginTop: 20 }}>
+                    {
+                        showCancellItems ?
+                            <>
+                                <View
+                                    style={styles.activeTab}>
+                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 33, color: 'white' }}>3</Text>
+                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white', marginTop: -12, textAlign: 'center' }}>Pending{"\n"}Requests</Text>
+                                </View>
+                                <Text style={{ fontFamily: fonts.PSBo, fontSize: 24, color: '#5B4DBC', marginLeft: 20 }}>Unfortunately{"\n"}min fellows{"\n"}aren’t met</Text>
+                            </>
+                            :
+                            <>
+                                <TouchableOpacity
+                                    onPress={() => setTabs('pendings')}
+                                    style={tabs == 'pendings' ? styles.activeTab : styles.inActiveTab}>
+                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 33, color: tabs == 'pendings' ? 'white' : '#5B4DBC', }}>{data?.pendingFellow?.length}</Text>
+                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: tabs == 'pendings' ? 'white' : '#5B4DBC', marginTop: -8, textAlign: 'center' }}>Pending{"\n"}Requests</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => setTabs('joined')}
+                                    style={[tabs == 'joined' ? styles.activeTab : styles.inActiveTab, { marginLeft: 12 }]}>
+                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 33, color: tabs == 'joined' ? 'white' : '#5B4DBC', }}>{data?.totalJoinFellow}</Text>
+                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: tabs == 'joined' ? 'white' : '#5B4DBC', marginTop: -12, textAlign: 'center' }}>Fellows{"\n"}Joined</Text>
+                                </TouchableOpacity>
+                            </>
+                    }
+
+                </View>
+
+                {
+                    showCancellItems ?
+                        <View style={{ width: "75%", backgroundColor: '#D94A55', borderRadius: 17, marginTop: 20, paddingVertical: 7, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>
+                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 11, color: 'white', textAlign: 'center' }}>This Happening has been cancelled</Text>
+                        </View>
+                        :
+                        <View style={{ width: "75%", borderWidth: 1, borderColor: '#707070', backgroundColor: '#EBC2FC', borderRadius: 17, marginTop: 20, paddingVertical: 7, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>
+                            <Text style={{ fontFamily: fonts.PSBo, fontSize: 11, color: '#5B4DBC', textAlign: 'center' }}>{data?.requireFellow} more fellows for this booking to start</Text>
+                        </View>
+                }
+
+
+                {
+                    tabs == 'pendings' &&
+                    <>
+                        <Text style={[styles.heading, { marginTop: 10, color: '#FFA183' }]}>Join{"\n"}Requests</Text>
+                        {
+                            data?.pendingFellow?.map((v, i) => {
+
+                                return (
+                                    <View
+                                        key={i}
+                                        style={[styles.shadow, { width: '100%', borderRadius: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 15, marginTop: 10, minHeight: 60 }]}>
+                                        <Image
+                                            style={{ width: 42, height: 42, borderRadius: 42 / 2 }}
+                                            source={{ uri: v?.profileAndTimeline?.profileImage }}
+                                        />
+                                        <Text style={{ fontFamily: fonts.PBo, fontSize: 12, color: "#2A2A2A", marginLeft: 10 }}>{v?.userId?.firstName} {v?.userId?.lastName} </Text>
+                                        <View style={{ position: 'absolute', right: 10 }}>
+                                            <TouchableOpacity
+                                                onPress={() => doAcceptRequest(v.profileAndTimeline.userId, v)}
+                                                style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#5B4DBC' }}>
+                                                <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white' }}>Accept</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() => doRejectRequest(v.profileAndTimeline.userId, v)}
+
+                                                style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginTop: 5 }}>
+                                                <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: '#5B4DBC' }}>Reject</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                )
+                            })
+                        }
+
+                        {/* <View style={[styles.shadow, { width: '100%', borderRadius: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 15, marginTop: 10, minHeight: 60 }]}>
+                                <Image
+                                    style={{ width: 42, height: 42, borderRadius: 42 / 2 }}
+                                    source={require('../../../static_assets/profileImg.png')}
+                                />
+                                <Text style={{ fontFamily: fonts.PBo, fontSize: 12, color: "#2A2A2A", marginLeft: 10 }}>Ahmed Akram</Text>
+                                <View style={{ position: 'absolute', right: 10 }}>
+                                    <TouchableOpacity style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#5B4DBC' }}>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white' }}>Accept</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginTop: 5 }}>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: '#5B4DBC' }}>Reject</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View> */}
+                    </>
+                }
+                {
+                    tabs == 'joined' &&
+                    <>
+                        <Text style={[styles.heading, { marginTop: 10, color: '#FFA183' }]}>Fellows</Text>
+                        {
+                            data?.approvedFellow?.map((v, i) => {
+                                console.log(v.profileAndTimeline)
+                                return (
+                                    <View
+                                        key={i}
+                                        style={[styles.shadow, { width: '100%', borderRadius: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 15, marginTop: 10, minHeight: 60 }]}>
+                                        <Image
+                                            style={{ width: 42, height: 42, borderRadius: 42 / 2 }}
+                                            source={{ uri: v?.profileAndTimeline?.profileImage }}
+                                        />
+                                        <Text style={{ fontFamily: fonts.PBo, fontSize: 12, color: "#2A2A2A", marginLeft: 10 }}>{v?.userId?.firstName} {v?.userId?.lastName} </Text>
+                                        <View style={{ position: 'absolute', right: 10 }}>
+                                            <TouchableOpacity style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#5B4DBC' }}>
+                                                <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white' }}>Message</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    setRemovingUser(v);
+                                                    setRemoveModal(true);
+                                                }}
+                                                style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginTop: 5 }}>
+                                                <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: '#5B4DBC' }}>Remove</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                )
+                            })
+                        }
+
+                    </>
+                }
+                {
+                    tabs == 'cancelled' &&
+                    <>
+                        <Text style={[styles.heading, { marginTop: 10, color: '#FFA183' }]}>Fellows</Text>
+                        {
+                            [1, 2, 3, 4].map((v, i) => {
+                                return (
+                                    <View
+                                        key={i}
+                                        style={[styles.shadow, { width: '100%', borderRadius: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 15, marginTop: 10, minHeight: 60 }]}>
+                                        <Image
+                                            style={{ width: 42, height: 42, borderRadius: 42 / 2 }}
+                                            source={require('../../../static_assets/profileImg.png')}
+                                        />
+                                        <Text style={{ fontFamily: fonts.PBo, fontSize: 12, color: "#2A2A2A", marginLeft: 10 }}>Ahmed Akram</Text>
+                                        <View style={{ position: 'absolute', right: 10 }}>
+                                            <TouchableOpacity style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginTop: 5 }}>
+                                                <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: '#5B4DBC' }}>send message</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                )
+                            })
+                        }
+
+
+                    </>
+                }
+
+
+
+            </View>
+        )
+    }
+
+    const RenderCompletedDetails = () => {
+        return (
+            <>
+                <Text style={[styles.heading, { marginTop: 10, color: '#FFA183' }]}>Fellows</Text>
+                {
+                    data?.approvedFellow?.map((v, i) => {
+                        return (
+                            <View
+                                key={i}
+                                style={[styles.shadow, { width: '100%', borderRadius: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 15, marginTop: 10, minHeight: 60 }]}>
+                                <Image
+                                    style={{ width: 42, height: 42, borderRadius: 42 / 2 }}
+                                    source={{ uri: v?.profileAndTimeline?.profileImage }}
+                                />
+                                <Text style={{ fontFamily: fonts.PBo, fontSize: 12, color: "#2A2A2A", marginLeft: 10 }}>{v?.userId?.firstName} {v?.userId?.lastName} </Text>
+                                <View style={{ position: 'absolute', right: 10 }}>
+                                    <TouchableOpacity style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#5B4DBC' }}>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white' }}>Message</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            // console.log('item',v);
+                                            // console.log('happeningId',params._id);
+                                            navigate('HostReviewFellow',{
+                                                _id : params?._id,
+                                                fellowId : v.userId?._id
+                                            });
+                                        }}
+                                        style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginTop: 5 }}>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: '#5B4DBC' }}>Review</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        )
+                    })
+                }
+
+            </>
+        )
+    }
+
+
     return (
         <View style={{ backgroundColor: '#ffffff', flex: 1, }}>
             <GeneralStatusBar backgroundColor='#fff' barStyle='dark-content' />
@@ -192,168 +402,11 @@ const MyHappeningDetails = (props) => {
                         </View>
 
                     </View>
-
-                    <View style={{ flexDirection: 'row', width: "100%", justifyContent: 'center', marginTop: 20 }}>
-                        {
-                            showCancellItems ?
-                                <>
-                                    <View
-                                        style={styles.activeTab}>
-                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 33, color: 'white' }}>3</Text>
-                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white', marginTop: -12, textAlign: 'center' }}>Pending{"\n"}Requests</Text>
-                                    </View>
-                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 24, color: '#5B4DBC', marginLeft: 20 }}>Unfortunately{"\n"}min fellows{"\n"}aren’t met</Text>
-                                </>
-                                :
-                                <>
-                                    <TouchableOpacity
-                                        onPress={() => setTabs('pendings')}
-                                        style={tabs == 'pendings' ? styles.activeTab : styles.inActiveTab}>
-                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 33, color: tabs == 'pendings' ? 'white' : '#5B4DBC', }}>{data?.pendingFellow?.length}</Text>
-                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: tabs == 'pendings' ? 'white' : '#5B4DBC', marginTop: -8, textAlign: 'center' }}>Pending{"\n"}Requests</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={() => setTabs('joined')}
-                                        style={[tabs == 'joined' ? styles.activeTab : styles.inActiveTab, { marginLeft: 12 }]}>
-                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 33, color: tabs == 'joined' ? 'white' : '#5B4DBC', }}>{data?.totalJoinFellow}</Text>
-                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: tabs == 'joined' ? 'white' : '#5B4DBC', marginTop: -12, textAlign: 'center' }}>Fellows{"\n"}Joined</Text>
-                                    </TouchableOpacity>
-                                </>
-                        }
-
-                    </View>
-
                     {
-                        showCancellItems ?
-                            <View style={{ width: "75%", backgroundColor: '#D94A55', borderRadius: 17, marginTop: 20, paddingVertical: 7, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>
-                                <Text style={{ fontFamily: fonts.PSBo, fontSize: 11, color: 'white', textAlign: 'center' }}>This Happening has been cancelled</Text>
-                            </View>
+                        params?.status?.toLowerCase() == 'completed' ? <RenderCompletedDetails />
                             :
-                            <View style={{ width: "75%", borderWidth: 1, borderColor: '#707070', backgroundColor: '#EBC2FC', borderRadius: 17, marginTop: 20, paddingVertical: 7, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>
-                                <Text style={{ fontFamily: fonts.PSBo, fontSize: 11, color: '#5B4DBC', textAlign: 'center' }}>{data?.requireFellow} more fellows for this booking to start</Text>
-                            </View>
+                            <RenderDetails />
                     }
-
-
-                    {
-                        tabs == 'pendings' &&
-                        <>
-                            <Text style={[styles.heading, { marginTop: 10, color: '#FFA183' }]}>Join{"\n"}Requests</Text>
-                            {
-                                data?.pendingFellow?.map((v, i) => {
-
-                                    return (
-                                        <View
-                                            key={i}
-                                            style={[styles.shadow, { width: '100%', borderRadius: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 15, marginTop: 10, minHeight: 60 }]}>
-                                            <Image
-                                                style={{ width: 42, height: 42, borderRadius: 42 / 2 }}
-                                                source={{ uri: v?.profileAndTimeline?.profileImage }}
-                                            />
-                                            <Text style={{ fontFamily: fonts.PBo, fontSize: 12, color: "#2A2A2A", marginLeft: 10 }}>{v?.userId?.firstName} {v?.userId?.lastName} </Text>
-                                            <View style={{ position: 'absolute', right: 10 }}>
-                                                <TouchableOpacity
-                                                    onPress={() => doAcceptRequest(v.profileAndTimeline.userId, v)}
-                                                    style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#5B4DBC' }}>
-                                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white' }}>Accept</Text>
-                                                </TouchableOpacity>
-                                                <TouchableOpacity
-                                                    onPress={() => doRejectRequest(v.profileAndTimeline.userId, v)}
-
-                                                    style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginTop: 5 }}>
-                                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: '#5B4DBC' }}>Reject</Text>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                    )
-                                })
-                            }
-
-                            {/* <View style={[styles.shadow, { width: '100%', borderRadius: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 15, marginTop: 10, minHeight: 60 }]}>
-                                <Image
-                                    style={{ width: 42, height: 42, borderRadius: 42 / 2 }}
-                                    source={require('../../../static_assets/profileImg.png')}
-                                />
-                                <Text style={{ fontFamily: fonts.PBo, fontSize: 12, color: "#2A2A2A", marginLeft: 10 }}>Ahmed Akram</Text>
-                                <View style={{ position: 'absolute', right: 10 }}>
-                                    <TouchableOpacity style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#5B4DBC' }}>
-                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white' }}>Accept</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginTop: 5 }}>
-                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: '#5B4DBC' }}>Reject</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View> */}
-                        </>
-                    }
-                    {
-                        tabs == 'joined' &&
-                        <>
-                            <Text style={[styles.heading, { marginTop: 10, color: '#FFA183' }]}>Fellows</Text>
-                            {
-                                data?.approvedFellow?.map((v, i) => {
-                                    console.log(v.profileAndTimeline)
-                                    return (
-                                        <View
-                                            key={i}
-                                            style={[styles.shadow, { width: '100%', borderRadius: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 15, marginTop: 10, minHeight: 60 }]}>
-                                            <Image
-                                                style={{ width: 42, height: 42, borderRadius: 42 / 2 }}
-                                                source={{ uri: v?.profileAndTimeline?.profileImage }}
-                                            />
-                                            <Text style={{ fontFamily: fonts.PBo, fontSize: 12, color: "#2A2A2A", marginLeft: 10 }}>{v?.userId?.firstName} {v?.userId?.lastName} </Text>
-                                            <View style={{ position: 'absolute', right: 10 }}>
-                                                <TouchableOpacity style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#5B4DBC' }}>
-                                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white' }}>Message</Text>
-                                                </TouchableOpacity>
-                                                <TouchableOpacity
-                                                    onPress={() => {
-                                                        setRemovingUser(v);
-                                                        setRemoveModal(true);
-                                                    }}
-                                                    style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginTop: 5 }}>
-                                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: '#5B4DBC' }}>Remove</Text>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                    )
-                                })
-                            }
-
-                        </>
-                    }
-                    {
-                        tabs == 'cancelled' &&
-                        <>
-                            <Text style={[styles.heading, { marginTop: 10, color: '#FFA183' }]}>Fellows</Text>
-                            {
-                                [1, 2, 3, 4].map((v, i) => {
-                                    return (
-                                        <View
-                                            key={i}
-                                            style={[styles.shadow, { width: '100%', borderRadius: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 15, marginTop: 10, minHeight: 60 }]}>
-                                            <Image
-                                                style={{ width: 42, height: 42, borderRadius: 42 / 2 }}
-                                                source={require('../../../static_assets/profileImg.png')}
-                                            />
-                                            <Text style={{ fontFamily: fonts.PBo, fontSize: 12, color: "#2A2A2A", marginLeft: 10 }}>Ahmed Akram</Text>
-                                            <View style={{ position: 'absolute', right: 10 }}>
-                                                <TouchableOpacity style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginTop: 5 }}>
-                                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: '#5B4DBC' }}>send message</Text>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                    )
-                                })
-                            }
-
-
-                        </>
-                    }
-
-
-
-
 
 
 
@@ -496,6 +549,8 @@ const styles = StyleSheet.create({
         position: 'absolute', top: -20, right: -20, width: 43, height: 43, borderRadius: 43 / 2,
         backgroundColor: 'white', elevation: 2, alignItems: 'center', justifyContent: 'center'
     },
+
+    
 
 })
 export default MyHappeningDetails

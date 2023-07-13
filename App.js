@@ -105,9 +105,24 @@ import ReviewStep7 from './src/screens/bottom/reviewSystem/ReviewStep7';
 import ReviewStep8 from './src/screens/bottom/reviewSystem/ReviewStep8';
 import ReviewStep9 from './src/screens/bottom/reviewSystem/ReviewStep9';
 
+import EditReviewStep1 from './src/screens/bottom/reviewSystem/FellowEditReview/EditReviewStep1';
+import EditReviewStep2 from './src/screens/bottom/reviewSystem/FellowEditReview/EditReviewStep2';
+import EditReviewStep3 from './src/screens/bottom/reviewSystem/FellowEditReview/EditReviewStep3';
+import EditReviewStep4 from './src/screens/bottom/reviewSystem/FellowEditReview/EditReviewStep4';
+import EditReviewStep5 from './src/screens/bottom/reviewSystem/FellowEditReview/EditReviewStep5';
+import EditReviewStep6 from './src/screens/bottom/reviewSystem/FellowEditReview/EditReviewStep6';
+import EditReviewStep7 from './src/screens/bottom/reviewSystem/FellowEditReview/EditReviewStep7';
+import EditReviewStep8 from './src/screens/bottom/reviewSystem/FellowEditReview/EditReviewStep8';
+import EditReviewStep9 from './src/screens/bottom/reviewSystem/FellowEditReview/EditReviewStep9';
+import EditReviewReportStep1 from './src/screens/bottom/reviewSystem/FellowEditReview/EditReviewReportStep1';
+import EditReviewReportStep2 from './src/screens/bottom/reviewSystem/FellowEditReview/EditReviewReportStep2';
+import EditReviewReportStep3 from './src/screens/bottom/reviewSystem/FellowEditReview/EditReviewReportStep3';
+import EditReviewReportStep4 from './src/screens/bottom/reviewSystem/FellowEditReview/EditReviewReportStep4';
+
 import { fonts } from './src/constants/fonts';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { apiRequest } from './src/utils/apiCalls';
+import HostReviewFellow from './src/screens/bottom/reviewSystem/HostReviewFellow';
 
 
 const Stack = createStackNavigator();
@@ -455,6 +470,23 @@ function App() {
             <Stack.Screen name="AccountDeActivated" component={AccountDeActivated} />
             <Stack.Screen name="StoryDetails" component={StoryDetails} />
             <Stack.Screen name="HappeningsMap" component={HappeningsMap} />
+            {/* HOST REVIEW FELLOW */}
+            <Stack.Screen name="HostReviewFellow" component={HostReviewFellow} />
+            {/* FELLOW EDIT REVIEW */}
+            {/* Review System Screens */}
+            <Stack.Screen name="EditReviewStep1" component={EditReviewStep1} />
+            <Stack.Screen name="EditReviewStep2" component={EditReviewStep2} />
+            <Stack.Screen name="EditReviewStep3" component={EditReviewStep3} />
+            <Stack.Screen name="EditReviewStep4" component={EditReviewStep4} />
+            <Stack.Screen name="EditReviewStep5" component={EditReviewStep5} />
+            <Stack.Screen name="EditReviewStep6" component={EditReviewStep6} />
+            <Stack.Screen name="EditReviewStep7" component={EditReviewStep7} />
+            <Stack.Screen name="EditReviewStep8" component={EditReviewStep8} />
+            <Stack.Screen name="EditReviewStep9" component={EditReviewStep9} />
+             <Stack.Screen name="EditReviewReportStep1" component={EditReviewReportStep1} />
+            <Stack.Screen name="EditReviewReportStep2" component={EditReviewReportStep2} />
+            <Stack.Screen name="EditReviewReportStep3" component={EditReviewReportStep3} />
+            <Stack.Screen name="EditReviewReportStep4" component={EditReviewReportStep4} />
 
           </Stack.Navigator>
         }

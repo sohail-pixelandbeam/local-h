@@ -27,7 +27,7 @@ export default function ReviewStep4({ route }) {
 
     async function selectMultiplePictures() {
         const res = await uploadMultipleFiles('allFiles');
-        let arr = res;
+        let arr = [];
         for (let key in res) {
             arr.push(res[key])
         }

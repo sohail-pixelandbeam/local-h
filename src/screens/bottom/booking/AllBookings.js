@@ -7,6 +7,8 @@ import { Context } from '../../../Context/DataContext'
 import { apiRequest } from '../../../utils/apiCalls'
 import { capitalizeFirstLetter, formatDateToString } from '../../../utils/functions';
 import GeneralStatusBar from '../../../components/GernalStatusBar'
+import { acolors } from '../../../constants/colors'
+import Loader from '../../../utils/Loader'
 
 const AllBookings = (props) => {
 
@@ -35,10 +37,9 @@ const AllBookings = (props) => {
     };
 
     useEffect(() => {
-        getHostingDetails()
-
-
+        getHostingDetails();
     }, [])
+
 
 
     return (
@@ -48,6 +49,9 @@ const AllBookings = (props) => {
                 // // translucent={false}
                 backgroundColor={"white"}
             />
+            {
+                loading && <Loader/>
+            }
             <TouchableOpacity
                 onPress={() => goBack()}
                 style={{ padding: 20 }} >
@@ -128,7 +132,7 @@ const AllBookings = (props) => {
                                         happeningDetails?.approvedFellow?.map((v, i) => {
                                             // console.log('fellowLength', fellowLength)
                                             return (
-                                                <View style={{ flexDirection: 'row', marginTtop:10 }}>
+                                                <View style={{ flexDirection: 'row', marginTtop: 10 }}>
                                                     <Text style={[styles.peopleWhoJoinedText]}>{v?.profileAndTimeline?.userId?.firstName ?? ""} </Text>
                                                     {/* {fellowLength !== i + 1 && v?.profileAndTimeline?.userId?.firstName && <Text style={[styles.peopleWhoJoinedText]}>, </Text>} */}
                                                 </View>
@@ -145,28 +149,37 @@ const AllBookings = (props) => {
                                 />
                                 <Text style={styles.peopleWhoJoinedText}>Akram, Ton, Vamsi and 4 others</Text> */}
                                 {happeningDetails?.approvedFellow && happeningDetails?.approvedFellow[0] && <Text style={styles.seeAll}>See all</Text>}
+                                {
+                                        item.status?.toLowerCase() !== 'completed' &&
+                                
                                 <TouchableOpacity
-                                    style={[styles.bookingStatusContainer, { borderColor: '#E53535', marginTop:30 }]}>
+                                    style={[styles.bookingStatusContainer, { borderColor: '#E53535', marginTop: 30 }]}>
                                     <Text style={[styles.bookingStatus, { color: '#E53535' }]}>{happeningDetails?.totalJoinFellow} joined Awaiting {happeningDetails?.requireFellow} more </Text>
                                 </TouchableOpacity>
+}
                             </View>
-                            <View style={{ width: "49%", marginLeft: 10 }}>
-                                <View style={{ width: "70%", height: 118, alignSelf: 'center', alignItems: 'center', justifyContent: 'center', borderRadius: 32, backgroundColor: '#5B4DBC', }}>
-                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 33, color: 'white', }}>{happeningDetails?.joinRequest}</Text>
-                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white', marginTop: -5, textAlign: 'center' }}>Join{"\n"}Requests</Text>
-                                </View>
-                                <TouchableOpacity
-                                    onPress={() => navigate('BookingCancelling', {
-                                        params: props.route.params?.params,
-                                        data: happeningDetails
-                                    })}
-                                    // style={{ position: 'absolute', bottom: 0, alignSelf: 'center', padding: 5 }}
-                                    style={{ alignSelf: 'flex-end', padding: 5, marginRight: 20, marginTop: 5 }}
-                                >
-                                    <Text style={{ fontFamily: fonts.PSBo, fontSize: 11, color: '#5B4DBC', textDecorationLine: 'underline' }}>Cancel </Text>
-                                </TouchableOpacity>
+                            {
+                                item.status?.toLowerCase() == 'completed' ?
+                                <Text style={{fontFamily:fonts.PRe,fontSize:20,color:acolors.primaryLight}}>Completed</Text>
+                                :
+                                <View style={{ width: "49%", marginLeft: 10 }}>
+                                    <View style={{ width: "70%", height: 118, alignSelf: 'center', alignItems: 'center', justifyContent: 'center', borderRadius: 32, backgroundColor: '#5B4DBC', }}>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 33, color: 'white', }}>{happeningDetails?.joinRequest}</Text>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white', marginTop: -5, textAlign: 'center' }}>Join{"\n"}Requests</Text>
+                                    </View>
+                                    <TouchableOpacity
+                                        onPress={() => navigate('BookingCancelling', {
+                                            params: props.route.params?.params,
+                                            data: happeningDetails
+                                        })}
+                                        // style={{ position: 'absolute', bottom: 0, alignSelf: 'center', padding: 5 }}
+                                        style={{ alignSelf: 'flex-end', padding: 5, marginRight: 20, marginTop: 5 }}
+                                    >
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 11, color: '#5B4DBC', textDecorationLine: 'underline' }}>Cancel </Text>
+                                    </TouchableOpacity>
 
-                            </View>
+                                </View>
+                            }
 
                         </View>
 

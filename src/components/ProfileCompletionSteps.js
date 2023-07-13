@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
 import {
     StyleSheet, View, Text, TouchableOpacity, Image,
-    TextInput, FlatList, ScrollView, StatusBar, SafeAreaView, Platform, Switch, RefreshControl, Keyboard,
-    KeyboardAvoidingView
+    TextInput, ScrollView, Platform, Switch, Keyboard,
 } from 'react-native'
-import { BackIcon, CrossIcon, EditPencilIcon, FilterIcon, HeartWhiteIcon, PlusIcon, SearchIcon, TickIcon, TickIconWhite, HeartFilled } from '../components/Svgs'
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import Entypo from 'react-native-vector-icons/Entypo'
+import { BackIcon, CrossIcon, EditPencilIcon,TickIcon, } from '../components/Svgs'
+
 
 import { fonts } from '../constants/fonts';
 import { acolors } from '../constants/colors';
@@ -15,15 +13,14 @@ import PrivacyPicker from '../components/PrivacyPicker';
 
 import { getUserLocation, getWidth, retrieveItem, storeItem, uploadSingleFile, useForceUpdate } from '../utils/functions';
 import Loader from '../utils/Loader';
-import DropdownAlert from 'react-native-dropdownalert';
+
 import { urls } from '../utils/Api_urls';
 import { apiRequest } from '../utils/apiCalls';
 import { Context } from '../Context/DataContext'
 
 import RangeSlider from 'rn-range-slider';
-import { navigate, navigateFromStack } from '../../Navigations';
-import HappeningFilterModal from '../common/HappeningFilterModal';
-import GeneralStatusBar from '../components/GernalStatusBar';
+import { navigate } from '../../Navigations';
+
 import { useIsFocused } from '@react-navigation/native'
 import AlertPopup from '../common/AlertPopup'
 
@@ -37,10 +34,9 @@ var textInputRef;
 const ProfileCompletionSteps = () => {
 
 
-    const isFocused = useIsFocused()
 
     const forceUpdate = useForceUpdate();
-    const { state, setUserGlobal, userProfileData, setHappeningSubmissionDataGlobal, setWhishListsGlobal } = useContext(Context)
+    const { state, setUserGlobal, userProfileData } = useContext(Context)
     const [loading, setLoading] = useState(false);
     const [modalLoading, setModalLoading] = useState(false);
     const [popup1, setPopup1] = useState(false);
@@ -72,7 +68,6 @@ const ProfileCompletionSteps = () => {
 
     // USER PROFILE DATA STATES TO STORE ON SERVER
     const [language, setLanguage] = useState('English');
-    const [refreshing, setRefreshing] = React.useState(false);
     const [profilePic, setProfilePic] = useState('');
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
@@ -90,17 +85,13 @@ const ProfileCompletionSteps = () => {
     const [displayProfile, setDisplayProfile] = useState(false);
     const [alertHappening, setAlertHappening] = useState(false);
 
-
-
-    const [filterModal, setFilterModal] = useState(false);
     const [bio, setBio] = useState('');
 
-    const [allHappenings, setAllHappenings] = useState([]);
     const [bioCount, setBioCount] = useState(0);
 
-    const [newWhishListName, setNewWhishListName] = useState('');
-    const [whishListHappeningId, setWhishListHappeningId] = useState('');
-    const [wishlistId, setWishlistId] = useState('');
+
+
+
 
 
     async function getProfileDetails() {
@@ -124,88 +115,7 @@ const ProfileCompletionSteps = () => {
                 setLoading(false)
                 console.log(err)
             })
-    };
-
-    async function getHappeningDataFromServer(refresh = false) {
-
-        if (!refresh) setLoading(true);
-        // const userLocation = await getUserLocation();
-        // const reqObj = { latitude: userLocation?.latitude, longitude: userLocation?.longitude, };
-        // showAllhappning
-        // setLoading(true);
-        apiRequest('', 'happening/getAllHappning', "GET")
-            .then(data => {
-                console.log(data.data)
-                setLoading(false);
-                setRefreshing(false)
-                if (data.status) {
-                    let data1 = data?.data;
-                    setAllHappenings(data1?.reverse());
-                    // setHappeningTodayData(data.today);
-                    // setHappeningNearbyData(data.nearHappenings)
-                }
-
-            })
-            .catch(err => {
-                console.log('errorr', err)
-                setLoading(false)
-            })
-    }
-
-
-    async function getLocalStories(refresh = false) {
-        if (!refresh) setLoading(true);
-        apiRequest('', 'get-all-blog', "GET")
-            .then(data => {
-                setLoading(false);
-                setRefreshing(false)
-                if (data.status) {
-                    let data1 = data?.data
-                    setLocalStories(data1?.reverse());
-                }
-            })
-            .catch(err => {
-                console.log('errorr', err)
-                setLoading(false)
-            })
-    }
-
-
-    async function getHappeningSubmissionData(refresh = false) {
-
-        setLoading(true);
-        apiRequest('', 'getHappeningSubmissionData', "GET")
-            .then(data => {
-                setLoading(false);
-                if (data.status) {
-                    setHappeningSubmissionDataGlobal(data.data)
-                }
-            })
-            .catch(err => {
-                console.log('errorr', err)
-                setLoading(false)
-            })
-    }
-
-
-
-    function getWhishLists() {
-
-        setCreateWishListModal(false)
-        apiRequest('', 'wishlist/wishlist-list', 'GET')
-            .then(data => {
-                setLoading(false);
-                if (data.status == true) {
-                    setWhishListsGlobal(data.data ? data.data.reverse() : []);
-                }
-                else {
-                    alertRef.alertWithType('error', 'Error', data.message);
-                    return
-                }
-
-            })
-    }
-
+    };   
 
     function getBioWordCount(text) {
         if (text == "") {
@@ -357,9 +267,9 @@ const ProfileCompletionSteps = () => {
             storeItem('profile_temp_data', localProfileData)
             return;
         }
-        localProfileData['' + key + ''] = value
+        localProfileData['' + key + ''] = value;
         localProfileData.popupCase = value.nextCase;
-        storeItem('profile_temp_data', localProfileData)
+        storeItem('profile_temp_data', localProfileData);
 
     }
 
@@ -405,62 +315,7 @@ const ProfileCompletionSteps = () => {
         let profileData = await retrieveItem('profile_data')
         userProfileData(profileData)
         setProfileData(profileData);
-    }
-
-    const onRefresh = React.useCallback(() => {
-        setRefreshing(true);
-        getHappeningDataFromServer(true)
-        // wait(2000).then(() => setRefreshing(false));
-    }, []);
-
-
-    async function getLocation() {
-        let loc = await getUserLocation();
-    }
-
-
-
-
-
-    function doFilter(body) {
-
-        // const body = {
-        //     // themeOfYourHappening: theme,
-        //     startTime: fromTime,
-        //     endTime: endTime
-        // }
-        console.log('___body___', body)
-        setLoading(true)
-        apiRequest(body, 'search-and-filter/search-happenings', 'GET')
-            .then(data => {
-                // console.log('data___', data)
-                setLoading(false)
-                if (data.status) {
-                    setAllHappenings(data?.data.reverse());
-                }
-
-            })
-
-    }
-
-    function searchHappening(keyword) {
-
-        const body = {
-            keyword: keyword,
-        }
-        setLoading(true)
-        apiRequest(body, 'search-and-filter/search-happenings', 'GET')
-            .then(data => {
-                setLoading(false)
-                if (data.status) {
-                    setAllHappenings(data?.data.reverse());
-                }
-            })
-            .catch(err => {
-                setLoading(false)
-            })
-
-    }
+    }   
 
 
     useEffect(() => {
@@ -474,9 +329,6 @@ const ProfileCompletionSteps = () => {
                     makeStaticArrays();
                     getLoginAndProfileDataFromLocal();
                     checkProfileCompletionSteps()
-                    FilterHeader.showCrossBtn = true;
-                    // getProfileDetails();
-                    // getWhishLists();
 
                 }
             })
@@ -498,12 +350,7 @@ const ProfileCompletionSteps = () => {
 
     }, [])
 
-    useEffect(() => {
-        getHappeningDataFromServer(true);
-        getLocalStories(true)
-    }, [isFocused])
-
-
+  
 
     const PopupButton = ({ onPress, title, btnStyle }) => (
         <TouchableOpacity
@@ -903,22 +750,7 @@ const ProfileCompletionSteps = () => {
         </View>
     )
 
-    const FilterHeader = (props) => (
-        <View style={{ width: "100%", flexDirection: 'row', justifyContent: 'space-between', }}>
-            <Text style={{ fontFamily: fonts.PSBo, fontSize: 20, color: '#5D5760', }}>{props.title}</Text>
-            {
-                props.showCrossBtn &&
-                <TouchableOpacity
-                    onPress={() => {
-                        setFilterModal(false)
-                    }}
-                    style={{ width: 28, height: 28, borderRadius: 28 / 2, backgroundColor: '#F08F8F', alignItems: 'center', justifyContent: 'center' }}>
-                    <CrossIcon width={10} height={18} color="#241414" />
-                </TouchableOpacity>
-            }
-
-        </View>
-    )
+    
 
     return (
 

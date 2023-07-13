@@ -50,6 +50,7 @@ const Profile = (props) => {
     const [fellows, setFellows] = useState([]);
     const [seeAllModal, setSeeAllModal] = useState(false);
     const [isGuest, setIsGuest] = useState(false);
+    const [fellowship, setFellowship] = useState([]);
 
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -62,6 +63,12 @@ const Profile = (props) => {
     const tabs = ["Profile", "My Hostings", "Bookings", "Timeline", "My Fellowships"];
 
     const happeningStatuses = ["underReview", "approved", "rejected", "cancelled"];
+    const fellowshipStatuses = ["live","completed","cancelled"];
+    const fellowshipStatusesColor = {
+        live : 'green',
+        completed: 'orange',
+        cancelled: 'red'
+    }
 
     const happeningStatusesText = {
         underReview: {
@@ -205,6 +212,43 @@ const Profile = (props) => {
                 console.log(err)
             })
     };
+    
+    async function getFellowShip(refreshing = false) {
+        !refreshing && setLoading(true);
+        // console.log('getMyHosting/' + state.userData._id)
+        apiRequest('', 'booking/get-fellow-ship-booking', 'GET')
+            .then(data => {
+                console.log('fellowship',data.data)
+                setLoading(false);
+                setRefreshing(false)
+                if (data.status) {
+                    setFellowship(data.data)
+                }
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            })
+    };
+
+    const getEditReview = (item) => {
+        const body = {
+            reviewedBy_userId : state.userData._id,
+            happeningId:item.happeningId?._id,
+        }
+        apiRequest(body, 'rating-and-review/get-review','GET')
+        .then(data=>{
+            if(data.status){
+
+            }
+            else {
+                alertRef.alertWithType('error','Error',data.message)
+            }
+        })
+
+    }
+
+
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
@@ -221,10 +265,9 @@ const Profile = (props) => {
         setLoading(true);
         retrieveItem('login_data')
             .then(data => {
-                console.log('login_data', data);
                 if (data) {
                     getProfileDetails();
-                    getMyHostings();
+                    // getMyHostings();
                 }
                 else {
                     setIsGuest(true)
@@ -243,7 +286,7 @@ const Profile = (props) => {
             forceUpdate()
             getMyBookings();
             getMyHostings();
-
+            getFellowShip();
         }
         retrieveItem('reviews')
             .then(data => {
@@ -450,6 +493,8 @@ const Profile = (props) => {
                             activeOpacity={1}
                             // disabled={true}
                             onPress={() => {
+                                // console.log('item___',item);
+                                // return;
                                 item.status == 'happening canceled' ? navigateFromStack('BookingStack', 'MyHappeningDetails', { params: 'cancelled' }) :
                                     navigateFromStack('BookingStack', 'AllBookings', item)
                             }}
@@ -468,7 +513,6 @@ const Profile = (props) => {
                                     <View style={[{ flexDirection: 'row', height: 35, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: 20, }, item == 'underReview' && { borderWidth: 3, borderColor: '#B9B1F0' }]}>
                                         <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: item.status == 'happening canceled' ? 'red' : '#675AC1', textTransform: 'capitalize' }}>
                                             {item.status == 'happening canceled' ? 'Cancelled' : item.status}
-                                            {/* {index == 3 || 2 ? "view details" : index == 0 ? "under review" : "2 new requests"} */}
                                         </Text>
                                         {/* {index != 0 && <NextIcon />} */}
                                     </View>
@@ -484,11 +528,16 @@ const Profile = (props) => {
                                 </Text>
                                 {/* <EditPencilIcon /> */}
                             </View>
+                            {
+                                item.status?.toLowerCase() == 'approved' || item.status?.toLowerCase() == 'underReview' ?
+                            
                             <TouchableOpacity
                                 onPress={() => navigate('EditHappening', item)}
                                 style={{ position: 'absolute', top: -10, right: 0, backgroundColor: 'rgba(255,255,255,1)', elevation: 4, borderRadius: 35 / 2, width: 35, height: 35, alignItems: 'center', justifyContent: 'center', shadowOpacity: 0.5, shadowColor: 'rgba(0,0,0,0.5)' }} >
                                 <EditPencilIcon />
                             </TouchableOpacity>
+                            :null
+                }
                         </TouchableOpacity>
                     )
                 }}
@@ -500,7 +549,7 @@ const Profile = (props) => {
     const FellowShipTab = () => (
         <>
             <FlatList
-                data={myBookings}
+                data={fellowship}
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
@@ -550,29 +599,29 @@ const Profile = (props) => {
                             <View>
                                 <Image
                                     // source={require('../../static_assets/content.png')}
-                                    source={item.addPhotosOfYourHappening ? { uri: typeof item.addPhotosOfYourHappening[0] == 'string' ? item.addPhotosOfYourHappening[0] : '' } : require('../../static_assets/content.png')}
+                                    source={item.happeningId?.addPhotosOfYourHappening ? { uri: typeof item.happeningId?.addPhotosOfYourHappening[0] == 'string' ? item.happeningId?.addPhotosOfYourHappening[0] : '' } : require('../../static_assets/content.png')}
                                     style={{ width: '100%', height: 230, borderRadius: 10, }}
                                 />
-                                <View style={[styles.shadow, { position: 'absolute', bottom: 10, width: "85%", alignSelf: 'center', borderRadius: 20, backgroundColor: '#675AC1', }
-                                    // , index == 2 && { backgroundColor: '#FFA183' }, item == 'cancelled' && { backgroundColor: '#D94A55' }
+                                <View style={[styles.shadow, { 
+                                    position: 'absolute', bottom: 10,right:10, width: "65%", alignSelf: 'center', borderRadius: 20, backgroundColor: '#675AC1',
+                                 }
+                                
                                 ]}
                                 >
 
-                                    <View style={[{ flexDirection: 'row', height: 35, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: 20, }, item == 'underReview' && { borderWidth: 3, borderColor: '#B9B1F0' }]}>
-                                        <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: item.status == 'happening canceled' ? 'red' : '#675AC1', textTransform: 'capitalize' }}>
-                                            {item.booking?.happeningId?.status == 'happening canceled' ? 'Cancelled' : item.booking?.happeningId?.status?.toLowerCase() == 'approved' ? 'Upcoming' : item.booking?.happeningId?.status}
-                                            {/* {index == 3 || 2 ? "view details" : index == 0 ? "under review" : "2 new requests"} */}
+                                    <View style={[{ flexDirection: 'row', height: 35, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: 20,borderWidth:3,borderColor:fellowshipStatusesColor[item.happeningId?.status] }, item == 'underReview' && { borderWidth: 3, borderColor: '#B9B1F0' }]}>
+                                        <Text style={{ fontFamily: fonts.PRe, fontSize: 14, color: '#2222222', textTransform: 'capitalize' }}>
+                                            {item?.happeningId?.status == 'happening canceled' ? 'Cancelled' : item?.happeningId?.status?.toLowerCase() == 'approved' ? 'Upcoming' : item?.happeningId?.status}
                                         </Text>
-                                        {/* {index != 0 && <NextIcon />} */}
                                     </View>
                                 </View>
                             </View>
-                            <Text style={{ fontFamily: fonts.PMe, fontSize: 12, color: '#5D5760', marginTop: 10 }}>{item.booking?.happeningId?.happeningTitle}</Text>
+                            <Text style={{ fontFamily: fonts.PMe, fontSize: 12, color: '#5D5760', marginTop: 10 }}>{capitalizeFirstLetter( item.happeningId?.happeningTitle)}</Text>
                             {
-                                item.booking?.happeningId?.status?.toLowerCase() == 'completed' &&
+                                item?.happeningId?.status?.toLowerCase() == 'completed' &&
 
                                 <TouchableOpacity
-                                    disabled={tempRev.includes(item.booking?.happeningId?._id) ? true : false}
+                                    disabled={item.is_reviewed ? true : false}
                                     onPress={() => {
                                         const body = {
                                             happeningId: item.booking?.happeningId?._id,
@@ -585,7 +634,29 @@ const Profile = (props) => {
                                     }}
                                     style={{ position: 'absolute', top: 8, right: 8, width: 100, overflow: 'visible', paddingHorizontal: 10, height: 30, borderRadius: 15, backgroundColor: acolors.primaryLight, borderColor: '#707070', alignItems: 'center', justifyContent: 'center' }}
                                 >
-                                    <Text style={{ fontFamily: fonts.PMe, fontSize: 13, color: 'white' }}>{tempRev.includes(item.booking?.happeningId?._id) ? "Reviewed" : " Review"}</Text>
+                                    <Text style={{ fontFamily: fonts.PMe, fontSize: 13, color: 'white' }}>{item.is_reviewed? 'Reviewed': 'Review'}</Text>
+
+                                </TouchableOpacity>
+                            }
+                            {
+                                item?.is_reviewed &&
+
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        // setEditReviewItem(item);
+                                        getEditReview(item)
+                                        // const body = {
+                                        //     happeningId: item?._id,
+                                        //     location: item.location?.coordinates?.length ? {
+                                        //         "type": "Point",
+                                        //         "coordinates": item.booking?.happeningId?.location?.coordinates
+                                        //     } : null,
+                                        // }
+                                    // navigate("EditReviewStep1", body)
+                                }}
+                                    style={{ position: 'absolute', top: 45, right: 8, width: 100,backgroundColor:'white', overflow: 'visible', paddingHorizontal: 10, height: 30, borderRadius: 15, borderWidth:3,  borderColor: '#222222', alignItems: 'center', justifyContent: 'center' }}
+                                >
+                                    <Text style={{ fontFamily: fonts.PRe, fontSize: 13, color: '#222222' }}>{"Edit Review"}</Text>
 
                                 </TouchableOpacity>
                             }
@@ -837,7 +908,7 @@ const Profile = (props) => {
                                             onPress={() => {
                                                 v == "My Hostings" && getMyHostings();
                                                 v == "Bookings" && getMyBookings();
-                                                v == "My Fellowships" && getMyBookings();
+                                                v == "My Fellowships" && getFellowShip();
                                                 setSelectedTab(v)
 
                                             }}
