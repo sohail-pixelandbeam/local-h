@@ -852,11 +852,21 @@ const HappeningDetails = (props) => {
             />
 
             <View style={[styles.shadow, { backgroundColor: 'white', width: "100%", alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', position: 'absolute', bottom: 0, alignItems: 'center', paddingVertical: 20, paddingHorizontal: 20, borderTopRightRadius: 15, borderTopLeftRadius: 15 }]}>
-                <View
+                <TouchableOpacity
+                    onPress={() => {
+                        console.log('params___', happeningDetails)
+                        const user = happeningDetails?.userProfileId.userId;
+
+                        navigate('Conversation', {
+                            user: {
+                                ...user, profileImage: happeningDetails?.userProfileId?.profileImage
+                            }
+                        })
+                    }}
                     style={{ flexDirection: 'row', alignItems: 'center', }}>
                     <ChatIcon />
                     <Text style={{ fontFamily: fonts.PSBo, fontSize: 16, color: '#5B4DBC', marginLeft: 10 }}>Chat with{"\n"}host</Text>
-                </View>
+                </TouchableOpacity>
 
                 <TouchableOpacity
                     // disabled

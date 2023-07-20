@@ -63,6 +63,7 @@ export default function HostReviewFellow({ route }) {
                 alertRef.alertWithType('success','Success',data.message);
                 navigate('Profilee')
             }
+            else alertRef.alertWithType('error','Error',data.message);
         })
         .catch(err=>{
             setLoading(false);

@@ -2,6 +2,7 @@ import React from 'react'
 import { View, TouchableOpacity, Image, Text, StyleSheet } from 'react-native'
 import { fonts } from '../constants/fonts'
 import { LikesNotifIcon } from './Svgs'
+import { getTimeAgo } from '../utils/functions'
 
 
 
@@ -32,6 +33,55 @@ export const ReviewedHappeningTimeLine = ({ containerStyle, cardTitle, title, re
 
         </View>
     </TouchableOpacity>
+)
+
+export const GernalTimeLine = ({ containerStyle, cardTitle, title, reviewText, reviewDesc, data }) => (
+    <TouchableOpacity
+        activeOpacity={0.9} style={[{ width: "100%" }, containerStyle]}>
+        <View style={{ marginLeft: 44, paddingHorizontal: 15, paddingVertical: 15, backgroundColor: 'white', elevation: 2, borderRadius: 20, shadowColor: 'rgb(0,0,0,0.77)', shadowOpacity: 0.1, shadowOffset: { width: 0.5, height: 0.5 }, marginTop: 10 }}>
+            {data?.heading && <Text style={[styles.cardTitle]}>{data?.heading}</Text>}
+            {data?.titile && <Text style={styles.headingTitle}>{data?.titile}</Text>}
+
+            {
+                data?.rating_experience_count_no &&
+                <View View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5, width: "100%", justifyContent: 'space-between', marginLeft: -4 }}>
+                    <View style={{ flexDirection: 'row', }}>
+                        {
+                            [1, 2, 3, 4, 5].map((v, i) => (
+                                <View style={v <= data?.rating_experience_count_no ? styles.ratingCircleActive : styles.ratingCircleInActive}></View>
+                            ))
+                        }
+                    </View>
+                    <Text style={[styles.rattingText, { fontSize: 6, fontFamily: fonts.MBo }]}>{getTimeAgo(data?.timestamp)}</Text>
+                </View>
+            }
+            <View style={[styles.seperator, { marginLeft: 0, width: "100%", marginTop: 12, marginBottom: 12 }]}></View>
+
+            {data?.titile_1 && <Text style={[styles.headingTitle, { fontSize: 10, }]}>{data?.titile_1}</Text>}
+
+            {
+                data?.image &&
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10 }}>
+                    {
+                        data?.image?.map((v, i) => {
+                            return (
+                                <Image
+                                    style={{ width: 50, height: 50, borderRadius: 7 }}
+                                    source={{ uri: v }}
+                                />
+                            )
+                        })
+                    }
+                </View>
+            }
+            {data?.discription && <Text style={[styles.notifDesc, { width: "90%", }]}>{data?.discription}</Text>}
+            {/* <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
+                <LikesNotifIcon />
+                <Text style={{ fontFamily: fonts.MSBo, fontSize: 11, color: '#222222', marginLeft: 5 }}>271</Text>
+            </View> */}
+
+        </View>
+    </TouchableOpacity >
 )
 
 export const SubmitHappeningTimeLine = ({ containerStyle }) => (
@@ -103,9 +153,9 @@ export const LiveHappeningTimeLine = ({ containerStyle, cardTitle, title, }) => 
 
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5, width: "100%", justifyContent: 'space-between', marginLeft: -4 }}>
                 <Text style={[styles.headingTitle, { width: "80%" }]}>{title}</Text>
-                <View style={{ flexDirection: 'row',alignItems:'center' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={{ fontFamily: fonts.MSBo, fontSize: 7, color: '#222222' }}>LIVE</Text>
-                    <View style={{ width: 7, height: 7, borderRadius: 7 / 2, backgroundColor: '#5EBC4D',marginLeft:5 }} />
+                    <View style={{ width: 7, height: 7, borderRadius: 7 / 2, backgroundColor: '#5EBC4D', marginLeft: 5 }} />
                 </View>
             </View>
             <View style={[styles.seperator, { marginLeft: 0, width: "100%", marginTop: 12, marginBottom: 12 }]}></View>
@@ -129,7 +179,7 @@ export const UpdatedPhotoTimeLine = ({ containerStyle, title, desc }) => (
             </View>
             <View style={[styles.seperator, { marginLeft: 0, width: "100%", marginTop: 12, marginBottom: 12 }]}></View>
             <Image
-                style={{width:102,height:102,borderRadius:102/2,marginTop:10,alignSelf:'center'}}
+                style={{ width: 102, height: 102, borderRadius: 102 / 2, marginTop: 10, alignSelf: 'center' }}
                 source={require('../static_assets/profileLarge.png')}
             />
         </View>

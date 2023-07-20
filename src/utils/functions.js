@@ -296,6 +296,45 @@ export function getWidth(w) {
   return PixelRatio.roundToNearestPixel((width * elemWidth) / 100);
 }
 
+export function getTimeAgo(date) {
+  const MINUTE = 60 * 1000; // milliseconds in a minute
+  const HOUR = 60 * MINUTE; // milliseconds in an hour
+  const DAY = 24 * HOUR; // milliseconds in a day
+  const WEEK = 7 * DAY; // milliseconds in a week
+  const MONTH = 30 * DAY; // approximate milliseconds in a month
+  const YEAR = 365 * DAY; // approximate milliseconds in a year
+
+  const currentTime = new Date().getTime();
+  const pastTime = new Date(date).getTime();
+  const timeDiff = currentTime - pastTime;
+
+  if (timeDiff < MINUTE) {
+    return 'just now';
+  } else if (timeDiff < HOUR) {
+    const minutes = Math.floor(timeDiff / MINUTE);
+    return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  } else if (timeDiff < DAY) {
+    const hours = Math.floor(timeDiff / HOUR);
+    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  } else if (timeDiff < WEEK) {
+    const days = Math.floor(timeDiff / DAY);
+    return `${days} day${days > 1 ? 's' : ''} ago`;
+  } else if (timeDiff < MONTH) {
+    const weeks = Math.floor(timeDiff / WEEK);
+    return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+  } else if (timeDiff < YEAR) {
+    const months = Math.floor(timeDiff / MONTH);
+    return `${months} month${months > 1 ? 's' : ''} ago`;
+  } else {
+    const years = Math.floor(timeDiff / YEAR);
+    return `${years} year${years > 1 ? 's' : ''} ago`;
+  }
+}
+
+// Example usage:
+const pastDate = '2023-07-15T12:30:00Z';
+const timeAgo = getTimeAgo(pastDate);
+console.log(timeAgo); // Output: "2 days ago"
 
 
 // export async function uploadMultipleFiles(fileType = 'photo') {

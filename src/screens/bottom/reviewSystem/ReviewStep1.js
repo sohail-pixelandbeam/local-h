@@ -74,8 +74,9 @@ export default function ReviewStep1({ route }) {
             <View style={styles.agreeBtn} >
                 <TouchableOpacity
                     onPress={() => {
-                        payload.happeningId = route.params.happeningId;
-                        payload.location = { "latitude": route.params.location.coordinates[0], "latitudeDelta": 0.01, "locationTitle": "", "longitude": route.params.location.coordinates[1], "longitudeDelta": 0.01 };
+                        payload.happeningId = route.params?.happeningId;
+                        let location = route.params?.location?.coordinates
+                        payload.location = { "latitude": location ? location[0] : '', "latitudeDelta": 0.01, "locationTitle": "", "longitude": location ? location[1] : '', "longitudeDelta": 0.01 };
                         payload.rating_experience_count_no = selectedRating;
                         navigate('ReviewStep2', payload)
                         console.log('Step 1', payload)

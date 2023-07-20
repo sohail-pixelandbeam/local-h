@@ -1,33 +1,79 @@
 
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useContext } from 'react'
 import { Text, View, ImageBackground, TouchableOpacity, StyleSheet, FlatList, Image, Dimensions, TextInput, Alert, StatusBar, ScrollView } from 'react-native'
 // import { Header } from '../../Components/Header';
 import { ChatSearchIcon } from '../../../components/Svgs'
 
 
 
-import { doConsole, retrieveItem, storeItem, validateEmail } from "../../../utils/functions";
+import { doConsole, getTimeAgo, retrieveItem, storeItem, validateEmail } from "../../../utils/functions";
 import { apiRequest, doPost, doPostDoc } from "../../../utils/apiCalls";
 import DropdownAlert from "react-native-dropdownalert";
 import Loader from '../../../utils/Loader';
 // import { acolors } from '../../../Components/AppColors';
-import { goBack } from '../../../../Navigations';
+import { goBack, navigate } from '../../../../Navigations';
 import { useFocusEffect } from '@react-navigation/native';
 import { fonts } from '../../../constants/fonts';
-import { AcceptedJoinRequestNotif, EditHappeningNotif, HappeningApprovedNotif, HappeningBookingCancelledNotif, HappeningRejectedNotif, LikedHappeningReview, LikedYourReview, RejectedJoinRequestNotif, ReviewedHappening, SentYouRequestNotif, SomeOneAddedNewHappening, SomeOneCancelledHappeningBookingNotif } from '../../../components/NotificationCards';
+import { AcceptedJoinRequestNotif, EditHappeningNotif, GernalNotif, HappeningApprovedNotif, HappeningBookingCancelledNotif, HappeningRejectedNotif, LikedHappeningReview, LikedYourReview, RejectedJoinRequestNotif, ReviewedHappening, SentYouRequestNotif, SomeOneAddedNewHappening, SomeOneCancelledHappeningBookingNotif } from '../../../components/NotificationCards';
 import AlertPopup from '../../../common/AlertPopup';
+import { routes } from '../../../utils/routes';
 
 
 var alertRef;
 
 const Chat = (props) => {
 
+
     const [chatBg, setChatBg] = useState(false)
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState()
     const [chatsData, setChatData] = useState([1, 2, 3, 4, 5, 6]);
-
     const [tabs, setTabs] = useState('chat');
+    const [notifCount, setNotifCount] = useState('');
+    const [notifications, setNotifications] = useState('');
+    const [tempNotif, setTempNotif] = useState([]);
+
+    const [chatList, setChatList] = useState([]);
+
+
+    const getNotifCount = () => {
+        apiRequest('', routes.getNotifCount, 'GET')
+            .then(data => {
+                setNotifCount(data.data);
+            })
+    }
+
+    const getNotifications = () => {
+        setLoading(true)
+        apiRequest('', routes.getNotifications, 'GET')
+            .then(data => {
+                setNotifications(data.data)
+                setTempNotif(data.data);
+                setLoading(false);
+
+            })
+            .catch(err => {
+                console.log('___err___', err)
+            })
+    }
+    const getChats = () => {
+        setLoading(true)
+        apiRequest('', routes.getChatList, 'GET')
+            .then(data => {
+                setChatList(data.data)
+            })
+            .catch(err => {
+                console.log('___err___', err)
+            })
+    }
+
+    useEffect(() => {
+        getChats();
+        getNotifCount();
+        getNotifications();
+
+    }, [])
+
 
     // useFocusEffect(useCallback(() => {
     //     retrieveItem("login_data").then((data) => {
@@ -69,15 +115,19 @@ const Chat = (props) => {
     const renderChats = useCallback(({ item, index }) => {
         return (
             <TouchableOpacity
+
                 onPress={() => {
-                    item.selected = true
-                    setChatBg(!chatBg)
-                    console.log(item)
+                    navigate('Conversation', {
+                        user: item.sender_id
+                    });
+                    // item.selected = true
+                    // setChatBg(!chatBg)
+                    // console.log(item)
                 }}
                 style={{ width: "100%", height: 68.67, marginTop: 20, flexDirection: 'row', alignItems: 'center', paddingBottom: 10 }}>
                 <Image
                     style={{ width: 48, height: 48, borderRadius: 48 / 2, marginTop: -15 }}
-                    source={require('../../../static_assets/profileImg.png')}
+                    source={{ uri: item.sender_id?.profileImage }}
                 />
                 <View
                     style={{ width: "90%", }}
@@ -85,9 +135,9 @@ const Chat = (props) => {
                 // style={[!item.selected ? styles.chatSelected : styles.chatUnselected]}>
                 // style={[styles.chatUnselected]}
                 >
-                    <Text style={{ marginLeft: 12, fontFamily: fonts.MSBo, fontSize: 14, color: '#222222' }}>Sanne de Wit</Text>
-                    <Text style={{ marginLeft: 12, fontFamily: fonts.MSBo, fontSize: 12, color: index == (1 || 2) ? '#35208E' : "#888888" }}>Sounds about right!</Text>
-                    <Text style={{ marginLeft: 12, fontFamily: fonts.MBo, fontSize: 9, color: '#222222', position: 'absolute', right: 20, top: 15 }}>52 MIN AGO</Text>
+                    <Text style={{ marginLeft: 12, fontFamily: fonts.MSBo, fontSize: 14, color: '#222222' }}>{item.sender_id?.firstName}</Text>
+                    <Text style={{ marginLeft: 12, fontFamily: fonts.MSBo, fontSize: 12, }}>{item.message}</Text>
+                    <Text style={{ marginLeft: 12, fontFamily: fonts.MBo, fontSize: 9, color: '#222222', position: 'absolute', right: 20, top: 15 }}>{getTimeAgo(item.timestamp)}</Text>
                     <View style={{ width: "90%", height: 1, backgroundColor: 'rgba(34,34,34,0.2)', marginTop: 20 }}></View>
                 </View>
 
@@ -145,15 +195,26 @@ const Chat = (props) => {
                     <TouchableOpacity
                         onPress={() => setTabs('notif')}
                         style={{ width: "49%", height: 31, backgroundColor: tabs == 'notif' ? '#5B4DBC' : '#EEEEEE', justifyContent: 'center', alignItems: 'center', borderRadius: 40 }}>
-                        <Text style={{ fontFamily: fonts.MSBo, fontSize: 8, color: tabs == 'notif' ? '#FFFFFF' : '#222' }}>12 New notifications</Text>
+                        <Text style={{ fontFamily: fonts.MSBo, fontSize: 8, color: tabs == 'notif' ? '#FFFFFF' : '#222' }}>{notifCount} New notification{parseInt(notifCount) > 1 && "s"} </Text>
                     </TouchableOpacity>
                 </View>
             </View>
 
-            <View style={{ width: "90%", alignSelf: 'center', borderRadius: 23, backgroundColor: '#EEEEEE', height: 46, marginTop: 20, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20 }}>
+            <TextInput
+                onChangeText={(t) => {
+                    let arr = tempNotif;
+                    const filter = arr.filter((v) => v.notif_title?.toLowerCase()?.includes(t.toLowerCase()) || v.user_name?.toLowerCase().includes(t.toLowerCase()));
+                    setNotifications(filter);
+
+                }}
+                placeholder="Search for notifications"
+                placeholderTextColor="#222222"
+                style={{ fontSize: 13, fontFamily: fonts.PSBo, width: "90%", alignSelf: 'center', borderRadius: 23, backgroundColor: '#EEEEEE', height: 46, marginTop: 20, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20 }}
+            />
+            {/* <View style={{ width: "90%", alignSelf: 'center', borderRadius: 23, backgroundColor: '#EEEEEE', height: 46, marginTop: 20, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20 }}>
                 <ChatSearchIcon />
                 <Text style={{ color: "#222222", fontSize: 13, fontFamily: fonts.PSBo, marginLeft: 10 }}>{tabs == 'notif' ? "Search for notifications" : "Search for a conversation fellows"}</Text>
-            </View>
+            </View> */}
 
             <View style={{ backgroundColor: 'rgba(238,238,238,0.5)', height: "100%", marginTop: 10 }}>
                 <View style={{ width: "90%", alignSelf: 'center' }}>
@@ -161,16 +222,26 @@ const Chat = (props) => {
                         tabs == 'chat' ?
 
                             <FlatList
-                                data={chatsData}
+                                data={chatList}
                                 contentContainerStyle={{ paddingBottom: 200 }}
                                 keyExtractor={keyExtractor}
                                 showsVerticalScrollIndicator={false}
                                 renderItem={renderChats}
                             />
-                            : 
+                            :
                             <View style={{ marginTop: 20 }}>
 
-                                <ScrollView contentContainerStyle={{ paddingBottom: 300 }} showsVerticalScrollIndicator={false} >
+                                <FlatList
+                                    data={notifications}
+                                    renderItem={({ item, index }) => {
+                                        return (
+                                            <GernalNotif
+                                                data={item}
+                                            />
+                                        )
+                                    }}
+                                />
+                                {/* <ScrollView contentContainerStyle={{ paddingBottom: 300 }} showsVerticalScrollIndicator={false} >
                                     <View style={{ position: 'absolute', left: 20, top: 20, width: 4, height: "95%", backgroundColor: "rgba(34,34,34,0.10)", }} />
                                     <ReviewedHappening />
                                     <LikedYourReview happeningTitle='Fishing Line Cleanup' />
@@ -184,7 +255,7 @@ const Chat = (props) => {
                                     <HappeningBookingCancelledNotif headingName='Your Happening booking is' title='cancelled' seperator={true} />
                                     <SomeOneCancelledHappeningBookingNotif headingName='Emma Watson' title='Cancelled the happening booking' seperator={true} />
                                     <SomeOneAddedNewHappening headingName='Emma Watson' title='added a new happening' seperator={false} />
-                                </ScrollView>
+                                </ScrollView> */}
                             </View>
                     }
                 </View>

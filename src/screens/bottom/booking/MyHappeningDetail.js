@@ -18,6 +18,8 @@ const MyHappeningDetails = (props) => {
     const showCancellItems = null
     // props.route.params?.params ?? null
 
+
+
     const [tabs, setTabs] = useState(showCancellItems ?? 'pendings')
     const [removeModal, setRemoveModal] = useState(false);
     const [removedNext, setRemovedNext] = useState(false);
@@ -29,7 +31,8 @@ const MyHappeningDetails = (props) => {
 
     const params = props.route?.params?.params;
 
-    console.log('params___',params);
+
+    console.log('paramsasd___', data);
 
 
 
@@ -264,7 +267,18 @@ const MyHappeningDetails = (props) => {
                                         />
                                         <Text style={{ fontFamily: fonts.PBo, fontSize: 12, color: "#2A2A2A", marginLeft: 10 }}>{v?.userId?.firstName} {v?.userId?.lastName} </Text>
                                         <View style={{ position: 'absolute', right: 10 }}>
-                                            <TouchableOpacity style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#5B4DBC' }}>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    console.log(v);
+                                                    navigate('Conversation', {
+                                                        user: {
+                                                            ...v.userId,
+                                                            profileImage:v?.profileAndTimeline?.profileImage
+                                                        }
+                                                    })
+
+                                                }}
+                                                style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#5B4DBC' }}>
                                                 <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: 'white' }}>Message</Text>
                                             </TouchableOpacity>
                                             <TouchableOpacity
@@ -341,13 +355,13 @@ const MyHappeningDetails = (props) => {
                                         onPress={() => {
                                             // console.log('item',v);
                                             // console.log('happeningId',params._id);
-                                            navigate('HostReviewFellow',{
-                                                _id : params?._id,
-                                                fellowId : v.userId?._id
+                                            navigate('HostReviewFellow', {
+                                                _id: params?._id,
+                                                fellowId: v.userId?._id
                                             });
                                         }}
                                         style={{ width: 85, height: 27, borderRadius: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#5B4DBC', marginTop: 5 }}>
-                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: '#5B4DBC' }}>Review</Text>
+                                        <Text style={{ fontFamily: fonts.PSBo, fontSize: 9, color: '#5B4DBC' }}>{v.is_reviewed ? "Reviewed" : "Review"}</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -550,7 +564,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white', elevation: 2, alignItems: 'center', justifyContent: 'center'
     },
 
-    
+
 
 })
 export default MyHappeningDetails

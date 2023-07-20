@@ -2121,3 +2121,36 @@ export function PetsIcon(props) {
 
 
 }
+
+
+export function SendIcon(props) {
+  return (
+    <Svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={84}
+      height={84}
+      viewBox="0 0 84 84"
+      {...props}
+    >
+      <Defs></Defs>
+      <G
+        transform="translate(22.02 12.14) translate(-22.02 -12.14)"
+        filter="url(#a)"
+      >
+        <Circle
+          data-name="btn"
+          cx={19.5}
+          cy={19.5}
+          r={19.5}
+          transform="translate(22.5 12.5)"
+          fill="#35208e"
+        />
+      </G>
+      <Path
+        d="M.924 15.245l-.79-1.351L0 13.86l.036-.132L0 13.672l.057-.033L1.721 7.59.1 1.631 0 1.574.924 0l11.539 6.573.087-.049.432.284v1.629l-.432.285-.086-.049L.925 15.245zm2.5-6.711l-1.039 3.781 6.636-3.781h-5.6zM2.373 2.925L3.4 6.714h5.626L2.373 2.925z"
+        transform="translate(22.02 12.14) translate(14.901 11.444)"
+        fill="#eee"
+      />
+    </Svg>
+  )
+}

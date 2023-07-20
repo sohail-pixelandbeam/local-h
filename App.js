@@ -123,6 +123,7 @@ import { fonts } from './src/constants/fonts';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { apiRequest } from './src/utils/apiCalls';
 import HostReviewFellow from './src/screens/bottom/reviewSystem/HostReviewFellow';
+import Conversation from './src/screens/bottom/chats/Conversation';
 
 
 const Stack = createStackNavigator();
@@ -312,7 +313,7 @@ function App() {
             tabBarLabel: ({ color, focused }) => <Text style={{ ...styles.barText, color: color }}>Chats</Text>,
             tabBarIcon: ({ color }) => <ChatBtmIcon color={color} />,
           })}
-          name="Profile" component={Chat}
+          name="Chat" component={Chat}
         />
       }
       {loggedIn == 1 &&
@@ -487,6 +488,11 @@ function App() {
             <Stack.Screen name="EditReviewReportStep2" component={EditReviewReportStep2} />
             <Stack.Screen name="EditReviewReportStep3" component={EditReviewReportStep3} />
             <Stack.Screen name="EditReviewReportStep4" component={EditReviewReportStep4} />
+
+            {/* Messages */}
+            <Stack.Screen name="Conversation" component={Conversation} />
+
+            
 
           </Stack.Navigator>
         }

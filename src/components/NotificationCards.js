@@ -1,7 +1,12 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native'
 import { fonts } from '../constants/fonts'
-import { LikesNotifIcon } from './Svgs'
+import { LikesNotifIcon } from './Svgs';
+import { getTimeAgo } from '../utils/functions';
+
+
+
+
 
 export const ReviewedHappening = () => {
     return (
@@ -359,6 +364,36 @@ export const SomeOneAddedNewHappening = ({
 
 
 
+export const GernalNotif = ({
+    headingName = "Daria Boskani", ago = "1 HOUR AGO", title = "liked your review", primaryImage, secendoryImage,
+    seperator = true, data
+
+}) => {
+    return (
+        <TouchableOpacity activeOpacity={0.7} style={{ width: "100%", }}>
+            <View style={{ flexDirection: 'row', width: "100%", alignItems: 'center' }}>
+                <Image
+                    // source={{ uri: data?.user_profile_image } }
+                    source={{ uri: data?.user_profile_image }}
+                    style={styles.notifPrimaryImg}
+                />
+                <View style={{ marginLeft: 10, width: "60%", }}>
+                    <Text style={styles.time}>{getTimeAgo(data?.timestamp)}</Text>
+                    <Text style={[styles.headingName]}>{data?.user_name} <Text style={styles.headingTitle}>{data?.notif_title}</Text></Text>
+                </View>
+                <Image
+                    source={{ uri: data?.notif_image[0] }}
+                    style={styles.notifSecondaryImg}
+                />
+            </View>
+            {seperator && <View style={styles.seperator}></View>}
+
+        </TouchableOpacity>
+    )
+}
+
+
+
 
 
 
@@ -376,3 +411,4 @@ const styles = StyleSheet.create({
     seperator: { width: "88%", height: 2, backgroundColor: 'rgba(34,34,34,0.10)', marginTop: 20, marginLeft: 44, marginBottom: 10 }
 
 })
+

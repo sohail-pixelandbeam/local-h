@@ -18,6 +18,8 @@ const ProfilePublicView = (props) => {
     const [profileData, setProfileData] = useState({});
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState();
+    const [reviewsAsFellows, setReviewsAsFellows] = useState([]);
+    const [reviewsAsHost, setReviewsAsHost] = useState([]);
     const userId = props.route.params?.data?.userProfileId?.userId?._id ?? props.route.params?.params?.data?.userProfileId?.userId?._id ?? ''
 
     async function getUserToken() {
@@ -38,12 +40,14 @@ const ProfilePublicView = (props) => {
         // console.log('url', url)
         apiRequest('', url, 'GET')
             .then(data => {
-                // console.log('data ===', data)
+                console.log('data ===', data)
                 setLoading(false);
                 if (data.status) {
                     setData(data)
-                    setProfileData(data.data)
-                    // console.log('userDetails isiasdsadasdasaa', data?.data?.userProfile)
+                    setProfileData(data.data);
+                    setReviewsAsHost(data.asHost);
+                    setReviewsAsFellows(data.asFellow)
+                    console.log('userDetails isiasdsadasdasaa', data)
                 }
             })
             .catch(err => {
@@ -52,10 +56,30 @@ const ProfilePublicView = (props) => {
             })
     };
 
+    function getRailWidth(count) {
+        let x = 20 * parseInt(count)
+        x = x + "%";
+        return x;
+    }
+
     React.useEffect(() => {
         getProfileDetails()
     }, [])
 
+
+    const RattingsRail = ({ count, text }) => {
+        return (
+            <View
+                style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <RattingStartIcon color="#5B4DBC" style={{ marginTop: -4 }} />
+                <Text style={{ fontFamily: fonts.PBo, fontSize: 13, color: '#5B4DBC', marginLeft: 5, width: "7%" }}>{count}.0</Text>
+                <View style={{ width: "45%", height: 7, borderWidth: 1, borderColor: '#707070', borderRadius: 4, marginLeft: 10 }}>
+                    <View style={{ width: getRailWidth(count), backgroundColor: '#5B4DBC', height: "100%", alignItems: 'center', justifyContent: 'center', borderRadius: 4, }}></View>
+                </View>
+                <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: '#5D5760', marginLeft: 10 }}>{text}</Text>
+            </View>
+        )
+    }
 
 
     return (
@@ -103,7 +127,7 @@ const ProfilePublicView = (props) => {
                     </View>
                     <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between' }}>
                         <Text style={styles.heading}>Reviews</Text>
-                        {/* <View style={{ flexDirection: 'row', width: "50%", alignSelf: 'center', backgroundColor: '#EEEEEE', borderRadius: 40 }}>
+                        <View style={{ flexDirection: 'row', width: "50%", alignSelf: 'center', backgroundColor: '#EEEEEE', borderRadius: 40 }}>
                             <TouchableOpacity
                                 onPress={() => setTabs('host')}
                                 style={{ width: "49%", height: 23, backgroundColor: tabs == 'host' ? '#5B4DBC' : '#EEEEEE', justifyContent: 'center', alignItems: 'center', borderRadius: 40 }}>
@@ -114,28 +138,35 @@ const ProfilePublicView = (props) => {
                                 style={{ width: "49%", height: 23, backgroundColor: tabs == 'fellow' ? '#5B4DBC' : '#EEEEEE', justifyContent: 'center', alignItems: 'center', borderRadius: 40 }}>
                                 <Text style={{ fontFamily: fonts.MSBo, fontSize: 8, color: tabs == 'fellow' ? '#FFFFFF' : '#222' }}>As Fellow</Text>
                             </TouchableOpacity>
-                        </View> */}
-                    </View> 
+                        </View>
+                    </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <RattingStartIcon style={{ marginTop: -4 }} />
-                        <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: '#F65997', marginLeft: 5 }}>{data?.averageRating} </Text>
-                        <Text style={{ fontFamily: fonts.PMe, fontSize: 12, color: '#5D5760', marginLeft: 8 }}>{data?.fellowReviewAHost?.length} review{data?.fellowReviewAHost?.length>1&&"s"} </Text>
+                        <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: '#F65997', marginLeft: 5 }}>{tabs == 'fellow' ? data?.asFellowAverageRating : data?.asHostAverageRating} </Text>
+                        {/* <Text style={{ fontFamily: fonts.PMe, fontSize: 12, color: '#5D5760', marginLeft: 8 }}>reviews </Text> */}
                     </View>
+                    {/* 
+                    {tabs !== 'fellow' &&
+                        [{ rattings: 4.8, width: "70%", text: "Communication", field: 'rating_communication_count' },
+                        { rattings: 3.2, width: "60%", text: "Experience", field: 'rating_experience_count_no' },
+                        { rattings: 4.1, width: "65%", text: "Interaction", field: 'rating_intaction_count' },
+                        { rattings: 3.8, width: "62%", text: "Friendliness", field: 'rating_friendliness_count' },
+                        { rattings: 3.8, width: "62%", text: "Punctuality", field: 'rating_punctuality_count' }]
+                            .map((v, i) => {
 
-                    {/* {tabs !== 'fellow' &&
-                        [{ rattings: 4.8, width: "70%", text: "Communication" }, { rattings: 3.2, width: "60%", text: "Punctuality" }, { rattings: 4.1, width: "65%", text: "Interaction" }, { rattings: 3.8, width: "62%", text: "Friendliness" }]
-                            .map((v, i) => (
-                                <View
-                                    key={i}
-                                    style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <RattingStartIcon color="#5B4DBC" style={{ marginTop: -4 }} />
-                                    <Text style={{ fontFamily: fonts.PBo, fontSize: 13, color: '#5B4DBC', marginLeft: 5, width: "7%" }}>{v.rattings}</Text>
-                                    <View style={{ width: "45%", height: 7, borderWidth: 1, borderColor: '#707070', borderRadius: 4, marginLeft: 10 }}>
-                                        <View style={{ width: v.width, backgroundColor: '#5B4DBC', height: "100%", alignItems: 'center', justifyContent: 'center', borderRadius: 4, }}></View>
+                                return (
+                                    <View
+                                        key={i}
+                                        style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <RattingStartIcon color="#5B4DBC" style={{ marginTop: -4 }} />
+                                        <Text style={{ fontFamily: fonts.PBo, fontSize: 13, color: '#5B4DBC', marginLeft: 5, width: "7%" }}>{v.rattings}</Text>
+                                        <View style={{ width: "45%", height: 7, borderWidth: 1, borderColor: '#707070', borderRadius: 4, marginLeft: 10 }}>
+                                            <View style={{ width: v.width, backgroundColor: '#5B4DBC', height: "100%", alignItems: 'center', justifyContent: 'center', borderRadius: 4, }}></View>
+                                        </View>
+                                        <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: '#5D5760', marginLeft: 10 }}>{v.text}</Text>
                                     </View>
-                                    <Text style={{ fontFamily: fonts.PBo, fontSize: 14, color: '#5D5760', marginLeft: 10 }}>{v.text}</Text>
-                                </View>
-                            ))
+                                )
+                            })
                     } */}
 
 
@@ -151,33 +182,69 @@ const ProfilePublicView = (props) => {
                         </TouchableOpacity>
                     </View> */}
 
-{
-    data?.fellowReviewAHost?.map((v,i)=>{
-        console.log('.use',v.userProfileId)
-        return(
-            <View style={{ flexDirection: 'row' }}>
-            <View style={{ width: "80%", borderRadius: 12, borderWidth: 1, borderRadius: 20, borderColor: '#707070', padding: 10, paddingRight: 15, flexDirection: 'row', marginTop: 20 }}>
-                <Image
-                    source={{uri:v.userProfileId?.profileImage}}
-                    style={{width:40,height:40,borderRadius:20}}
-                    // source={require('../../static_assets/p6.png')}
-                />
-                <View style={{ width: "81%", marginLeft: 10, }}>
-                    <Text style={{ fontFamily: fonts.PMe, fontSize: 14, color: '#5D5760', }}>{v.write_a_public_review}</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                            <RattingStartIcon width={12} height={11} style={{ marginTop: -4 }} />
-                            <Text style={{ fontFamily: fonts.PBo, fontSize: 9, color: '#F65997', marginLeft: 5 }}>{v.rating_experience_count_no} </Text>
-                        </View>
-                        {/* <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#5A4CBA', }}>View Replies</Text> */}
-                    </View>
-                </View>
-            </View>
-        </View>
-        )
-    })
-}
-                   
+                    {
+                        tabs !== 'fellow' && reviewsAsHost?.map((v, i) => {
+                            return (
+                                <View key={i}>
+
+
+
+                                    <RattingsRail count={v.rating_punctuality_count} text="Punctuality" />
+                                    <RattingsRail text="Communication" count={v.rating_communication_count} />
+                                    <RattingsRail text="Experience" count={v.rating_experience_count_no} />
+                                    <RattingsRail text="Interaction" count={v.rating_intaction_count} />
+                                    <RattingsRail text="Friendliness" count={v.rating_friendliness_count} />
+
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <View style={{ width: "80%", borderRadius: 12, borderWidth: 1, borderRadius: 20, borderColor: '#707070', padding: 10, paddingRight: 15, flexDirection: 'row', marginTop: 20 }}>
+                                            <Image
+                                                source={{ uri: v.userProfileId?.profileImage }}
+                                                style={{ width: 40, height: 40, borderRadius: 20 }}
+                                            // source={require('../../static_assets/p6.png')}
+                                            />
+                                            <View style={{ width: "81%", marginLeft: 10, }}>
+                                                <Text style={{ fontFamily: fonts.PMe, fontSize: 14, color: '#5D5760', }}>{v.write_a_public_review}</Text>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+                                                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                                        <RattingStartIcon width={12} height={11} style={{ marginTop: -4 }} />
+                                                        <Text style={{ fontFamily: fonts.PBo, fontSize: 9, color: '#F65997', marginLeft: 5 }}>{v.rating_experience_count_no} </Text>
+                                                    </View>
+                                                    {/* <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#5A4CBA', }}>View Replies</Text> */}
+                                                </View>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </View>
+                            )
+                        })
+                    }
+                    {
+                        tabs == 'fellow' && reviewsAsFellows?.map((v, i) => {
+                            console.log('.use', v.userProfileId)
+                            return (
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ width: "80%", borderRadius: 12, borderWidth: 1, borderRadius: 20, borderColor: '#707070', padding: 10, paddingRight: 15, flexDirection: 'row', marginTop: 20 }}>
+                                        <Image
+                                            source={{ uri: v.userProfileId?.profileImage }}
+                                            style={{ width: 40, height: 40, borderRadius: 20 }}
+                                        // source={require('../../static_assets/p6.png')}
+                                        />
+                                        <View style={{ width: "81%", marginLeft: 10, }}>
+                                            <Text style={{ fontFamily: fonts.PMe, fontSize: 14, color: '#5D5760', }}>{v.write_a_public_review}</Text>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                                    <RattingStartIcon width={12} height={11} style={{ marginTop: -4 }} />
+                                                    <Text style={{ fontFamily: fonts.PBo, fontSize: 9, color: '#F65997', marginLeft: 5 }}>{v.rating_experience_count_no} </Text>
+                                                </View>
+                                                {/* <Text style={{ fontFamily: fonts.PSBo, fontSize: 12, color: '#5A4CBA', }}>View Replies</Text> */}
+                                            </View>
+                                        </View>
+                                    </View>
+                                </View>
+                            )
+                        })
+                    }
+
 
                     {/* <Text style={styles.heading}>Photos</Text>
                     <View style={{ flexDirection: 'row', width: "100%" }}>
