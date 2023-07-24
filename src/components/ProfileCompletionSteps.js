@@ -235,9 +235,9 @@ const ProfileCompletionSteps = () => {
                 .then(data => {
                     setModalLoading(false)
                     if (data.status) {
-                        storeItem('profile_data', data.data)
+                        storeItem('profile_data', data.data);
                         getProfileDetails();
-                        setPopupCases(11)
+                        setPopupCases(11);
                     }
                     else {
                         modalAlertRef.alertWithType('error', "Error", data.message)

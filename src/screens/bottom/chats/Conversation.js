@@ -21,6 +21,7 @@ import GeneralStatusBar from '../../../components/GernalStatusBar';
 import { fonts } from '../../../constants/fonts';
 import Loader from '../../../utils/Loader';
 import { goBack } from '../../../../Navigations';
+import { urls } from '../../../utils/Api_urls';
 
 
 const Conversation = (props) => {
@@ -28,7 +29,11 @@ const Conversation = (props) => {
     const params = props.route.params.user;
     const { state } = useContext(Context);
     const user = state.userData;
-    const socket = io('https://');
+    
+    
+    const socket = io('https://www');
+
+
     // io(SOCKET_URL);
 
     const [loading, setLoading] = useState(false);
@@ -43,7 +48,8 @@ const Conversation = (props) => {
             "receiver_id": params?._id,
             "message": sms
         };
-
+        // socket.emit('newMessage', body);
+        // return;
         setLoading(true)
         apiRequest(body, routes.createChat)
             .then(data => {
@@ -111,23 +117,24 @@ const Conversation = (props) => {
         // }
         // // console.log('joinBody', joinBody)
         // socket.emit('join', joinBody);
-        // socket.on('chat', payload => {
+        socket.on('newMessage', payload => {
 
-        //     console.log('here asdi get payload,', payload)
-        //     const obj = [{
-        //         ...payload,
-        //         text: payload.message,
-        //         name: payload.senderName,
-        //         group: payload.group,
-        //         user: {
-        //             _id: payload.sender,
-        //             name: payload.senderName
-        //         },
-        //     }]
-        //     setMessages((previousMessages) =>
-        //         GiftedChat.append(previousMessages, obj),
-        //     );
-        // });
+            console.log('here is the payload I get,', payload)
+            console.log('payload___', payload);
+            // const obj = [{
+            //     ...payload,
+            //     text: payload.message,
+            //     name: payload.senderName,
+            //     group: payload.group,
+            //     user: {
+            //         _id: payload.sender,
+            //         name: payload.senderName
+            //     },
+            // }]
+            // setMessages((previousMessages) =>
+            //     GiftedChat.append(previousMessages, obj),
+            // );
+        });
     }, [])
 
     const renderMessage = (props) => {
