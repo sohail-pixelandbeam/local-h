@@ -1,5 +1,5 @@
-import { Bubble, GiftedChat } from 'react-native-gifted-chat';
-import { io } from 'socket.io-client';
+// import { Bubble, GiftedChat } from 'react-native-gifted-chat';
+// import { io } from 'socket.io-client';
 import Modal from "react-native-modal";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -31,9 +31,7 @@ const Conversation = (props) => {
     const user = state.userData;
     
     
-    const socket = io('https://www');
-
-
+    // const socket = io('https://www');
     // io(SOCKET_URL);
 
     const [loading, setLoading] = useState(false);
@@ -86,7 +84,6 @@ const Conversation = (props) => {
         }
         apiRequest(body, routes.getChat, 'GET')
             .then(data => {
-
                 let newArr = [];
                 for (let key of data.data) {
                     newArr.push({
@@ -117,70 +114,70 @@ const Conversation = (props) => {
         // }
         // // console.log('joinBody', joinBody)
         // socket.emit('join', joinBody);
-        socket.on('newMessage', payload => {
+        // socket.on('newMessage', payload => {
 
-            console.log('here is the payload I get,', payload)
-            console.log('payload___', payload);
-            // const obj = [{
-            //     ...payload,
-            //     text: payload.message,
-            //     name: payload.senderName,
-            //     group: payload.group,
-            //     user: {
-            //         _id: payload.sender,
-            //         name: payload.senderName
-            //     },
-            // }]
-            // setMessages((previousMessages) =>
-            //     GiftedChat.append(previousMessages, obj),
-            // );
-        });
+        //     console.log('here is the payload I get,', payload)
+        //     console.log('payload___', payload);
+        //     // const obj = [{
+        //     //     ...payload,
+        //     //     text: payload.message,
+        //     //     name: payload.senderName,
+        //     //     group: payload.group,
+        //     //     user: {
+        //     //         _id: payload.sender,
+        //     //         name: payload.senderName
+        //     //     },
+        //     // }]
+        //     // setMessages((previousMessages) =>
+        //     //     GiftedChat.append(previousMessages, obj),
+        //     // );
+        // });
     }, [])
 
-    const renderMessage = (props) => {
+    // const renderMessage = (props) => {
 
-        let isSender = props.currentMessage?.isSender;
-        // props.currentMessage?.user?._id == user?._id
+    //     let isSender = props.currentMessage?.isSender;
+    //     // props.currentMessage?.user?._id == user?._id
 
-        if (!props.currentMessage.text) return null;
-        return (
-            <View style={{ marginTop: getHeight(1), marginHorizontal: 10 }}>
-                <View style={isSender ? styles.senderBubble : styles.recieverBubble}>
-                    <Text style={isSender ? styles.senderText : styles.recieverText}>{props.currentMessage.text}</Text>
-                </View>
+    //     if (!props.currentMessage.text) return null;
+    //     return (
+    //         <View style={{ marginTop: getHeight(1), marginHorizontal: 10 }}>
+    //             <View style={isSender ? styles.senderBubble : styles.recieverBubble}>
+    //                 <Text style={isSender ? styles.senderText : styles.recieverText}>{props.currentMessage.text}</Text>
+    //             </View>
 
-            </View>
-        )
-
-
-    };
+    //         </View>
+    //     )
 
 
+    // };
 
-    const renderBubble = (props) => {
-        return <Bubble
 
-            {...props}
-            wrapperStyle={{
-                left: {
-                    backgroundColor: '#f0f0f0',
-                },
-                right: {
-                    backgroundColor: '#4F56ED',
-                },
-            }}
-            textStyle={{
-                right: {
-                    fontFamily: 'DMSans-Regular',
-                    color: 'white'
-                },
-                left: {
-                    fontFamily: 'DMSans-Regular'
-                }
-            }}
 
-        />
-    };
+    // const renderBubble = (props) => {
+    //     return <Bubble
+
+    //         {...props}
+    //         wrapperStyle={{
+    //             left: {
+    //                 backgroundColor: '#f0f0f0',
+    //             },
+    //             right: {
+    //                 backgroundColor: '#4F56ED',
+    //             },
+    //         }}
+    //         textStyle={{
+    //             right: {
+    //                 fontFamily: 'DMSans-Regular',
+    //                 color: 'white'
+    //             },
+    //             left: {
+    //                 fontFamily: 'DMSans-Regular'
+    //             }
+    //         }}
+
+    //     />
+    // };
 
 
 
@@ -209,7 +206,7 @@ const Conversation = (props) => {
 
 
             <View style={{ height: getHeight(5), }} />
-            <GiftedChat
+            {/* <GiftedChat
                 renderChatFooter={() => (
                     <View style={{ paddingBottom: 10 }} />
                 )}
@@ -249,7 +246,7 @@ const Conversation = (props) => {
                 )}
                 renderUsernameOnMessage
                 showAvatarForEveryMessage
-            />
+            /> */}
         </View>
     );
 };
