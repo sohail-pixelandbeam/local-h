@@ -5,8 +5,8 @@ import DeviceInfo from 'react-native-device-info'
 
 async function doPost(body_data, url_plus) {
 
-  doConsole(" I request @ " + urls.API + url_plus);
-  doConsole(body_data);
+  // doConsole(" I request @ " + urls.API + url_plus);
+  // doConsole(body_data);
   var { isError, data } = await fetch(urls.API + url_plus, {
     method: 'POST',
     headers: {
@@ -64,8 +64,8 @@ export async function apiRequest(body_data, url_plus, method = "POST", userToken
   // + "&&" + last_request;
   if (method == 'GET' && body_data.token) url += '?' + Object.keys(body_data).map((k) => (k + '=' + encodeURIComponent(body_data[k]))).join('&');
 
-  console.log(" I request @ " + url);
-  console.log(body_data);
+  // console.log(" I request @ " + url);
+  // console.log(body_data);
   const configs = {
     method: method,
     headers: {

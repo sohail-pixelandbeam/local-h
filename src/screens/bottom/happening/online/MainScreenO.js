@@ -48,7 +48,6 @@ import DurationRepeat from './DurationRepeat';
 
 
 const components = [
-    // { label: "Group Size", name: "GroupSizeHappeningL", component: GroupSizeHappeningL },
     { label: "Code of Conduct", name: "CC1", component: CC1, params: { step: "1" } },
     { label: "Code of Conduct", name: "CC2", component: CC2, params: { step: "2" } },
     { label: "Code of Conduct", name: "CC3", component: CC3, params: { step: "3" } },
@@ -61,13 +60,10 @@ const components = [
     { label: "Description", name: "Description2", component: Description2, params: { step: "" } },
     { label: "Media", name: "Images1", component: Images1, params: { step: "9" } },
     { label: "Media", name: "Images2", component: Images2, params: { step: "" } },
-    // { label: "Ideal Host", name: "AboutHost", component: AboutHost, params: { step: "7" } },
     { label: "Duration", name: "Duration", component: Duration, params: { step: "10" } },
     { label: "Duration1", name: "Duration1", component: Duration1, params: { step: "10" } },
     { label: "DurationRepeat", name: "DurationRepeat", component: DurationRepeat, params: { step: "10" } },
-
     { label: "Languages Spoken", name: "HappeningLanguages", component: HappeningLanguages, params: { step: "11" } },
-    // { label: "Happening Languages", name: "HappeningLanguages1", component: HappeningLanguages1, params: { step: "10" } },
     { label: "Skills Required", name: "HappeningSkills", component: HappeningSkills, params: { step: "12" } },
     { label: "Max Fellows", name: "HappeningGroup", component: HappeningGroup, params: { step: "13" } },
     { label: "", name: "HappeningAccessibilty", component: HappeningAccessibilty, params: { step: "14" } },
@@ -75,9 +71,6 @@ const components = [
     { label: "Minimum Cancellation Period", name: "HappeningMinimumCancellation", component: HappeningMinimumCancellation, params: { step: "16" } },
     { label: "SDG", name: "SDGLinked", component: SDGLinked, params: { step: "17" } },
     { label: "Terms & Local Laws", name: "TermsAndLaws", component: TermsAndLaws, params: { step: "" } },
-    // { label: "", name: "SuccessfullySubmitted", component: SuccessfullySubmitted },
-    // { label: "", name: "HappeningApproved", component: HappeningApproved },
-    // { label: "", name: "HappeningRejected", component: HappeningRejected },
 ];
 
 const MainScreenO = () => {
@@ -151,3 +144,38 @@ export default MainScreenO
                         //     })
 
                         // }}
+
+
+
+                        // commented 26-july
+
+    //                         // { label: "Group Size", name: "GroupSizeHappeningL", component: GroupSizeHappeningL },
+    // { label: "Code of Conduct", name: "CC1", component: CC1, params: { step: "1" } },
+    // { label: "Code of Conduct", name: "CC2", component: CC2, params: { step: "2" } },
+    // { label: "Code of Conduct", name: "CC3", component: CC3, params: { step: "3" } },
+    // { label: "Code of Conduct", name: "CC4", component: CC4, params: { step: "4" } },
+    // { label: "a bit more", name: "BitMore", component: BitMore, params: { step: "5" } },
+    // { label: "Theme", name: "HappeningTheme", component: HappeningTheme, params: { step: "6" } },
+    // { label: "Title", name: "Title1", component: Title1, params: { step: "7" } },
+    // { label: "Title", name: "Title2", component: Title2, params: { step: "" } },
+    // { label: "Description", name: "Description1", component: Description1, params: { step: "8" } },
+    // { label: "Description", name: "Description2", component: Description2, params: { step: "" } },
+    // { label: "Media", name: "Images1", component: Images1, params: { step: "9" } },
+    // { label: "Media", name: "Images2", component: Images2, params: { step: "" } },
+    // // { label: "Ideal Host", name: "AboutHost", component: AboutHost, params: { step: "7" } },
+    // { label: "Duration", name: "Duration", component: Duration, params: { step: "10" } },
+    // { label: "Duration1", name: "Duration1", component: Duration1, params: { step: "10" } },
+    // { label: "DurationRepeat", name: "DurationRepeat", component: DurationRepeat, params: { step: "10" } },
+
+    // { label: "Languages Spoken", name: "HappeningLanguages", component: HappeningLanguages, params: { step: "11" } },
+    // // { label: "Happening Languages", name: "HappeningLanguages1", component: HappeningLanguages1, params: { step: "10" } },
+    // { label: "Skills Required", name: "HappeningSkills", component: HappeningSkills, params: { step: "12" } },
+    // { label: "Max Fellows", name: "HappeningGroup", component: HappeningGroup, params: { step: "13" } },
+    // { label: "", name: "HappeningAccessibilty", component: HappeningAccessibilty, params: { step: "14" } },
+    // { label: "What fellows get", name: "FellowsGetBack", component: FellowsGetBack, params: { step: "15" } },
+    // { label: "Minimum Cancellation Period", name: "HappeningMinimumCancellation", component: HappeningMinimumCancellation, params: { step: "16" } },
+    // { label: "SDG", name: "SDGLinked", component: SDGLinked, params: { step: "17" } },
+    // { label: "Terms & Local Laws", name: "TermsAndLaws", component: TermsAndLaws, params: { step: "" } },
+    // // { label: "", name: "SuccessfullySubmitted", component: SuccessfullySubmitted },
+    // // { label: "", name: "HappeningApproved", component: HappeningApproved },
+    // // { label: "", name: "HappeningRejected", component: HappeningRejected },

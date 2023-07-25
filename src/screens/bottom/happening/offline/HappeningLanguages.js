@@ -89,7 +89,7 @@ const HappeningLanguages = (props) => {
             // headerStyle={{ paddingBottom: 30 }}
             />
             <View style={styles.contentContainer}>
-            <ScrollView contentContainerStyle={{paddingBottom:260}} showsVerticalScrollIndicator={false} >
+                <ScrollView contentContainerStyle={{ paddingBottom: 260 }} showsVerticalScrollIndicator={false} >
 
                     <TextInput
                         placeholder='Search for a language'
@@ -116,7 +116,7 @@ const HappeningLanguages = (props) => {
                             marginBottom: 10, paddingBottom: 25
                         }}>
                             {
-                                Object.values(languages).map((v, i) => {
+                                languages && Object.values(languages).map((v, i) => {
                                     return (
                                         <TouchableOpacity
                                             key={i}

@@ -109,7 +109,7 @@ const HappeningLanguages = (props) => {
                             marginBottom: 10, paddingBottom: 25
                         }}>
                             {
-                                Object.values(languages).map((v, i) => {
+                                languages && Object.values(languages)?.map((v, i) => {
                                     return (
                                         <TouchableOpacity
                                             key={i}

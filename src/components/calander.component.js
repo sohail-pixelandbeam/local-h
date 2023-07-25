@@ -3,8 +3,13 @@ import { Calendar } from 'react-native-calendars'
 import { acolors } from '../constants/colors'
 import { fonts } from '../constants/fonts'
 import { formatDate } from '../utils/functions'
+import ReactNativeModal from 'react-native-modal'
 
 const CalanderComponent = (props) => {
+
+    let makeMinDate = new Date();
+    // console.log(makeMinDate.setDate(makeMinDate.getDate() + 14))
+    console.log('minDate', props.minDate)
     return (
 
         <Calendar
@@ -14,33 +19,34 @@ const CalanderComponent = (props) => {
             current={props.currentDateObj}
             minDate={props.minDate ? props.minDate : formatDate(new Date)}
             enableSwipeMonths={true}
+
             // markingType={'custom'}
             // disableArrowRight={true}
             theme={{
                 calendarBackground: acolors.primary,
 
-
                 selectedDayBackgroundColor: acolors.white,
-                selectedDayTextColor: "#111111",
-                selectedDotColor: "#ffffff",
+                selectedDayTextColor: "black",
+                textMonthFontWeight: '800',
+                selectedDotColor: acolors.primary,
 
-                arrowColor: '#001833',
-                todayTextColor: '#0A0A16',
+                arrowColor: 'white',
+                todayTextColor: 'white',
                 dayTextColor: 'white',
                 textDayFontFamily: fonts.PMe,
-                textDisabledColor: 'rgba(255,255,255,0.4)',
-
+                textDisabledColor: 'grey',
 
                 monthTextColor: acolors.white,
-                textDayFontSize: 10, // dates 1 ,2,3,4
+                textDayFontSize: 12, // dates 1 ,2,3,4
+                textDayFontWeight: '500',
                 textMonthFontSize: 14, // month name dec 2021
-                textMonthFontFamily: fonts.PRe,
+                textMonthFontFamily: fonts.PMe,
 
 
                 //  these are the monday, tuesday, wed headings
-                textSectionTitleColor: 'rgba(255, 255, 255, 0.5)',
+                textSectionTitleColor: 'rgba(255, 255, 255, 1)',
                 textDayHeaderFontSize: 14,
-                textDayHeaderFontFamily: fonts.PRe
+                textDayHeaderFontFamily: fonts.PMe
 
             }}
             markedDates={{
@@ -58,9 +64,9 @@ const CalanderComponent = (props) => {
                             borderRadius: 15,
                         },
                         text: {
-                            color: 'black',
+                            color: 'white',
                             alignSelf: 'center',
-                            fontFamily: fonts.PRe,
+                            fontFamily: fonts.PMe,
                             fontSize: 14
                         }
                     }
