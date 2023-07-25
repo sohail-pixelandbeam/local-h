@@ -49,7 +49,7 @@ const DurationRepeat = (props) => {
 
     const [selectedWeek, setSelectedWeek] = useState(['Tues']);
 
-    const repeatOptions = ["Daily", "Weekly", "Monthly"]//"Monthly", "Repeat yearly"
+    const repeatOptions = ["Daily", "Weekly", "Bi-Weekly", "Monthly"]//"Monthly", "Repeat yearly"
     const [calenderModal, setCalenderModal] = useState(false);
     const [dailyRepeatCalanderModal, setDailyRepeatCalanderModal] = useState(false);
     const [dailyEndRepeatCalanderModal, setDailyEndRepeatCalanderModal] = useState(false)
@@ -90,6 +90,13 @@ const DurationRepeat = (props) => {
         on: [],
         end: ""
     });
+    const [repeatBiWeekly, setRepeatBiWeekly] = useState({
+        startingDate: "",
+        repeat: 'Bi-Weekly',
+        every: '14',
+        on: [],
+        end: ""
+    });
 
     const [repeatMonthly, setRepeatMonthly] = useState({
         startingDate: "",
@@ -110,6 +117,7 @@ const DurationRepeat = (props) => {
 
         if (doesNotRepeat == "Daily") if (!doValidateDailyRepeatFields()) return;
         if (doesNotRepeat == 'Weekly') if (!doValidateWeeklyRepeatFields()) return;;
+        if (doesNotRepeat == 'Bi-Weekly') if (!doValidateBiWeeklyRepeatFields()) return;;
         if (doesNotRepeat == 'Monthly') if (!doValidateMonthlyFields()) return;
 
         let repeat = makeDoesNotRepeat();
@@ -147,6 +155,15 @@ const DurationRepeat = (props) => {
                 body.daysOfMonth = repeat.on;
                 body.repeat = '1';
             }
+
+            else if (doesNotRepeat == 'Bi-Weekly') {
+                body.daysOfWeek = repeat.on;
+                body.repeatEvery = 14;
+            }
+            // else if (doesNotRepeat == 'Quarterly') { // do validation
+            //     body.daysOfMonth = repeat.on;
+            //     body.repeat = '3';
+            // }
         }
         setHappeningData(body);
         navigate('HappeningLanguages')
@@ -160,6 +177,8 @@ const DurationRepeat = (props) => {
                 return repeatDaily;
             case 'Weekly':
                 return repeatWeekly;
+            case 'Bi-Weekly':
+                return repeatBiWeekly;
             case 'Monthly':
                 return repeatMonthly
                 alertRef.alertWithType('error', 'Error', "Monthly and Yearly recurrence is under development")
@@ -271,6 +290,26 @@ const DurationRepeat = (props) => {
         }
         setRepeatWeekly({
             ...repeatWeekly,
+            on: selectedWeek
+        })
+        return true
+    }
+    
+    function doValidateBiWeeklyRepeatFields() {
+        if (!repeatBiWeekly.startingDate) {
+            alertRef.alertWithType('error', "Error", "Please enter starting date")
+            return false;
+        }
+        if (selectedWeek.length == 0) {
+            alertRef.alertWithType('error', "Error", "Please select `on` days")
+            return false;
+        }
+        if (!repeatBiWeekly.end) {
+            alertRef.alertWithType('error', "Error", "Please enter end date")
+            return false;
+        }
+        setRepeatBiWeekly({
+            ...repeatBiWeekly,
             on: selectedWeek
         })
         return true
@@ -421,7 +460,7 @@ const DurationRepeat = (props) => {
                         <View style={[styles.shadow, styles.pickerContainer, { marginLeft: 0, width: getWidth(25), marginVertical: 1 }]}>
                             <PrivacyPicker
                                 selected={{ title: doesNotRepeat }}
-                                data={[{ title: "Daily" }, { title: "Weekly" }, { title: "Monthly" }, { title: "Repeat yearly" }]}
+                                data={[{ title: "Daily" }, { title: "Weekly" }, { title: 'Bi-Weekly' }, { title: "Monthly" }, { title: "Repeat yearly" }]}
                                 onValueChange={(i, v) => {
                                     setDoesNotRepeat(v.title)
                                     doSetRepeatOption(v.title);
@@ -443,7 +482,7 @@ const DurationRepeat = (props) => {
                                     <View style={{ marginTop: 0, width: "110%", marginLeft: "-5%" }}>
                                         <TouchableOpacity
                                             onPress={() => setDailyRepeatCalanderModal(false)}
-                                            style={{ backgroundColor: 'black', width: 30, height: 30, borderRadius: 30 / 2, alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
+                                            style={{ backgroundColor: acolors.primary, width: 30, height: 30, borderRadius: 30 / 2, alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
                                             <BackIcon width={7} height={18} />
                                         </TouchableOpacity>
                                         <CalanderComponent
@@ -541,7 +580,7 @@ const DurationRepeat = (props) => {
                                 <View style={{ marginTop: 0, width: "110%", marginLeft: "-5%" }}>
                                     <TouchableOpacity
                                         onPress={() => setWeeklyRepeatCalanderModal(false)}
-                                        style={{ backgroundColor: 'black', width: 30, height: 30, borderRadius: 30 / 2, alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
+                                        style={{ backgroundColor: acolors.primary, width: 30, height: 30, borderRadius: 30 / 2, alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
                                         <BackIcon width={7} height={18} />
                                     </TouchableOpacity>
                                     <CalanderComponent
@@ -628,6 +667,101 @@ const DurationRepeat = (props) => {
                         }
                     </View>
                 }
+                {
+                    doesNotRepeat == 'Bi-Weekly' &&
+                    <View style={{ backgroundColor: '#fff', paddingHorizontal: 0, paddingVertical: 10, borderRadius: 10, width: "100%", alignSelf: 'center' }}>
+                        {
+                            weeklyRepeatCalanderModal ?
+                                <View style={{ marginTop: 0, width: "110%", marginLeft: "-5%" }}>
+                                    <TouchableOpacity
+                                        onPress={() => setWeeklyRepeatCalanderModal(false)}
+                                        style={{ backgroundColor: acolors.primary, width: 30, height: 30, borderRadius: 30 / 2, alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
+                                        <BackIcon width={8} height={18} />
+                                    </TouchableOpacity>
+                                    <CalanderComponent
+                                        selectedDate={repeatBiWeekly?.startingDate}
+                                        onDayPress={(v) => {
+                                            setRepeatBiWeekly({
+                                                ...repeatBiWeekly,
+                                                startingDate: v.dateString
+                                            })
+                                            // setWeeklyRepeatCalanderModal(false);
+                                        }}
+                                    />
+                                </View>
+                                :
+                                weeklyEndCalanderModal ?
+                                    <View style={{ marginTop: 0, width: "110%", marginLeft: "-5%" }}>
+                                        <TouchableOpacity
+                                            onPress={() => setWeeklyEndCalanderModal(false)}
+                                            style={{ backgroundColor: acolors.primary, width: 30, height: 30, borderRadius: 30 / 2, alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
+                                            <BackIcon width={7} height={18} />
+                                        </TouchableOpacity>
+                                        <CalanderComponent
+                                            minDate={new Date(repeatBiWeekly.startingDate)?.setDate(new Date(repeatBiWeekly.startingDate).getDate() + 14)}
+                                            selectedDate={repeatBiWeekly.end}
+                                            currentDateObj={new Date(repeatBiWeekly.startingDate)?.setDate(new Date(repeatBiWeekly.startingDate).getDate() + 14)}
+                                            onDayPress={(v) => {
+                                                setRepeatBiWeekly({
+                                                    ...repeatBiWeekly,
+                                                    end: v.dateString
+                                                })
+                                                // setWeeklyEndCalanderModal(false);
+                                            }}
+                                        />
+                                    </View>
+                                    :
+
+                                    <>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: getHeight(1) }}>
+                                            <Text style={styles.pickerTitle}>Start</Text>
+                                            <TouchableOpacity
+                                                onPress={() => setWeeklyRepeatCalanderModal(true)}
+                                                style={[styles.shadow, styles.pickerContainer, { marginLeft: 0 }]}>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                    <Text style={styles.pickerTitle}>{repeatBiWeekly.startingDate}</Text>
+                                                    <CalenderIcon style={{ marginLeft: 5 }} />
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 }}>
+                                            <Text style={styles.pickerTitle}>On</Text>
+                                            {
+                                                ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"].map((v, i) => (
+                                                    <TouchableOpacity
+                                                        key={i}
+                                                        onPress={() => doAddWeek(v)}
+                                                        style={[styles.shadow, styles.weekContainer, selectedWeek.includes(v) && { backgroundColor: '#B9B1F0' }]}>
+                                                        <Text style={[styles.pickerTitle, { fontSize: 7 }]}>{v}</Text>
+                                                    </TouchableOpacity>
+                                                ))
+                                            }
+
+                                        </View>
+
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, justifyContent: 'space-between' }}>
+                                            <Text style={styles.pickerTitle}>End</Text>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                                {/* <TouchableOpacity style={[styles.shadow, styles.pickerContainer,]}>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                    <Text style={styles.pickerTitle}>On this day</Text>
+                                                    <ArrowDown style={{ marginLeft: 5 }} />
+                                                </View>
+                                            </TouchableOpacity> */}
+                                                <TouchableOpacity
+                                                    onPress={() => setWeeklyEndCalanderModal(true)}
+                                                    style={[styles.shadow, styles.pickerContainer,]}>
+                                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                        <Text style={styles.pickerTitle}>{repeatBiWeekly.end}</Text>
+                                                        <CalenderIcon style={{ marginLeft: 10 }} />
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                    </>
+                        }
+                    </View>
+                }
 
 
                 {
@@ -638,7 +772,7 @@ const DurationRepeat = (props) => {
                                 <View style={{ marginTop: 0, width: "110%", marginLeft: "-5%" }}>
                                     <TouchableOpacity
                                         onPress={() => setMonthlyRepeatCalanderModal(false)}
-                                        style={{ backgroundColor: 'black', width: 30, height: 30, borderRadius: 30 / 2, alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
+                                        style={{ backgroundColor: acolors.primary, width: 30, height: 30, borderRadius: 30 / 2, alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
                                         <BackIcon width={7} height={18} />
                                     </TouchableOpacity>
                                     <CalanderComponent
