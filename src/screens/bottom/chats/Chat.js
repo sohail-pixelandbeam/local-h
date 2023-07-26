@@ -60,7 +60,8 @@ const Chat = (props) => {
         setLoading(true)
         apiRequest('', routes.getChatList, 'GET')
             .then(data => {
-                setChatList(data.data)
+                console.log('data', data.data);
+                setChatList(data.data);
             })
             .catch(err => {
                 console.log('___err___', err)

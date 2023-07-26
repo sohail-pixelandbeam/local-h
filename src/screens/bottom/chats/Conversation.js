@@ -23,6 +23,7 @@ import Loader from '../../../utils/Loader';
 import { goBack } from '../../../../Navigations';
 import { urls } from '../../../utils/Api_urls';
 import socketServices from './socketServices';
+import DeviceInfo from 'react-native-device-info';
 
 
 const Conversation = (props) => {
@@ -49,7 +50,10 @@ const Conversation = (props) => {
             "receiver_id": params?._id,
             "message": sms
         };
-        socketServices.emit("newMessage", { text: sms, recipientId: params?._id })
+        socketServices.emit("newMessage", {
+            text: sms,
+            recipientId: params?._id
+        })
 
         // socket.emit('newMessage', body);
         // return;
@@ -134,6 +138,7 @@ const Conversation = (props) => {
 
                 socketServices.emit("newMessage", body);
                 socketServices.on("chatHistory", (data) => {
+
                     let newArr = [];
                     for (let key of data) {
                         newArr.push({
@@ -151,8 +156,27 @@ const Conversation = (props) => {
                     setMessages(newArr)
 
                 })
-                socketServices.on("newMessage", (data) => {
-                    console.log('new icoming message', data);
+                socketServices.on("newMessage", async (data) => {
+
+                    const obj = {
+                        _id: Math.random(),
+                        text: data.text,
+                        name: data.user,
+                        isSender: data.user == user?.firstName ? true : false,
+                        user: {
+                            _id: data.user == user?.firstName ? user?._id : user?._id,
+                            name: data.user,
+                        }
+                    }
+
+                    setMessages((previousMessages) =>
+                        GiftedChat.append(previousMessages, obj),
+                    );
+
+
+                    // console.log('Device', await DeviceInfo.getDeviceName())
+
+                    // console.log('new icoming message', data);
                 })
             });
 
