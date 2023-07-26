@@ -1,0 +1,43 @@
+name: iOS Build and Deploy
+
+on:
+  push:
+    branches:
+      - master # Adjust this branch if your main branch has a different name
+
+jobs:
+  build-and-deploy:
+    runs-on: macos-latest # Use macOS runner for iOS builds
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14' # Adjust Node.js version if needed
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Set up CocoaPods
+        run: sudo gem install cocoapods
+        if: success() # Only run this step if the previous steps were successful
+
+      - name: Install iOS dependencies
+        run: cd ios && pod install && cd ..
+
+      - name: Build iOS release
+        run: npx react-native run-ios --configuration Release
+
+      - name: Archive iOS build
+        run: npx react-native bundle --platform ios --entry-file index.js --dev false --bundle-output ios/main.jsbundle --assets-dest ios --assets-dest ios
+        if: success() # Only run this step if the previous steps were successful
+
+      - name: Deploy to TestFlight
+        run: |
+          # Use your preferred method to deploy to TestFlight here
+          # For example, using fastlane:
+          # cd ios && fastlane pilot upload --ipa "AppName.ipa" --username "YOUR_APPLE_ID"
+        if: success() # Only run this step if the previous steps were successful
