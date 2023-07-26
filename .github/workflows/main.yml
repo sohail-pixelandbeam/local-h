@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+
 jobs:
   deploy:
     name: Deploying to Testflight
@@ -11,26 +12,38 @@ jobs:
       - uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '14.1'
+
       - name: Checkout repository
         uses: actions/checkout@v1
+
+      - name: Clean DerivedData
+        run: xcrun -k
+        if: success() # Only run this step if the previous steps were successful
+
       - name: YARN install
         run: yarn install --frozen-lockfile
+
       - name: Install Pods
         run: |
           cd ./ios/
           pod install
+
       - name: Install gpg
         run: brew install gnupg
+
       - name: Setup provisioning profile
         env:
           IOS_KEYS: ${{ secrets.IOS_KEYS }}
         run: ./.github/secrets/decrypt_secrets.sh
+
       - name: Archiving project
         env:
           PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
         run: ./.github/scripts/archive_app.sh
+
       - name: Exporting .ipa
         run: ./.github/scripts/export_ipa.sh
+
       - name: Publishing app
         if: success()
         env:
