@@ -29,9 +29,15 @@ import DeviceInfo from 'react-native-device-info';
 const Conversation = (props) => {
 
     const params = props.route.params.user;
+    console.log('params___', params)
     const { state } = useContext(Context);
     const user = state.userData;
-
+    const profileImage = params?.profileImage ?? params?.sender_profile_photo;
+    const userName = params?.firstName ?? params?.sender_name;
+    const recieverId = params?._id ?? params?.sender_user_id
+    console.log('params___', params)
+    // console.log('params?.sender_id',params)
+    // alert(recieverId);
 
     // const socket = io("http://52.57.23.48:3001");
 
@@ -47,13 +53,15 @@ const Conversation = (props) => {
     const sendChat = async (sms) => {
 
         const body = {
-            "receiver_id": params?._id,
-            "message": sms
+            "recipientId": recieverId,
+            "text": sms
         };
+
         socketServices.emit("newMessage", {
             text: sms,
-            recipientId: params?._id
+            recipientId: recieverId
         })
+        setSms('')
 
         // socket.emit('newMessage', body);
         // return;
@@ -129,26 +137,32 @@ const Conversation = (props) => {
 
                 const body = {
                     token: data.token,
-                    receiver_id: params?._id
+                    receiver_id: recieverId
                 }
                 socketServices.on("connect", () => {
-                    socketServices.emit("join", { token: data.token, receiver_id: params?._id })
+                    socketServices.emit("join", {
+                        token: data.token, receiver_id: recieverId
+                    })
                 })
 
 
                 socketServices.emit("newMessage", body);
                 socketServices.on("chatHistory", (data) => {
+                    data = data.reverse()
 
+                    // console.log('data____', data);
+                    console.log('user_id', user?._id)
                     let newArr = [];
                     for (let key of data) {
+
                         newArr.push({
                             _id: key._id,
                             text: key.message,
-                            name: key.sender_id._id == user?._id ? key.sender_id?.firstName : key.receiver_id.firstName,
-                            isSender: key.sender_id._id == user?._id ? true : false,
+                            name: key.sender_id?.firstName,
+                            isSender: key.sender_id?.firstName == user?.firstName ? true : false,
                             user: {
-                                _id: key.sender_id._id == user?._id ? key.sender_id._id : key.sender_id._id,
-                                name: key.sender_id._id == user?._id ? key.sender_id?.firstName : key.receiver_id.firstName,
+                                _id: key.sender_id?._id,
+                                name: key.sender_id?.firstName,
                             }
                         })
                     }
@@ -158,6 +172,7 @@ const Conversation = (props) => {
                 })
                 socketServices.on("newMessage", async (data) => {
 
+                    console.log('new Message', data)
                     const obj = {
                         _id: Math.random(),
                         text: data.text,
@@ -267,10 +282,10 @@ const Conversation = (props) => {
                 </TouchableOpacity>
                 <Image
                     style={{ width: 45, height: 45, borderRadius: 45 / 2, }}
-                    source={{ uri: params?.profileImage }}
+                    source={{ uri: profileImage }}
                 />
                 <View style={{ marginLeft: getWidth(2), }}>
-                    <Text style={{ fontFamily: fonts.PRe, fontSize: 16, color: 'black', letterSpacing: 1 }}>{params?.firstName + " " + params?.lastName}</Text>
+                    <Text style={{ fontFamily: fonts.PRe, fontSize: 16, color: 'black', letterSpacing: 1 }}>{userName}</Text>
                     {/* <Text style={{fontFamily:fonts.PRe,fontSize:14,color:'black',letterSpacing:1}}></Text> */}
 
                 </View>

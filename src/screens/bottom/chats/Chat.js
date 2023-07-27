@@ -12,7 +12,7 @@ import DropdownAlert from "react-native-dropdownalert";
 import Loader from '../../../utils/Loader';
 // import { acolors } from '../../../Components/AppColors';
 import { goBack, navigate } from '../../../../Navigations';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { fonts } from '../../../constants/fonts';
 import { AcceptedJoinRequestNotif, EditHappeningNotif, GernalNotif, HappeningApprovedNotif, HappeningBookingCancelledNotif, HappeningRejectedNotif, LikedHappeningReview, LikedYourReview, RejectedJoinRequestNotif, ReviewedHappening, SentYouRequestNotif, SomeOneAddedNewHappening, SomeOneCancelledHappeningBookingNotif } from '../../../components/NotificationCards';
 import AlertPopup from '../../../common/AlertPopup';
@@ -23,7 +23,7 @@ var alertRef;
 
 const Chat = (props) => {
 
-
+    const isFocused = useIsFocused();
     const [chatBg, setChatBg] = useState(false)
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState()
@@ -62,6 +62,7 @@ const Chat = (props) => {
             .then(data => {
                 console.log('data', data.data);
                 setChatList(data.data);
+                setLoading(false)
             })
             .catch(err => {
                 console.log('___err___', err)
@@ -69,11 +70,14 @@ const Chat = (props) => {
     }
 
     useEffect(() => {
-        getChats();
         getNotifCount();
         getNotifications();
 
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        getChats();
+    }, [isFocused])
 
 
     // useFocusEffect(useCallback(() => {
@@ -119,7 +123,7 @@ const Chat = (props) => {
 
                 onPress={() => {
                     navigate('Conversation', {
-                        user: item.sender_id
+                        user: item
                     });
                     // item.selected = true
                     // setChatBg(!chatBg)
@@ -128,7 +132,7 @@ const Chat = (props) => {
                 style={{ width: "100%", height: 68.67, marginTop: 20, flexDirection: 'row', alignItems: 'center', paddingBottom: 10 }}>
                 <Image
                     style={{ width: 48, height: 48, borderRadius: 48 / 2, marginTop: -15 }}
-                    source={{ uri: item.sender_id?.profileImage }}
+                    source={{ uri: item.sender_profile_photo }}
                 />
                 <View
                     style={{ width: "90%", }}
@@ -136,7 +140,7 @@ const Chat = (props) => {
                 // style={[!item.selected ? styles.chatSelected : styles.chatUnselected]}>
                 // style={[styles.chatUnselected]}
                 >
-                    <Text style={{ marginLeft: 12, fontFamily: fonts.MSBo, fontSize: 14, color: '#222222' }}>{item.sender_id?.firstName}</Text>
+                    <Text style={{ marginLeft: 12, fontFamily: fonts.MSBo, fontSize: 14, color: '#222222' }}>{item.sender_name}</Text>
                     <Text style={{ marginLeft: 12, fontFamily: fonts.MSBo, fontSize: 12, }}>{item.message}</Text>
                     <Text style={{ marginLeft: 12, fontFamily: fonts.MBo, fontSize: 9, color: '#222222', position: 'absolute', right: 20, top: 15 }}>{getTimeAgo(item.timestamp)}</Text>
                     <View style={{ width: "90%", height: 1, backgroundColor: 'rgba(34,34,34,0.2)', marginTop: 20 }}></View>

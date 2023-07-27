@@ -47,9 +47,6 @@ const Home = () => {
     const { state, setUserGlobal, userProfileData, setHappeningSubmissionDataGlobal, setWhishListsGlobal } = useContext(Context)
     const [loading, setLoading] = useState(false);
 
-
-
-
     const [loginData, setLoginData] = useState();
     const [profileData, setProfileData] = useState();
 
@@ -74,16 +71,16 @@ const Home = () => {
     const [allHappenings, setAllHappenings] = useState([]);
     const [todayHappening, setTodayHappening] = useState([]);
     const [happeningForYou, setHappeningForYou] = useState([]);
+    const [localStories, setLocalStories] = useState([]);
+    const [happeningOfTheDay, setHappeningOfTheDay] = useState([])
 
     const [newWhishListName, setNewWhishListName] = useState('');
     const [whishListHappeningId, setWhishListHappeningId] = useState('');
     const [wishlistId, setWishlistId] = useState('');
 
     const [searchKeyword, setSearchKeyword] = useState('');
-
     const [isSearched, setIsSearched] = useState(false);
 
-    const [localStories, setLocalStories] = useState([]);
 
 
 
@@ -201,6 +198,7 @@ const Home = () => {
                     setAllHappenings(data1?.allHappenings);
                     setHappeningForYou(data1.happeningsLikeYou);
                     setTodayHappening(data1.todaysHappenings);
+                    setHappeningOfTheDay(data1.happeningOfTheDay);
                     if (!data1.allHappenings) setAllHappenings(data.data ?? []);
                     // setHappeningTodayData(data.today);
                     // setHappeningNearbyData(data.nearHappenings)
@@ -685,6 +683,62 @@ const Home = () => {
 
 
                         {/* </View> */}
+                        <View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: "100%", alignSelf: 'center', marginVertical: 15, alignItems: 'center' }}>
+                                <Text style={[styles.headingText,]}>Happenings of the<Text style={styles.heading2ndText}> day</Text> </Text>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        navigateFromStack('BookingStack', 'SeeAllHappeningsToday', {
+                                            title: "All Happenings",
+                                            data: allHappenings
+                                        })
+                                    }}
+                                    style={{ alignSelf: 'flex-end' }} >
+                                    <Text style={styles.seeAll}>See all</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ width: "100%" }}>
+                                <FlatList
+                                    showsHorizontalScrollIndicator={false}
+                                    horizontal={true}
+                                    data={happeningOfTheDay}
+                                    renderItem={({ item, index }) => {
+                                        return (
+                                            <TouchableOpacity
+                                                key={index}
+                                                onPress={() => {
+                                                    loginData ? navigateFromStack('BookingStack', 'HappeningDetails', item) : navigate('HappeningDetails', item)
+                                                }}
+                                                style={{ width: getWidth(40), marginLeft: 10, }}
+                                            >
+                                                <Image
+                                                    source={{ uri: item.addPhotosOfYourHappening[0] }}
+                                                    style={styles.listImg}
+                                                />
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        setWhishListHappeningId(item._id)
+                                                        if (!item.isFavorite) {
+                                                            setCreateWishListModal(true)
+                                                        }
+                                                    }}
+                                                    style={{ position: 'absolute', top: 10, right: 5, padding: 10 }}>
+                                                    {
+                                                        item.isFavorite ?
+                                                            <HeartFilled color={'red'} />
+                                                            :
+                                                            <HeartWhiteIcon color={"white"} />
+                                                    }
+                                                </TouchableOpacity>
+                                                <Text style={styles.listTile}>{item.happeningTitle}</Text>
+                                            </TouchableOpacity>
+                                        )
+                                    }}
+                                />
+                            </View>
+                        </View>
+
+
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: "100%", alignSelf: 'center', marginVertical: 15, alignItems: 'center' }}>
                             {/* <View style={{ width: "85%", alignSelf: 'center', }}> */}
                             <Text style={[styles.headingText,]}>All<Text style={styles.heading2ndText}> Happenings</Text> </Text>

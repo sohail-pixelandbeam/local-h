@@ -126,11 +126,11 @@ const DurationRepeat = (props) => {
     // }, []);
 
     function next() {
-
         if (doesNotRepeat == "Daily") if (!doValidateDailyRepeatFields()) return;
         if (doesNotRepeat == 'Weekly') if (!doValidateWeeklyRepeatFields()) return;;
         if (doesNotRepeat == 'Bi-Weekly') if (!doValidateBiWeeklyRepeatFields()) return;;
         if (doesNotRepeat == 'Monthly') if (!doValidateMonthlyFields()) return;
+        if (doesNotRepeat == 'Quarterly') if (!doValidateQFields()) return;
 
         let repeat = makeDoesNotRepeat();
         if (!repeat) return;
@@ -192,6 +192,8 @@ const DurationRepeat = (props) => {
                 return repeatBiWeekly;
             case 'Monthly':
                 return repeatMonthly
+            case 'Quarterly':
+                return repeatQ;
                 alertRef.alertWithType('error', 'Error', "Monthly and Yearly recurrence is under development")
             case 'Repeat yearly':
                 alertRef.alertWithType('error', 'Error', "Yearly recurrence is under development")
@@ -335,6 +337,24 @@ const DurationRepeat = (props) => {
             return false;
         }
         if (!repeatMonthly.end) {
+            alertRef.alertWithType('error', "Error", "Please enter end date")
+            return false;
+        }
+
+        return true
+
+    }
+
+    function doValidateQFields() {
+        if (!repeatQ.startingDate) {
+            alertRef.alertWithType('error', "Error", "Please enter starting date")
+            return false;
+        }
+        if (!repeatQ.on) {
+            alertRef.alertWithType('error', "Error", "Please select 'of the month'")
+            return false;
+        }
+        if (!repeatQ.end) {
             alertRef.alertWithType('error', "Error", "Please enter end date")
             return false;
         }
@@ -878,10 +898,10 @@ const DurationRepeat = (props) => {
                                         <BackIcon width={7} height={18} />
                                     </TouchableOpacity>
                                     <CalanderComponent
-                                        selectedDate={repeatMonthly?.startingDate}
+                                        selectedDate={repeatQ?.startingDate}
                                         onDayPress={(v) => {
-                                            setRepeatMonthly({
-                                                ...repeatMonthly,
+                                            setRepeatQ({
+                                                ...repeatQ,
                                                 startingDate: v.dateString
                                             })
                                             setMonthlyRepeatCalanderModal(false);
@@ -897,11 +917,11 @@ const DurationRepeat = (props) => {
                                             <BackIcon width={7} height={18} />
                                         </TouchableOpacity>
                                         <CalanderComponent
-                                            minDate={repeatDaily.startingDate}
-                                            selectedDate={repeatDaily?.end}
+                                            minDate={repeatQ.startingDate}
+                                            selectedDate={repeatQ?.end}
                                             onDayPress={(v) => {
-                                                setRepeatMonthly({
-                                                    ...repeatMonthly,
+                                                setRepeatQ({
+                                                    ...repeatQ,
                                                     end: v.dateString
                                                 })
                                                 setMonthlyEndCalanderModal(false);
@@ -916,7 +936,7 @@ const DurationRepeat = (props) => {
                                                 onPress={() => setMonthlyRepeatCalanderModal(true)}
                                                 style={[styles.shadow, styles.pickerContainer, { marginLeft: 0 }]}>
                                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                                    <Text style={styles.pickerTitle}>{repeatMonthly.startingDate}</Text>
+                                                    <Text style={styles.pickerTitle}>{repeatQ.startingDate}</Text>
                                                     <CalenderIcon style={{ marginLeft: 5 }} />
                                                 </View>
                                             </TouchableOpacity>
@@ -926,11 +946,11 @@ const DurationRepeat = (props) => {
                                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                 <View style={[styles.shadow, styles.pickerContainer, { marginLeft: 0, width: 60 }]}>
                                                     <PrivacyPicker
-                                                        selected={{ title: repeatMonthly.on ?? '' }}
+                                                        selected={{ title: repeatQ.on ?? '' }}
                                                         data={daysArr}
                                                         onValueChange={(i, v) => {
-                                                            setRepeatMonthly({
-                                                                ...repeatMonthly,
+                                                            setRepeatQ({
+                                                                ...repeatQ,
                                                                 on: v.title
                                                             });
                                                         }}
@@ -948,7 +968,7 @@ const DurationRepeat = (props) => {
                                                     onPress={() => setMonthlyEndCalanderModal(true)}
                                                     style={[styles.shadow, styles.pickerContainer,]}>
                                                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                                        <Text style={styles.pickerTitle}>{repeatMonthly.end}</Text>
+                                                        <Text style={styles.pickerTitle}>{repeatQ.end}</Text>
                                                         <CalenderIcon style={{ marginLeft: 10 }} />
                                                     </View>
                                                 </TouchableOpacity>
