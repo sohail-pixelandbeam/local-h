@@ -621,7 +621,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: Stichting Local Happinez Foundation (GG9Y7SZ7Y4)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 13;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = GG9Y7SZ7Y4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = eventapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -636,7 +636,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.localhappinez;
 				PRODUCT_NAME = eventapp;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = LocalHappinezProvisProfile;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = LocalHappinezProvisProfile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -654,7 +654,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: Stichting Local Happinez Foundation (GG9Y7SZ7Y4)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 13;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = GG9Y7SZ7Y4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = eventapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -669,7 +669,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.localhappinez;
 				PRODUCT_NAME = eventapp;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = LocalHappinezProvisProfile;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = LocalHappinezProvisProfile;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
